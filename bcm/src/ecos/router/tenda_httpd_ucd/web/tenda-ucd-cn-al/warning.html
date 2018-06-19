@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html class="warning-body">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="pragma" content="no-cache">
+    <style>
+body, button, input, select, textarea {
+  font: 12px/1.5 tahoma,arial,'Hiragino Sans GB',\5b8b\4f53,sans-serif,Microsoft Yahei;
+}
+.warning-body {
+  background: #f3f3f3;
+  height:auto;
+}
+.warning-main {
+  width: 600px;
+  height: 420px;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:80px;
+}
+
+.warning-info {
+  background:url(./img/warning-info.png) 0 no-repeat;
+  width: 80px;
+  height:90px;
+  background-position: 0px 0px;
+  margin-left: 220px;
+  margin-top: 50px;
+}
+.warning-text {
+  color:#d23430;
+  font-weight:700;
+  margin-bottom: 20px;
+}
+
+.warning-continue {
+  margin-top:20px;
+}
+.warning-continue a{
+  color:#999;
+}
+.control-group-text {
+  width: 250px;
+}
+
+.warning-wrapper{
+  width: 559px;
+  height:200px;
+  padding: 45px 0 0 200px;
+  background:url(./img/bg.png) 0 0 no-repeat;
+  text-align: left;
+}
+.warning-tit{
+  font-size: 18px;
+  font-weight: bold;
+  color: #f96247;
+  padding-left:50px;
+}
+.warning-notice {
+  color: #282829;
+  width: 359px;
+  font-size: 14px;
+  padding-top: 25px;
+  line-height: 2em;
+}
+.btn-group{
+  background: none;
+}
+.btn-group .btn{
+  background: #b0b0b0;
+  color:#fff;
+  width: 210px;
+  height:45px;
+  line-height: 45px;
+  font-size: 14px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  margin-left: 40px;
+}
+
+.btn-group .btn-red{
+  background-color: #da6a56;
+}
+
+#warning-msg {
+  text-align: center;
+  line-height: 50px;
+  color: #d23430;
+}
+
+    </style>
+    <title></title>
+  </head>
+  <body class="warning-body">
+  	<div class="warning-main">
+    	<div class="warning-wrapper">
+
+        <div class="warning-tit">检测到恶意网站，继续访问？</div>
+        <div class="warning-notice">
+          我们侦测到您当前访问的网站有潜在的安全风险！<br />
+          如继续访问，在该网站输入登录账号、密码、银行账户或进行交易汇款前，请确认网址正确无误，免遭损失。
+        </div>
+        
+      </div>
+        
+        <div class="btn-group">
+          <input type="button" id="close-page" class="btn btn-normal" value="返 回">
+        	<input type="button" id="continue" class="btn btn-normal btn-red" value="我知道了，继续访问">
+        </div>
+        <div class="control-group">
+            <div class="red" id="warning-msg">&nbsp;</div>
+        </div>
+    </div>
+  </body>
+  <script src="js/libs/j.js"></script>
+  <script src="js/libs/public.js"></script>
+  <script src="js/warning.js"></script>
+</html>

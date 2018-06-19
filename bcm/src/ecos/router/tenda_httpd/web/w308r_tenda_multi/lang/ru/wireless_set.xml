@@ -1,0 +1,146 @@
+﻿<po>
+<!--wireless_basic.asp-->
+<message msgid="Wireless Basic Settings1" msgstr="Основные установки беспроводной сети" />
+<message msgid="Open scan" msgstr="Включить сканирование" />
+<message msgid="Close scan" msgstr="Выключить сканирование" />
+<message msgid="Are you sure to connect to this AP?" msgstr="Вы уверены, что хотите подключиться к этой точке доступа (АР)?" />
+<message msgid="AP MAC full,clear unnecessary information" msgstr="МАС -адреса точки доступа (AP) переполнены, пожалуйста, удалите ненужную информацию!" />
+<message msgid="the address already exists" msgstr="Данный адрес уже существует!" />
+<message msgid="WMM Capable" msgstr="Совместимо со стандартом WMM (беспроводные мультимедиа)" />
+<message msgid="APSD Capable" msgstr="Совместимо с APSD (Автоматический переход в режим экономии энергии)" />
+<message msgid="Giving up" msgstr="Відмова: Не може відобразити XMLHTTP сторінку." />
+<message msgid="AP Isolation" msgstr="Блокировка AP" />
+<message msgid="SSID" msgstr="Трансляция SSID" />
+<!--add-->
+<message msgid="Auto select" msgstr="Автоматический выбор" />
+<!--add-->
+<message msgid="SSID can only consist of numbers,letters,underline and colon." msgstr="Идентификатор сети (SSID) может состоять только из цифр, букв, нижних подчеркиваний и двоеточий!" />
+<message msgid="Please enter a unicast MAC address" msgstr="Пожалуйста, введите MAC-адрес!" />
+<message msgid="No repeated MAC address!" msgstr="Нельзя введить повторяющиеся MAC-адреса!" />
+<message msgid="Please enter the correct MAC address" msgstr="Введите правильный MAC-адрес!" />
+<message msgid="AP MAC address is  empty" msgstr="Введите MAC-адрес точки доступа (AP)!" />
+<message msgid="Enable wireless function" msgstr="Включение беспроводной функции" />
+<message msgid="Wireless Working Mode" msgstr="Беспроводной режим" />
+<message msgid="Wireless Access Point" msgstr="Беспроводная точка доступа" />
+<message msgid="Network Bridge(WDS)" msgstr="Сетевой мост (WDS)" />
+<message msgid="Network Mode" msgstr="Сетевой режим" />
+<message msgid="11b/g mixed mode" msgstr="Смешанный режим 11b/g" />
+<message msgid="11b mode" msgstr="Режим 11b" />
+<message msgid="11g mode" msgstr="Режим 11g" />
+<message msgid="11b/g/n mixed mode" msgstr="Смешанный режим 11b/g/n" />
+<message msgid="Broadcast" msgstr="Широковещание" />
+<message msgid="Disable" msgstr="Выключить" />
+<message msgid="Channel" msgstr="Каналы" />
+<message msgid="Enable" msgstr="Включить" />
+<message msgid="Channel Bandwidth" msgstr="Пропускная способность каналов" />
+<message msgid="Extension Channel" msgstr="Расширенный канал" />
+<message msgid="Working Mode :WDS(Repeater mode)" msgstr="Режим работы: WDS (повторитель)" />
+<message msgid="AP MAC address " msgstr="AP МАС-адрес точки доступа" />
+<message msgid="Select" msgstr="Выбрать" />
+<message msgid="Security" msgstr="Безопасность" />
+<message msgid="Signal strength" msgstr="Интенсивность сигнала" />
+<message msgid="wireless_basic_helpinfo1" msgstr="Эта страница содержит информацию о настройке беспроводной сети. Рекомендуется изменение SSID и настройка каналов. Остальные настройки желательно оставлять по умолчанию" />
+<message msgid="wireless_basic_helpinfo2" msgstr="Имя беспроводной сети" />
+<message msgid="wireless_basic_helpinfo3" msgstr="Трансляция SSID: Включает возможность обнаружения беспроводной сети для всех беспроводных клиентов." />
+<message msgid="wireless_basic_helpinfo4" msgstr="Канал: Вы можете выбрать любой канал от 1 до 13 или вырать автоматический режим." />
+<message msgid="wireless_basic_helpinfo5" msgstr="Сетевой режим: 11n режим используется для определения частоты сетей сегмента." />
+
+<!--wireless_mode.asp-->
+<message msgid="Wired WAN" msgstr="Wired WAN" />
+<message msgid="Wireless WAN" msgstr="Wireless WAN" />
+<message msgid="Default key" msgstr="Default key" />
+<message msgid="WAN medium type" msgstr="WAN medium type" />
+<message msgid="primary SSID" msgstr="primary SSID" />
+<message msgid="secondary SSID" msgstr="secondary SSID" />
+<message msgid="WMM Capable" msgstr="WMM Capable" />
+<message msgid="APSD Capable" msgstr="APSD Capable" />
+<message msgid="wireless_mode_helpinfo1" msgstr="Wired WAN mode: In this mode the router access to the Internet via the Wired WAN port." />
+<message msgid="wireless_mode_helpinfo2" msgstr="Wireless WAN mode: In this mode, the router wirelessly access to the Internet. This method requires you to set the SSID, Channel and security mode as that are provided by your ISP." />
+
+<!--wireless_security.asp-->
+<message msgid="Warning: Can not create XMLHTTP example" msgstr="Предупреждение: невозможно создать примеры XML HTTP!" />
+<message msgid="Please enter a key" msgstr="Пожалуйста, введите ключ!" />
+<message msgid="Key range:8~63 characters" msgstr="Диапазон пароля: 8-63 символа!" />
+<message msgid="Key" msgstr="Пароль" />
+<message msgid="Open" msgstr="Открытая" />
+<message msgid="Shared" msgstr="Общий доступ" />
+<message msgid="Autoselect" msgstr="Авто выбор" />
+<message msgid="The key contains illegal characters" msgstr="Пароль содержит недопустимые символы!" />
+<message msgid="Please select a WPA algorithm" msgstr="пожалуйста, выберите алгоритм шифрования!" />
+<message msgid="Key renewal interval invalid" msgstr="Истек срок обновления ключа!" />
+<message msgid="Warning:Key renewal interval is too short,range " msgstr="Внимание: период обновления ключа был слишком короток" />
+<message msgid="Please enter a valid key renewal interval" msgstr="Введите действительный период обновления ключа!" />
+<message msgid="PIN value invalid,please enter 8 characters." msgstr="Введен неверный PIN-код! Пожалуйста, введите 8 символов!" />
+<message msgid="This function can only be used after the wireless function is enabled" msgstr="Эта функция используется только после активации беспроводной связи!" />
+<message msgid="Security Policy" msgstr="Политика безопасности" />
+<message msgid="Security Mode" msgstr="Режим безопасности" />
+<message msgid="WPA Algorithms" msgstr="Шифрование посредством алгоритма WPA" />
+<message msgid="Key Renewal Interval" msgstr="Интервал обновления ключа" />
+<message msgid="Second" msgstr="Секунд" />
+<message msgid="WPS Settings" msgstr="Установки WPS (Wi-Fi Protected Setup)" />
+<message msgid="WPS Mode" msgstr="Режим WPS (Wi-Fi Protected Setup)" />
+<message msgid="Information: the security setting is automatically set to WPS,but you can manually modify it." msgstr="Режим WPS" />
+<message msgid="Reset OOB" msgstr="Сброс OOB" />
+<message msgid="Note:" msgstr="обратите внимание:" />
+<message msgid="Please input 5 or 13 characters" msgstr="Пожалуйста введите 5 или 13 символов ключа!" />
+<message msgid="Please input 10 or 26 characters" msgstr="Пожалуйста введите 10 или 26 символов ключа!" />
+<message msgid="Mixed WPA/WPA2 - PSK" msgstr="Смешанный WPA/WPA2-PSK" />
+<message msgid="Wireless Security Settings" msgstr="настройка беспроводной безопасности" />
+<message msgid="Wireless_secrity_note1" msgstr="Стандарт 802.11n определяет только три стандартных режима шифрования: Open-Nonе (Disable), WPA-Private-AES, WPA2-Private-AES. Используя другой нестандартный метод шифрования Вы можете столкнуться с проблемой, так как различные производители могут иметь проблемы с совместимостью." />
+<message msgid="Wireless_secrity_note2" msgstr="Маршрутизатор Tenda был оптимизирован для шифрования беспроводных сетей, выберите режим шифрования WPA в соответствии со стандартом AES, который предотвратит от несанкционированного доступа Вашу сеть." />
+<message msgid="Wireless_secrity_helpinfo" msgstr="Вы можете включить устройство в режиме &quot;private&quot; или &quot;mixed&quot; (личном или смешанном), но должны убедиться, что ваши клиентские устройства поддерживают данные беспроводные алгоритмы шифрования. Если Вы не очень знакомы с технологиями беспроводной безопасности, мы рекомендуем Вам использовать режим WPA-Private." />
+
+<!--wireless_filter.asp-->
+<message msgid="Delete" msgstr="Отмена" />
+<message msgid="rule" msgstr="Выбрав &quot;Принять&quot; Вы должны ввести не менее одного правила!" />
+<message msgid="Are you sure to delete" msgstr="Вы уверены, что хотите удалить?" />
+<message msgid="Invalid MAC address" msgstr="Неверный MAC-адрес!" />
+<message msgid="Please enter a unicast MAC address" msgstr="Пожалуйста введите unicast MAC-адрес!" />
+<message msgid="Max.16 MAC addresses" msgstr="Можно вводить максимально до 16 MAC-адресов!" />
+<message msgid="The MAC address already exists" msgstr="Указанный MAC-адрес уже существует" />
+<message msgid="MAC address filter" msgstr="Фильтр MAC-адресов" />
+<message msgid="Permit" msgstr="Разрешить" />
+<message msgid="Forbid" msgstr="Запретить" />
+<message msgid="Configure MAC address" msgstr="Установка MAC-адресов" />
+<message msgid="MAC address" msgstr="MAC-адрес" />
+<message msgid="Operate" msgstr="Управление" />
+<message msgid="Add" msgstr="Добавить" />
+<message msgid="Wireless_filter_helpinfo" msgstr="Вы можете контролировать доступ к беспроводной сети по MAC-адресам компьютеров. Если вы хотите включить или отключить контроль по MAC-адресам, пожалуйста выберите Включить или Отключить." />
+Хотите включить или выключить функцию беспроводного доступа, выбирайте включени или вылючение пожалуйста." />
+
+<!--wireless_state.asp-->
+<message msgid="Tenda Multi-functional Broadband SOHO Router" msgstr="TENDA многофункциональный широкополосный SOHO маршрутизатор" />
+<message msgid="This page displays the connection information of the wireless router" msgstr="Данная страница отображает информацию о соединениях маршрутизатора." />
+<message msgid="The currently connected hosts list" msgstr="Список хостов, подключенных в настоящий момент:" />
+<message msgid="Refresh" msgstr="Обновить" />
+<message msgid="NO." msgstr="Порядковый номер" />
+<message msgid="Bandwidth" msgstr="Пропускная способность" />
+<message msgid="Wireless_state_helpinfo1" msgstr="На данной странице можно просмотреть информацию о клиентах, подключенных к беспроводному интернету." />
+<message msgid="Wireless_state_helpinfo2" msgstr="MAC-адрес: MAC-адрес беспроводного адаптера данного хоста, пропускная способность: ширина и частота канала." />
+
+<!--menu.js-->
+  <message msgid="Ok" msgstr="OK" />
+  <message msgid="Cancel" msgstr="Отмена" />  
+
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="Недействительный!" />   
+  <message msgid="contains illegal characters" msgstr="Содержит недопустимые символы:" />  
+  <message msgid="not numbers " msgstr="Не цифры!" />  
+  <message msgid="beyond the range" msgstr="Вне диапазона!" /> 
+  <message msgid="contains invalid characters" msgstr="Содержит недопустимые символы:" /> 
+  <message msgid="Are you sure to exit" msgstr="Вы уверены, что хотите выйти?" />   
+  <message msgid="not defined" msgstr="Нет формулировки!" />  
+  <message msgid="Password differs" msgstr="Ошибочный пароль!" />  
+  <message msgid="Change password" msgstr="Изменить пароль?" /> 
+  <message msgid="the length is not within the range" msgstr="Длина вне диапазона!" />    
+  <message msgid="permanent" msgstr="Постоянный" />   
+  <message msgid="Day" msgstr="День" />  
+  <message msgid="Don't enter Chinese characters" msgstr="Не вводите китайские символы!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Нужно перезапустить маршрутизатор чтобы установки вступили в силу. Перезапустить сейчас?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Нужно перезапустить беспроводной модуль чтобы установки вступили в силу. Перезапустить сейчас?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Комментарии должны содержать только буквы, цифры и нижние подчеркивания" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC-адрес является зарезервированным адресом, пожалуйста, введите заново!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC-адрес является шировещательным адресом, пожалуйста, введите заново!" />  
+  <message msgid="Help information" msgstr="Справка" />
+  <message msgid="Error initializing HttpRequest!" msgstr="Ошибка при Http запросе!" />
+</po>

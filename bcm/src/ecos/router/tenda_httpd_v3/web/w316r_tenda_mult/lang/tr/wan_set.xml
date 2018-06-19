@@ -1,0 +1,187 @@
+﻿<po>
+<!--system_status.asp-->
+<message msgid="Static IP" msgstr="Statik IP" />
+<message msgid="Dynamic IP" msgstr="Dinamik IP" />
+<message msgid="Disable" msgstr="Devre dışı bırak" />
+<message msgid="Enable" msgstr="Etkinleştir" />
+<message msgid="Disconnected" msgstr="Bağlantı kesildi" />
+<message msgid="Connecting" msgstr="Bağlanıyor" />
+<message msgid="Connected" msgstr="Bağlandı" />
+<message msgid="Permanent" msgstr="Kalıcı" />
+<message msgid="Day" msgstr="Gün" />
+<message msgid="WAN status" msgstr="WAN durumu" />
+<message msgid="Connection status" msgstr="Bağlantı durumu" />
+<message msgid="Subnet Mask" msgstr="Alt ağ maskesi" />
+<message msgid="Gateway" msgstr="Geçiş yolu" />
+<message msgid="DNS server" msgstr="DNS sunucusu" />
+<message msgid="Alternate DNS server" msgstr="Alternatif DNS sunucusu" />
+<message msgid="Connection type" msgstr="Bağlantı tipi" />
+<message msgid="Connection time" msgstr="Bağlantı saati" />
+<message msgid="Release" msgstr="Serbest bırak" />
+<message msgid="Refresh" msgstr="Yenile" />
+<message msgid="Connect" msgstr="Bağlandı" />
+<message msgid="Disconnect" msgstr="Bağlantı kesildi" />
+<message msgid="System status" msgstr="Sistem durumu" />
+<message msgid="LAN MAC address" msgstr="LAN MAC adresi" />
+<message msgid="WAN MAC address" msgstr="WAN MAC adresi" />
+<message msgid="System time" msgstr="Sistem saati" />
+<message msgid="Running time" msgstr="Çalışma saati" />
+<message msgid="Connected client" msgstr="Bağlanılmış istemci" />
+<message msgid="Software version" msgstr="Yazılım versiyonu" />
+<message msgid="Hardware version" msgstr="Donanım versiyonu" />
+<message msgid="System_status_helpinfo1" msgstr="Bağlantı tipi: Güncel WAN bağlantı tipini gösterir." />
+<message msgid="System_status_helpinfo2" msgstr="Bağlantı saati: Bağlantı tipi dinamik IP veya PPPoE olduğunda yönlendiricinin WAN portunun bağlantı zamanı." />
+<message msgid="System_status_helpinfo3" msgstr="Çalışma saati: Yönlendiricinin saati etkinleştirildi." />
+<message msgid="System_status_helpinfo4" msgstr="Sistem saati :Yönlendiricinin donanım yazılımı versiyonu." />
+
+<!--wan_connected.asp-->
+<message msgid="Idle time" msgstr="Boşta olma zamanı" />
+<message msgid="Username or Password is empty" msgstr="Kullanıcı adı ve şifre boş!" />
+<message msgid="Account" msgstr="Hesap" />
+<message msgid="Username" msgstr="Kullanıcı adı" />
+<message msgid="Password" msgstr="Şifre" />
+<message msgid="Time" msgstr="Saat" />
+<message msgid="Time exceeds the specified range" msgstr="Saat belirlenmiş oranı aşıyor" />
+<message msgid="start time must be smaller than end time." msgstr="Başlangıç zamanı bitiş zamanında küçük olmalıdır." />
+<message msgid="IP address" msgstr="IP adresi" />
+<message msgid="Primary DNS" msgstr="Birincil DNS" />
+<message msgid="Alternate DNS" msgstr="Alternatif DNS" />
+<message msgid="Server address is empty" msgstr="Sunucu adu boş" />
+<message msgid="Server address" msgstr="Sunucu adresi" />
+<message msgid="Server IP address" msgstr="Sunucu IP adresi" />
+<message msgid="ISP Gateway" msgstr="ISP Geçişyolu" />
+<message msgid="MTU value range" msgstr="MTU değeri oranı" />
+<message msgid="Wan_connected_helpinfo1" msgstr="Statik IP: Eğer genişbant internet sağlayıcınız size bir statik IP sunmuş ise, lütfen statik IP modunu seçin." />
+<message msgid="Wan_connected_helpinfo2" msgstr="Dinamik IP: Eğer internet servisi sunucunuz DHCP sunucuzu kullanıyor ise, ve internet servisi sağlayıcınız bu değerleri size otomatik olarak atayacaktır（DNS sunucu dahil）." />
+<message msgid="Wan_connected_helpinfo3" msgstr="İnternet servis sağlayıcınızdan PPPoE yi kullanıp kullanamadığınızı öğrenin. Eğer PPPoE sunulmuş ise O zaman kullanıcı adı ve şifrenizi girin." />
+<message msgid="Wan_connected_helpinfo4" msgstr="İnternet servisi sağlayıcınız tarafından sunulmuş olan PPTP sunucu IP adresini, kullanıcı adını, ve şifresini girin. WAN IP adresi, alt ağ maskesi, varsayılan geçiş yolu için, internet servis sağlayıcısı tarafından sunulmuş bilgiyi girmeyi otomatik yada manuel olarak almayı seçebilirsiniz.   MTU: Ağ bağlantısı için MTU değerini girin, eğer net değilseniz, varsayılanı kullanın." />
+<message msgid="Wan_connected_helpinfo5" msgstr="İnternet servisi sağlayıcınız tarafından sunulmuş olan L2TP sunucu IP adresini, kullanıcı adını, ve şifresini girin. WAN IP adresi, alt ağ maskesi, varsayılan geçiş yolu için, internet servis sağlayıcısı tarafından sunulmuş bilgiyi girmeyi otomatik yada manuel olarak almayı seçebilirsiniz. MTU: Ağ bağlantısı için MTU değerini girin, eğer net değilseniz, varsayılanı kullanın." />
+<message msgid="DO NOT modify it unless necessary, the default is 1500" msgstr="Eğer gerekli değil ise DEĞİŞTİRMEYİN, varsayılan 1500" />
+<message msgid="DO NOT modify it unless necessary, the default is 1492" msgstr="Eğer gerekli değil ise DEĞİŞTİRMEYİN, varsayılan 1492" />
+<message msgid="Access Account" msgstr="Erişim hesabı" />
+<message msgid="Access Password" msgstr="Erişim şifresi" />
+<message msgid="Server name" msgstr="Server name" />
+<!--add-->
+<message msgid="Service name" msgstr="servis adı" />
+<!--add-->
+<message msgid="Server name" msgstr="Sunucu adı" />
+<message msgid="Select the corresponding connection mode according to your situation." msgstr="Durumunuza göre ilgili bağlantı modunu seçin" />
+<message msgid="Connect automatically, Connect automatically to the Internet after rebooting the system or connection failure." msgstr="Otomatik olarak bağlan, yeniden başlatma veya bağlantı hatası sonunda internete otomatik olarak bağlan." />
+<message msgid="Connect on demand: Re-establish your connection to the Internet when there’s data transmitting." msgstr="İsteğe bağlı bağlantı: Veri iletimi var iken internet bağlantısını tekrardan inşa et." />
+<message msgid="Max.idle time" msgstr="Maks. boşta kalma zamanı" />
+<message msgid="Wan_connected_Note" msgstr="Not: &quot;Belirli saatte bağlan&quot; fonksiyonu sadece &quot;Sistem araçları&quot; nda &quot;saat ayarları&quot; nda güncel saati ayarladığınızda etkili olur." />
+<message msgid="Connection time: from " msgstr="bağlantı zamanı:  " />
+<message msgid="hours" msgstr="saatinden" />
+<message msgid="minutes" msgstr="dakikasına" />
+<message msgid="to" msgstr="" />
+<message msgid="Second" msgstr="İkinci" />
+<message msgid="mode" msgstr="mod" />
+<message msgid="Address mode" msgstr="Adres modu" />
+<message msgid="Help information" msgstr="Yardım bilgisi" />
+<message msgid="Don not enter the information unless necessary." msgstr="Gerekli değil ise bilgi girmeyin." />
+<message msgid="Connect manually: Connect to the Internet manually by the user." msgstr="Manuel olarak bağlan: Kullanıcı tarafından internete manuel olarak bağlan." />
+<message msgid="Connect on fixed time: Connect automatically to the Internet during the time you fix." msgstr="Sabitlenmiş zamanda bağlan: İnternete belirlediğiniz saatte bağlanın." />
+
+<!--lan.asp-->
+<message msgid="If the webpage doesn't update automatically,please update your computer's network settings and then log on with the new IP." msgstr="Eğer internet sayfası otomatik olarak güncellenmiyorsa, lütfen bilgisayarınızın ağ ayarlarını güncelleyin ve sonra yeni IP ile oturum açın." />
+<message msgid="This page is used to set the basic network parameters for LAN" msgstr="Bu sayfa LAN için temel ağ parametreleri ayarlamak içindir." />
+<message msgid="Lan_helpinfo" msgstr="yönlendiriciin LAN IP ve Alt ağ maskesini ayarlayın Varsayılan IP adresi 192.168.0.1, ve varsayılan alt ağ maskesi 255.255.255.0." />
+
+<!--mac_clone.asp-->
+<message msgid="MAC Address Clone" msgstr="MAC Address Clone" />
+<message msgid="MAC Address" msgstr="MAC Address" />
+<message msgid="Restore Default MAC" msgstr="Restore Default MAC" />
+<message msgid="Clone MAC Address" msgstr="Clone MAC Address" />
+<message msgid="mac_clone_helpinfo1" msgstr="MAC Address clone: Some Internet service providers require end-user's MAC address to access their network. This feature copies the MAC address of your network device to the router." />
+<message msgid="mac_clone_helpinfo2" msgstr="MAC Address: The MAC address to be registered with your Internet service provider." />
+<message msgid="mac_clone_helpinfo3" msgstr="Restore Default MAC: Restore the default hardware MAC address." />
+<message msgid="mac_clone_helpinfo4" msgstr="Clone MAC: Register your PC's MAC address." />
+
+<!--wan_dns.asp-->
+<message msgid="Primary DNS address" msgstr="Birincil DNS adresi" />
+<message msgid="Alternate DNS address" msgstr="Alternatif DNS adresi" />
+<message msgid="DNS setting" msgstr="DNS ayarı" />
+<message msgid="DNS address" msgstr="DNS adresi" />
+<message msgid="Optional" msgstr="Opsiyonel" />
+<message msgid="Note: After the settings are completed, reboot the device to activate the modified settings." msgstr="Not: Ayarlama tamamlandıktan sonra, değiştirilmiş ayarları aktifleştirmek için yönlendiriciyi yeniden başlatın." />
+<message msgid="Wan_dns_helpinfo1" msgstr="DNS ayarı seçildiğinde, özel domain adı sunucu IP si girebilirsiniz, aynı anda domain adı çözünürlüğü hizmeti sunabilirsiniz. Seçilmediğinde ise geniş bant servis sunucusu otomatik olarak atanacaktır." />
+<message msgid="Wan_dns_helpinfo2" msgstr="Eğer domain adı sunucu IP si yanlış ise, internet sayfasının açılmamasına neden olacaktır, onu varsayılan olarak tutmanızı öneririz." />
+
+<!--net_tc.asp-->
+<message msgid="Add to list" msgstr="Listeye ekle" />
+<message msgid="Update to list" msgstr="Listeyi güncelle" />
+<message msgid="All services" msgstr="Tüm servisler" />
+<message msgid="WAN port bandwidth can not be empty!" msgstr="WAN portu genişliği boş olamaz!" />
+<message msgid="Bandwidth can not be zero ,please re-enter" msgstr="Bant genişliği sıfır olamaz, lütfen tekrar girin!" />
+<message msgid="No." msgstr="No." />
+<message msgid="IP segment" msgstr="IP segmenti " />
+<message msgid="Destination" msgstr="Varılacak yer" />
+<message msgid="Bandwidth range" msgstr="Bant genişliği oranı" />
+<message msgid="Edit" msgstr="Düzenle" />
+<message msgid="Delete" msgstr="Sil" />
+<message msgid="All ports" msgstr="Tüm portlar" />
+<message msgid="Download" msgstr="İndir" />
+<message msgid="Upload" msgstr="Yükle" />
+<message msgid="valid WAN bandwidth ranges 1~12800,please re-enter" msgstr="Geçerli bant genişliği oranları 1~12800,lütfen tekrar giriniz!" />
+<message msgid="Max." msgstr="Maks." />
+<message msgid="bandwidth control records" msgstr="bant genişliği kontrol kayıtları!" />
+<message msgid="Please enter the IP address" msgstr="Lütfen IP adresi girin!" />
+<message msgid="Start IP" msgstr="IP başlat" />  
+<message msgid="End IP" msgstr="IP sonlandır" /> 
+<message msgid="start IP bigger than end IP" msgstr="Başlangıç IP bitiş IP den büyük!" />
+<message msgid="Please enter the bandwidth" msgstr="Lütfen bant genişliği girin!" />
+<message msgid="the port is beyond the range of 0~65535" msgstr="port 0~65535 in kapsamı ötesindedir!" />
+<message msgid="bandwidth range should begin from small to big" msgstr="bantgenişliği küçükten büyüğe başlamalıdır!" />
+<message msgid="The configuration overlapped ,please re-enter" msgstr="Konfigürasyon çakıştı, lütfen tekrar girin!" />
+<message msgid="Enable Bandwidth Control" msgstr="Bant genişliği kontrol etkinleştir" />
+<message msgid="Interface" msgstr="Arabirim" />
+<message msgid="Download bandwidth" msgstr="İndirme bant genişliği" />
+<message msgid="Upload/Download" msgstr="Yükle/İndir" />
+<message msgid="Net_tc_helpinfo1" msgstr="Bu fonksiyon LAN bilgisayarlarının iletişim trafiğini sınırlar ." />
+<message msgid="Net_tc_helpinfo2" msgstr="Yükle/İndir: WAN portunun yükleme ve indirme bant genişliğini sınırlamak için." />
+<message msgid="Net_tc_helpinfo3" msgstr="Bant genişliği oranı:Yüklerken veya indirirken belirlenmiş IPde sunucuların en küçük ve en büyük veri trafiğine izin verir Birim KB/s." />
+<message msgid="Net_tc_helpinfo4" msgstr="Yükleme ve indirmenin bağlantısı WAN bağlantısı oranını geçemez." />
+
+<!--system_iptAccount.asp-->
+<message msgid="Enable  traffic statistics" msgstr="Trafik istatistiklerini etkinleştir" />
+<message msgid="Uplink rate" msgstr="Yükleme oranı" />
+<message msgid="Downlink rate" msgstr="İndirme oranı" />
+<message msgid="Sent message" msgstr="Mesaj gönder" />
+<message msgid="Sent Bytes" msgstr="Giden Bit" />
+<message msgid="Received message" msgstr="Alınan mesaj " />
+<message msgid="Received Bytes" msgstr="Alınan bitler" />
+<message msgid="traffic statistics function enables viewing each computer's traffic information" msgstr="Trafik istatistik fonksiyonu her bir bilgisayarın trafik bilgisini görüntülemeyi etkinleştirir." />
+<!--add-->
+<message msgid="Giving up" msgstr="bırakıyor :( şu anda bir XMLHTTP oluşturamıyor" />
+<message msgid="There was a problem with the request." msgstr="talebinizle ilgili bir problem oluştu." />
+<message msgid="Information: the security setting is automatically set to WPS,but you can manually modify it." msgstr="bilgi: güvenlik ayarları otomatik olarak WPS e kuruldu, \n fakat manual olarak değiştremezsiniz." />
+<!--add-->
+
+<!--wan_speed.asp-->
+<message msgid="Choose the WAN speed" msgstr="Choose the WAN speed" />
+<message msgid="Wan_speed_helpinfo1" msgstr="Choose the WAN speed." />
+
+<!--menu.js-->
+<message msgid="Ok" msgstr="Tamam" />
+<message msgid="Cancel" msgstr="İptal" />
+
+<!--gozila.js -->  
+  <message msgid="invalid" msgstr="geçersiz!" />   
+  <message msgid="contains illegal characters" msgstr="illegal karakterler içeriyor:" />  
+  <message msgid="not numbers " msgstr="sayılar değil!" />  
+  <message msgid="beyond the range" msgstr="oranın aşağısında !" /> 
+  <message msgid="contains invalid characters" msgstr="geçersiz karakterler içeriyor:" /> 
+  <message msgid="Are you sure to exit" msgstr="Çıkmaktan eminmisiniz?" />   
+  <message msgid="not defined" msgstr="tanımlanmamış!" />  
+  <message msgid="Password differs" msgstr="Şifre farklı!" />  
+  <message msgid="Change password" msgstr="Şifre değiştir?" /> 
+  <message msgid="the length is not within the range" msgstr="uzunluk kapsama alanında değil!" />    
+  <message msgid="permanent" msgstr="kalıcı" />     
+  <message msgid="Don't enter Chinese characters" msgstr="Çince karakterler girmeyin!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="yönlendiriciin yeniden başlatılması düzenlenmiş ayarları etkin hale getirecektir, şimdi yeniden başlat?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Kablosuz modülün yeniden başlatılması düzenlenmiş ayarları etkin hale getirecektir, şimdi yeniden başlat?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Açıklamalar sadece sayıları, harfleri ve alt çizgileri içerebilir!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC adresi saklanmış adreslere aittir, lütfen yeniden girin!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC adresi çoklu yayın adreslere aittir, lütfen yeniden girin!" />  
+
+</po>

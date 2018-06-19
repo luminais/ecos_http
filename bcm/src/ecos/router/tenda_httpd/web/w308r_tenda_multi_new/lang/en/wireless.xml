@@ -1,0 +1,117 @@
+﻿<po>
+	<!--wireless_basic.asp-->
+	<message msgid="Open Scan" msgstr="Open Scan" />
+	<message msgid="Close Scan" msgstr="Close Scan" />
+	<message msgid="Please click on OK to confirm that you want to connect to this AP!" msgstr="Please click on OK to confirm that you want to connect to this AP!" />
+	<message msgid="AP MAC enteries are full! Please remove the MAC enteries you don't need." msgstr="AP MAC enteries are full! Please remove the MAC enteries you don't need." />
+	<message msgid="The address already exists" msgstr="The address already exists!" />
+	<message msgid="Please enter the MAC address of your wireless device or correct unicast MAC address!" msgstr="Please enter the MAC address of your wireless device or correct unicast MAC address!" />
+	<message msgid="Please enter a different MAC address." msgstr="Please enter a different MAC address." />
+	<message msgid="Please enter a valid MAC address!" msgstr="Please enter a valid MAC address!" />
+	<message msgid="AP MAC address field should not be left empty!" msgstr="AP MAC address field should not be left empty!" />
+	<message msgid="Enable Wireless" msgstr="Enable Wireless" />
+	<message msgid="Wireless Working Mode" msgstr="Wireless Working Mode" />
+	<message msgid="Wireless Access Point" msgstr="Wireless Access Point" />
+	<message msgid="WDS Bridge Mode" msgstr="WDS Bridge Mode" />
+	<message msgid="Network Mode" msgstr="Network Mode" />
+	<message msgid="11b/g mixed mode" msgstr="11b/g mixed mode" />
+	<message msgid="11b mode" msgstr="11b mode" />
+	<message msgid="11g mode" msgstr="11g mode" />
+	<message msgid="11b/g/n mixed mode" msgstr="11b/g/n mixed mode" />
+	<message msgid="SSID(Network Name)" msgstr="SSID(Network Name)" />
+	<message msgid="Channel Bandwidth" msgstr="Channel Bandwidth" />
+	<message msgid="Wireless Working Mode: WDS(Repeater mode)" msgstr="Wireless Working Mode: WDS(Repeater mode)" />
+	<message msgid="AP MAC Address " msgstr="AP MAC Address " />
+	<message msgid="Select" msgstr="Select" />
+	<message msgid="Security" msgstr="Security" />
+	<message msgid="Signal Strength" msgstr="Signal Strength" />
+	<message msgid="WMM Capable" msgstr="WMM Capable" />
+	<message msgid="APSD Capable" msgstr="APSD Capable" />
+	<!--add-->
+	<message msgid="AP Isolation" msgstr="AP Isolation" />
+	<message msgid="Auto select" msgstr="Auto select" />
+	<message msgid="This address already exists" msgstr="This address already exists" />
+	<message msgid="SSID can not contain comma, semicolon, double quotation marks, ampersand, percent and backslash!" msgstr="SSID can not contain comma, semicolon, double quotation marks, ampersand, percent and backslash!" />
+	<message msgid="The SSID (network name) will be changed to %s! Please reconnect to the new SSID!" msgstr="The SSID (network name) will be changed to %s! Please reconnect to the new SSID!" />
+	<message msgid="Secondary SSID is disabled! Devices connected to it will be unable to access the wireless network!" msgstr="Secondary SSID is disabled! Devices connected to it will be unable to access the wireless network!" />
+	<message msgid="Secondary SSID has been changed to %s! Please reconnect using the new SSID!" msgstr="Secondary SSID has been changed to %s! Please reconnect using the new SSID!" />
+	<message msgid="note_WDS" msgstr="Note: SSID and channel will automatically set to match your selected AP. Note that the AP you select MUST also support WDS. WEP is recommended for the connection for better compatibility with your selected AP." />
+	<!--add-->
+
+	<!--wireless_security.asp-->
+	<message msgid="Warning: Can not create XMLHTTP example" msgstr="Warning: Can not create XMLHTTP example!" />
+	<message msgid="Please enter a key" msgstr="Please enter a key!" />
+	<message msgid="Key 1" msgstr="Key 1" />
+	<message msgid="Key 2" msgstr="Key 2" />
+	<message msgid="Key 3" msgstr="Key 3" />
+	<message msgid="Key 4" msgstr="Key 4" />
+	<message msgid="The key contains illegal characters" msgstr="The key contains illegal characters!" />
+	<message msgid="Please select a WPA algorithm" msgstr="Please select a WPA algorithm!" />
+	<message msgid="Key renewal interval invalid" msgstr="Please enter a valid Key Renewal Interval value between 60~9999." />
+	<message msgid="Warning:Key renewal interval is too short,range " msgstr="Warning:Key renewal interval is too short,range" />
+	<message msgid="Please enter a valid key renewal interval" msgstr="Please enter a valid Key Renewal Interval value between 60~9999." />
+	<message msgid="The Pin code must be 8 decimal characters!" msgstr="The Pin code must be 8 decimal characters!" />
+	<message msgid="This feature can be used only if wireless is enabled." msgstr="This feature can be used only if wireless is enabled." />
+	<message msgid="Security Policy" msgstr="Security Policy" />
+	<message msgid="Security Mode" msgstr="Security Mode" />
+	<message msgid="WPA Algorithms" msgstr="WPA Algorithms" />
+	<message msgid="Key Renewal Interval" msgstr="Key Renewal Interval" />
+	<message msgid="Seconds" msgstr="Seconds" />
+	<message msgid="WPS Settings" msgstr="WPS Settings" />
+	<message msgid="WPS Mode" msgstr="WPS Mode" />
+	<message msgid="Reset OOB" msgstr="Reset OOB" />
+	<message msgid="Note:" msgstr="Note:" />
+	<message msgid="Wireless Security Settings" msgstr="Wireless Security Settings" />
+	<message msgid="Wireless_secrity_note1" msgstr="Network mode will switch to 11b/g mixed automatically if  WEP or TKIP is selected;" />
+	<message msgid="Wireless_secrity_note2" msgstr="Network Mode will switch to 11b/g/n mixed automatically if AES or TKIP&amp;AES is selected." />
+	<message msgid="WEP Key 1" msgstr="WEP Key 1" />
+	<message msgid="WEP Key 2" msgstr="WEP Key 2" />
+	<message msgid="WEP Key 3" msgstr="WEP Key 3" />
+	<message msgid="WEP Key 4" msgstr="WEP Key 4" />
+	<message msgid="Please enter the WEP key %s!" msgstr="Please enter the WEP key %s!" />
+	<message msgid="Enter the WEP key" msgstr="Enter the WEP key" />
+	<message msgid="WEP key %s is invalid! Please enter 5 or 13 ASCII characters." msgstr="WEP key %s is invalid! Please enter 5 or 13 ASCII characters." />
+	<message msgid="WEP key %s is invalid! Please enter 10 or 26 Hex characters." msgstr="WEP key %s is invalid! Please enter 10 or 26 Hex characters." />
+	<message msgid="Wep key %s contains invalid characters." msgstr="Wep key %s contains invalid characters." />
+	<message msgid="security key" msgstr="security key" />
+	<message msgid="WEP key %s will be used for the wireless connection! Please reconnect to %s using the WEP key of %s!" msgstr="WEP key %s will be used for the wireless connection! Please reconnect to %s using the WEP key of %s!" />
+	<message msgid="To configure a wireless security key, disable the WPS below!" msgstr="To configure a wireless security key, disable the WPS below!" />
+	<message msgid="WPA - PSK(Recommended)" msgstr="WPA - PSK(Recommended)" />
+	<message msgid="(Recommended)" msgstr="(Recommended)" />
+	<message msgid="Are you sure to ignore the modification" msgstr="Are you sure to ignore the modification?" />
+	<message msgid="Default Key" msgstr="Default Key" />
+	<message msgid="Open" msgstr="Open" />
+	<message msgid="Shared" msgstr="Shared" />
+	<message msgid="Mixed WPA/WPA2 - PSK" msgstr="Mixed WPA/WPA2 - PSK" />
+	
+	<!--wireless_filter.asp-->
+	<message msgid="You must set at least one rule when you choose Permit." msgstr="You must set at least one rule when you choose Permit." />
+	<message msgid="Click on OK to confirm that you want to delete this MAC address." msgstr="Click on OK to confirm that you want to delete this MAC address." />
+	<message msgid="Please enter a unicast MAC address!" msgstr="Please enter a unicast MAC address!" />
+	<message msgid="Up to 16 MAC address entries are supported!" msgstr="Up to 16 MAC address entries are supported!" />
+	<message msgid="Specified MAC address already exists!" msgstr="Specified MAC address already exists!" />
+	<message msgid="MAC Address Filter" msgstr="MAC Address Filter" />
+	<message msgid="Permit" msgstr="Permit" />
+	<message msgid="Forbid" msgstr="Forbid" />
+	<message msgid="Add" msgstr="Add" />
+
+	<!--wireless_state.asp-->
+	<message msgid="Tenda Multi-functional Broadband SOHO Router" msgstr="Tenda Multi-functional Broadband SOHO Router" />
+	<message msgid="Select SSID" msgstr="Select SSID" />
+	<message msgid="The currently connected hosts list:" msgstr="The currently connected hosts list:" />
+	<message msgid="NO." msgstr="NO." />
+	<message msgid="Bandwidth" msgstr="Bandwidth" />
+	
+	<!--wireless_mode.asp-->
+	<message msgid="Wired WAN" msgstr="Wired WAN" />
+	<message msgid="Wireless WAN" msgstr="Wireless WAN" />
+	<message msgid="Default Key" msgstr="Default key" />
+	<message msgid="WAN Medium Type" msgstr="WAN Medium Type" />
+	<message msgid="Primary SSID" msgstr="Primary SSID" />
+	<message msgid="Secondary SSID" msgstr="Secondary SSID" />
+	<message msgid="Wired WAN Mode" msgstr="Wired WAN Mode" />
+	<message msgid="Wireless WAN Mode" msgstr="Wireless WAN Mode" />
+	<message msgid="Are you sure to connect to this AP?" msgstr="Are you sure to connect to this AP?" />
+	<message msgid="Complete below settings to connect to WISP AP." msgstr="Complete below settings to connect to WISP AP." />
+	<message msgid="Enter WISP AP's security key" msgstr="Enter WISP AP's security key" />
+</po>

@@ -1,0 +1,626 @@
+/*
+ * WLC RPC common header file
+ *
+ * Copyright (C) 2010, Broadcom Corporation
+ * All Rights Reserved.
+ * 
+ * This is UNPUBLISHED PROPRIETARY SOURCE CODE of Broadcom Corporation;
+ * the contents of this file may not be disclosed to third parties, copied
+ * or duplicated in any form, in whole or in part, without the prior
+ * written permission of Broadcom Corporation.
+ *
+ * $Id: wlc_rpc.h,v 1.102.2.28 2011-01-26 21:23:38 Exp $
+ */
+
+#ifndef _WLC_RPC_H_
+#define _WLC_RPC_H_
+
+#include <wlc_types.h>
+
+/* RPC IDs, reordering is OK. This needs to be in sync with RPC_ID_TABLE below */
+typedef enum {
+	WLRPC_NULL_ID = 0,
+	WLRPC_WLC_REG_READ_ID,
+	WLRPC_WLC_REG_WRITE_ID,
+	WLRPC_WLC_MHF_SET_ID,
+	WLRPC_WLC_MHF_GET_ID,
+	WLRPC_WLC_BMAC_UP_PREP_ID,
+	WLRPC_WLC_BMAC_UP_FINISH_ID,
+	WLRPC_WLC_BMAC_SET_CTRL_EPA_ID,
+	WLRPC_WLC_BMAC_DOWN_PREP_ID,
+	WLRPC_WLC_BMAC_DOWN_FINISH_ID,
+	WLRPC_WLC_BMAC_WRITE_HW_BCNTEMPLATES_ID,
+	WLRPC_WLC_BMAC_RESET_ID,
+	WLRPC_WLC_DNGL_REBOOT_ID,
+	WLRPC_WLC_BMAC_RPC_TXQ_WM_SET_ID,
+	WLRPC_WLC_BMAC_RPC_TXQ_WM_GET_ID,
+	WLRPC_WLC_BMAC_RPC_AGG_SET_ID,
+	WLRPC_WLC_BMAC_RPC_MSGLEVEL_SET_ID,
+	WLRPC_WLC_BMAC_RPC_AGG_LIMIT_SET_ID,
+	WLRPC_WLC_BMAC_RPC_AGG_LIMIT_GET_ID,
+	WLRPC_WLC_BMAC_INIT_ID,
+	WLRPC_WLC_BMAC_SET_CWMIN_ID,
+	WLRPC_WLC_BMAC_MUTE_ID,
+	WLRPC_WLC_PHY_DOIOVAR_ID,
+	WLRPC_WLC_PHY_HOLD_UPD_ID,
+	WLRPC_WLC_PHY_MUTE_UPD_ID,
+	WLRPC_WLC_PHY_CLEAR_TSSI_ID,
+	WLRPC_WLC_PHY_ANT_RXDIV_GET_ID,
+	WLRPC_WLC_PHY_ANT_RXDIV_SET_ID,
+	WLRPC_WLC_PHY_PREAMBLE_SET_ID,
+	WLRPC_WLC_PHY_FREQTRACK_END_ID,
+	WLRPC_WLC_PHY_FREQTRACK_START_ID,
+	WLRPC_WLC_PHY_IOCTL_ID,
+	WLRPC_WLC_PHY_NOISE_SAMPLE_REQUEST_ID,
+	WLRPC_WLC_PHY_CAL_PERICAL_ID,
+	WLRPC_WLC_PHY_TXPOWER_GET_ID,
+	WLRPC_WLC_PHY_TXPOWER_SET_ID,
+	WLRPC_WLC_PHY_TXPOWER_SROMLIMIT_ID,
+	WLRPC_WLC_PHY_RADAR_DETECT_ENABLE_ID,
+	WLRPC_WLC_PHY_RADAR_DETECT_RUN_ID,
+	WLRPC_WLC_PHY_TEST_ISON_ID,
+	WLRPC_WLC_BMAC_COPYFROM_OBJMEM_ID,
+	WLRPC_WLC_BMAC_COPYTO_OBJMEM_ID,
+	WLRPC_WLC_ENABLE_MAC_ID,
+	WLRPC_WLC_MCTRL_ID,
+	WLRPC_WLC_CORERESET_ID,
+	WLRPC_WLC_BMAC_READ_SHM_ID,
+	WLRPC_WLC_BMAC_READ_TSF_ID,
+	WLRPC_WLC_BMAC_SET_ADDRMATCH_ID,
+	WLRPC_WLC_BMAC_SET_CWMAX_ID,
+	WLRPC_WLC_BMAC_SET_RCMTA_ID,
+	WLRPC_WLC_BMAC_SET_SHM_ID,
+	WLRPC_WLC_SUSPEND_MAC_AND_WAIT_ID,
+	WLRPC_WLC_BMAC_WRITE_SHM_ID,
+	WLRPC_WLC_BMAC_WRITE_TEMPLATE_RAM_ID,
+	WLRPC_WLC_TX_FIFO_SUSPEND_ID,
+	WLRPC_WLC_TX_FIFO_RESUME_ID,
+	WLRPC_WLC_TX_FIFO_SUSPENDED_ID,
+	WLRPC_WLC_HW_ETHERADDR_ID,
+	WLRPC_WLC_SET_HW_ETHERADDR_ID,
+	WLRPC_WLC_BMAC_CHANSPEC_SET_ID,
+	WLRPC_WLC_BMAC_TXANT_SET_ID,
+	WLRPC_WLC_BMAC_ANTSEL_TYPE_SET_ID,
+	WLRPC_WLC_BMAC_TXFIFO_ID,
+	WLRPC_WLC_BMAC_PKTENG_ID,
+	WLRPC_WLC_RADIO_READ_HWDISABLED_ID,
+	WLRPC_WLC_RM_CCA_MEASURE_ID,
+	WLRPC_WLC_SET_SHORTSLOT_ID,
+	WLRPC_WLC_WAIT_FOR_WAKE_ID,
+	WLRPC_WLC_PHY_TXPOWER_GET_CURRENT_ID,
+	WLRPC_WLC_PHY_TXPOWER_HW_CTRL_GET_ID,
+	WLRPC_WLC_PHY_TXPOWER_HW_CTRL_SET_ID,
+	WLRPC_WLC_PHY_BSSINIT_ID,
+	WLRPC_WLC_BAND_STF_SS_SET_ID,
+	WLRPC_WLC_PHY_BAND_FIRST_CHANSPEC_ID,
+	WLRPC_WLC_PHY_TXPOWER_LIMIT_SET_ID,
+	WLRPC_WLC_PHY_BAND_CHANNELS_ID,
+	WLRPC_WLC_BMAC_REVINFO_GET_ID,
+	WLRPC_WLC_BMAC_STATE_GET_ID,
+	WLRPC_WLC_BMAC_XMTFIFO_SZ_GET_ID,
+	WLRPC_WLC_BMAC_XMTFIFO_SZ_SET_ID,
+	WLRPC_WLC_BMAC_VALIDATE_CHIP_ACCESS_ID,
+	WLRPC_WLC_RM_CCA_COMPLETE_ID,
+	WLRPC_WLC_RECV_ID,
+	WLRPC_WLC_DOTXSTATUS_ID,
+	WLRPC_WLC_HIGH_DPC_ID,
+	WLRPC_WLC_FATAL_ERROR_ID,
+	WLRPC_WLC_PHY_SET_CHANNEL_14_WIDE_FILTER_ID,
+	WLRPC_WLC_PHY_NOISE_AVG_ID,
+	WLRPC_WLC_PHYCHAIN_INIT_ID,
+	WLRPC_WLC_PHYCHAIN_SET_ID,
+	WLRPC_WLC_PHYCHAIN_GET_ID,
+	WLRPC_WLC_PHY_TKIP_RIFS_WAR_ID,
+	WLRPC_WLC_BMAC_COPYFROM_VARS_ID,
+	WLRPC_WLC_BMAC_RETRYLIMIT_UPD_ID,
+	WLRPC_WLC_BMAC_BTC_MODE_SET_ID,
+	WLRPC_WLC_BMAC_BTC_MODE_GET_ID,
+	WLRPC_WLC_BMAC_BTC_WIRE_SET_ID,
+	WLRPC_WLC_BMAC_BTC_WIRE_GET_ID,
+	WLRPC_WLC_BMAC_SET_NORESET_ID,
+	WLRPC_WLC_AMPDU_TXSTATUS_COMPLETE_ID,
+	WLRPC_WLC_BMAC_FIFOERRORS_ID,
+	WLRPC_WLC_PHY_TXPOWER_GET_TARGET_MIN_ID,
+	WLRPC_WLC_PHY_TXPOWER_GET_TARGET_MAX_ID,
+	WLRPC_WLC_NOISE_CB_ID,
+	WLRPC_WLC_BMAC_LED_HW_DEINIT_ID,
+	WLRPC_WLC_BMAC_LED_HW_MASK_INIT_ID,
+	WLRPC_WLC_PLLREQ_ID,
+	WLRPC_WLC_BMAC_TACLEAR_ID,
+	WLRPC_WLC_BMAC_SET_CLK_ID,
+	WLRPC_WLC_PHY_OFDM_RATESET_WAR_ID,
+	WLRPC_WLC_PHY_BF_PREEMPT_ENABLE_ID,
+	WLRPC_WLC_BMAC_DOIOVARS_ID,
+	WLRPC_WLC_BMAC_DUMP_ID,
+	WLRPC_WLC_CISWRITE_ID,
+	WLRPC_WLC_CISDUMP_ID,
+	WLRPC_WLC_UPDATE_PHY_MODE_ID,
+	WLRPC_WLC_RESET_BMAC_DONE_ID,
+	WLRPC_WLC_BMAC_LED_BLINK_EVENT_ID,
+	WLRPC_WLC_BMAC_LED_SET_ID,
+	WLRPC_WLC_BMAC_LED_BLINK_ID,
+	WLRPC_WLC_BMAC_LED_ID,
+	WLRPC_WLC_BMAC_RATE_SHM_OFFSET_ID,
+	WLRPC_SI_ISCORE_UP_ID,
+	WLRPC_WLC_BMAC_PS_SWITCH_ID,
+	WLRPC_WLC_PHY_STF_SSMODE_GET_ID,
+	WLRPC_WLC_BMAC_DEBUG_ID,
+	WLRPC_WLC_EXTLOG_MSG_ID,
+	WLRPC_WLC_EXTLOG_CFG_ID,
+	WLRPC_BCM_ASSERT_LOG_ID,
+	WLRPC_BCM_ASSERT_TYPE_ID,
+	WLRPC_WLC_BMAC_SET_PHYCAL_CACHE_FLAG_ID,
+	WLRPC_WLC_BMAC_GET_PHYCAL_CACHE_FLAG_ID,
+	WLRPC_WLC_PHY_CAL_CACHE_INIT_ID,
+	WLRPC_WLC_PHY_CAL_CACHE_DEINIT_ID,
+	WLRPC_WLC_BMAC_HW_UP_ID,
+	WLRPC_WLC_BMAC_SET_TXPWR_PERCENT_ID,
+	WLRPC_WLC_PHYCHAIN_ACTIVE_GET_ID,
+	WLRPC_WLC_BMAC_BLINK_SYNC_ID,
+	WLRPC_WLC_BMAC_UCODE_DBGSEL_SET_ID,
+	WLRPC_WLC_BMAC_UCODE_DBGSEL_GET_ID,
+	WLRPC_WLC_PHY_RADAR_DETECT_MODE_SET_ID,
+	WLRPC_WLC_PHY_ACIM_NOISEM_RESET_NPHY_ID,
+	WLRPC_WLC_PHY_INTERFER_SET_NPHY_ID,
+	WLRPC_WLC_BMAC_IFSCTL_EDCRS_SET_ID,
+	WLRPC_WLC_BMAC_SET_DEAF,
+	WLRPC_WLC_BMAC_CLEAR_DEAF,
+	WLRPC_WLC_BMAC_BTC_FLAGS_IDX_SET_ID,
+	WLRPC_WLC_BMAC_BTC_FLAGS_IDX_GET_ID,
+	WLRPC_WLC_BMAC_BTC_FLAGS_GET_ID,
+	WLRPC_WLC_BMAC_BTC_PARAMS_SET_ID,
+	WLRPC_WLC_BMAC_BTC_PARAMS_GET_ID,
+	WLRPC_WLC_BMAC_BTC_PERIOD_GET_ID,
+	WLRPC_WLC_BMAC_BTC_RSSI_THRESHOLD_GET_ID,
+	WLRPC_WLC_BMAC_BTC_STUCKWAR_ID,
+	WLRPC_WLC_BMAC_CCA_STATS_READ_ID,
+	WLRPC_WLC_BMAC_ANTSEL_SET_ID,
+	WLRPC_WLC_BMAC_SET_UCODE_LOADED,
+	WLRPC_WLC_BMAC_P2P_SET,
+	WLRPC_WLC_PHY_LDPC_SET_ID,
+	WLRPC_WLC_BMAC_DNGL_WD_SET_ID,
+	WLRPC_WLC_BMAC_TX_FIFO_SYNC_ID,
+	WLRPC_WLC_BMAC_TX_FIFO_SYNC_COMPLETE_ID,
+	WLRPC_WLC_BMAC_WRITE_IHR_ID,
+	WLRPC_WLC_PHY_TXPOWER_IPA_ISON,
+	WLRPC_WLC_BMAC_AMPDU_SET_ID,
+	WLRPC_WLC_BMAC_TXPPR_ID,
+	WLRPC_WLC_BMAC_UCODEMBSS_HWCAP,
+	WLRPC_WLC_BMAC_WOWL_UCODE_ID,
+	WLRPC_WLC_BMAC_WOWL_UCODESTART_ID,
+	WLRPC_WLC_BMAC_WOWL_INITS_ID,
+	WLRPC_WLC_BMAC_WOWL_DNLDDONE_ID,
+	WLRPC_WLC_BMAC_SET_EPA_DEFAULT_STATE_ID,
+	WLRPC_WLC_BMAC_SET_FILT_WAR_ID,
+	WLRPC_WLC_PHY_DESTROY_CHANCTX_ID,
+	WLRPC_WLC_PHY_CREATE_CHANCTX_ID,
+	WLRPC_WLC_P2P_INT_PROC_ID,
+	WLRPC_LAST
+} wlc_rpc_id_t;
+
+
+#if defined(BCMDBG) | defined(BCMDBG_ERR)
+struct rpc_name_entry {
+	int id;
+	const char *name;
+};
+
+#define NAME_ENTRY(x) {x, #x}
+
+#define RPC_ID_TABLE { \
+	NAME_ENTRY(WLRPC_WLC_REG_READ_ID),	\
+	NAME_ENTRY(WLRPC_WLC_REG_WRITE_ID),	\
+	NAME_ENTRY(WLRPC_WLC_MHF_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_MHF_GET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_UP_PREP_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_UP_FINISH_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_CTRL_EPA_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_DOWN_PREP_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_DOWN_FINISH_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_WRITE_HW_BCNTEMPLATES_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_RESET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_DNGL_REBOOT_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_RPC_TXQ_WM_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_RPC_TXQ_WM_GET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_RPC_AGG_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_RPC_MSGLEVEL_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_RPC_AGG_LIMIT_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_RPC_AGG_LIMIT_GET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_INIT_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_CWMIN_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_MUTE_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_DOIOVAR_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_HOLD_UPD_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_MUTE_UPD_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_CLEAR_TSSI_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_ANT_RXDIV_GET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_ANT_RXDIV_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_PREAMBLE_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_FREQTRACK_END_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_FREQTRACK_START_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_IOCTL_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_NOISE_SAMPLE_REQUEST_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_CAL_PERICAL_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_TXPOWER_GET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_TXPOWER_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_TXPOWER_SROMLIMIT_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_RADAR_DETECT_ENABLE_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_RADAR_DETECT_RUN_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_TEST_ISON_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_COPYFROM_OBJMEM_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_COPYTO_OBJMEM_ID),	\
+	NAME_ENTRY(WLRPC_WLC_ENABLE_MAC_ID),	\
+	NAME_ENTRY(WLRPC_WLC_MCTRL_ID),	\
+	NAME_ENTRY(WLRPC_WLC_CORERESET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_READ_SHM_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_READ_TSF_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_ADDRMATCH_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_CWMAX_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_RCMTA_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_SHM_ID),	\
+	NAME_ENTRY(WLRPC_WLC_SUSPEND_MAC_AND_WAIT_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_WRITE_SHM_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_WRITE_TEMPLATE_RAM_ID),	\
+	NAME_ENTRY(WLRPC_WLC_TX_FIFO_SUSPEND_ID),	\
+	NAME_ENTRY(WLRPC_WLC_TX_FIFO_RESUME_ID),	\
+	NAME_ENTRY(WLRPC_WLC_TX_FIFO_SUSPENDED_ID),	\
+	NAME_ENTRY(WLRPC_WLC_HW_ETHERADDR_ID),	\
+	NAME_ENTRY(WLRPC_WLC_SET_HW_ETHERADDR_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_CHANSPEC_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_TXANT_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_ANTSEL_TYPE_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_TXFIFO_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_PKTENG_ID),	\
+	NAME_ENTRY(WLRPC_WLC_RADIO_READ_HWDISABLED_ID),	\
+	NAME_ENTRY(WLRPC_WLC_RM_CCA_MEASURE_ID),	\
+	NAME_ENTRY(WLRPC_WLC_SET_SHORTSLOT_ID),	\
+	NAME_ENTRY(WLRPC_WLC_WAIT_FOR_WAKE_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_TXPOWER_GET_CURRENT_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_TXPOWER_HW_CTRL_GET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_TXPOWER_HW_CTRL_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_BSSINIT_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BAND_STF_SS_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_BAND_FIRST_CHANSPEC_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_TXPOWER_LIMIT_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_BAND_CHANNELS_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_REVINFO_GET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_STATE_GET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_XMTFIFO_SZ_GET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_XMTFIFO_SZ_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_VALIDATE_CHIP_ACCESS_ID),	\
+	NAME_ENTRY(WLRPC_WLC_RM_CCA_COMPLETE_ID),	\
+	NAME_ENTRY(WLRPC_WLC_RECV_ID),	\
+	NAME_ENTRY(WLRPC_WLC_DOTXSTATUS_ID),	\
+	NAME_ENTRY(WLRPC_WLC_HIGH_DPC_ID),	\
+	NAME_ENTRY(WLRPC_WLC_FATAL_ERROR_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_SET_CHANNEL_14_WIDE_FILTER_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_NOISE_AVG_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHYCHAIN_INIT_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHYCHAIN_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHYCHAIN_GET_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_TKIP_RIFS_WAR_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_COPYFROM_VARS_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_RETRYLIMIT_UPD_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_BTC_MODE_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_BTC_MODE_GET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_BTC_WIRE_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_BTC_WIRE_GET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_NORESET_ID), \
+	NAME_ENTRY(WLRPC_WLC_AMPDU_TXSTATUS_COMPLETE_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_FIFOERRORS_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_TXPOWER_GET_TARGET_MIN_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_TXPOWER_GET_TARGET_MAX_ID), \
+	NAME_ENTRY(WLRPC_WLC_NOISE_CB_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_LED_HW_DEINIT_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_LED_HW_MASK_INIT_ID), \
+	NAME_ENTRY(WLRPC_WLC_PLLREQ_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_TACLEAR_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_CLK_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_OFDM_RATESET_WAR_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_BF_PREEMPT_ENABLE_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_DOIOVARS_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_DUMP_ID), \
+	NAME_ENTRY(WLRPC_WLC_CISWRITE_ID), \
+	NAME_ENTRY(WLRPC_WLC_CISDUMP_ID), \
+	NAME_ENTRY(WLRPC_WLC_UPDATE_PHY_MODE_ID), \
+	NAME_ENTRY(WLRPC_WLC_RESET_BMAC_DONE_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_LED_BLINK_EVENT_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_LED_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_LED_BLINK_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_LED_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_RATE_SHM_OFFSET_ID), \
+	NAME_ENTRY(WLRPC_SI_ISCORE_UP_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_PS_SWITCH_ID),	\
+	NAME_ENTRY(WLRPC_WLC_PHY_STF_SSMODE_GET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_DEBUG_ID), \
+	NAME_ENTRY(WLRPC_WLC_EXTLOG_MSG_ID), \
+	NAME_ENTRY(WLRPC_WLC_EXTLOG_CFG_ID), \
+	NAME_ENTRY(WLRPC_BCM_ASSERT_LOG_ID), \
+	NAME_ENTRY(WLRPC_BCM_ASSERT_TYPE_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_PHYCAL_CACHE_FLAG_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_GET_PHYCAL_CACHE_FLAG_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_CAL_CACHE_INIT_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_CAL_CACHE_DEINIT_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_HW_UP_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_TXPWR_PERCENT_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHYCHAIN_ACTIVE_GET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_BLINK_SYNC_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_UCODE_DBGSEL_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_UCODE_DBGSEL_GET_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_RADAR_DETECT_MODE_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_ACIM_NOISEM_RESET_NPHY_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_INTERFER_SET_NPHY_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_IFSCTL_EDCRS_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_DEAF), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_CLEAR_DEAF), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_BTC_FLAGS_IDX_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_BTC_FLAGS_IDX_GET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_BTC_FLAGS_GET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_BTC_PERIOD_GET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_BTC_RSSI_THRESHOLD_GET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_CCA_STATS_READ_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_ANTSEL_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_UCODE_LOADED), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_P2P_SET), \
+	NAME_ENTRY(WLRPC_WLC_PHY_LDPC_SET_ID),	\
+	NAME_ENTRY(WLRPC_WLC_BMAC_DNGL_WD_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_TX_FIFO_SYNC_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_TX_FIFO_SYNC_COMPLETE_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_WRITE_IHR_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_TXPOWER_IPA_ISON), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_AMPDU_SET_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_TXPPR_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_WOWL_UCODE_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_WOWL_UCODESTART_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_WOWL_INITS_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_WOWL_DNLDDONE_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_EPA_DEFAULT_STATE_ID), \
+	NAME_ENTRY(WLRPC_WLC_BMAC_SET_FILT_WAR_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_DESTROY_CHANCTX_ID), \
+	NAME_ENTRY(WLRPC_WLC_PHY_CREATE_CHANCTX_ID), \
+	NAME_ENTRY(WLRPC_WLC_P2P_INT_PROC_ID), \
+	{0, NULL} \
+	}
+
+static __inline char*
+_wlc_rpc_id_lookup(const struct rpc_name_entry* tbl, int _id)
+{
+	const struct rpc_name_entry *elt = tbl;
+	static char __unknown[64];
+	for (; elt->name != NULL; elt++) {
+		if (_id == elt->id)
+			break;
+	}
+	if (_id == elt->id)
+		strncpy(__unknown, elt->name, sizeof(__unknown));
+	else
+		snprintf(__unknown, sizeof(__unknown), "ID:%d", _id);
+	return __unknown;
+}
+
+#define WLC_RPC_ID_LOOKUP(tbl, _id) (_wlc_rpc_id_lookup(tbl, _id))
+
+#endif /* BCMDBG ||BCMDBG_ERR */
+
+/* refer to txppr_t for each elements, mcs32 is the at the end for 1 byte */
+#define TXPOWER_XDR_SZ	(ROUNDUP(WL_NUM_RATES_CCK, 4) + ROUNDUP(WL_NUM_RATES_OFDM, 4) * 4 + \
+	ROUNDUP(WL_NUM_RATES_MCS_1STREAM, 4) * 8 + ROUNDUP(1, 4))
+
+#define wlc_rpc_txpwr_limits(b, txpwr, op, err)	\
+	do {										\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->cck, WL_NUM_RATES_CCK);		\
+	ASSERT(!(err));									\
+											\
+	/* 20 MHz Legacy OFDM rates with SISO transmission */				\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ofdm, WL_NUM_RATES_OFDM);	\
+	ASSERT(!(err));									\
+											\
+	/* 20 MHz Legacy OFDM rates with CDD transmission */				\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ofdm_cdd, WL_NUM_RATES_OFDM);   \
+	ASSERT(!(err));									\
+											\
+	/* 20MHz MCS rates SISO/CDD/STBC/SDM */						\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->u20.n.siso, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									\
+											\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->u20.n.cdd, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									\
+											\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->u20.n.stbc, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									\
+											\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->u20.n.sdm, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									\
+											\
+	/* 40 MHz Legacy OFDM rates with SISO transmission */				\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ofdm_40, WL_NUM_RATES_OFDM);	\
+	ASSERT(!(err));									\
+											\
+	/* 40 MHz Legacy OFDM rates with CDD transmission */				\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ofdm_40_cdd, WL_NUM_RATES_OFDM); \
+	ASSERT(!(err));									\
+											\
+	/* 40MHz MCS rates SISO/CDD/STBC/SDM */						\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->u40.n.siso, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									\
+											\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->u40.n.cdd, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									\
+											\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->u40.n.stbc, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									\
+											\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->u40.n.sdm, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									\
+	} while (0)
+
+#ifdef HTCONF
+#define TXPOWER_HT_XDR_SZ (ROUNDUP(WL_NUM_RATES_CCK, 4) + ROUNDUP(WL_NUM_RATES_OFDM, 4) * 2 + \
+			  ROUNDUP(WL_NUM_RATES_MCS_1STREAM, 4) * 10)
+
+#define wlc_rpc_txpwr_limits_ht(b, txpwr, op, err)	\
+	do {										\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->cck_20ul, WL_NUM_RATES_CCK);	\
+	ASSERT(!(err));									\
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ofdm_20ul, WL_NUM_RATES_OFDM);	\
+	ASSERT(!(err));									\
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ofdm_20ul_cdd, WL_NUM_RATES_OFDM); \
+	ASSERT(!(err));									\
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ht20ul.s1x1, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									       \
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ht20ul.s1x2, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									       \
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ht20ul.s2x2, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									       \
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ht20ul.s3x3, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									       \
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ht.ul20s1x3, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									       \
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ht.ul20s2x3, WL_NUM_RATES_MCS_1STREAM); \
+	ASSERT(!(err));									       \
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ht.u20s1x3, WL_NUM_RATES_MCS_1STREAM);  \
+	ASSERT(!(err));									       \
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ht.u20s2x3, WL_NUM_RATES_MCS_1STREAM);  \
+	ASSERT(!(err));									       \
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ht.u40s1x3, WL_NUM_RATES_MCS_1STREAM);  \
+	ASSERT(!(err));									       \
+							\
+	(err) = bcm_xdr_##op##_uint8_vec((b), (txpwr)->ht.u40s2x3, WL_NUM_RATES_MCS_1STREAM);  \
+	ASSERT(!(err));					\
+	} while (0)
+#endif /* HTCONF */
+
+typedef struct wlc_rpc_ctx {
+	rpc_info_t *rpc;
+	wlc_info_t *wlc;
+	wlc_hw_info_t *wlc_hw;
+} wlc_rpc_ctx_t;
+
+static INLINE rpc_buf_t *
+wlc_rpc_buf_alloc(rpc_info_t *rpc, bcm_xdr_buf_t *b, uint len, wlc_rpc_id_t rpc_id)
+{
+	rpc_buf_t *rpc_buf;
+
+	rpc_buf = bcm_rpc_buf_alloc(rpc, len + sizeof(uint32));
+
+	if (!rpc_buf)
+		return NULL;
+
+	bcm_xdr_buf_init(b, bcm_rpc_buf_data(bcm_rpc_tp_get(rpc), rpc_buf),
+	                 len + sizeof(uint32));
+
+	bcm_xdr_pack_uint32(b, rpc_id);
+
+	return rpc_buf;
+}
+
+#if defined(BCMDBG) || defined(BCMDBG_ERR)
+extern const struct rpc_name_entry rpc_name_tbl[];
+
+static __inline wlc_rpc_id_t
+wlc_rpc_id_get(struct rpc_info *rpc, rpc_buf_t *buf)
+{
+	wlc_rpc_id_t rpc_id;
+	bcm_xdr_buf_t b;
+	int err;
+
+	bcm_xdr_buf_init(&b, bcm_rpc_buf_data(bcm_rpc_tp_get(rpc), buf), sizeof(uint32));
+
+	err = bcm_xdr_unpack_uint32(&b, (uint32*)((uintptr)&rpc_id)); ASSERT(!err);
+	return rpc_id;
+}
+#endif /* defined(BCMDBG) | defined(BCMDBG_ERR) */
+
+static __inline int
+_wlc_rpc_call(struct rpc_info *rpc, rpc_buf_t *send)
+{
+		int _err = 0;
+#if defined(BCMDBG) || defined(BCMDBG_ERR)
+		wlc_rpc_id_t rpc_id = wlc_rpc_id_get(rpc, send);
+
+		WL_TRACE(("%s: Called id %s\n", __FUNCTION__,
+		          WLC_RPC_ID_LOOKUP(rpc_name_tbl, rpc_id)));
+#endif
+		_err = bcm_rpc_call(rpc, send);
+		if (_err) {
+#if defined(BCMDBG) || defined(BCMDBG_ERR)
+			WL_ERROR(("%s: Call id %s FAILED\n", __FUNCTION__,
+			          WLC_RPC_ID_LOOKUP(rpc_name_tbl, rpc_id)));
+#endif
+			_err = 0;
+		}
+#if defined(BCMDBG) || defined(BCMDBG_ERR)
+		WL_TRACE(("%s: id %s done\n", __FUNCTION__,
+			WLC_RPC_ID_LOOKUP(rpc_name_tbl, rpc_id)));
+#endif
+		return _err;
+}
+
+#define wlc_rpc_call(rpc, send) (_wlc_rpc_call(rpc, send))
+
+#include <sbhnddma.h>
+#include <sbhndpio.h>
+#include <d11.h>
+
+extern int wlc_rpc_pack_txpwr_limits(bcm_xdr_buf_t *b, txppr_t *txpwr);
+extern int wlc_rpc_unpack_txpwr_limits(bcm_xdr_buf_t *b, txppr_t *txpwr);
+
+#define WLC_BMAC_F_AMPDU_MPDU 1
+/* Align the WLRPCTXPARAMS offset in WLRPC_WLC_BMAC_TXFIFO_ID packet on word boundary in 
+wlc_rpctx_tx() by padding 2 bytes before pushing the WLRPCTXPARAMS. 
+*/
+#define WLC_BMAC_F_PAD2 2
+/* WLRPC_WLC_BMAC_TXFIFO_ID packet is padded with 2 bytes in wlc_rpctx_tx() if WLC_BMAC_F_PAD2 
+is set
+*/ 
+#define WLC_RPC_TXFIFO_UNALIGN_PAD_2BYTE 2
+#ifdef WLC_LOW
+extern void wlc_rpc_bmac_dispatch(wlc_rpc_ctx_t *rpc_ctx, struct rpc_buf* buf);
+extern void wlc_rpc_bmac_dump_txfifohist(wlc_hw_info_t *wlc_hw, bool dump_clear);
+#else
+extern void wlc_rpc_high_dispatch(wlc_rpc_ctx_t *ctx, struct rpc_buf* buf);
+#endif
+
+/* Packed structure for ease of transport across RPC bus along uint32 boundary */
+typedef struct wlc_rpc_txstatus {
+	uint32 frameid_framelen;
+	uint32 sequence_status;
+	uint32 lasttxtime;
+	uint32 ackphyrxsh_phyerr;
+} wlc_rpc_txstatus_t;
+
+static INLINE
+void txstatus2rpc_txstatus(tx_status_t *txstatus, wlc_rpc_txstatus_t *rpc_txstatus)
+{
+	rpc_txstatus->frameid_framelen = (txstatus->frameid << 16) | txstatus->framelen;
+	rpc_txstatus->sequence_status = (txstatus->sequence << 16) | txstatus->status;
+	rpc_txstatus->lasttxtime = txstatus->lasttxtime;
+	rpc_txstatus->ackphyrxsh_phyerr = (txstatus->ackphyrxsh << 16) | txstatus->phyerr;
+}
+
+static INLINE
+void rpc_txstatus2txstatus(wlc_rpc_txstatus_t *rpc_txstatus, tx_status_t *txstatus)
+{
+	txstatus->framelen = rpc_txstatus->frameid_framelen & 0xffff;
+	txstatus->status  = rpc_txstatus->sequence_status & 0xffff;
+	txstatus->frameid = (rpc_txstatus->frameid_framelen >> 16) & 0xffff;
+	txstatus->sequence  = (rpc_txstatus->sequence_status >> 16) & 0xffff;
+	txstatus->lasttxtime = rpc_txstatus->lasttxtime & 0xffffffff;
+	txstatus->ackphyrxsh  = (rpc_txstatus->ackphyrxsh_phyerr >> 16) & 0xffff;
+	txstatus->phyerr = rpc_txstatus->ackphyrxsh_phyerr & 0xffff;
+}
+
+extern void wlc_bmac_dngl_reboot(rpc_info_t *rpc);
+
+#endif /* WLC_RPC_H */

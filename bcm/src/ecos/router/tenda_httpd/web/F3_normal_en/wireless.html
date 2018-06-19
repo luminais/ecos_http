@@ -1,0 +1,227 @@
+<section class="container-fluid">
+  <h2 class="legend">&nbsp;</h2>
+  <form id="wireless" class="form-horizontal">
+    <fieldset>
+      <div class="form-group">
+        <label class="col-xs-5 col-sm-4 col-md-3 control-label" for="wifiEn">WiFi ON/OFF</label>
+        <div class="col-xs-9 col-sm-8 col-md-9">
+        <span id="wifiEn" class="switch icon-toggle-on"></span>
+        </div>
+      </div>
+    </fieldset>
+    <div id="wifiWrap" class="none">
+<h2 class="legend">WiFi Name and Password</h2>
+<fieldset>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wifiSSID">WiFi Name</label>
+    <div class="col-sm-4">
+      <input type="text" name="wifiSSID" id="wifiSSID" class="form-control validatebox" maxlength="32" required="required" data-options='{"type":"ssid"}' placeholder="WiFi Name">
+    </div>
+    <div class="col-sm-4 col-md-5 help-inline">
+      <label class="checkbox-inline">
+        <input type="checkbox" name="wifiHideSSID" id="wifiHideSSID" value="true">
+         Hide Network </label>
+      <label class="radio-inline" style="padding-right:0"> (<span id="helpTips" class="icon-help-circled"></span>) </label>
+      <div style="position:relative;">
+        <div id="hideSSIDTips" class="wifi-tips none">
+          <span>If WiFi name is hidden, your phone or tablet cannot scan the wireless signal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Security Mode</label>
+    <div class="col-sm-4">
+      <select id="wifiSecurityMode" class="form-control">
+        <option value="none">None</option>
+        <option value="wpa-psk">WPA-PSK</option>
+        <option value="wpa2-psk">WPA2-PSK(Recommended)</option>
+        <option value="wpa&wpa2">WPA/WPA2-PSK Mixed</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wifiPwd">WiFi Password</label>
+    <div class="col-sm-4">
+      <input type="text" name="wifiPwd" id="wifiPwd" class="form-control validatebox" required maxlength="63" placeholder="WiFi Password" data-options='{"type":"ssidPasword","args":[8, 63]}'>
+    </div>
+  </div>
+</fieldset>
+<!--End Wi-Fi Name and Password-->
+<h2 class="legend">WiFi Signal Strength</h2>
+<fieldset>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wifiPowerLower">Signal Strength</label>
+    <div class="col-sm-8">
+      <label class="radio-inline" for="wifiPowerLower">
+        <input type="radio" id="wifiPowerLower" name="wifiPower" value="low" />
+        Low </label>
+      <label class="radio-inline" for="wifiPowerNormal">
+        <input type="radio" id="wifiPowerNormal" name="wifiPower" value="normal" />
+        Medium </label>
+      <label class="radio-inline" for="wifiPowerHigh">
+        <input type="radio" id="wifiPowerHigh" name="wifiPower" value="high" />
+        High </label>
+    </div>
+  </div>
+</fieldset>
+<!--End Wi-Fi Signal Strength-->
+      <h2 class="legend">WiFi Schedule</h2>
+<fieldset>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wifiTimeEnable">WiFi Schedule</label>
+    <div class="col-sm-8">
+      <label class="radio-inline" for="wifiTimeEnable">
+        <input type="radio" id="wifiTimeEnable" name="wifiTimeEn" value="true" />
+        Enable </label>
+      <label class="radio-inline" for="wifiTimeDisable">
+        <input type="radio" id="wifiTimeDisable" name="wifiTimeEn" value="false" />
+        Disable </label>
+    </div>
+  </div>
+  <!--Show when Wi-Fi Schedule is Enabled-->
+  <div id="wifiScheduleWrap" class="none">
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label">Turn WiFi off during</label>
+      <div class="col-sm-8 col-md-9">
+        <select id="startHour" class="form-control input-mini">
+          <!-- Leave for js or tpl to create-->
+          <option value="00">00</option>
+        </select>
+       <span>&nbsp;:&nbsp;</span>
+        <select id="startMin" class="form-control input-mini">
+          <!-- Leave for js or tpl to create-->
+          <option value="00">00</option>
+        </select>
+       <span>&nbsp;~&nbsp;</span>
+        <select id="endHour" class="form-control input-mini">
+          <!-- Leave for js or tpl to create-->
+          <option value="00">00</option>
+        </select>
+       <span>&nbsp;:&nbsp;</span>
+        <select id="endMin" class="form-control input-mini">
+          <!-- Leave for js or tpl to create-->
+          <option value="00">00</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label">Repeat</label>
+      <div class="col-sm-8">
+        <label class="checkbox-inline" for="day0">
+          <input type="checkbox" id="day0" value="ALL" />
+          Everyday </label>
+        <label class="checkbox-inline" for="day1">
+          <input type="checkbox" id="day1" value="Mon" />
+          Mon </label>
+        <label class="checkbox-inline" for="day2">
+          <input type="checkbox" id="day2" value="Tue" />
+          Tue </label>
+        <label class="checkbox-inline" for="day3">
+          <input type="checkbox" id="day3" value="Wed" />
+          Wed </label>
+        <label class="checkbox-inline" for="day4">
+          <input type="checkbox" id="day4" value="Thu" />
+          Thu </label>
+        <label class="checkbox-inline" for="day5">
+          <input type="checkbox" id="day5"  value="Fri" />
+          Fri </label>
+        <label class="checkbox-inline" for="day6">
+          <input type="checkbox" id="day6" value="Sat" />
+          Sat </label>
+        <label class="checkbox-inline" for="day7">
+          <input type="checkbox" id="day7" value="Sun" />
+          Sun </label>
+      </div>
+    </div>
+  </div>
+</fieldset>
+<!--End Wi-Fi Schedule-->
+      <h2 class="legend">WPS</h2>
+<fieldset>
+    <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="wpsEnable">WPS</label>
+        <div class="col-sm-8">
+            <label class="radio-inline" for="wpsEnable">
+                <input type="radio" id="wpsEnable" name="wpsEn" value="true" /> Enable
+            </label>
+            <label class="radio-inline" for="wpsDisable">
+                <input type="radio" id="wpsDisable" name="wpsEn" value="false" /> Disable
+            </label>
+        </div>
+    </div>
+    <div id="wpsWrap">
+        <div class="form-group">
+            <label class="col-sm-4 col-md-3 control-label" for="wpsPBC">PBC</label>
+            <div class="col-sm-2">
+                <button type="button" id="wpsPBC" class="btn btn-primary">PBC</button>
+            </div>
+            <div class="col-sm-6 col-md-7 col-lg-7 help-block">
+                Click the PBC icon here or press the wps button on the router panel.
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 col-md-3 control-label">WPS PIN Code</label>
+            <div class="col-sm-2 help-block">
+               <span id="wpsPIN"></span>
+            </div>
+            <div class="col-sm-5 col-md-6 col-lg-7 help-block">
+                If a wireless device requires a PIN code to do WPS PIN, copy the code to it.
+            </div>
+        </div>
+    </div>
+</fieldset>
+      <form class="form-horizontal" id="wifiParam">
+  <h2 class="legend">Wireless Parameters</h2>
+  <fieldset>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="wifiMode">Network Option</label>
+      <div class="col-sm-4">
+        <select id="wifiMode" name="wifiMode" class="form-control">
+          <option value="bgn">11b/g/n</option>
+          <option value="bg">11b/g</option>
+          <option value="g">11g</option>
+          <option value="b">11b</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="wifiChannel">Wireless Channel</label>
+      <div class="col-sm-4"> 
+        <!--此部分JS应控制最大长度-->
+        <select id="wifiChannel" name="wifiChannel" class="form-control" >
+          <option value="Auto">Auto</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+        </select>
+      </div>
+      <div class="col-sm-4 col-md-5 help-block">Current Channel: <span id="wifiChannelCurrent">7</span> </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="wifiBandwidth">Channel Width</label>
+      <div class="col-sm-4">
+        <select id="wifiBandwidth" name="wifiBandwidth" class="form-control" >
+          <option value="Auto">Auto</option>
+          <option value="40">40MHZ</option>
+          <option value="20">20MHZ</option>
+        </select>
+      </div>
+      <div class="col-sm-4 col-md-5 help-block">Current Channel Width: <span id="wifiBandwidthCurrent">20</span>MHZ </div>
+    </div>
+  </fieldset>
+</form>
+<!--End Wireless Parameters-->
+    </div>
+  </form>
+</section>

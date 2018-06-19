@@ -1,0 +1,119 @@
+<po>
+<!--lan_dhcps.asp-->
+<message msgid="IP pool start address" msgstr="시작 IP주소" />
+<message msgid="IP pool end address" msgstr="마지막 IP" />
+<message msgid="IP pool start address can not bigger than IP pool end address" msgstr="시작 IP주소는 마지막 IP주소보다 클 수 없습니다." />
+<message msgid="Lease Time" msgstr="임대 시간" />
+<message msgid="One hour" msgstr="1시간 " />
+<message msgid="Two hours" msgstr="2시간" />
+<message msgid="Three hours" msgstr="3시간" />
+<message msgid="One day" msgstr="1일" />
+<message msgid="Two days" msgstr="2일" />
+<message msgid="One week" msgstr="1주일" />
+<message msgid="Lan_dncps_helpinfo1" msgstr="DHCP 서버는 클라이언트에게 자동으로 IP를 할당합니다. 만일 공유기의 DHCP 기능을 사용하면, 모든 LAN상의 PC에게 자동으로 IP를 구성하게 합니다." />
+<message msgid="Lan_dncps_helpinfo2" msgstr="IP 주소: 시작과 마지막 IP주소로 범위를 지정합니다." />
+<message msgid="Lan_dncps_helpinfo3" msgstr="임대 시간: DHCP클라이언트나 컴퓨터가 요청할때 임대시간이 갱신됩니다." />
+<message msgid="Tenda 11N Wireless Router Login Screen" msgstr="Tenda 11N Wireless Router Login Screen" />
+<message msgid="DHCP Server" msgstr="DHCP 설정" />
+<message msgid="Enable" msgstr="사용" />
+<message msgid="Disable" msgstr="사용안함" />
+
+<!--lan_dhcp_clients.asp-->
+<message msgid="Host Name" msgstr="호스트 이름" />
+<message msgid="IP-MAC Binding" msgstr="IP-MAC 바인딩" />
+<message msgid="NO." msgstr="NO." />
+<message msgid="Max.16 static IP-MAC binding items" msgstr="최대 16개의 IP-MAC바인딩 설정가능합니다." />
+<message msgid="NO repeated IP!" msgstr="응답하는 IP주소가 없습니다!" />
+<message msgid="No repeated MAC address!" msgstr="응답하는 MAC주소가 없습니다!" />
+<message msgid="Static assignment" msgstr="고정 할당" />
+<message msgid="Add" msgstr="추가" />
+<message msgid="Refresh" msgstr="새로고침" />
+<message msgid="lan_dhcp_clients_helpinfo1" msgstr="DHCP 클라이언트 목록은 공유기의 DHCP서버로부터 제공받은 IP주소, MAC주소와 호스트정보를 보여줍니다. 사용자는 고정으로 IP와 MAC주소를 입력하여 사용할 수도 있습니다." />
+<message msgid="lan_dhcp_clients_helpinfo2" msgstr="설명: 추가 또는 삭제를 한후 반드시 &quot;저장&quot;버튼을 클릭해야 변경된 내용이 적용됩니다." />
+<message msgid="lan_dhcp_clients_helpinfo3" msgstr="Note: 설정이 완료되면 공유기를 재부팅하십시오." />
+<message msgid="IP Address" msgstr="IP 주소" />
+<message msgid="MAC address" msgstr="MAC 주소" />
+<message msgid="Delete" msgstr="삭제" />
+
+<!--firewall_clientfilter--> 
+  <message msgid="Sunday" msgstr="일요일" />  
+  <message msgid="Monday" msgstr="월요일" /> 
+  <message msgid="Tuesday" msgstr="화요일" />  
+  <message msgid="Wednesday" msgstr="수요일" />    
+  <message msgid="Thursday" msgstr="목요일" />   
+  <message msgid="Friday" msgstr="금요일" />  
+  <message msgid="Saturday" msgstr="토요일" />    
+  <message msgid="Forbid only" msgstr="차단" />  
+  <message msgid="Permit only" msgstr="허용" />   
+  <message msgid="Start IP" msgstr="시작 IP" />  
+  <message msgid="End IP" msgstr="마지막 IP" />  
+  <message msgid="Start Port" msgstr="시작 포트" />   
+  <message msgid="End Port" msgstr="마지막 포트" />  
+  <message msgid="Start Time" msgstr="시작 시간" />  
+  <message msgid="End Time" msgstr="종료 시간" />  
+  <message msgid="Start Week" msgstr="시작 주" />   
+  <message msgid="End Week" msgstr="종료 주" />  
+  <message msgid="not to enter 'notag' in the Remarks field" msgstr="입력이 없습니다. 확인하십시오" />  
+  <message msgid="one rule must be entered when 'permit only' is selected" msgstr="허용을 선택할때 하나의 규칙은 반드시 입력되어야 합니다." />   
+  <message msgid="Filter Mode" msgstr="필터 모드" />  
+  <message msgid="Access Policy" msgstr="액세스 규칙" />  
+  <message msgid="Remarks" msgstr="설명" />   
+  <message msgid="Port" msgstr="포트" />  
+  <message msgid="Type" msgstr="타입" />  
+  <message msgid="Both" msgstr="Both" />   
+  <message msgid="Time" msgstr="시간" />  
+  <message msgid="Date" msgstr="일자" />   
+  <message msgid="Clear this item" msgstr="이 항목 삭제" />   
+  <message msgid="Clear" msgstr="삭제" /> 
+  <message msgid="Firewall_clientfilter_Help_Inf1" msgstr="LAN상의 컴퓨터들을 관리하여 인터넷 엑세스를 제어할 수 있습니다. 메뉴얼을 참고하십시오." /> 
+  <message msgid="Firewall_clientfilter_Help_Inf2" msgstr="설명: 만일 하나의 구성사항을 삭제한다면, 해당 항목을 선택하고 &quot;삭제&quot; 버튼을 클릭합니다. 그리고,저장 버튼을 클릭하면 적용이 됩니다." />
+  <message msgid="Firewall_clientfilter_Help_Inf3" msgstr="차단 : 설정된 IP주소에 대해 인터넷 액세스를 차단합니다." />
+  <message msgid="Firewall_clientfilter_Help_Inf4" msgstr="허용 : 설정된 IP주소에 대해 인터넷 액세스를 허용합니다." />
+  <message msgid="Firewall_clientfilter_Help_Inf5" msgstr="Note: 시간을 0:0~0:0와 같이 설정을 하면 항상 적용하는 것을 의미합니다." />
+   
+<!--firewall_mac-->  
+  <message msgid="Empty MAC address" msgstr="Empty MAC address" />    
+  <message msgid="Firewall_MAC_Help_Inf1" msgstr="MAC 주소필터 기능으로 LAN상의 컴퓨터의 인터넷 액세스를 제어할 수 있습니다. 메뉴얼을 참고하세요." /> 
+  <message msgid="Firewall_MAC_Help_Inf2" msgstr="설명: 만일 하나의 구성사항을 삭제한다면, 해당 항목을 선택하고 &quot;삭제&quot;버튼을 클릭합니다. 그리고, 저장 버튼을 클릭하면 적용이 됩니다." /> 
+  <message msgid="Firewall_MAC_Help_Inf3" msgstr="차단 : 설정된 MAC주소에 대해 인터넷 액세스를 차단합니다." /> 
+  <message msgid="Firewall_MAC_Help_Inf4" msgstr="허용 : 설정된 MAC주소에 대해 인터넷 액세스를 허용합니다." />  
+  <message msgid="Firewall_MAC_Help_Inf5" msgstr="Note: 시간을 0:0~0:0와 같이 설정을 하면 항상 적용하는 것을 의미합니다." />   
+   
+<!--firewall_urlfilter-->		
+  <message msgid="URL character string" msgstr="URL 문자" />   
+  <message msgid="Firewall_URLFilter_Help_Inf1" msgstr="LAN상의 컴퓨터의 웹사이트 액세스를 관리할 수 있습니다. 입력된 웹사이트의 URL을 통해 액세스를 차단할 수 있습니다. 메뉴얼을 참고하십시오." />
+  <message msgid="Firewall_URLFilter_Help_Inf2" msgstr="설명: 만일 하나의 구성사항을 삭제한다면, 해당 항목을 선택하고 &quot;삭제&quot;버튼을 클릭합니다. 그리고, 저장 버튼을 클릭하면 적용이 됩니다." />
+  <message msgid="Firewall_URLFilter_Help_Inf3" msgstr="Note: URL 문자 : 액세스 규칙에 문자/문자열을 입력합니다. 시간을 0:0~0:0와 같이 설정을 하면 항상 적용하는 것을 의미합니다." />
+	  
+ <!--system_remote-->   
+  <message msgid="Can not be at the same segment with LAN  IP" msgstr="LAN IP주소와 같은 값을 사용할 수 없습니다." /> 
+  <message msgid="WAN IP address" msgstr="WAN IP 주소" />  
+  <message msgid="remote_Help_Inf1" msgstr="이 기능은 인터넷을 통해 원격에서 공유기를 관리하는 것을 가능하게 합니다. 사용을 하기 위해 &quot;사용&quot;을 선택하고, 설정된 포트를 통해  원격에 있는 PC에서 공유기를 관리할 수 있습니다." />
+  <message msgid="remote_Help_Inf2" msgstr="포트: 원격에서 접근시 사용하는 포트입니다." />
+  <message msgid="remote_Help_Inf3" msgstr="IP 주소: 원격에서 웹을 통해 관리를 할 인터넷 상의 컴퓨터의 IP주소입니다." />
+  
+   <!--menu.js--> 
+  <message msgid="Ok" msgstr="확인" />
+  <message msgid="Cancel" msgstr="취소" />
+  
+   <!--gozila.js -->  
+  <message msgid="invalid" msgstr="유효하지 않습니다" />   
+  <message msgid="contains illegal characters" msgstr="유효하지 않은 문자가 있습니다." />  
+  <message msgid="not numbers " msgstr="숫자가 아닙니다." />  
+  <message msgid="beyond the range" msgstr="범위를 벗어났습니다." /> 
+  <message msgid="contains invalid characters" msgstr="유효하지 않은 문자가 있습니다" /> 
+  <message msgid="Are you sure to exit" msgstr="정말로 종료하시겠습니까?" />   
+  <message msgid="not defined" msgstr="정의되지 않았습니다." />  
+  <message msgid="Password differs" msgstr="비밀번호가 다릅니다." />  
+  <message msgid="Change password" msgstr="정말로 비밀번호를 변경하시겠습니까?" />
+  <message msgid="the length is not within the range" msgstr="길이가 범위내에 있지 않습니다." />    
+  <message msgid="permanent" msgstr="항상" />   
+  <message msgid="Day" msgstr="날짜" />  
+  <message msgid="Don't enter Chinese characters" msgstr="영어 이외의 문자를 입력하지 마십시오" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="재부팅을 해야 설정이 적용됩니다." /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="재부팅을 해야 설정이 적용됩니다." /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="숫자, 영문자, 밑줄(_)만 사용할 수 있습니다." />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC주소는 이미 예약된 주소입니다. 다시 입력하십시오." />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC주소가 멀티캐스트 주소입니다. 다시 입력하십시오." />  
+  <message msgid="Help information" msgstr="도움말 정보" />
+</po>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Tenda Wireless Router</title>
+<link rel="shortcut icon" href="./favicon.ico">
+<link type="text/css" rel="stylesheet" href="./css/reasyui.css">
+<link type="text/css" rel="stylesheet" href="./css/index.css">
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 
+HTML5SHIV需放在头部，RESPOND.JS需要服务器--> 
+<!--[if lt IE 9]>
+<script src="./js/libs/respond.min.js"></script>
+<script src="./js/libs/html5shiv.min.js"></script>
+<![endif]--> 
+<script type="text/javascript" charset="utf-8" src="./lang/b28n.js"></script>
+</head>
+<body class=index-body>
+<header class="masthead hidden-xs">
+  <div class="container">
+    <div class="navbar-login row"> <a class="brand" href="http://tenda.com.cn/" target="_blank" title="Tenda"><img src="img/logo-inverse.png" alt="Tenda LOGO"></a> 
+    	<div class="nav-lang">
+	    	<span  id="loginout" class="none" style="float:left;">Logout </span>
+	    	<div id="selectLang">
+	    	</div>
+	    </div>
+    </div>
+  </div>
+</header>
+<section class="container">
+  <div class="row main-container">
+<div class="navbar navbar-default col-sm-3 col-lg-2" id="nav"> 
+  <!--TODO:如果需要固定navbar-fixed-top头部，则需要修改#nav > *不需要-->
+  <div class="navbar-header" style="background: #ed7020;"> 
+  	<img src="img/logo-inverse.png" alt="Tenda LOGO"
+        class="visible-xs-inline" style="float:left">
+    <button type="button" id="navbar-button" class="navbar-toggle collapsed" data-toggle="collapse"
+    data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+	<nav class="navbar-collapse" id="nav-menu">
+      <ul class="nav nav-content" id="sub-menu">
+  <li>
+    <a id="status" href="javascript:void(0)" class="active">
+        <span class="menu icon-router">&nbsp;</span>
+        Status
+    </a> 
+  </li>
+  <li> 
+    <a id="network" href="javascript:void(0)" >
+        <span class="menu icon-internet">&nbsp;</span>
+        Internet
+    </a> 
+  </li>
+  <li> 
+    <a id="wireless" href="javascript:void(0)" >
+        <span class="menu icon-wireless">&nbsp;</span>
+        Wireless
+    </a> 
+  </li>
+  <li>
+    <a id="net-control" href="javascript:void(0)">
+        <span class="menu icon-netSpeed">&nbsp;</span>
+        Bandwidth Control</a> </li>
+  <li> 
+    <a id="wireless-repeaters" href="javascript:void(0)" >
+        <span class="menu icon-repeater">&nbsp;</span>
+        Wireless Repeating
+    </a> 
+  </li>
+  <li> 
+    <a id="parental-controls" href="javascript:void(0)" >
+        <span class="menu icon-parental">&nbsp;</span>
+        Parental Controls
+    </a> 
+  </li>
+  <li> 
+    <a id="advanced" href="javascript:void(0)" >
+        <span class="menu icon-advanced">&nbsp;</span>
+        Advanced
+    </a> 
+  </li>
+  <li> 
+    <a id="system" href="javascript:void(0)" >
+        <span class="menu icon-system">&nbsp;</span>
+        Administration
+    </a> 
+  </li>
+</ul>
+	</nav>
+</div>
+    <article class="col-sm-9 col-lg-10 main-content" id="main-content">
+      <div id="iframe"></div>
+    </article>
+  </div>
+</section>
+<footer class="container navbar-fixed-bottom">
+<div class="row">
+  <div class="col-sm-3 col-lg-2 hidden-xs nav-footer-icon" id="nav-footer-icon">
+  	<div id="iconLeft" class="col-xs-6">
+  		<a class="nav-icon weibo" target="_blank" style="float:right"></a>
+  	</div>
+  	<div id="iconRight" class="col-xs-5">
+  		<a class="nav-icon weixin" target="_blank"></a>
+  		<div id="weixinWrap" class="none">
+  			<img class="nav-icon-weixin" src="./img/weixin.png">
+  		</div>
+  	</div>
+  </div>
+  <div class="col-sm-9 col-lg-10 main-footer">
+    <button class="btn btn-frist btn-primary none" id="submit">OK</button>
+    <button class="btn none" id="cancel" style="min-width: 70px;">Cancel</button>
+  </div>
+</div>
+</footer>
+<div id="form-massage" class="col-sm-8 col-md-6 col-lg-4 none"></div>
+<div id="progress-dialog" class="dialog col-sm-8 col-md-6 col-lg-4">
+  <div id="upgradeWrap">
+    <p>Upgrading...Please wait...</p>
+    <div class="progress">
+      <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="min-width: 0.2em;"> <span ></span> </div>
+    </div>
+  </div>
+  <div id="rebootWrap">
+    <p>Resetting...Please wait...</p>
+    <div class="progress">
+      <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="min-width: 0.2em;"> <span></span> </div>
+    </div>
+  </div>
+</div>
+<div id="progress-overlay" class="modal fade"></div>
+<script type="text/javascript" charset="utf-8" src="./js/libs/j.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libs/reasy-ui-1.0.3.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libs/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libs/ajaxfileupload.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libs/sea.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/index.js"></script>
+</body>
+</html>

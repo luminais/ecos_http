@@ -1,0 +1,160 @@
+﻿<po>
+<!--wireless_basic.asp-->
+<message msgid="Wireless Basic Settings1" msgstr="무선 기본 설정" />
+<message msgid="Open scan" msgstr="검색 열기" />
+<message msgid="Close scan" msgstr="검색 닫기" />
+<message msgid="Are you sure to connect to this AP?" msgstr="이 AP로 연결을 하겠습니까?" />
+<message msgid="AP MAC full,clear unnecessary information" msgstr="AP MAC full,clear unnecessary information" />
+<message msgid="the address already exists" msgstr="주소가 이미 존재합니다." />
+<!--add-->
+<message msgid="Auto select" msgstr="자동 선택" />
+<message msgid="primary SSID" msgstr="기본 SSID" />
+<message msgid="secondary SSID" msgstr="보조 SSID" />
+<message msgid="AP Isolation" msgstr="AP분할" />
+<message msgid="WMM Capable" msgstr="WMM 기능" />
+<message msgid="APSD Capable" msgstr="APSD 기능" />
+<!--add-->
+<message msgid="SSID can only consist of numbers,letters,underline and colon." msgstr="SSID는 숫자, 영문자, 밑줄만 사용이 가능합니다." />
+<message msgid="Please enter a unicast MAC address" msgstr="유니캐스트 MAC주소를 입력하십시오" />
+<message msgid="No repeated MAC address!" msgstr="MAC주소가 응답하지 않습니다!" />
+<message msgid="Please enter the correct MAC address" msgstr="정확한 MAC주소를 입력하십시오" />
+<message msgid="AP MAC address is  empty" msgstr="AP MAC주소가 공란입니다" />
+<message msgid="Enable wireless function" msgstr="무선 기능 사용" />
+<message msgid="Wireless Working Mode" msgstr="무선 동작 모드" />
+<message msgid="Wireless Access Point" msgstr="무선 액세스 포인트" />
+<message msgid="Network Bridge(WDS)" msgstr="네트워크 브릿지(WDS)" />
+<message msgid="Network Mode" msgstr="네트워크 모드" />
+<message msgid="11b/g mixed mode" msgstr="11b/g mixed 모드" />
+<message msgid="11b mode" msgstr="11b 모드" />
+<message msgid="11g mode" msgstr="11g 모드" />
+<message msgid="11b/g/n mixed mode" msgstr="11b/g/n mixed 모드" />
+<message msgid="Broadcast" msgstr="브로드캐스트" />
+<message msgid="Disable" msgstr="사용안함" />
+<message msgid="Channel" msgstr="채널" />
+<message msgid="Enable" msgstr="사용" />
+<message msgid="Channel Bandwidth" msgstr="채널 대역폭" />
+<message msgid="Extension Channel" msgstr="확장 채널" />
+<message msgid="Working Mode :WDS(Repeater mode)" msgstr="동작 모드 :WDS(리피터 모드)" />
+<message msgid="AP MAC address " msgstr="AP MAC 주소" />
+<message msgid="Select" msgstr="선택" />
+<message msgid="Security" msgstr="보안" />
+<message msgid="Signal strength" msgstr="신호 강도" />
+<message msgid="wireless_basic_helpinfo1" msgstr="이 페이지에서 무선 기본 정보를 설정해야합니다. SSID와 채널만 설정하는 것을 권장합니다." />
+<message msgid="wireless_basic_helpinfo2" msgstr="무선 네트워크 내의 모든 장치에게 네트워크 이름이 공유되었습니다." />
+<message msgid="wireless_basic_helpinfo3" msgstr="SSID 브로드캐스트: 무선 클라이언트가 무선 신호를 검색할때, 공유기의 브로드캐스트된 SSID를 검색하게 됩니다!" />
+<message msgid="wireless_basic_helpinfo4" msgstr="채널: 자동 또는 1~11채널중 하나를 선택할 수 있습니다. 주변에 사용이 없는 채널 또는 동일 채널이라도 미약한 신호만 있는 경우를 선택하는 것을 권장합니다." />
+<message msgid="wireless_basic_helpinfo5" msgstr="확장 채널: 11N모드에서 확장하는 주파수입니다." />
+
+<!--wireless_mode.asp-->
+<message msgid="Giving up : Cannot create an XMLHTTP instance" msgstr="XML HTTP의경우 생성할 수 없습니다." />
+<message msgid="Please enter a key!" msgstr="키를 입력하십시오!" />
+<message msgid="Key range:8~63 characters!" msgstr="키 범위:8~63 문자!" />
+<message msgid="Please select a WPA algorithm." msgstr="WPA알고리즘을 선택하십시오." />
+<message msgid="Key renewal interval invalid." msgstr="키 갱신 간격이 유효하지 않습니다" />
+<message msgid="Warning:Key renewal interval is too short,range:60~9999" msgstr="주의: 키 갱신 간격이 너무 짧습니다:60~9999" />
+<message msgid="Are you sure to connect to this AP?" msgstr="이 AP로 연결을 하겠습니까?" />
+<message msgid="This function can only be used after the wireless function is enabled" msgstr="이 기능은 무선 기능이 활성화 된 후에 사용이 가능합니다." />
+<message msgid="WAN medium type" msgstr="WAN 연결 방식:" />
+<message msgid="Wired WAN" msgstr="유선WAN" />
+<message msgid="Wireless WAN" msgstr="무선WAN" />
+<message msgid="Channel" msgstr="채널:" />
+<message msgid="Auto Select" msgstr="자동 선택" />
+<message msgid="Security Mode" msgstr="보안 모드:" />
+<message msgid="Disable" msgstr="사용안함" />
+<message msgid="WPA/WPA2 Algorithms" msgstr="WPA/WPA2 알고리즘:" />
+<message msgid="Key" msgstr="키:" />
+<message msgid="Open scan" msgstr="검색 열기" />
+<message msgid="Close scan" msgstr="검색 닫기" />
+<message msgid="Select" msgstr="선택" />
+<message msgid="MAC address" msgstr="MAC 주소" />
+<message msgid="Security" msgstr="보안" />
+<message msgid="Signal strength" msgstr="신호 강도" />
+<message msgid="wireless_mode_helpinfo1" msgstr="유선 WAN 모드: 공유기가 유선 WAN 포트를 통해 인터넷에 연결됩니다." />
+<message msgid="wireless_mode_helpinfo2" msgstr="무선 WAN 모드: 공유기가 무선으로 인터넷에 연결됩니다. 무선으로 연결할 경우 ISP가 제공하는 SSID, 무선채널 및 보안모드를 설정해야 합니다." />
+<message msgid="Advanced Settings" msgstr="고급 설정" />
+<message msgid="other access methods" msgstr="공유기의 세부설정을 하려면 고급설정 메뉴를 클릭하십시오" />
+
+<!--wireless_security.asp-->
+<message msgid="Select SSID" msgstr="SSID 선택" />
+<message msgid="Encryption type" msgstr="암호화 방식" />
+<message msgid="Warning: Can not create XMLHTTP example" msgstr="주의 : XMLHTTP 예시를 생성할 수 없습니다." />
+<message msgid="Please enter a key" msgstr="키를 입력하십시오" />
+<message msgid="Key range:8~63 characters" msgstr="키 범위:8~63 문자" />
+<message msgid="Key" msgstr="키" />
+<message msgid="The key contains illegal characters" msgstr="키값이 유효하지 않은 문자를 포함하고 있습니다" />
+<message msgid="Please select a WPA algorithm" msgstr="WPA알고리즘을 선택하십시오" />
+<message msgid="Key renewal interval invalid" msgstr="키 갱신 간격이 유효하지 않습니다" />
+<message msgid="Warning:Key renewal interval is too short,range " msgstr="주의: 키 갱신 간격이 너무 짧습니다." />
+<message msgid="Please enter a valid key renewal interval" msgstr="유효한 키 갱신 간격을 입력하십시오" />
+<message msgid="PIN value invalid,please enter 8 characters." msgstr="PIN 값이 유효하지 않습니다. 8개의 문자를 입력하십시오." />
+<message msgid="This function can only be used after the wireless function is enabled" msgstr="이 기능은 무선 기능이 활성화 된 후에 사용이 가능합니다." />
+<message msgid="Security Policy" msgstr="보안 정책" />
+<message msgid="Security Mode" msgstr="보안 모드" />
+<message msgid="Default key" msgstr="기본 암호키" />
+<message msgid="WPA Algorithms" msgstr="WPA 알고리즘" />
+<message msgid="Key Renewal Interval" msgstr="키 갱신 간격" />
+<message msgid="Second" msgstr="초" />
+<message msgid="WPS Settings" msgstr="WPS 설정" />
+<message msgid="WPS Mode" msgstr="WPS 모드" />
+<message msgid="Reset OOB" msgstr="Reset OOB" />
+<message msgid="Note:" msgstr="Note:" />
+<message msgid="When Bridge mode is selected,the main SSID and channel will auto set as the connected AP." msgstr="브릿지 모드를 선택할 경우, 기본 SSID만 동작을 하게 됩니다. AP의 SSID로 기본 SSID를 설정하십시오." />
+<message msgid="Wireless Security Settings" msgstr="무선 보안 설정" />
+<message msgid="Wireless_secrity_note1" msgstr="802.11n 표준은 3가지의 표준 암호화를 사용합니다 : Open-None (Disable), WPA-personal-AES, WPA2-personal-AES,이외의 암호화 방식은 비표준화된 것입니다. 무선 제어 칩셋(RALINK, INTEL, MAVEL, TI, INTERSIL, ATHEROS etc)에 따라서 호환적인 문제가 있을 수 있습니다." />
+<message msgid="Wireless_secrity_note2" msgstr="본 제품은 최적화된 무선 암호화를 지원합니다. WPA-AES를 선택하여 허용되지 않은 외부로부터 접근을 방어할 수 있습니다." />
+<message msgid="Wireless_secrity_helpinfo" msgstr="단일 또는 mixed모드를 선택할 수 있습니다. 무선 클라이언트가 해당 모드를 지원해야 사용이 가능합니다. 보안설정을 해야하지만, 해당 내용을 잘 모를 경우 WPA설정을 하여 사용하십시오." />
+
+<!--wireless_filter.asp-->
+<message msgid="Delete" msgstr="삭제" />
+<message msgid="rule" msgstr="하나의 규칙을 반드시 입력해야합니다!" />
+<message msgid="Are you sure to delete" msgstr="삭제 하겠습니까?" />
+<message msgid="Invalid MAC address" msgstr="유효하지 않은 MAC 주소" />
+<message msgid="Please enter a unicast MAC address" msgstr="유니캐스트 MAC주소를 입력하십시오" />
+<message msgid="Max.16 MAC addresses" msgstr="최대 16 MAC 주소" />
+<message msgid="The MAC address already exists" msgstr="이미 존재하는 MAC 주소입니다." />
+<message msgid="MAC address filter" msgstr="MAC 주소 필터" />
+<message msgid="Permit" msgstr="허용" />
+<message msgid="Forbid" msgstr="차단" />
+<message msgid="Configure MAC address" msgstr="MAC 주소 구성" />
+<message msgid="MAC address" msgstr="MAC 주소" />
+<message msgid="Operate" msgstr="운영" />
+<message msgid="Add" msgstr="추가" />
+<message msgid="Configure wireless interface MAC address filter." msgstr="무선 인터페이스 MAC 주소 필터를 설정하시오" />
+<message msgid="Wireless_filter_helpinfo" msgstr="무선 액세스 제어 기능을 사용하면, PC의 무선 랜카드의 MAC주소를 통해 제어를 할 수 있습니다." />
+
+<!--wireless_state.asp-->
+<message msgid="Tenda Multi-functional Broadband SOHO Router" msgstr="삼성 공유기" />
+<message msgid="This page displays the connection information of the wireless router" msgstr="이 페이지는 무선 공유기의 연결 정보를 보여줍니다." />
+<message msgid="The currently connected hosts list" msgstr="최근 연결된 호스트 목록" />
+<message msgid="Refresh" msgstr="새로고침" />
+<message msgid="NO." msgstr="NO." />
+<message msgid="Bandwidth" msgstr="대역폭" />
+<message msgid="Wireless_state_helpinfo1" msgstr="이 페이지에서 연결된 무선 클라이언트의 정보를 볼 수 있습니다." />
+<message msgid="Wireless_state_helpinfo2" msgstr="MAC 주소: 현재 호스트의 무선 MAC대역폭 : 채널 주파수 대역." />
+
+<!--menu.js-->
+<message msgid="Ok" msgstr="확인" />
+<message msgid="Cancel" msgstr="취소" /> 
+
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="유효하지 않습니다" />   
+  <message msgid="contains illegal characters" msgstr="효하지 않은 문자를 포함하고 있습니다" />  
+  <message msgid="not numbers " msgstr="숫자가 아닙니다" />  
+  <message msgid="beyond the range" msgstr="범위를 벗어났습니다" /> 
+  <message msgid="contains invalid characters" msgstr="유효하지 않은 문자를 포함하고 있습니다" /> 
+  <message msgid="Are you sure to exit" msgstr="정말 종료하겠습니까?" />   
+  <message msgid="not defined" msgstr="정의되지 않았습니다" />  
+  <message msgid="Password differs" msgstr="비밀번호가 다릅니다" />  
+  <message msgid="Change password" msgstr="정말로 비밀번호를 변경하시겠습니까?" /> 
+  <message msgid="the length is not within the range" msgstr="길이가 범위를 벗어났습니다" />    
+  <message msgid="permanent" msgstr="항상" />   
+  <message msgid="Day" msgstr="날짜" />  
+  <message msgid="Don't enter Chinese characters" msgstr="영문자 이외의 문자를 사용하지 마십시오" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="설정이 적용되려면 공유기가 재부팅되어야합니다." /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="설정이 적용되려면 공유기가 재부팅되어야합니다" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="숫자, 영문자, 밑줄(_)만 사용이 가능합니다." />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC주소가 이미 존재합니다. 다시 입력하십시오" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC주소가 멀티캐스트 주소입니다. 다시 입력하십시오" />  
+  <message msgid="Help information" msgstr="도움말 정보" />
+
+</po>

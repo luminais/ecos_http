@@ -1,0 +1,133 @@
+﻿<po>
+<!--wireless_basic.asp-->
+<message msgid="Wireless Basic Settings1" msgstr="Podstawowe funckje bezprzewodowe" />
+<message msgid="Open scan" msgstr="Włącz skanowanie" />
+<message msgid="Close scan" msgstr="Wyłącz skanowanie" />
+<message msgid="Are you sure to connect to this AP?" msgstr="Czy chcesz połączyć z tym AP?" />
+<message msgid="AP MAC full,clear unnecessary information" msgstr="Lista adresów MAC jest pełna, usuń niepotrzebne wpisy!" />
+<message msgid="the address already exists" msgstr="Adres już istnieje!" />
+<!--add-->
+<message msgid="Auto select" msgstr="Atomatyczny wybór" />
+<!--add-->
+<message msgid="SSID can only consist of numbers,letters,underline and colon." msgstr="SSID może tylko składać się z cyfr, liter i znaków podkreślenia!" />
+<message msgid="Please enter a unicast MAC address" msgstr="Proszę wprowadzić unicastowy adres MAC!" />
+<message msgid="No repeated MAC address!" msgstr="Nie można zapisać już istniejącego adresu MAC!" />
+<message msgid="Please enter the correct MAC address" msgstr="Proszę wprowadzić prawidłowy adres MAC!" />
+<message msgid="AP MAC address is  empty" msgstr="Lista adresów MAC punktów dostępowych AP jest pusta!" />
+<message msgid="Enable wireless function" msgstr="Włącz moduł sieci bezprzewodowej" />
+<message msgid="Wireless Working Mode" msgstr="Tryb pracy sieci bezprzewodowej" />
+<message msgid="Wireless Access Point" msgstr="Bezprzewodowy punkt dostępu" />
+<message msgid="Network Bridge(WDS)" msgstr="Mosty sieciowy (WDS)" />
+<message msgid="Network Mode" msgstr="Tryb połączenia sieci bezprzewodowej" />
+<message msgid="11b/g mixed mode" msgstr="Tryb mieszany 11b/g" />
+<message msgid="11b mode" msgstr="Tryb 11b" />
+<message msgid="11g mode" msgstr="Tryb 11g" />
+<message msgid="11b/g/n mixed mode" msgstr="Tryb mieszany 11b/g/n" />
+<message msgid="Broadcast" msgstr="Transmituj" />
+<message msgid="Disable" msgstr="Wyłacz" />
+<message msgid="Channel" msgstr="Kanał" />
+<message msgid="Enable" msgstr="Włącz" />
+<message msgid="Channel Bandwidth" msgstr="Szerokośc pasma kanału" />
+<message msgid="Extension Channel" msgstr="Rozszerzenie kanału" />
+<message msgid="Working Mode :WDS(Repeater mode)" msgstr="Tryb pracy: WDS (tryb powtórzeniowy)" />
+<message msgid="AP MAC address " msgstr="Adres MAC punktu dostepowego AP" />
+<message msgid="Select" msgstr="Wybierz" />
+<message msgid="Security" msgstr="Zabezpieczenia" />
+<message msgid="Signal strength" msgstr="Siła sygnału" />
+<message msgid="wireless_basic_helpinfo1" msgstr="Na tej stronie wystarczy ustawić tylko podstawowe informacje o bezprzewodowym dostępie. Sugerujemy ustawić tylko SSID i kanał, a pozostałe parametry pozostawić domyślne." />
+<message msgid="wireless_basic_helpinfo2" msgstr="Nazwa sieci bezprzewodowej." />
+<message msgid="wireless_basic_helpinfo3" msgstr="Transmisja SSID: Po zaznaczeniu tej opcji uruchomiona na routerze sieć bezprzewodowa będzie widoczna dla wszystkich urządzeń bezprzewodowych znajdujących się w jej zasięgu!" />
+<message msgid="wireless_basic_helpinfo4" msgstr="Kanał: Kanał może być wybierany automatycznie lub ustawiony ręcznie w przedziale od 1 do 11. Aby uniknąć zakłóceń spróbuj wybrać kanał najmniej wykorzystywany na danym obszarze." />
+<message msgid="wireless_basic_helpinfo5" msgstr="Rozszerzenie kanału: by potwierdzić zakres częstotliwości sieci w trybie 11N." />
+
+<!--wireless_mode.asp-->
+<message msgid="Wired WAN" msgstr="Wired WAN" />
+<message msgid="Wireless WAN" msgstr="Wireless WAN" />
+<message msgid="Default key" msgstr="Default key" />
+<message msgid="WAN medium type" msgstr="WAN medium type" />
+<message msgid="primary SSID" msgstr="primary SSID" />
+<message msgid="secondary SSID" msgstr="secondary SSID" />
+<message msgid="WMM Capable" msgstr="WMM Capable" />
+<message msgid="APSD Capable" msgstr="APSD Capable" />
+<message msgid="wireless_mode_helpinfo1" msgstr="Wired WAN mode: In this mode the router access to the Internet via the Wired WAN port." />
+<message msgid="wireless_mode_helpinfo2" msgstr="Wireless WAN mode: In this mode, the router wirelessly access to the Internet. This method requires you to set the SSID, Channel and security mode as that are provided by your ISP." />
+
+<!--wireless_security.asp-->
+<message msgid="Warning: Can not create XMLHTTP example" msgstr="Uwaga: nie można utworzyć XMLHTTP!" />
+<message msgid="Please enter a key" msgstr="Proszę wprowadzić klucz!" />
+<message msgid="Key range:8~63 characters" msgstr="Klucz dlugości 8-63 znaków!" />
+<message msgid="Key" msgstr="Klucz" />
+<message msgid="The key contains illegal characters" msgstr="Klucz zawiera niedozwolone znaki!" />
+<message msgid="Please select a WPA algorithm" msgstr="Proszę wybrać algorytm WPA!" />
+<message msgid="Key renewal interval invalid" msgstr="Nieprawidłowy interwał odnowienia klucza!" />
+<message msgid="Warning:Key renewal interval is too short,range " msgstr="Uwaga: Zbyt krótki interwał odnowienia klucza" />
+<message msgid="Please enter a valid key renewal interval" msgstr="Proszę wprowadzić prawidłowy interwał odnowienia klucza!" />
+<message msgid="PIN value invalid,please enter 8 characters." msgstr="Nieprawidłowa wartość PIN, proszę wprowadzić 8 znaków!" />
+<message msgid="This function can only be used after the wireless function is enabled" msgstr="Ta funkcja jest dostępna tylko gdy moduł sieci bezprzewodowj jest włączony!" />
+<message msgid="Security Policy" msgstr="Polityka bezpieczeństwa" />
+<message msgid="Security Mode" msgstr="Tryb zabezpieczeń" />
+<message msgid="WPA Algorithms" msgstr="Algorytmy WPA" />
+<message msgid="Key Renewal Interval" msgstr="Interwał odnowienia klucza" />
+<message msgid="Second" msgstr="Sekunda" />
+<message msgid="WPS Settings" msgstr="Ustawienia WPS" />
+<message msgid="WPS Mode" msgstr="Tryb WPS" />
+<message msgid="Reset OOB" msgstr="Zresetuj OOB" />
+<message msgid="Note:" msgstr="Uwaga: " />
+<message msgid="Wireless Security Settings" msgstr="ustawienia zabezpieczeń sieci bezprzewodowej" />
+<message msgid="Wireless_secrity_note1" msgstr="Standard 802.11n jako metody szyfrowania definiuje jedynie: Otwarte-Brak (Wyłącz), WPA AES  i WPA2-AES. Inne metody szyfrowania są nietypowe dla standardu 802.11n przez co mogą wystąpić problemy z kompatybilnością między różnymi producentami." />
+<message msgid="Wireless_secrity_note2" msgstr="Tenda zoptymalizowała szyfrowanie bezprzewodowe. Wybierz WPA-AES by uniemożliwić innym dostęp do sieci." />
+<message msgid="Wireless_secrity_helpinfo" msgstr="Można włączyć tryb personal lub tyb mieszany, ale należy upewnić się, że klient sieci bezprzewodowej obsługuje te metody szyfrowania. Jeśli nie jesteś zaznajomiony z rodzajami zabezpieczeń, zalecamy użycie WPA-Personal. Jeśli dobrze znasz rodzaje zabezpieczeń, możesz wybrać dowolną metodę obsługiwaną przez twojego klienta bezprzewodowego." />
+
+<!--wireless_filter.asp-->
+<message msgid="Delete" msgstr="Usuń" />
+<message msgid="rule" msgstr="Gdy opcja &quot;Zezwalaj tylko&quot; zostanie wybrana, należy wprowadzić jedną zasadę!" />
+<message msgid="Are you sure to delete" msgstr="Czy na pewno chcesz usunąć?" />
+<message msgid="Invalid MAC address" msgstr="Nieprawidłowy adres MAC!" />
+<message msgid="Please enter a unicast MAC address" msgstr="Wpisz adres MAC klienta!" />
+<message msgid="Max.16 MAC addresses" msgstr="Maks. 16 adresów MAC!" />
+<message msgid="The MAC address already exists" msgstr="Adres MAC już istnieje" />
+<message msgid="MAC address filter" msgstr="Filtrowanie adresów MAC" />
+<message msgid="Permit" msgstr="Zezwalaj" />
+<message msgid="Forbid" msgstr="Nie zewzwalaj" />
+<message msgid="Configure MAC address" msgstr="Edytuj adres MAC" />
+<message msgid="MAC address" msgstr="Adres MAC" />
+<message msgid="Operate" msgstr="Aktywny" />
+<message msgid="Add" msgstr="Dodaj" />
+<message msgid="Wireless_filter_helpinfo" msgstr="Dzięki funkcji kontroli dostępu do sieci bezprzewodowej można decydować które komputery moga łączyć się z routerem za pomocą sieci bezprzewodowej. Decyzja o udzieleniu dostępu podejmowana jest na podstawie sprzętowego adresu MAC bezprzewodowej karty sieciowej komputera." />
+
+<!--wireless_state.asp-->
+<message msgid="Tenda Multi-functional Broadband SOHO Router" msgstr="Wielofunkcyjny Router Szerokopasmowy Tenda" />
+<message msgid="This page displays the connection information of the wireless router" msgstr="Ta strona wyświetla informacje o połączeniu z bezprzewodowym routera." />
+<message msgid="The currently connected hosts list" msgstr="Aktualna lista podłączonych hostów:" />
+<message msgid="Refresh" msgstr="Odśwież" />
+<message msgid="NO." msgstr="Nr." />
+<message msgid="Bandwidth" msgstr="Pasmo" />
+<message msgid="Wireless_state_helpinfo1" msgstr="Na tej stronie można znaleźć informacje o podłączonych klientach bezprzewodowych." />
+<message msgid="Wireless_state_helpinfo2" msgstr="Adres MAC: sprzętowy adres karty sieciowej klienta, Przepustowość: Szerokość pasma transmisyjnego danego kanału." />
+
+<!--menu.js-->
+  <message msgid="Ok" msgstr="Ok" />
+  <message msgid="Cancel" msgstr="Anuluj" />
+
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="Nieprawidłowy!" />   
+  <message msgid="contains illegal characters" msgstr="Zawiera zabronione znaki:" />  
+  <message msgid="not numbers " msgstr="Nie jes cyfrą!" />  
+  <message msgid="beyond the range" msgstr="Poza zakresem!" /> 
+  <message msgid="contains invalid characters" msgstr="Zawiera nieprawidłowe znaki:" /> 
+  <message msgid="Are you sure to exit" msgstr="Czy na pewno chcesz wyjść?" />   
+  <message msgid="not defined" msgstr="Niezdefiniowane!" />  
+  <message msgid="Password differs" msgstr="Hasła nie zgadzaja się!" />  
+  <message msgid="Change password" msgstr="Czy zmienić hasło?" /> 
+  <message msgid="the length is not within the range" msgstr="Długość jest poza zakresem!" />    
+  <message msgid="permanent" msgstr="Stałe" />   
+  <message msgid="Day" msgstr="Dzień" />  
+  <message msgid="Don't enter Chinese characters" msgstr="Nie wprowadzaj chińskich znaków!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Uruchom ponownie router z nowymi ustawieniami. Czy zrestartować teraz?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Uruchom ponownie moduł sieci bezprzewodowej z nowymi ustawieniami. Czy zrestartować teraz?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Uwagi mogą tylko zawierać cyfry, litery i podkreślniki!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="Adres MAC należy do grupy zarezerwowanych adresów, proszę wprowadzić ponownie!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="Adres MAC należy do grupy adresów multicast, proszę wprowadzić ponownie!" /> 
+  <message msgid="Help information" msgstr="Pomoc" />
+
+</po>

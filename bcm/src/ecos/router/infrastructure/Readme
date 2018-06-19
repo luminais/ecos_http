@@ -1,0 +1,14 @@
+说明(add by hqw.12002)：
+
+本目录由CONFIG_NEW_INFRASTRUCTURE控制编译，在这里面的功能都依赖这个宏。
+也就说如果想要开启本目录下面的功能，必须开启CONFIG_NEW_INFRASTRUCTURE。
+而且原则上功能宏必须包括在CONFIG_NEW_INFRASTRUCTURE里面。
+
+目录结构说明：
+
+gpi:目录下只用于存放应用层或者tpi获取api接口信息的代码实现
+tpi:目录下用于存放功能具体代码实现，只对于api和gpi是透明的
+api:目录下用于存放应用层与api层之间的枢纽的代码实现
+include:目录下用于存放头文件
+
+原则上api对外不能透明，为了确保功能代码实现的安全性，只能设计层次结构通过tpi和gpi调用并返回。

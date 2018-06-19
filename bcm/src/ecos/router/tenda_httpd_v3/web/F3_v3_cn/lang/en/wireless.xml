@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<po>
+	<message msgid="Open Scan" msgstr="开启扫描"/>
+	<message msgid="Close Scan" msgstr="关闭扫描"/>
+	<message msgid="Please click on OK to confirm that you want to connect to this AP!" msgstr="您确定要连接此AP吗？"/>
+	<message msgid="AP MAC enteries are full! Please remove the MAC enteries you don't need." msgstr="AP MAC地址条数已达最大值。请先移除您不需要的MAC地址。"/>
+	<message msgid="The address already exists" msgstr="该地址已存在！"/>
+	<message msgid="Please enter the MAC address of your wireless device or correct unicast MAC address!" msgstr="请输入您无线设备的MAC地址,或正确的单播MAC地址。"/>
+	<message msgid="Please enter a different MAC address." msgstr="请输入一个不同的MAC地址。"/>
+	<message msgid="Please enter a valid MAC address!" msgstr="请输入一个有效的MAC地址。"/>
+	<message msgid="AP MAC address field should not be left empty!" msgstr="AP MAC地址不能为空！"/>
+	<message msgid="Enable Wireless" msgstr="启用无线功能"/>
+	<message msgid="Wireless Working Mode" msgstr="无线工作模式"/>
+	<message msgid="Wireless Access Point(AP)" msgstr="无线接入点 (AP)"/>
+	<message msgid="WDS Bridge Mode" msgstr="网桥(WDS)"/>
+	<message msgid="Network Mode" msgstr="网络模式"/>
+	<message msgid="11b/g mixed mode" msgstr="11b/g混合模式"/>
+	<message msgid="11b mode" msgstr="11b模式"/>
+	<message msgid="11g mode" msgstr="11g模式"/>
+	<message msgid="11b/g/n mixed mode" msgstr="11b/g/n混合模式"/>
+	<message msgid="SSID(Network Name)" msgstr="无线信号名称 (SSID)"/>
+	<message msgid="Channel Bandwidth" msgstr="信道带宽"/>
+	<message msgid="Wireless Working Mode: WDS(Repeater mode)" msgstr="无线工作模式：网桥（中继模式）"/>
+	<message msgid="AP MAC Address" msgstr="AP MAC地址"/>
+	<message msgid="Select" msgstr="选择"/>
+	<message msgid="Security" msgstr="安全"/>
+	<message msgid="Signal Strength" msgstr="信号强度"/>
+	<message msgid="WMM Capable" msgstr="WMM"/>
+	<message msgid="APSD Capable" msgstr="APSD"/>
+	<message msgid="AP Isolation" msgstr="AP隔离"/>
+	<message msgid="Auto select" msgstr="自动选择"/>
+	<message msgid="This address already exists!" msgstr="该地址已存在！"/>
+	<message msgid="SSID can not contain comma, semicolon, double quotation marks, ampersand, percent and backslash!" msgstr="SSID不能包含, ; &quot;&quot;&amp;%\等符号。"/>
+	<message msgid="The SSID (network name) will be changed to %s! Please reconnect to the new SSID!" msgstr="SSID（无线信号名称）将被修改为%s!请重新连接新的SSID。"/>
+	<message msgid="Secondary SSID is disabled! Devices connected to it will be unable to access the wireless network!" msgstr="次SSID被禁用！已连接至次SSID的设备将不能上网。"/>
+	<message msgid="Secondary SSID has been changed to %s! Please reconnect using the new SSID!" msgstr="次SSID名称已被修改为%s！请重新连接新的SSID！"/>
+	<message msgid="note_WDS" msgstr="注意：您路由器的SSID和信道将会自动设置为所选AP的SSID和信道。所选AP也必须支持网桥(WDS)模式。为与所选AP兼容，建议使用WEP加密。"/>
+	<message msgid="Warning: Can not create XMLHTTP example" msgstr="不能建创建XMLHTTP实例！"/>
+	<message msgid="Please enter a key" msgstr="请输入密码！"/>
+	<message msgid="Key 1" msgstr="密码1"/>
+	<message msgid="Key 2" msgstr="密码2"/>
+	<message msgid="Key 3" msgstr="密码3"/>
+	<message msgid="Key 4" msgstr="密码4"/>
+	<message msgid="Key1" msgstr="密码1"/>
+	<message msgid="Key2" msgstr="密码2"/>
+	<message msgid="Key3" msgstr="密码3"/>
+	<message msgid="Key4" msgstr="密码4"/>
+	<message msgid="WEP key1" msgstr="WEP 密码1"/>
+	<message msgid="WEP key2" msgstr="WEP 密码2"/>
+	<message msgid="WEP key3" msgstr="WEP 密码3"/>
+	<message msgid="WEP key4" msgstr="WEP 密码4"/>
+	<message msgid="Default ASCII password : ASCII" msgstr="默认ASCII密码：ASCII"/>
+	<message msgid="Key" msgstr="密码"/>
+	<message msgid="The key contains illegal characters" msgstr="密码包含非法字符！"/>
+	<message msgid="Please select a WPA algorithm" msgstr="请选择WPA加密规则！"/>
+	<message msgid="Key renewal interval invalid" msgstr="请输入有效的密钥更新间隔。（60~9999）"/>
+	<message msgid="Warning:Key renewal interval is too short,range" msgstr="注意：密钥更新间隔太短，范围"/>
+	<message msgid="Please enter a valid key renewal interval" msgstr="请输入有效的密钥更新间隔。（60~9999）"/>
+	<message msgid="The Pin code must be 8 decimal characters!" msgstr="PIN码必须为8位十进制数！"/>
+	<message msgid="This feature can be used only if wireless is enabled." msgstr="无线功能未开启，此功能不可用。"/>
+	<message msgid="Security Policy" msgstr="安全策略"/>
+	<message msgid="Security Mode" msgstr="安全模式"/>
+	<message msgid="Encryption type" msgstr="加密方式"/>
+	<message msgid="WPA Algorithms" msgstr="WPA加密规则"/>
+	<message msgid="Key Renewal Interval" msgstr="秘钥"/>
+	<message msgid="Seconds" msgstr="秒"/>
+	<message msgid="WPS Status" msgstr="WPS状态"/>
+	<message msgid="Configured" msgstr="已设置"/>
+	<message msgid="Unconfigured" msgstr="未设置"/>
+	<message msgid="AP PIN Code" msgstr="AP PIN码"/>
+	<message msgid="Notice" msgstr="提示"/>
+	<message msgid="WL_WPS_MSG" msgstr="WPS是一种比较简单的加密方式，帮助对无线加密了解不多的家庭用户建立安全的无线网络连接，避免输入冗长的无线密码或者进行复杂的设置。简单的使用路由器上的WPS按钮或者页面的PIN码或PBC按钮即可建立安全的无线连接。&#xA;WPS功能只能在以下安全模式下使用：不加密，WPA2-PSK 或 Mixed WPA/WPA2-PSK ，并且WPA加密规则为AES 或TKIP&amp;AES 。"/>
+	<message msgid="WPS Settings" msgstr="WPS设置"/>
+	<message msgid="WPS Mode" msgstr="WPS模式"/>
+	<message msgid="Reset OOB" msgstr="重设OOB"/>
+	<message msgid="Note:" msgstr="注意："/>
+	<message msgid="Wireless Security Settings" msgstr="无线安全设置"/>
+	<message msgid="Wireless_secrity_note1" msgstr="如果您选择了WEP或TKIP，网络模式将自动切换为11b/g混合模式。"/>
+	<message msgid="Wireless_secrity_note2" msgstr="如果您选择了AES或 TKIP&amp;AES，网络模式将自动切换为11b/g/n混合模式。"/>
+	<message msgid="WEP Key 1" msgstr="WEP 密码1"/>
+	<message msgid="WEP Key 2" msgstr="WEP 密码2"/>
+	<message msgid="WEP Key 3" msgstr="WEP 密码3"/>
+	<message msgid="WEP Key 4" msgstr="WEP 密码4"/>
+	<message msgid="Please enter the WEP key %s!" msgstr="请输入WEP密码%s!"/>
+	<message msgid="Enter the WEP key" msgstr="输入WEP密码"/>
+	<message msgid="WEP key %s is invalid! Please enter 5 or 13 ASCII characters." msgstr="WEP密码%s无效！请输入5或13个 ASCII 码。"/>
+	<message msgid="WEP key %s is invalid! Please enter 10 or 26 Hex characters." msgstr="WEP密码%s无效！请输入10或26个 十六进制字符。"/>
+	<message msgid="Wep key %s contains invalid characters." msgstr="WEP密码%s含有无效字符。"/>
+	<message msgid="security key" msgstr="密码"/>
+	<message msgid="WEP key %s will be used for the wireless connection! Please reconnect to %s using the WEP key of %s!" msgstr="WEP密码%s将被设为新的无线密码！请用%s重新连接您的无线。"/>
+	<message msgid="To configure a wireless security key, disable the WPS below!" msgstr="设置无线密码之前，请先禁用WPS功能！"/>
+	<message msgid="WPA - PSK(Recommended)" msgstr="WPA-PSK（推荐）"/>
+	<message msgid="(Recommended)" msgstr="（推荐）"/>
+	<message msgid="Are you sure to ignore the modification" msgstr="确定忽视更改？"/>
+	<message msgid="Default Key" msgstr="默认密码"/>
+	<message msgid="Open" msgstr="Open"/>
+	<message msgid="Shared" msgstr="Shared"/>
+	<message msgid="Mixed WPA/WPA2 - PSK" msgstr="WPA/WPA2-PSK混合"/>
+	<message msgid="You must set at least one rule when you choose Permit." msgstr="如果您选择“允许”，您必须设置至少一条规则。"/>
+	<message msgid="Click on OK to confirm that you want to delete this MAC address." msgstr="确定删除该MAC地址？"/>
+	<message msgid="Please enter a unicast MAC address!" msgstr="请输入单播MAC地址！"/>
+	<message msgid="Up to 16 MAC address entries are supported!" msgstr="最多可添加16条MAC地址！"/>
+	<message msgid="Specified MAC address already exists!" msgstr="该MAC地址已存在！"/>
+	<message msgid="MAC Address Filter" msgstr="MAC地址过滤"/>
+	<message msgid="Permit" msgstr="允许"/>
+	<message msgid="Forbid" msgstr="禁止"/>
+	<message msgid="Operate" msgstr="操作"/>
+	<message msgid="Add" msgstr="添加"/>
+	<message msgid="Tenda Multi-functional Broadband SOHO Router" msgstr="腾达多功能宽带SOHO路由器"/>
+	<message msgid="Select SSID" msgstr="选择SSID"/>
+	<message msgid="The currently connected hosts list:" msgstr="当前连接主机列表："/>
+	<message msgid="NO." msgstr="序号"/>
+	<message msgid="Bandwidth" msgstr="带宽"/>
+	<message msgid="Wired WAN" msgstr="有线WAN连接"/>
+	<message msgid="Wireless WAN" msgstr="无线WAN连接"/>
+	<message msgid="Default Key" msgstr="默认密码"/>
+	<message msgid="WAN Medium Type" msgstr="WAN介质类型"/>
+	<message msgid="Primary SSID" msgstr="主SSID"/>
+	<message msgid="Secondary SSID" msgstr="次SSID"/>
+	<message msgid="Wired WAN Mode" msgstr="有线WAN模式"/>
+	<message msgid="Wireless WAN Mode" msgstr="无线WAN模式"/>
+	<message msgid="Are you sure to connect to this AP?" msgstr="确定连接此AP？"/>
+	<message msgid="AutoSelect" msgstr="自动选择"/>
+	<message msgid="2412MHz (Channel 1)" msgstr="2412MHz (Channel 1)"/>
+	<message msgid="2417MHz (Channel 2)" msgstr="2417MHz (Channel 2)"/>
+	<message msgid="2422MHz (Channel 3)" msgstr="2422MHz (Channel 3)"/>
+	<message msgid="2427MHz (Channel 4)" msgstr="2427MHz (Channel 4)"/>
+	<message msgid="2432MHz (Channel 5)" msgstr="2432MHz (Channel 5)"/>
+	<message msgid="2437MHz (Channel 6)" msgstr="2437MHz (Channel 6)"/>
+	<message msgid="2442MHz (Channel 7)" msgstr="2442MHz (Channel 7)"/>
+	<message msgid="2447MHz (Channel 8)" msgstr="2447MHz (Channel 8)"/>
+	<message msgid="2452MHz (Channel 9)" msgstr="2452MHz (Channel 9)"/>
+	<message msgid="2457MHz (Channel 10)" msgstr="2457MHz (Channel 10)"/>
+	<message msgid="2462MHz (Channel 11)" msgstr="2462MHz (Channel 11)"/>
+	<message msgid="2467MHz (Channel 12)" msgstr="2467MHz (Channel 12)"/>
+	<message msgid="2472MHz (Channel 13)" msgstr="2472MHz (Channel 13)"/>
+	<message msgid="2484MHz (Channel 14)" msgstr="2484MHz (Channel 14)"/>
+	<message msgid="Complete below settings to connect to WISP AP." msgstr="完成以下设置来连接WISP AP。"/>
+	<message msgid="Enter WISP AP's security key" msgstr="输入WISP AP的密码"/>
+	<message msgid="Settings" msgstr="设置"/>
+	<message msgid="Complete below settings to connect to AP." msgstr="请完成以下设置以连接上级无线信号。"/>
+</po>

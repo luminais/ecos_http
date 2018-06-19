@@ -1,0 +1,240 @@
+﻿<po>
+<!--system_hostname--> 
+  <message msgid="Hostname" msgstr="Имя хоста" />  
+  <message msgid="Domain Name" msgstr="Имя домена" /> 
+  <message msgid="Time format wrong" msgstr="Ошибочный формат времени" />  
+  <message msgid="Please enter the valid year ,month and date" msgstr="Введите правильные год, месяц, день" />    
+  <message msgid="Enter a valid date" msgstr="Введите корректную дату" />   
+  <message msgid="Enter a valid time" msgstr="Введите корректное время" />  
+  <message msgid="Time zone" msgstr="Часовой пояс" /> 
+  <message msgid="West of International Date Line" msgstr=" Запад международный часовой пояс" />  
+  <message msgid="Midway Island, Samoa" msgstr=" Мидуэй острова, Самоа" /> 
+  <message msgid="Hawaii, Honolulu" msgstr=" Гавайи, Гонолулу" />  
+  <message msgid="Alaska" msgstr="Аляска" />    
+  <message msgid="Pacific Time" msgstr=" Тихоокеанское время (США и Канада) Тихуана" />   
+  <message msgid="Mountain Time" msgstr=" Горное время ( США и Канада)" />  
+  <message msgid="Chihuahua, La Paz, Mazatlan" msgstr=" Чиуауа, Ла-Пас, Мазатлан" /> 
+  <message msgid="Arizona" msgstr=" Аризона" />  
+  <message msgid="Central Time" msgstr="Центральное время (США и Канада)" /> 
+  <message msgid="Guadalajara, Mexico City, Monterrey" msgstr="Гвадалахара, Мехико, Монтеррей" />  
+  <message msgid="Eastern Time" msgstr="Восточное время (США  Канада)" />    
+  <message msgid="India to Ann" msgstr="Индиана (восток)" />   
+  <message msgid="Bogota, Lima, Quito" msgstr="Богота, Лима, Кито" />  
+  <message msgid="Atlantic Time" msgstr=" Атлантическое время (Канада)" /> 
+  <message msgid="Manaus" msgstr=" Манаус" />   
+  <message msgid="Caracas, La Paz" msgstr=" Каракас, Ла-Пас" />  
+  <message msgid="Newfoundland and Labrador" msgstr="Ньюфаундленд и Лабрадор" /> 
+  <message msgid="Brasilia Asia" msgstr="Бразилия" />  
+  <message msgid="Greenland" msgstr="Гренландия" /> 
+  <message msgid="Buenos Aires, Georgetown" msgstr="Буэнос-Айрес, Джорджтаун" />  
+  <message msgid="Atlantic" msgstr="Атлантический" />    
+  <message msgid="Azores" msgstr="Aзорские острова" />   
+  <message msgid="Cape Verde Islands" msgstr="Острова Зеленого Мыса" />  
+  <message msgid="Greenwich Mean Time" msgstr="Среднее время по Гринвичу Дублин, Эдинбург, Лиссабон, Лондон" /> 
+  <message msgid="Casablanca , Monrovia" msgstr="г, Лиссабон, Лондон" />  
+  <message msgid="Belgrade, Bratislava, Budapest, Ljubljana, Prague" msgstr="Белград, Братислава, Будапешт, Любляна, Прага" /> 
+  <message msgid="Sarajevo, Skopje, Warsaw, Zagreb" msgstr="Сараево, Скопье, Варшава, Загреб" />  
+  <message msgid="Brussels, Copenhagen, Madrid, Paris" msgstr="Брюссель, Копенгаген, Мадрид, Париж" />    
+  <message msgid="West Africa" msgstr="Западная Африка" />   
+  <message msgid="Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" msgstr="Амстердам, Берлин, Берн, Рим, Стокгольм, Вена" />  
+  <message msgid="Athens, Bucharest, Istanbul" msgstr="Афины, Бухарест, Стамбул" /> 
+  <message msgid="Minsk" msgstr="Минск" />   
+  <message msgid="Cairo" msgstr="Каир" />  
+  <message msgid="Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" msgstr="Хельсинки, Киев, Рига, София, Таллин, Вильнюс" />  
+  <message msgid="Jerusalem" msgstr="Иерусалим" /> 
+  <message msgid="temperature 'll have" msgstr="Виндхук" />  
+  <message msgid="grams. Harare, Pretoria" msgstr="Хараре, Претория" />    
+  <message msgid="Moscow, St. Petersburg, Volgograd" msgstr="Москва, Санкт-Петербург, Волгоград" /> 
+  <message msgid="Kuwait, Riyadh" msgstr="Кувейт, Эр-Рияд" />   
+  <message msgid="Baghdad" msgstr="Багдад" />  
+  <message msgid="Nairobi" msgstr="Найроби" />  
+  <message msgid="Tehran" msgstr="Тегеран" /> 
+  <message msgid="Abu Dhabi, Muscat" msgstr="Абу-Даби, Малайзия" />  
+  <message msgid="Baku" msgstr="Баку" />    
+  <message msgid="Yerevan" msgstr="Ереван" /> 
+  <message msgid="Tbilisi" msgstr="Тбилиси" />   
+  <message msgid="Kabul" msgstr="Кабул" />  
+  <message msgid="Islamabad, Karachi, Tashkent" msgstr="Исламабад, Карачи, Ташкент" />  
+  <message msgid="Yekaterinburg" msgstr="Екатеринбург" /> 
+  <message msgid="Chennai, Kolkata, Mumbai, New Delhi" msgstr="Ченнай, Калькутта, Мумбаи, Нью-Дели" />  
+  <message msgid="Kathmandu" msgstr="Катманду" />    
+  <message msgid="Astana, Dhaka" msgstr="Астана, Дакка" /> 
+  <message msgid="Almaty, Novosibirsk" msgstr="Алматы, Новосибирск" />   
+  <message msgid="Colombo" msgstr="Коломбо" />  
+  <message msgid="Yangon" msgstr="Янгон (Рангун)" />  
+  <message msgid="Krasnoyarsk" msgstr="Красноярск" /> 
+  <message msgid="Bangkok, Hanoi, Jakarta" msgstr="Бангкок, Ханой, Джакарта" />  
+  <message msgid="Beijing, Chongqing, Hong Kong, Urumqi" msgstr="Пекин, Чунцин, Гонконг, Урумчи" />    
+  <message msgid="Irkutsk grams, Ulaanbaatar" msgstr="Иркутск, Улан-Батор" /> 
+  <message msgid="Kuala Lumpur, Singapore" msgstr="Куала-Лумпур, Сингапур" />   
+  <message msgid="Perth" msgstr="Перт" />  
+  <message msgid="Yakutsk" msgstr="Якутск" />  
+  <message msgid="Osaka, Sapporo, Tokyo" msgstr="Осака, Саппоро, Токио" /> 
+  <message msgid="Seoul" msgstr="Сеуле" />  
+  <message msgid="Darwin" msgstr="Дарвин" />    
+  <message msgid="Adelaide" msgstr="Аделаида" /> 
+  <message msgid="Brisbane" msgstr="Брисбен" />   
+  <message msgid="Canberra, Melbourne Sydney" msgstr="Канберра, Мельбурн, Сидней" />  
+  <message msgid="Guam, Port Moresby" msgstr="Гуам, Порт-Морсби" />  
+  <message msgid="Vladivostok" msgstr="Владивосток" /> 
+  <message msgid="Hobart" msgstr="Хобарт" />  
+  <message msgid="Magadan, Solomon Islands, New Caledonia and more" msgstr="Магадан, Соломоновы острова, Новая Каледония и др" />    
+  <message msgid="Fiji Islands, Kamchatka Peninsula, the Marshall Islands" msgstr="Острова Фиджи, Камчатка, Маршалловы Острова" /> 
+  <message msgid="Auckland , Wellington" msgstr="Окленд, Веллингтон" />   
+  <message msgid="Nuku'alofa" msgstr="Нукуалофа" />  
+  <message msgid="hostname_Note" msgstr="Примечание: после подключения к Интернету, будет установлено время по Гринвичу." />  
+  <message msgid="Customized time" msgstr="Пользовательское время" /> 
+  <message msgid="Year" msgstr="Год" />  
+  <message msgid="Month" msgstr="Месяц" />    
+  <message msgid="Date" msgstr="Дата" />  
+  <message msgid="Hour" msgstr="Часовой пояс" />   
+  <message msgid="Minute" msgstr="минута" />  
+  <message msgid="Second" msgstr="Секунда" />  
+  <message msgid="system_hostname_Help_Inf1" msgstr="На данной странице вы можете установить часовой пояс, а также установить своё время  либо получить время по Гринвичу через интернет. Система будет автоматически подключаться к NTP серверу, чтобы  синхронизировать  время." /> 
+  <message msgid="system_hostname_Help_Inf2" msgstr="Примечание: После выключения маршрутизатора информация о времени теряется, в следующий раз после подключения к интернету, маршрутизатор будет автоматически получать время по Гринвичу. Чтобы другие функции, зависящие от времени, вступили в силу, вы должны подключиться к интернету и получить время по Гринвичу." /> 
+   
+<!--ddns_config--> 
+  <message msgid="Username" msgstr="Имя пользователя" />   
+  <message msgid="Password" msgstr="Пароль" />  
+  <message msgid="Please enter the entire DDNS information" msgstr="Введите DDNS информацию!" />  
+  <message msgid="Please enter the correct DDNS information" msgstr="Введите правильную DDNS информацию!" /> 
+  <message msgid="DDNS Service" msgstr="Сервис DDNS" />  
+  <message msgid="Enable" msgstr="включить" />    
+  <message msgid="Disable" msgstr="Выключение" />
+  <message msgid="Service Provider" msgstr="Провайдер" />   
+  <message msgid="Sign up" msgstr="Регистрация" />  
+  <message msgid="ddns_config_Help_Inf1" msgstr="С помощью сервиса DDNS вы можете привязать доменное имя к WAN IP. Перед установкой DDNS вам нужно зарегистрироваться на одном из сервисов DDNS." /> 
+  <message msgid="ddns_config_Help_Inf2" msgstr="Сервис DDNS: Выберите в меню подходящего провайдера,  введите Имя пользователя, Пароль и Имя хоста." />
+     
+<!--system_backup-->  
+  <message msgid="Please select the file you want to import" msgstr="Выберите файл для импорта настроек" />   
+  <message msgid="You need to restart after importing" msgstr="Необходимо перезагрузить устройство после импорта!" />  
+  <message msgid="Export the configured parameters and specify a path to save them" msgstr="Экспортируйте параметры конфигурации и установок и укажите путь к ним." />  
+  <message msgid="backup restore current configuration" msgstr="Можно произвести операцию резервного копирования и восстановления настроек маршрутизатора." /> 
+  <message msgid="Select the file directory to save the configured parameters" msgstr="Выберите путь, куда будет сохранена конфигурация:" />  
+  <message msgid="Select the configured file you want to import" msgstr="Выберите файл с конфигурацией, которую вы хотите восстановить:" /> 
+  <message msgid="Backup" msgstr="Резервное копирование" />    
+  <message msgid="Restore" msgstr="Восстановление" /> 
+  <message msgid="system_backup_Help_Inf" msgstr="Нажмите &quot;Резервное копирование&quot; для резервного копирования файла с текущей конфигурацией в соответствующую директорию. Тем же способом, путем выбора файла конфигурации и нажатием кнопки &quot;Восстановление&quot; конфигурация системы будет восстановлена." />    
+    
+<!--system_restore-->  
+  <message msgid="restore_note" msgstr="После автоматического перезапуска маршрутизатора IP-адреса установится в 192.168.2.1, пароль: admin. Если страница автоматически не обновится, то поменяйте сетевые параметры вашего компьютера и подключитесь снова." />   
+  <message msgid="Click this button to restore the router all settings to factory default" msgstr="Нажите эту кнопку для восстановления исходных настроек маршрутизатора." />  
+  <message msgid="Restore to factory default" msgstr="Восстановление исходных настроек" />   
+  <message msgid="system_restore_Help_Inf1" msgstr="Восстановление исходных настроек устанавливает следующие значения по умолчанию:" />
+  <message msgid="system_restore_Help_Inf2" msgstr="Аккаунт по умолчанию: admin" />
+  <message msgid="system_restore_Help_Inf3" msgstr="Пароль по умолчанию: admin" />
+  <message msgid="system_restore_Help_Inf4" msgstr="IP-адрес по умолчанию: 192.168.2.1" />
+  <message msgid="system_restore_Help_Inf5" msgstr="Маска подсети по умолчанию: 255.255.255.0" />
+  <message msgid="The device will restart" msgstr="Устройство перезапустится автоматически! IP-адрес изменится на &quot;192.168.2.1&quot;, а пароль на &quot;admin&quot;. Если интернет страница не обновится, обновите  конфигурацию сетевых настроек и попробуйте еще раз." />
+   
+<!--system_upgrade-->  
+  <message msgid="Upgrading" msgstr="Выполняется обновление" />   
+  <message msgid="Please select the upgrade file" msgstr="Выберите файл обновления!" />  
+  <message msgid="Are you sure to upgrade" msgstr="Вы уверены?" />  
+  <message msgid="By upgrading the router software, you get new features." msgstr="После обновления прошивки маршрутизатора будут доступны новые функции." /> 
+  <message msgid="Select the firmware file" msgstr="Выберите файл прошивки:" />  
+  <message msgid="Upgrade" msgstr="Обновление прошивки" />    
+  <message msgid="Current system version" msgstr="Текущая версия" /> 
+  <message msgid="Publishing date" msgstr="Дата выпуска" /> 
+  <message msgid="upgrade_note" msgstr="Примечание: В процессе обновления не отключайте питание во избежание выхода из строя маршрутизатора. После обновления маршрутизатор автоматически перезагрузится. Обновление займет несколько минут, подождите пожалуйста!" /> 
+  <message msgid="system_upgrade_Help_Inf1" msgstr="Посетите наш сайт, чтобы загрузить последнюю версию программного обеспечения." /> 
+  <message msgid="system_upgrade_Help_Inf2" msgstr="Найдите подходящую прошивку." /> 
+  <message msgid="system_upgrade_Help_Inf3" msgstr="Нажмите &quot;Обновить&quot;,после обновления маршрутизатор будет автоматически перезагружен." /> 
+  
+<!--system_reboot-->
+  <message msgid="The system will re-connect to the initial page in about 50 seconds" msgstr="Примерно через 50 секунд система автоматически подключится к стартовой странице" />   
+  <message msgid="Click this button and the router will reboot" msgstr="Нажмите на эту кнопку, чтобы перезагрузить маршрутизатор." />  
+  <message msgid="Reboot the router" msgstr="Перезагрузка маршрутизатора" />  
+  <message msgid="system_reboot_Help_Inf" msgstr="После перезагрузки маршрутизатора все измененные установки вступят в силу. Во время перезагрузки все подключения будут недоступны. Нажмите &quot;OK&quot; во всплывающем окне для перезагрузки маршрутизатора." />  
+  
+  <!--direct_reboot.asp-->
+  <message msgid="Rebooting" msgstr="Перезагрузка маршрутизатора" />    
+  <message msgid="direct_reboot_Help_Inf" msgstr="После перезагрузки изменившиеся установки будут применены. Во время перезагрузки автоматически будет отключено сетевое соединение." />  
+  
+ <!--system_password-->  
+  <message msgid="The initial password can only consist of letters and numbers" msgstr="Пароль может содержать только буквы и цифры!" />   
+  <message msgid="On this page ,you can change  the administrator password" msgstr="На данной странице вы можете изменить пароль администратора." />  
+  <message msgid="password_note" msgstr="Примечание: Пароль может содержать только буквы и цифры." />  
+  <message msgid="Old password" msgstr="Старый пароль" /> 
+  <message msgid="New password" msgstr="Новый пароль" />  
+  <message msgid="Confirm new password" msgstr="Подтвердите новый пароль" />    
+  <message msgid="system_password_Help_Inf1" msgstr="Пароль по умолчанию: admin. Рекомендуем изменить пароль." /> 
+  <message msgid="system_password_Help_Inf2" msgstr="Старый пароль: введите старый пароль. Пароль по умолчанию: admin (Примечание: Если вы потеряли или забыли пароль, необходимо восстановить заводские настройки)." /> 
+  <message msgid="system_password_Help_Inf3" msgstr="Новый пароль: введите новый пароль. Новый пароль должен содержать 0-12 символов без пробелов." /> 
+  <message msgid="system_password_Help_Inf4" msgstr="Подтвердите новый пароль: снова введите новый пароль для подтверждения." /> 
+  
+ <!--system_log-->  
+  <message msgid="the" msgstr="" />   
+  <message msgid="page log contents" msgstr="Содержание" />  
+  <message msgid="Refresh" msgstr="Обновить" />  
+  <message msgid="Clear" msgstr="Отмена" /> 
+  <message msgid="system_log_Help_Inf1" msgstr="Просмотр содержания" /> 
+  <message msgid="system_log_Help_Inf2" msgstr="Примечание: Журнал автоматически очищается, если его объем превышает 15 страниц (150 записей)." />   
+   
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="Не верно!" />   
+  <message msgid="contains illegal characters" msgstr="Содержит недопустимые символы:" />  
+  <message msgid="not numbers " msgstr="Нет значений!" />  
+  <message msgid="beyond the range" msgstr="Вне диапазона!" /> 
+  <message msgid="contains invalid characters" msgstr="Содержит недопустимые символы:" /> 
+  <message msgid="Are you sure to exit" msgstr="Хотите отменить?" />   
+  <message msgid="not defined" msgstr="Не определено!" />  
+  <message msgid="Password differs" msgstr="Пароль отличается от заданного" />  
+  <message msgid="Change password" msgstr="Изменить пароль?" /> 
+  <message msgid="the length is not within the range" msgstr="Длина вне диапазона!" />    
+  <message msgid="permanent" msgstr="Постоянное" />   
+  <message msgid="Day" msgstr="День" />  
+  <message msgid="Don't enter Chinese characters" msgstr="Не вводить китайские символы!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Нужно перезагрузить маршрутизатор для применения установок. Хотите перезагрузить сейчас?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Нужно перезагрузить беспроводной модуль для установки. Хотите перезагрузить сейчас?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Примечания должны состоять только из цифр, букв и подчеркивания" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="Введенный MAC-адрес является зарезервированным адресом, введите другое значение!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="Введенный MAC-адрес является многоадресным, введите другое значение!" />  
+  <message msgid="Help information" msgstr="Справка" />
+  
+  <!--advance-->  
+  <message msgid="Tenda 11N Wireless Router" msgstr="TENDA 11N беспроводной маршрутизатор" />   
+  <message msgid="Initial page settings" msgstr="Установка начальной страницы" />  
+  <message msgid="Log out" msgstr="Выход" />  
+  <message msgid="Advanced Settings" msgstr="Дополнительные настройки" /> 
+  <message msgid="Wireless settings" msgstr="Настройки беспроводной сети" />  
+  <message msgid="DHCP Server" msgstr="Сервер DHCP" />    
+  <message msgid="Virtual Server" msgstr="Виртуальный сервер" />
+  <message msgid="Security settings" msgstr="Настройки безопасности" />   
+  <message msgid="Routing settings" msgstr="Настройки маршрутизации" />  
+  <message msgid="System Tools" msgstr="Инструменты" />   
+  <message msgid="System Status" msgstr="Статус системы" />  
+  <message msgid="WAN settings" msgstr="Установки WAN порта" />  
+  <message msgid="MAC Clone" msgstr="Клон МАС адреса" /> 
+  <message msgid="LAN settings" msgstr="Установки LAN портов" /> 
+  <message msgid="DNS settings" msgstr="Установки DNS" />  
+  <message msgid="WAN medium type" msgstr="WAN medium type" />  
+  <message msgid="Bandwidth control" msgstr="Контроль пропускной способности" />    
+  <message msgid="Traffic statistics" msgstr="Статистика сетевого потока" />
+  <message msgid="WAN speed" msgstr="WAN speed" />
+  <message msgid="Wireless Basic Settings" msgstr="Основные установки беспроводной сети" />   
+  <message msgid="Wireless Security" msgstr="Безоопастность беспроводной сети" /> 
+  <message msgid="Access Control" msgstr="Контроль доступа" /> 
+  <message msgid="Connection Status" msgstr="Состояние подключения" />    
+  <message msgid="DHCP Client list" msgstr="Список клиентов DHCP" />
+  <message msgid="Port Range Forwarding" msgstr="Переадресация портов" />   
+  <message msgid="DMZ Host" msgstr="DMZ-холст" />  
+  <message msgid="UPNP settings" msgstr="UPNP свойства" />   
+  <message msgid="Client Filter Settings" msgstr="Настройки фильтра клиента" />  
+  <message msgid="MAC Address Filter Settings" msgstr="Настройки фильтрации MAC-адресов" />  
+  <message msgid="URL Filter Settings" msgstr="Настройки фильтрации URL" /> 
+  <message msgid="Remote Web Management" msgstr="Удаленное  веб-управление" />  
+  <message msgid="Routing table" msgstr="Таблица маршрутизации" />    
+  <message msgid="Static routing" msgstr="Статическая маршрутизация" />
+  <message msgid="Time Settings" msgstr="Настройка времени" />   
+  <message msgid="Backup/Restore Settings" msgstr="Сохранение/Восстановление настроек" />
+  <message msgid="Restore to Factory Default Settings" msgstr="Сброс все настроек в заводские установки" />
+  <message msgid="Change password1" msgstr="Изменить пароль" />     
+  <message msgid="Syslog" msgstr="Системный журнал" /> 
+  
+  <!--menu.js-->  
+  <message msgid="Ok" msgstr="OK" />
+  <message msgid="Cancel" msgstr="Отмена" />  
+</po>
+ 

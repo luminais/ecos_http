@@ -1,0 +1,113 @@
+<po>
+<!--notice.asp-->
+<message msgid="Successfully Configure!" msgstr="Successfully Configure!" />
+
+<!--index.asp-->
+<message msgid="Account and password can not be empty" msgstr="Le compte et le mot de passe ne peuvent pas être vides!" />
+<message msgid="Account" msgstr="Compte" />
+<message msgid="Password" msgstr="Mot de passe" />
+<message msgid="Wireless password can not be empty" msgstr="Le mot de passe réseau sans fil obligatoire!" />
+<message msgid="the password can only be 8 characters in length" msgstr="Le mot de passe peut seulement être 8 caractères de long!" />
+<message msgid="Wireless password" msgstr="Mot de passe sans fil" />
+<message msgid="Advanced Settings" msgstr="Réglages avancés" />
+<message msgid="Access to the Internet" msgstr="Accès à l'Internet" />
+<message msgid="Access Method" msgstr="Méthode d'accès" />
+<message msgid="ADSL Dial-up" msgstr="Composition ADSL" />
+<message msgid="DHCP" msgstr="DHCP" />
+<message msgid="Access Account" msgstr="Compte d'accès" />
+<message msgid="Access Password" msgstr="Mot de passe d'accès" />
+<message msgid="other access methods" msgstr="Pour d'autres méthodes d'accès, cliquez sur " />
+<message msgid="Wireless encryption" msgstr="Cryptage sans fil" />
+<message msgid="can only enter 8 characters" msgstr="peut seulement entrer 8 caractères" />
+<message msgid="Ok" msgstr="Ok" />
+<message msgid="Cancel" msgstr="Annuler" />
+
+<!--login-->
+<message msgid="Tenda 11N Wireless Router Login Screen" msgstr="Écran de connexion du routeur Tenda de 11N sans fil" />
+<message msgid="No Ethernet cable connected to WAN port!" msgstr="Aucun câble Ethernet relié au port de WAN!" />
+<message msgid="No Internet access, please check your online settings!" msgstr="Aucune visite d'Internet, vérifiez SVP vos réglages en ligne!" />
+<message msgid="Password can not be empty!" msgstr="Le mot de passe sans fil ne peut pas être vide!" />
+<message msgid="Password can not exceed 12 characters in length!" msgstr="Le mot de passe ne peut pas dépasser 12 caractères de long!" />
+<message msgid="Login" msgstr="Se connecter" />
+<message msgid="Initial password" msgstr="Mot de passe initial" />
+<message msgid="No longer prompts " msgstr="Aucun message d'indication plus long" />
+
+<!--routing_table--> 
+  <message msgid="Destination IP" msgstr="IP de destination" />  
+  <message msgid="Subnet mask" msgstr="Masque de sous-réseau" /> 
+  <message msgid="Gateway" msgstr="Passerelle" />  
+  <message msgid="Hops" msgstr="Houblons" />    
+  <message msgid="Interface" msgstr="Interface" />   
+  <message msgid="Refresh" msgstr="Régénérer" />  
+  <message msgid="routing_table_Help_Inf1" msgstr="Houblons: métrique d'interface." /> 
+  <message msgid="routing_table_Help_Inf2" msgstr="Interface: trois types d'interfaces sont fournis:vlan2:Interface WAN, ppp0:Interface PPPoE, br0:Interface LAN." />
+   
+<!--routing_static-->  
+  <message msgid="Delete" msgstr="Supprimer" />   
+  <message msgid="Max." msgstr="" />  
+  <message msgid="static routing" msgstr="routage statiques au max." />  
+  <message msgid="the specified static routing already exists" msgstr="Le routage statique spécifique existe déjà." /> 
+  <message msgid="Destination network IP address" msgstr="Adresse IP du réseau de destination" />  
+  <message msgid="Operate" msgstr="Mettre en marche" />    
+  <message msgid="add" msgstr="Ajouter" />     
+  <message msgid="routing_static_Help_Inf1" msgstr="Routage statique : Quand il y a plusieurs routeurs dans le réseau, vous devez régler le routing statique. Il assure que les données passent par le chemin du routeur. Vous pouvez utiliser cette caractéristique pour permettre à différents utilisateurs de nom domaine d'IP d'accéder à l'Internet par l'intermédiaire de cet appareil. Veuillez être prudent tout en réglant." />  
+  <message msgid="routing_static_Help_Inf2" msgstr="Dans la plupart des cas, le routing dynamique est recommandé, parce que cette caractéristique permet au routeur de détecter les changements physiques de la disposition du réseau automatiquement. Si vous voulez utiliser le routing statique, assurez-vous que la fonction DHCP du routeur est déactivée. Les réglages seront valides après le redémarrage du routeur." />  
+  
+<!--nat_virtualportseg--> 
+  <message msgid="start port" msgstr="Port initial" />  
+  <message msgid="end port" msgstr="port final" /> 
+  <message msgid="private IP" msgstr="IP privé" />  
+  <!--add-->
+  <message msgid="Starting Port large than Ending Port" msgstr="ème port de départ > port de fin" />
+  <!--add-->
+  <message msgid="Both" msgstr="Tous les deux" />    
+  <message msgid="NAT_Portseg_MSG" msgstr="L'expédition de la gamme du port établit des services publiques sur votre réseau, tel que des serveurs web, serveurs ftp, serveurs e-mail, et d'autres applications spécialisées d'Internet. Quand vous avez installé un service, alors, les demandes de communication de l'Internet au port WAN de votre routeur seront converties en adresse IP LAN spécifique." />   
+  <message msgid="NO." msgstr="Numéro" />  
+  <message msgid="Start_port_End_port" msgstr="Port initial et port final" />   
+  <message msgid="LAN IP" msgstr="IP réseau local" />  
+  <message msgid="Protocol" msgstr="Protocole" />  
+  <message msgid="Enable" msgstr="Activer" />    
+  <message msgid="Well-known service ports" msgstr="Ports de service bien connus" />  
+  <message msgid="Add to" msgstr="Ajouter à" />   
+  <message msgid="NAT_Portseg_Help_Inf1" msgstr="Port initial et port final : Port de service WAN." />  
+  <message msgid="NAT_Portseg_Help_Inf2" msgstr="Activer : choisir pour mettre en œuvre les réglages." />
+  <message msgid="NAT_Portseg_Help_Inf3" msgstr="Supprimer : Il vous aide à effacer les réglages; cliquer sur &quot;Sauvegarde&quot; pour le rendre valide." />
+  <message msgid="NAT_Portseg_Help_Inf4" msgstr="Ajouter à : Il vous aide à ajouter le port de service bien connu au champ de port de début de l'article que vous réglez." />
+    
+<!--nat_dmz-->  
+  <message msgid="Can not use the router IP address" msgstr="Ne pas pouvoir utiliser l'adresse IP du routeur!" />   
+  <message msgid="DMZ host IP address" msgstr="Adresse IP de l’hôte DMZ" />  
+  <message msgid="not in the same segment with LAN IP" msgstr="Pas dans le même segment avec l'IP LAN!" />   
+  <message msgid="illegal IP" msgstr="IP illégal!" />  
+  <message msgid="DMZ_Note" msgstr="NOTE : Quand l’hôte DMZ est activé, les réglages de firewall (pare-feu) de l’hôte DMZ ne fonctionneront pas." />  
+  <message msgid="DMZ_Help_Inf" msgstr="Parfois, vous devez exposer complètement un ordinateur de LAN à l'Internet de sorte qu'il puisse communiquer avec les ordinateurs sur l'Internet. Alors, vous pouvez régler l'ordinateur comme hôte DMZ.Entrez l'adresse IP du hôte DMZ.Quand vous activez DMZ, réellement, vous avez fermé la protection de firewall du dispositif contre l’hôte DMZ." />   
+   
+<!--upnp_config-->		
+  <message msgid="Enable UPnP" msgstr="Activer UPnP" />   
+  <message msgid="UPNP_Help_Inf" msgstr="(Universal Plug and Play) permet automatiquement de détecter et régler les appareils qui sont reliés au réseau.  Actuellement, UPnP est seulement soutenu par Windows ME et Windows Xp ou systèmes postérieurs." /> 
+  
+   <!--menu.js -->
+  <message msgid="Ok" msgstr="Ok" />
+  <message msgid="Cancel" msgstr="Annuler" />
+
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="invalide!" />   
+  <message msgid="contains illegal characters" msgstr="contient des caractères illégaux:" />  
+  <message msgid="not numbers " msgstr="pas de chiffres!" />  
+  <message msgid="beyond the range" msgstr="au delà de la gamme!" /> 
+  <message msgid="contains invalid characters" msgstr="contient des caractères invalides:" /> 
+  <message msgid="Are you sure to exit" msgstr="Êtes-vous sûr de supprimer?" />   
+  <message msgid="not defined" msgstr="non défini!" />  
+  <message msgid="Password differs" msgstr="Le mot de passe diffère!" />  
+  <message msgid="Change password" msgstr="Changer le mot de passe?" /> 
+  <message msgid="the length is not within the range" msgstr="la longueur n'est pas dans la gamme!" />    
+  <message msgid="permanent" msgstr="permanent" />   
+  <message msgid="Day" msgstr="Jour" />  
+  <message msgid="Don't enter Chinese characters" msgstr="N'écrivez pas de caractère chinois!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Le redémarrage du routeur mettra en œuvre les réglages modifiés; redémarrer maintenant?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Le redémarrage du module sans fil mettra en œuvre les réglages; redémarrer maintenant?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="remarks peut seulement se composer des nombres, lettres et du trait en bas!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="L'adresse MAC appartient aux adresses réservées; ré-entrez SVP!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="L'adresse MAC appartient aux adresses de multi-émission; ré-entrez SVP!" />  
+  <message msgid="Help information" msgstr="Information d'aide" />
+</po>

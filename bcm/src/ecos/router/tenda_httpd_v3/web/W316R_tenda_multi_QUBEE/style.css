@@ -1,0 +1,76 @@
+body {
+	COLOR: #000000; FONT-FAMILY:"Times New Roman"; padding:0px; margin:0px; line-height: 18px; overflow:auto; height:100%; background-color:#FFFFFF;}
+.left1{font-size:12px; font-family:"Times New Roman"; line-height:18px; width:60%;}
+.bg{ background-image:url(bg1.jpg);}
+.content1{  font-size:12px; font-family:"Times New Roman"; margin-top:32px; line-height:30px; width:80%}
+.content2{  font-size:12px; font-family:"Times New Roman"; margin-top:32px; width:80%; line-height:30px;}
+.content3{  font-size:12px; font-family:"Times New Roman"; margin-top:0px; width:80%; line-height:30px;}
+.basicset{ font-size:12px; font-family:"Times New Roman"; line-height:30px;}
+.class1{background-image:url(trangle.gif); background-repeat:no-repeat; } 
+.class2{}
+.a1{
+    background-color:#d3d3d4;
+    cursor:default;
+}
+.a2{
+	background-color:#f2f2f2;
+    cursor:default;
+}
+.a3{
+	background-color:#bbbbbb;
+    cursor:default;
+}
+INPUT.button1 {
+	BACKGROUND-COLOR: #ffffff; BORDER-BOTTOM: #999999 2px solid; BORDER-LEFT: #999999 1px solid; BORDER-RIGHT: #999999 2px solid; BORDER-TOP: #999999 1px solid; COLOR: #000000; FONT-SIZE: 14px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 25px;LINE-HEIGHT: normal; cursor:pointer;
+}
+INPUT.button2 {
+	BACKGROUND-COLOR: #ffffff; BORDER-BOTTOM: #999999 2px solid; BORDER-LEFT: #999999 1px solid; BORDER-RIGHT: #999999 2px solid; BORDER-TOP: #999999 1px solid; COLOR: #000000; FONT-SIZE: 14px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal;LINE-HEIGHT: normal; cursor:pointer;}
+INPUT.button {
+	BACKGROUND-COLOR: #CCCCCC; BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px solid; BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; COLOR: #000000; FONT-SIZE: 12px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 18px; LINE-HEIGHT: normal; cursor:pointer
+}
+INPUT.text1 {
+	BORDER-BOTTOM: #e7e7e7 1px solid; BORDER-LEFT: #4d4c4a 2px solid; BORDER-RIGHT: #e7e7e7 1px solid; BORDER-TOP: #4d4c4a 2px solid; COLOR: #000000; FONT-SIZE: 12px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 18px; LINE-HEIGHT: normal; PADDING-LEFT: 3px; PADDING-RIGHT: 3px; width:200px;
+}
+INPUT.text {
+	BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px solid; BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; COLOR: #000000; FONT-SIZE: 12px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 18px; LINE-HEIGHT: normal; PADDING-LEFT: 3px; PADDING-RIGHT: 3px
+}
+SELECT.list {
+	BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px solid; BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; COLOR: #000000; FONT-SIZE: 12px; FONT-STYLE: normal; FONT-VARIANT: normal; FONT-WEIGHT: normal; HEIGHT: 18px; LINE-HEIGHT: normal
+}
+
+A:link {
+	 FONT-SIZE: 12pt; COLOR: #231815; FONT-FAMILY: "Times New Roman"; LETTER-SPACING: 1px;line-height: 18px; TEXT-DECORATION: none;
+}
+A:visited {
+	 FONT-SIZE: 12pt; COLOR: #231815; FONT-FAMILY: "Times New Roman"; LETTER-SPACING: 1px;line-height: 18px; TEXT-DECORATION: none;
+}
+A:active {
+	FONT-SIZE: 12pt; COLOR: #3366ff; TEXT-DECORATION: none;
+}
+A:hover {
+	FONT-SIZE: 12pt; COLOR: #3366ff; TEXT-DECORATION: none;
+}
+.submenu A:link {
+	 COLOR: #595757;FONT-SIZE: 10pt; FONT-WEIGHT:normal;
+}
+.submenu A:visited {
+     COLOR: #595757;FONT-SIZE: 10pt;FONT-WEIGHT:normal; 
+}
+.submenu A:active {
+	 COLOR: #3366ff;FONT-SIZE: 10pt; FONT-WEIGHT:normal;
+}
+.submenu A:hover {
+	 COLOR: #3366ff;FONT-SIZE: 10pt; FONT-WEIGHT:normal;
+}
+.top A:link {
+	FONT-SIZE: 10pt; COLOR: #3167ff; text-decoration:underline;
+}
+.top A:visited {
+	FONT-SIZE: 10pt; COLOR: #3167ff; text-decoration:underline;
+}
+.top A:active {
+	FONT-SIZE: 10pt; COLOR: #3167ff; text-decoration:underline;
+}
+.top A:hover {
+	FONT-SIZE: 10pt; COLOR: #3167ff; text-decoration:underline;
+}

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<po>
+	<message msgid="Add To List" msgstr="加入列表"/>
+	<message msgid="Update To List" msgstr="更新至列表"/>
+	<message msgid="All services" msgstr="全部服务"/>
+	<message msgid="WAN port bandwidth can not be empty!" msgstr="WAN口带宽不能为空。"/>
+	<message msgid="The value of bandwidth should not be 0! Please enter a valid bandwidth value." msgstr="带宽数值不能为0！请输入一个有效的带宽数值。"/>
+	<message msgid="No." msgstr="序号"/>
+	<message msgid="IP Range" msgstr="IP范围"/>
+	<message msgid="Destination" msgstr="目的"/>
+	<message msgid="All ports" msgstr="全部端口"/>
+	<message msgid="Download" msgstr="下载"/>
+	<message msgid="Upload" msgstr="上传"/>
+	<message msgid="Up to %s bandwidth control entries can be added." msgstr="最多可添加%s条带宽控制规则。"/>
+	<message msgid="Please enter a valid IP address!" msgstr="请输入一个有效的IP地址。"/>
+	<message msgid="Start IP" msgstr="起始IP"/>
+	<message msgid="End IP" msgstr="终止IP"/>
+	<message msgid="Start IP should not be greater than End IP! Please enter valid IP information." msgstr="起始IP不能大于终止IP！请输入有效的IP信息。"/>
+	<message msgid="Please enter a valid bandwidth value!" msgstr="请输入一个有效的带宽数值。"/>
+	<message msgid="The port is beyond the range of 0~65535!" msgstr="端口必须在0~65535之内！"/>
+	<message msgid="Starting bandwidth value should not be greater than ending bandwidth!" msgstr="带宽输入范围必须由小到大。"/>
+	<message msgid="The same IP address can't be contained in two Bandwidth control rules, please retry." msgstr="已存在同样的配置信息，或者您配置的信息有重叠。请重新输入！"/>
+	<message msgid="Enable Bandwidth Control" msgstr="启用带宽控制"/>
+	<message msgid="Interface" msgstr="接口"/>
+	<message msgid="Download bandwidth" msgstr="下载带宽"/>
+	<message msgid="Enable Traffic Statistics" msgstr="启用流量统计"/>
+	<message msgid="Uplink Rate" msgstr="上行速率"/>
+	<message msgid="Downlink Rate" msgstr="下行速率"/>
+	<message msgid="Sent Message" msgstr="发送报文个数"/>
+	<message msgid="Sent Bytes" msgstr="发送字节"/>
+	<message msgid="Received Message" msgstr="接收报文个数"/>
+	<message msgid="Received Bytes" msgstr="接收字节"/>
+	<message msgid="Giving up :(Cannot create an XMLHTTP instance!)" msgstr="丢弃：（不能创建XMLHTTP实例！）"/>
+	<message msgid="There was a problem with the request." msgstr="请求错误！"/>
+	<message msgid="Information: the security setting is automatically set to WPS,but you can manually modify it." msgstr="提示：安全设置自动设为WPS ，\n 你也可以手动进行更改。"/>
+	<message msgid="Sun" msgstr="周日"/>
+	<message msgid="Mon" msgstr="周一"/>
+	<message msgid="Tue" msgstr="周二"/>
+	<message msgid="Wed" msgstr="周三"/>
+	<message msgid="Thu" msgstr="周四"/>
+	<message msgid="Fri" msgstr="周五"/>
+	<message msgid="Sat" msgstr="周六"/>
+	<message msgid="Forbid Only" msgstr="仅禁止"/>
+	<message msgid="Permit Only" msgstr="仅允许"/>
+	<message msgid="Start IP" msgstr="起始IP"/>
+	<message msgid="End IP" msgstr="终止IP"/>
+	<message msgid="start IP address" msgstr="起始IP地址"/>
+	<message msgid="end IP address" msgstr="终止IP地址"/>
+	<message msgid="Start Port" msgstr="开始端口"/>
+	<message msgid="End Port" msgstr="结束端口"/>
+	<message msgid="start port number" msgstr="开始端口号"/>
+	<message msgid="end port number" msgstr="结束端口号"/>
+	<message msgid="Start Time" msgstr="开始时间"/>
+	<message msgid="End Time" msgstr="结束时间"/>
+	<message msgid="Start Week" msgstr="开始周"/>
+	<message msgid="End Week" msgstr="结束周"/>
+	<message msgid="notag is not allowed to be set to be policy Name!" msgstr="notag不允许被设置为策略名称"/>
+	<message msgid="You must set at least one rule when you choose Permit Only!" msgstr="选择“仅允许”后，您必须设置至少一条规则。"/>
+	<message msgid="Filter Mode" msgstr="过滤模式"/>
+	<message msgid="Access Policy" msgstr="访问策略"/>
+	<message msgid="Policy Name(Optional)" msgstr="策略名称(可选)"/>
+	<message msgid="Type" msgstr="方式"/>
+	<message msgid="Both" msgstr="全部"/>
+	<message msgid="Time" msgstr="时间"/>
+	<message msgid="Clear this item" msgstr="清空此项"/>
+	<message msgid="Start IP should not be greater than end IP. Please enter a valid IP address." msgstr="起始IP必须大于终止IP。请输入有效的IP地址。"/>
+	<message msgid="Please specify a valid MAC address!" msgstr="请输入有效的MAC地址！"/>
+	<message msgid="URL Character String" msgstr="URL字符串"/>
+	<message msgid="Please enter a valid keyword or domain name." msgstr="请输入有效的关键字或域名。"/>
+	<message msgid="time note" msgstr="起始时间必须早于终止时间！规则的时间段不能跨过00:00。"/>
+	<message msgid="week note" msgstr="起始星期必须小于终止星期！（星期日~星期六）请重试。"/>
+	<message msgid="port note" msgstr="开始端口不能大于结束端口。请输入1~65535之间是有效值。"/>
+	<message msgid="The Remote Management IP address should not be on the same IP net segment as the router's LAN IP,please enter a valid IP address." msgstr="远程管理IP地址不能与路由器登录IP地址在同一网段。请重新输入一个有效的IP地址。"/>
+	<message msgid="WAN IP address" msgstr="WAN口IP地址"/>
+</po>

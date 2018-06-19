@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<po>
+	<message msgid="OK" msgstr="确 定"/>
+	<message msgid="Cancel" msgstr="取 消"/>
+	<message msgid="Save" msgstr="保 存"/>
+	<message msgid="Refresh" msgstr="刷新"/>
+	<message msgid="Loading…" msgstr="加载中"/>
+	<message msgid="Internet" msgstr="上网设置"/>
+	<message msgid="Bandwidth" msgstr="网速控制"/>
+	<message msgid="Bridge" msgstr="无线中继"/>
+	<message msgid="WiFi" msgstr="定时开关"/>
+	<message msgid="Signal" msgstr="信号强度调节"/>
+	<message msgid="System" msgstr="系统管理"/>
+	<message msgid="Internet Connection Setup" msgstr="上网设置"/>
+	<message msgid="Bandwidth Control" msgstr="网速控制"/>
+	<message msgid="Wireless Extender" msgstr="无线中继"/>
+	<message msgid="WiFi Access Control" msgstr="定时开关"/>
+	<message msgid="Signal Strength Mode" msgstr="信号强度调节"/>
+	<message msgid="System Setup" msgstr="系统管理"/>
+	<message msgid="Scanning for wonderful WiFi" msgstr="扫出无线精彩"/>
+	<message msgid="Offical Micro-blog" msgstr="官方微博"/>
+	<message msgid="For more information" msgstr="更多资讯帮助"/>
+	<message msgid="Offical Wechat" msgstr="官方微信"/>
+	<message msgid="TENDA 11N Wireless Router" msgstr="TENDA 11N无线路由器"/>
+	<message msgid="Please wait: Device rebooting..." msgstr="请稍后，设备正在重启..."/>
+	<message msgid="Upgrading. DO NOT POWER OFF THE DEVICE!" msgstr="升级中...请勿断电"/>
+	<message msgid="Please enter a valid number." msgstr="请输入数字"/>
+	<message msgid="Input range is: %s ~ %s" msgstr="输入范围：%s - %s"/>
+	<message msgid="You cannot leave it blank." msgstr="本项不能为空"/>
+	<message msgid="Range: %s~%s." msgstr="长度范围：%s - %s 位"/>
+	<message msgid="Please enter a correct email address." msgstr="请输入正确的邮箱地址"/>
+	<message msgid="Must be hex." msgstr="必须为十六进制"/>
+	<message msgid="Must be ASCII." msgstr="必须为ASCII字符"/>
+	<message msgid="Error! Please enter a correct password." msgstr="请输入正确的密码"/>
+	<message msgid="Error! Please enter a correct username." msgstr="请输入正确的用户名"/>
+	<message msgid="Please specify a valid time range." msgstr="请输入正确的时间段"/>
+	<message msgid="Please enter a correct IP address." msgstr="请输入正确的 IP 地址"/>
+	<message msgid="Please enter a correct subnet mask." msgstr="请输入正确的子网掩码"/>
+	<message msgid="Please enter a correct MAC address." msgstr="请输入正确的 MAC 地址"/>
+	<message msgid="MAC address cannot be 00:00:00:00:00:00." msgstr="MAC 地址不能全为0"/>
+	<message msgid="%s is not allowed." msgstr="不能输入: ‘%s’"/>
+	<message msgid="Please enter number, letter, or underscore." msgstr="请输入数字，字母或下划线"/>
+	<message msgid="The second digit in the first group of MAC address should be an even number." msgstr="MAC 地址的第二个字符必须为偶数"/>
+	<message msgid="The IP address cannot be multicast, broadcast, or loopback address." msgstr="IP 地址不能为组播,广播或环回地址"/>
+	<message msgid="The first byte of the IP cannot be 127 (Loopback addresses)." msgstr="以127开始的地址为保留的环回地址，请指定一个1到223之间的值。"/>
+	<message msgid="The first byte of the IP cannot be %s.Please specify a value from 1 to 223." msgstr="以%s开始的地址无效，请指定一个1到223之间的值。"/>
+	<message msgid="The first byte of the IP cannot be %s.Please specify a value from 223 to 255." msgstr="以 %s 开始的地址无效，请指定一个223到255之间的值。"/>
+	<message msgid="There is a mismatch between IP address and subnet mask.Please change IP address or subnet mask." msgstr="无效的 IP 地址和子网掩码合并，请修改 IP 地址或子网掩码."/>
+	<message msgid="IP conflict! The login IP address will be changed into %s automatically.Please log in again using %s." msgstr="检测到IP地址冲突，登录 IP 地址将自动修改为%s，请以%s重新登录界面。"/>
+	<message msgid="Auto detection: Your current connetion type may be DHCP.But IP conflicts occur.The login IP will be changed to %s .Please log in again using %s." msgstr="系统监测到你当前联网方式可能为DHCP，但是存在IP冲突。登录 IP 地址将自动修改为192.168.1.1，请以192.168.1.1重新登录界面。"/>
+	<message msgid="Saving…please wait..." msgstr="数据保存中，请稍候..."/>
+	<message msgid="No access to Internet" msgstr="未联网"/>
+	<message msgid="Connecting Internet" msgstr="联网中"/>
+	<message msgid="Internet Access" msgstr="已联网"/>
+	<message msgid="There is no Ethernet  cable inserting to WAN port, please plug an Ethernet cable to WAN port." msgstr="检测到WAN口网线未连接，请检查并连接好您的WAN口网线。"/>
+	<message msgid="Checking the username and password, please wait. It will take 1~5 minutes." msgstr="正在诊断您输入的宽带用户名和宽带密码是否正确，请稍等，整个过程约1-5分钟。"/>
+	<message msgid="Failed. Please confirm your username and password and try again." msgstr="用户名密码验证失败，请确认您的宽带用户名与宽带密码并重新输入。"/>
+	<message msgid="Remote server gives no response. Please make sure your PC can access the Internet without a router.If not, consult your ISP for help." msgstr="网络运营商远端无响应，请确认不接路由器时是否可以正常上网，如不能，请联系当地网络运营商解决。"/>
+	<message msgid="Dial-up succeeded. But the router is not connected to the Internet." msgstr="拨号成功，但无法连接至互联网。"/>
+	<message msgid="Please make sure your PC can access the Internet without a router.If not, consult your ISP for help." msgstr="请确认不使用路由器时是否可以正常上网，如不能，请联系您的宽带运营商。"/>
+	<message msgid="Your Internet connection type may be PPPoE as detected.Please enter correct username and password." msgstr="系统检测到您的联网方式可能为ADSL拨号，请填写完整的宽带用户名和密码，"/>
+	<message msgid="Click OK to try to access the Internet." msgstr="点击“确定”尝试联网。"/>
+	<message msgid="Your Internet connection type may be Static IP as detected. Please select Static IP and configure the network parameters manually." msgstr="系统检测到您的联网方式可能为静态IP，请手动选择并配置静态IP，尝试联网。"/>
+	<message msgid="The router has obtained a valid IP address but cannot access the Internet. Please try the solutions below one by one." msgstr="系统已获取到IP，但无法连接至互联网，请依次尝试以下操作"/>
+	<message msgid="Clone MAC address" msgstr="克隆MAC地址"/>
+	<message msgid=", and wait for 30 seconds." msgstr="，并等待30秒"/>
+	<message msgid="2. Try to configure the router on a PC which can access the Internet without a router. (Connect  the PC to the router via an Ethernet cable.)" msgstr="2. 在不使用路由器时可正常上网的电脑上重新配置(电脑与路由器间需用网线连接)"/>
+	<message msgid="3. Please make sure your PC can access the Internet without a router.If not, consult your ISP for help." msgstr="3. 请确认不使用路由器时是否可以正常上网，如不能，请联系您的宽带运营商。"/>
+	<message msgid="Your Internet connection type may be PPPoE as detected.Please click OK to try to access the Internet." msgstr="系统检测到您的联网方式可能为ADSL拨号，请点击“确定”尝试联网。"/>
+	<message msgid="The IP cannot be in the same net segment as the login IP %s!" msgstr="IP 地址不能与登录 IP(%s)在同一网段！"/>
+	<message msgid="The default gateway cannot be the same as the login IP %s!" msgstr="默认网关不能与登录 IP(%s)相同！"/>
+	<message msgid="The IP cannot be the same as default gateway or DNS server." msgstr="IP 地址不能与默认网关或 DNS 服务器相同！"/>
+	<message msgid="The WiFi name(SSID) can only include 10 non-ASCII characters." msgstr="当无线信号名称中含有中文字符时，最长只能输入10个字符"/>
+	<message msgid="WiFi password is changed into %s.You'll need to use the new password to reconnect to the WiFi. Are you sure to change the password?" msgstr="无线更改密码为%s,需用新密码重新连接路由器！确认更改吗？需用新密码重新连接路由器！确认更改吗？"/>
+	<message msgid="Saving…please wait…" msgstr="数据保存中，请稍候..."/>
+	<message msgid="Saved successfully!" msgstr="数据保存成功！"/>
+	<message msgid="Cloning MAC address, please wait…" msgstr="mac地址克隆中，请等待页面响应..."/>
+	<message msgid="Suggest changing WiFi name while changing the WiFi password to ensure proper WiFi connection." msgstr="为避免因修改密码而导致无线连接不上，建议同时修改无线信号名称"/>
+	<message msgid="Please enter the username." msgstr="请输入宽带运营商提供的账号"/>
+	<message msgid="Please enter the password." msgstr="请输入宽带运营商提供的密码"/>
+	<message msgid="Blank indicates no encryption." msgstr="此项为空表示不加密"/>
+	<message msgid="You need to disable WPS feature before you change the WiFi name (SSID)." msgstr="在系统设置中关闭wps后，才可修改无线信号名称"/>
+	<message msgid="You need to disable WPS feature before you change the WiFi Password." msgstr="在系统设置中关闭wps后，才可修改密码"/>
+	<message msgid="You entered capitals!" msgstr="你输的是大写字母！"/>
+	<message msgid="Password error." msgstr="密码输入错误"/>
+	<message msgid="The password field cannot be empty." msgstr="密码不能为空"/>
+	<message msgid="Password length is within 3~32." msgstr="密码的长度只能为3-32个字符"/>
+	<message msgid="Your browser is outdated. For better display, suggest updating to IE8 or newer version,  or setting up Firefox or Google." msgstr="您的浏览器版本太低，为了更好的显示页面，请升级到IE8及以上版本或安装火狐，谷歌等浏览器"/>
+	<message msgid="Close" msgstr="关闭提示"/>
+	<message msgid="Forget your password?" msgstr="忘记密码?"/>
+	<message msgid="Restore the router to factory default if you forget the password." msgstr="如忘记密码，只能将路由器复位。"/>
+	<message msgid="Do as follows: Connect the router to the power supply. Press and hold the WIFI/RST button for about 10 seconds, and then release." msgstr="方法：连接电源，长按路由器上的WIFI/RST键约10秒后松开(注意：此操作将还原路由器所有设置，您需重新设置路由器才能上网)。"/>
+	<message msgid="Tips" msgstr="密码提示"/>
+	<message msgid="Password" msgstr="密 码"/>
+	<message msgid="Login" msgstr="登 录"/>
+	<message msgid="Dear user, you can enjoy the Internet immediately after finishing the configuration on this page." msgstr="亲爱的用户，轻松一步完成此页设置，即可畅享互联网~"/>
+	<message msgid="Internet Connection Setup" msgstr="联 网"/>
+	<message msgid="Internet Connection Type" msgstr="联网方式"/>
+	<message msgid="Connection Type" msgstr="联网方式"/>
+	<message msgid="PPPoE" msgstr="ADSL 拨号"/>
+	<message msgid="DHCP" msgstr="动态 IP"/>
+	<message msgid="Static IP" msgstr="静态 IP"/>
+	<message msgid="Select PPPoE if you access the Internet with username and password provided by your ISP without a router." msgstr="适用于电信、联通等网络环境，使用宽带用户名和宽带密码上网的用户"/>
+	<message msgid="Select DHCP if you access the Internet directly as soon as you insert the Ethernet cable into your PC." msgstr="适用于酒店、有线电视等网络环境，电脑不需要进行任何配置就可上网的用户"/>
+	<message msgid="Select Static IP if you access the Internet with static IP and other network parameters provided by your ISP without a router." msgstr="适用于公司、光纤接入等网络环境，使用固定IP地址上网的用户"/>
+	<message msgid="Username" msgstr="宽带用户名"/>
+	<message msgid="Password" msgstr="宽带密码"/>
+	<message msgid="password" msgstr="密码"/>
+	<message msgid="IP Address" msgstr="IP 地址"/>
+	<message msgid="Subnet Mask" msgstr="子网掩码"/>
+	<message msgid="Default Gateway" msgstr="默认网关"/>
+	<message msgid="Primary DNS" msgstr="首选 DNS 服务器"/>
+	<message msgid="Secondary DNS" msgstr="备用 DNS 服务器"/>
+	<message msgid="(Optional)" msgstr="（可选）"/>
+	<message msgid="Connection Status" msgstr="联网状态"/>
+	<message msgid="Diagnose" msgstr="联网诊断"/>
+	<message msgid="Wireless Encryption" msgstr="无线加密"/>
+	<message msgid="WiFi Name (SSID)" msgstr="无线信号名称"/>
+	<message msgid="WiFi Password" msgstr="无线密码"/>
+	<message msgid="Disable" msgstr="关 闭"/>
+	<message msgid="Enable" msgstr="开 启"/>
+	<message msgid="Device Info" msgstr="主机名称"/>
+	<message msgid="Note" msgstr="备注"/>
+	<message msgid="Connection" msgstr="连接方式"/>
+	<message msgid="Speed" msgstr="下载速度"/>
+	<message msgid="Bandwidth Control" msgstr="网速限制"/>
+	<message msgid="Access" msgstr="互联网访问"/>
+	<message msgid="There are no devices connected to the router." msgstr="当前无活动客户端"/>
+	<message msgid="Forbid/Permit all the devices to access the Internet except Native Device." msgstr="批量限制(解除)除本机外的主机"/>
+	<message msgid="Unlimited" msgstr="无限制"/>
+	<message msgid="Forbidden" msgstr="禁止上网"/>
+	<message msgid="Manual Setup (Mbps)" msgstr="手动设定（Mbps）"/>
+	<message msgid="Onekey Limitation" msgstr="一键限制"/>
+	<message msgid="Onekey Permission" msgstr="一键解除"/>
+	<message msgid="(Native Device)" msgstr="(本机)"/>
+	<message msgid="Native" msgstr="本机"/>
+	<message msgid="Native Device" msgstr="本机"/>
+	<message msgid="Turn on/off to enable/disable the device to access the Internet." msgstr="开启互联网访问启用此项"/>
+	<message msgid="IP Address:" msgstr="IP 地址:"/>
+	<message msgid="MAC address:" msgstr="MAC 地址:"/>
+	<message msgid="IP:" msgstr="IP 地址:"/>
+	<message msgid="MAC:" msgstr="MAC 地址:"/>
+	<message msgid="0.5Mbps(Browsing  webpage smoothly)" msgstr="0.5Mbps(可正常浏览网页)"/>
+	<message msgid="1.0Mbps(Watching standard definition video smoothly)" msgstr="1.0Mbps(可观看标清视频)"/>
+	<message msgid="2.0Mbps(Watching  high-definition video smoothly)" msgstr="2.0Mbps(可观看高清视频)"/>
+	<message msgid="Manual Setup" msgstr="手动设定"/>
+	<message msgid="Wired" msgstr="有线"/>
+	<message msgid="Wireless" msgstr="无线"/>
+	<message msgid="You have forbidden 20 devices. If added one more, the initial entry will be cleared." msgstr="禁止上网主机已满20条，自动将初始条目清除！"/>
+	<message msgid="You have limited 20 devices.  If added one more, the initial entry will be cleared." msgstr="限速主机已满20条，自动将初始条目清除！"/>
+	<message msgid="You have noted 20 devices. If added one more, the initial entry will be cleared." msgstr="备注已满20条，自动将初始条目清除！"/>
+	<message msgid="Message from webpage" msgstr="来自网页的消息"/>
+	<message msgid="Please close the browser and connect to the WiFi again." msgstr="请关闭浏览器，并重新连接无线网络。"/>
+	<message msgid="For your wireless network security, suggest setting up a WiFi password." msgstr="为保障无线网络安全，建议您设置无线密码。"/>
+	<message msgid="WiFi Name (SSID):" msgstr="无线信号名称："/>
+	<message msgid="WiFi Password:" msgstr="无线密码："/>
+	<message msgid="The password cannot be less than 8 characters." msgstr="密码位数不得少于8位"/>
+	<message msgid="Please enter the WIFI password!" msgstr="请输入无线密码!"/>
+	<message msgid="WiFi Password Range: 8~63 characters!" msgstr="无线密码范围: 8~63 个字符!"/>
+	<message msgid="You cannot browse the webpage properly unless rebooting the browser." msgstr="您必须重启浏览器才能正常浏览"/>
+	<message msgid="Do not remind me any more." msgstr="不再提示"/>
+	<message msgid="WiFi Password:" msgstr="无线密码："/>
+	<message msgid="Signal Strength Mode" msgstr="强度模式选择"/>
+	<message msgid="Common Mode" msgstr="普通模式"/>
+	<message msgid="Enhanced Mode" msgstr="增强模式"/>
+	<message msgid="Disable WiFi from" msgstr="WiFi关闭时间段"/>
+	<message msgid="to" msgstr="到"/>
+	<message msgid="WISP" msgstr="热点信号放大模式（WISP）"/>
+	<message msgid="Client+AP" msgstr="无线信号放大模式（Client+AP）"/>
+	<message msgid="Remote SSID" msgstr="上级无线信号名称"/>
+	<message msgid="Not Selected" msgstr="未选择"/>
+	<message msgid="Remote Wireless Password" msgstr="上级无线信号密码"/>
+	<message msgid="Enter the wireless password." msgstr="请输入上级设备的无线密码"/>
+	<message msgid="Select a SSID..." msgstr="选择网络..."/>
+	<message msgid="Select" msgstr="选择"/>
+	<message msgid="MAC address" msgstr="MAC 地址"/>
+	<message msgid="Channel" msgstr="信道"/>
+	<message msgid="Security" msgstr="安全"/>
+	<message msgid="Signal Strength" msgstr="信号强度"/>
+	<message msgid="None" msgstr="未加密"/>
+	<message msgid="Please select a WiFi name (SSID)." msgstr="请选择无线信号！"/>
+	<message msgid="Are you sure to reboot the router and activate the settings?" msgstr="路由器将重启使设置生效！"/>
+	<message msgid="Login Password Setup" msgstr="设置登录密码"/>
+	<message msgid="Old Password" msgstr="输入旧密码"/>
+	<message msgid="New Password" msgstr="新密码"/>
+	<message msgid="Confirm" msgstr="确认新密码"/>
+	<message msgid="WAN Info" msgstr="WAN口参数"/>
+	<message msgid="MTU" msgstr="MTU 值"/>
+	<message msgid="Do not change it if unnecessary." msgstr="如无特殊需要，请勿修改"/>
+	<message msgid="MAC Clone" msgstr="MAC 地址克隆"/>
+	<message msgid="Other Device" msgstr="其它"/>
+	<message msgid="WAN Speed" msgstr="WAN 口速率"/>
+	<message msgid="Auto" msgstr="自动协商"/>
+	<message msgid="Wireless Setup" msgstr="无线参数"/>
+	<message msgid="Hide SSID" msgstr="无线信号名称隐藏"/>
+	<message msgid="If enabled, the wireless devices cannot find your router's WiFi name(SSID)." msgstr="启用后手机，电脑等设备将无法扫描到路由器的无线信号"/>
+	<message msgid="Management" msgstr="设备管理"/>
+	<message msgid="Reboot Device" msgstr="重启路由器"/>
+	<message msgid="Reboot" msgstr="重启设备"/>
+	<message msgid="Restore Default" msgstr="恢复出厂设置"/>
+	<message msgid="Restore" msgstr="恢复出厂"/>
+	<message msgid="System Log" msgstr="导出系统日志"/>
+	<message msgid="Export System Log" msgstr="导出日志"/>
+	<message msgid="Upgrade Firmware" msgstr="软件升级"/>
+	<message msgid="Browse…" msgstr="选择文件"/>
+	<message msgid="Login IP Address" msgstr="登录 IP 地址"/>
+	<message msgid="DHCP Sever" msgstr="DHCP 服务器"/>
+	<message msgid="If the box is unchecked, the router will stop assigning the IP addresses." msgstr="取消勾选后路由器将停止为主机分配 IP 地址"/>
+	<message msgid="WAN Status" msgstr="联网信息"/>
+	<message msgid="Connection Time" msgstr="连接时间"/>
+	<message msgid="Unconnected" msgstr="未连接"/>
+	<message msgid="Connecting…" msgstr="连接中"/>
+	<message msgid="Connected with Server" msgstr="已连接"/>
+	<message msgid="Number, letter, or underscore." msgstr="只能输入数字，字母或下划线"/>
+	<message msgid="Confirm your new password." msgstr="请再次输入新密码"/>
+	<message msgid="The old password is incorrect. The settings will not be saved." msgstr="旧密码错误,设置未保存！"/>
+	<message msgid="Are you sure to reboot the router?" msgstr="您确定要重启路由器吗？"/>
+	<message msgid="Rebooting…" msgstr="设备重启中..."/>
+	<message msgid="The login IP address will reset to 192.168.0.1 after restoring the router to factory default. Are you sure to restore?" msgstr="恢复出厂设置将清除当前所有配置并将登录IP地址重置为：192.168.0.1，您确定继续吗？"/>
+	<message msgid="Export the system logs and specify a local file to save the system logs." msgstr="导出日志，请指定保存参数的路径。"/>
+	<message msgid="The passwords do not match." msgstr="两次密码输入不一致！"/>
+	<message msgid="Please enter the old password." msgstr="请输入旧密码！"/>
+	<message msgid="IP conflict! The login IP address cannot be the same as default gateway or DNS server. Please make a change." msgstr="登录ip与网关/wan口ip冲突，请修改为其它值后提交！"/>
+	<message msgid="Commit changes?" msgstr="确认提交更改吗？"/>
+	<message msgid="There is a mismatch between IP address and Subnet Mask.Please change the last input 255 into a value from 1 to 254." msgstr="ip地址与默认子网掩码合并无效，请将ip地址最后的255修改为1-254之间的值"/>
+	<message msgid="The login IP address will be changed into %s" msgstr="登陆ip将改为 %s"/>
+	<message msgid="The device will reboot automantically. Are you sure to continue?" msgstr="设备将自动重启，确认提交吗？"/>
+	<message msgid="The login IP address cannot be in  the same net segment as the WAN IP address." msgstr="lan口与wan口ip不能在同一网段！"/>
+	<message msgid="Rebooting…please wait…" msgstr="系统重启中，请稍候..."/>
+	<message msgid="Upgrading... Do not remove the power supply." msgstr="系统升级中，请勿关闭电源..."/>
+	<message msgid="Tenda Wireless Router" msgstr="腾达无线路由器"/>
+	<message msgid="Please select the file with a suffix: 'trx' or 'bin'." msgstr="请选择文件名以 “trx” 或 “bin”结尾的文件"/>
+	<message msgid="Are you sure to upgrade?" msgstr="您确信要升级吗"/>
+	<message msgid="Firmware Upgrade" msgstr="软件升级"/>
+	<message msgid="Current version:" msgstr="当前软件版本："/>
+	<message msgid="Error! The router will reboot automatically." msgstr="升级文件错误，系统即将重启！"/>
+	<message msgid="Rebooting…please wait…" msgstr="正在重启系统，请稍候..."/>
+	<message msgid="Error! The WAN IP address cannot be in the same net segment as the LAN IP address." msgstr="错误：WAN口IP与LAN口IP不能在同一网段！"/>
+	<message msgid="Please select a correct upgrade file!" msgstr="请选择正确的升级文件！"/>
+	<message msgid="The old password is incorrect." msgstr="你输入的旧密码错误！"/>
+	<message msgid="Login devices is up to 4!" msgstr="登录人数已满4人！"/>
+	<message msgid="Internet Setup" msgstr="上网设置"/>
+	<message msgid="Wireless Encryption" msgstr="无线加密"/>
+	<message msgid="Tenda smart detection" msgstr="Tenda路由器智能检测"/>
+	<message msgid="Just go forward without Internet setup." msgstr="您的网络无需设置"/>
+	<message msgid="Next" msgstr="下一步"/>
+	<message msgid="Welcome..." msgstr="欢迎使用"/>
+	<message msgid="Detecting..." msgstr="正在检测您的网络环境"/>
+	<message msgid="NOTICE" msgstr="提示："/>
+	<message msgid="WAN port unplugged." msgstr="检测到WAN口未插网线，"/>
+	<message msgid="Please plug an Ethernet cable to the WAN port." msgstr="请检查并连接好WAN口网线！"/>
+	<message msgid="Next" msgstr="下一步"/>
+	<message msgid="Skip" msgstr="跳过"/>
+	<message msgid="Please enter the PPPoE username and password your ISP gave you." msgstr="请输入宽带运营商提供的账号和密码"/>
+	<message msgid="ISP Username:" msgstr="宽带账号:"/>
+	<message msgid="ISP Password:" msgstr="宽带密码:"/>
+	<message msgid="Username can't be leave blank" msgstr="宽带账号不能为空"/>
+	<message msgid="Password can't be leave blank" msgstr="宽带密码不能为空"/>
+	<message msgid="Static IP as detected. Set up a static IP in Internet page later." msgstr="系统检测到您的网络可能为静态IP，请稍后在上网设置页手动设置"/>
+	<message msgid="DHCP as detected. Free to set Internet connection." msgstr="系统检测到您的网络可能为自动分配，无需设置即可联网"/>
+	<message msgid="Configure your WiFi" msgstr="请配置您的无线网络"/>
+	<message msgid="WiFi Name can't be leave blank" msgstr="无线信号名称不能为空"/>
+	<message msgid="WiFi Name:" msgstr="无线名称:"/>
+	<message msgid="WiFi Name length exceed 32 Bytes" msgstr="无线信号长度不能超过32字节"/>
+	<message msgid="WiFi Password:" msgstr="无线密码:"/>
+	<message msgid="WiFi Password" msgstr="无线密码"/>
+	<message msgid="8~63 characters" msgstr="8-63位"/>
+	<message msgid="Security Tips" msgstr="安全提示"/>
+	<message msgid="No password for your WiFi." msgstr="当前无线网络未设置密码"/>
+	<message msgid="Suggest setting a WiFi password for better security." msgstr="为保障网络安全，建议您设置无线密码"/>
+	<message msgid="Set" msgstr="设置密码"/>
+	<message msgid="Not now" msgstr="暂不设置"/>
+	<message msgid="Saving…please wait…" msgstr="配置保存中，请稍后……"/>
+	<message msgid="As you had changed wireless configuration, the connection will be linked down, please reconnect: %s" msgstr="检测到您使用无线连接路由器，由于您更改了无线设置，连接将断开，请重新连接无线信号：%s"/>
+	<message msgid="Congratulations! You can browse the Internet now!" msgstr="恭喜您，可以上网了！"/>
+	<message msgid="Please connect your WiFi: " msgstr="请连接信号："/>
+	<message msgid="Personalize your Router in Bandwidth and Signal pages in greater detail." msgstr="您还可以管理设置网速控制，调整WiFi信号强度"/>
+	<message msgid="More setup" msgstr="去管理界面看看"/>
+	<message msgid="Saved Successfully!" msgstr="配置保存成功！"/>
+	<message msgid="Disable Bridge function before you enable this function" msgstr="如果要打开定时开关，请关闭无线桥接"/>
+	<message msgid="(GMT-12:00)West of International Date Line" msgstr="（GMT-12：00）国际日期变更线以西"/>
+	<message msgid="(GMT-11:00)Midway Island, Samoa" msgstr="（GMT-11：00）中途岛，萨摩亚群岛"/>
+	<message msgid="(GMT-10:00)Hawaii, Honolulu" msgstr="（GMT-10：00）夏威夷，火奴鲁鲁"/>
+	<message msgid="(GMT-09:00)Alaska" msgstr="（GMT-09：00）阿拉斯加"/>
+	<message msgid="(GMT-08:00)Pacific Time" msgstr="（GMT-08：00）太平洋时间（美国和加拿大）"/>
+	<message msgid="(GMT-07:00)Mountain Time" msgstr="（GMT-07：00）山地时间（美国和加拿大）"/>
+	<message msgid="(GMT-07:00)Chihuahua, La Paz, Mazatlan" msgstr="（GMT-07：00）奇瓦瓦，拉巴斯，马萨特兰"/>
+	<message msgid="(GMT-07:00)Arizona" msgstr="（GMT-07：00）亚利桑那"/>
+	<message msgid="(GMT-06:00)Central Time" msgstr="（GMT-06：00）中部时间（美国和加拿大）"/>
+	<message msgid="(GMT-06:00)Guadalajara, Mexico City, Monterrey" msgstr="（GMT-06：00）瓜达拉哈拉，墨西哥城，蒙特雷"/>
+	<message msgid="(GMT-05:00)Eastern Time" msgstr="（GMT-05：00）东部时间（美国和加拿大）"/>
+	<message msgid="(GMT-05:00)India to Ann" msgstr="（GMT-05：00）印地安那（东）"/>
+	<message msgid="(GMT-05:00)Bogota, Lima, Quito" msgstr="（GMT-05：00）波哥大，利马，基多"/>
+	<message msgid="(GMT-04:30)Caracas, La Paz" msgstr="（GMT-04：00）大西洋时间（加拿大）"/>
+	<message msgid="(GMT-04:00)Atlantic Time" msgstr="（GMT-04：00）马瑙斯"/>
+	<message msgid="(GMT-04:00)Manaus" msgstr="（GMT-04：00）加拉加斯，拉巴斯"/>
+	<message msgid="(GMT-03:30)Newfoundland and Labrador" msgstr="（GMT-03：30）纽芬兰和拉布拉多"/>
+	<message msgid="(GMT-03:00)Brasilia Asia" msgstr="（GMT-03：00）巴西利亚"/>
+	<message msgid="(GMT-03:00)Greenland" msgstr="（GMT-03：00）格陵兰"/>
+	<message msgid="(GMT-03:00)Buenos Aires, Georgetown" msgstr="（GMT-03：00）布宜诺斯艾利斯，乔治敦"/>
+	<message msgid="(GMT-02:00)Atlantic" msgstr="（GMT-02：00）大西洋中部"/>
+	<message msgid="(GMT-01:00)Azores" msgstr="（GMT-01：00）亚速尔群岛"/>
+	<message msgid="(GMT-01:00)Cape Verde Islands" msgstr="（GMT-01：00）佛得角群岛"/>
+	<message msgid="(GMT)Greenwich Mean Time" msgstr="（GMT）格林威治标准时间：都柏林，爱丁堡，里斯本，伦敦"/>
+	<message msgid="(GMT)Casablanca , Monrovia" msgstr="（GMT）卡萨布兰卡，蒙罗维亚"/>
+	<message msgid="(GMT+01:00)Belgrade, Bratislava, Budapest, Ljubljana, Prague" msgstr="（GMT+01:00）贝尔格莱德，布拉迪斯拉发，布达佩斯，卢布尔雅那，布拉格"/>
+	<message msgid="(GMT+01:00)Sarajevo, Skopje, Warsaw, Zagreb" msgstr="（GMT+01:00）萨拉热窝，斯科普里，华沙，萨格勒布"/>
+	<message msgid="(GMT+01:00)Brussels, Copenhagen, Madrid, Paris" msgstr="（GMT+01:00）布鲁塞尔，哥本哈根，马德里，巴黎"/>
+	<message msgid="(GMT+01:00)West Africa" msgstr="（GMT+01:00）西中非"/>
+	<message msgid="(GMT+01:00)Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" msgstr="（GMT+01:00）阿姆斯特丹，柏林，伯尔尼，罗马，斯德哥尔摩，维也纳"/>
+	<message msgid="(GMT+02:00)Athens, Bucharest, Istanbul" msgstr="（GMT+02:00）雅典，布加勒斯特，伊斯坦布尔"/>
+	<message msgid="(GMT+02:00)Minsk" msgstr="（GMT+02:00）明斯克"/>
+	<message msgid="(GMT+02:00)Cairo" msgstr="（GMT+02:00）开罗"/>
+	<message msgid="(GMT+02:00)Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" msgstr="（GMT+02:00）赫尔辛基，基辅，里加，索非亚，塔林，维尔纽斯"/>
+	<message msgid="(GMT+02:00)Jerusalem" msgstr="（GMT+02:00）耶路撒冷"/>
+	<message msgid="(GMT+02:00)temperature 'll have" msgstr="（GMT+02:00）温得和克"/>
+	<message msgid="(GMT+02:00)grams. Harare, Pretoria" msgstr="（GMT+02:00）哈拉雷，比勒陀利亚"/>
+	<message msgid="(GMT+03:00)Moscow, St. Petersburg, Volgograd" msgstr="（GMT+03:00）莫斯科，圣彼得堡，伏尔加格勒"/>
+	<message msgid="(GMT+03:00)Kuwait, Riyadh" msgstr="（GMT+03:00）科威特，利雅得"/>
+	<message msgid="(GMT+03:00)Baghdad" msgstr="（GMT+03:00）巴格达"/>
+	<message msgid="(GMT+03:00)Nairobi" msgstr="（GMT+03:00）内罗毕"/>
+	<message msgid="(GMT+03:30)Tehran" msgstr="（GMT+03:30）德黑兰"/>
+	<message msgid="(GMT+04:00)Abu Dhabi, Muscat" msgstr="（GMT+04:00）阿布扎比，马斯喀特"/>
+	<message msgid="(GMT+04:00)Baku" msgstr="（GMT+04:00）巴库"/>
+	<message msgid="(GMT+04:00)Yerevan" msgstr="（GMT+04:00）埃里温"/>
+	<message msgid="(GMT+04:00)Tbilisi" msgstr="（GMT+04:00）第比利斯"/>
+	<message msgid="(GMT+04:30)Kabul" msgstr="（GMT+04:30）喀布尔"/>
+	<message msgid="(GMT+05:00)Islamabad, Karachi, Tashkent" msgstr="（GMT+05:00）伊斯兰堡，卡拉奇，塔什干"/>
+	<message msgid="(GMT+05:00)Yekaterinburg" msgstr="（GMT+05:00）叶卡捷琳堡"/>
+	<message msgid="(GMT+05:30)Chennai, Kolkata, Mumbai, New Delhi" msgstr="（GMT+05:30）钦奈，加尔各答，孟买，新德里"/>
+	<message msgid="(GMT+05:45)Kathmandu" msgstr="（GMT+05:45）加德满都"/>
+	<message msgid="(GMT+06:00)Astana, Dhaka" msgstr="（GMT+06:00）阿斯塔纳，达卡"/>
+	<message msgid="(GMT+06:00)Almaty, Novosibirsk" msgstr="（GMT+06:00）阿拉木图，新西伯利亚"/>
+	<message msgid="(GMT+06:00)Colombo" msgstr="（GMT+06:00）科伦坡"/>
+	<message msgid="(GMT+06:30)Yangon" msgstr="（GMT+06:30）仰光（仰光）"/>
+	<message msgid="(GMT+07:00)Krasnoyarsk" msgstr="（GMT+07:00）克拉斯诺亚尔斯克"/>
+	<message msgid="(GMT+07:00)Bangkok, Hanoi, Jakarta" msgstr="（GMT+07:00）曼谷，河内，雅加达"/>
+	<message msgid="(GMT+08:00)Beijing, Chongqing, Hong Kong, Urumqi" msgstr="（GMT+08:00）北京，重庆，香港特别行政区，乌鲁木齐"/>
+	<message msgid="(GMT+08:00)Irkutsk grams, Ulaanbaatar" msgstr="（GMT+08:00）伊尔库次克，乌兰巴托"/>
+	<message msgid="(GMT+08:00)Kuala Lumpur, Singapore" msgstr="（GMT+08:00）吉隆坡，新加坡"/>
+	<message msgid="(GMT+08:00)Perth" msgstr="（GMT+08:00）珀斯"/>
+	<message msgid="(GMT+09:00)Yakutsk" msgstr="（GMT+09:00）雅库茨克"/>
+	<message msgid="(GMT+09:00)Osaka, Sapporo, Tokyo" msgstr="（GMT+09:00）大阪，札幌，东京"/>
+	<message msgid="(GMT+09:00)Seoul" msgstr="（GMT+09:00）首尔"/>
+	<message msgid="(GMT+09:30)Darwin" msgstr="（GMT+09:30）达尔文"/>
+	<message msgid="(GMT+09:30)Adelaide" msgstr="（GMT+09:30）阿德莱德"/>
+	<message msgid="(GMT+10:00)Brisbane" msgstr="（GMT+10:00）布里斯班"/>
+	<message msgid="(GMT+10:00)Canberra, Melbourne Sydney" msgstr="（GMT+10:00）堪培拉，墨尔本，悉尼"/>
+	<message msgid="(GMT+10:00)Guam, Port Moresby" msgstr="（GMT+10:00）关岛，莫尔兹比港"/>
+	<message msgid="(GMT+10:00)Vladivostok" msgstr="（GMT+10:00）符拉迪沃斯托克"/>
+	<message msgid="(GMT+10:00)Hobart" msgstr="（GMT+10:00）霍巴特"/>
+	<message msgid="(GMT+11:00)Magadan, Solomon Islands, New Caledonia and more" msgstr="（GMT+11:00）马加丹，所罗门群岛，新喀里多"/>
+	<message msgid="(GMT+12:00)Fiji Islands, Kamchatka Peninsula, the Marshall Islands" msgstr="（GMT+12:00）斐济群岛，堪察加半岛，马绍尔群岛"/>
+	<message msgid="(GMT+12:00)Auckland , Wellington" msgstr="（GMT+12:00）奥克兰，惠灵顿"/>
+	<message msgid="(GMT+13:00)Nuku'alofa" msgstr="（GMT+13:00）努库阿洛法"/>
+	<message msgid="Time Setup" msgstr="时间设置"/>
+	<message msgid="Timezone" msgstr="时区"/>
+	<message msgid="Current time" msgstr="当前时间"/>
+	<message msgid="Time has been synchronized with Internet successfully" msgstr="当前时间已与互联网同步"/>
+	<message msgid="Time will be automantically synchronized with Internet" msgstr="联网后自动更新当前时间"/>
+	<message msgid="Channel Bandwidth" msgstr="信道频宽"/>
+	<message msgid="Auto(150M/300M)" msgstr="自动(150M/300M)"/>
+</po>

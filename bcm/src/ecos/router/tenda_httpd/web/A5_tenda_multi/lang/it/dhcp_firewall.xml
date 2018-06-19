@@ -1,0 +1,120 @@
+<po>
+<!--lan_dhcps.asp-->
+<message msgid="IP pool start address" msgstr="Pozza di indirizzi IP iniziale" />
+<message msgid="IP pool end address" msgstr="Pozza di indirizzi IP finale" />
+<message msgid="IP pool start address can not bigger than IP pool end address" msgstr="La pozza di indirizzi IP iniziale non può essere superiore della pozza di indirizzi IP finale!" />
+<message msgid="Lease Time" msgstr="Tempo di licenza" />
+<message msgid="One hour" msgstr="Un'ora" />
+<message msgid="Two hours" msgstr="Due ore" />
+<message msgid="Three hours" msgstr="Tre ore" />
+<message msgid="One day" msgstr="Un giorno" />
+<message msgid="Two days" msgstr="Due giorni" />
+<message msgid="One week" msgstr="Una settimana" />
+<message msgid="Lan_dncps_helpinfo1" msgstr=" Il server DHCP può aiutarVi a distribuire automaticamente l'indirizzo IP ai client, se viene abilitato il server DHCP del router, esso vi aiuterà a configurare automaticamente tutti i protocolli TCP/IP dei computer in LAN." />
+<message msgid="Lan_dncps_helpinfo2" msgstr="Pozza di indirizzi IP: Inserire un indirizzo IP di avvio ed uno di fine per formare un raggio di assegnazione statico." />
+<message msgid="Lan_dncps_helpinfo3" msgstr="Tempo di licenza: assegnare il tempo di licenza solamente quando il computer o qualsiasi client DHCP lo richiede." />
+<message msgid="Tenda 11N Wireless Router Login Screen" msgstr=" Schermata di login del Router Tenda 11N wireless" />
+<message msgid="DHCP Server" msgstr="Server DHCP" />
+<message msgid="Enable" msgstr="Abilita" />
+<message msgid="Disable" msgstr="Disabilita" />
+
+<!--lan_dhcp_clients.asp-->
+<message msgid="Host Name" msgstr="Nome host" />
+<message msgid="IP-MAC Binding" msgstr="Cablaggio IP-MAC" />
+<message msgid="NO." msgstr="No" />
+<message msgid="Max.16 static IP-MAC binding items" msgstr="Max. 16 voci per il cablaggio IP-MAC statico" />
+<message msgid="NO repeated IP!" msgstr="Non ripetere IP!" />
+<message msgid="No repeated MAC address!" msgstr="Non ripetere MAC!" />
+<message msgid="Static assignment" msgstr="Assegnazione statica" />
+<message msgid="Add" msgstr="Aggiungi" />
+<message msgid="Refresh" msgstr="Ripristina" />
+<message msgid="lan_dhcp_clients_helpinfo1" msgstr="La lista client DHCP visualizza l`indirizzo IP del client, indirizzo MAC e il nome macchina ottenuti dal server DHCP del router. Inserire manualmente l'IP e l'indirizzo MAC e convertirlo in assegnazione statica." />
+<message msgid="lan_dhcp_clients_helpinfo2" msgstr="Istruzioni: dopo aver aggiunto o cancellato una voce, cliccare sul pulsante &quot;Salva&quot; per rendere efficaci le modifiche." />
+<message msgid="lan_dhcp_clients_helpinfo3" msgstr="Nota: è necessario riavviare il router dopo aver terminato." />
+<message msgid="IP Address" msgstr="Indirizzo IP" />
+<message msgid="MAC address" msgstr="Indirizzo MAC" />
+<message msgid="Delete" msgstr="Cancella" />
+
+<!--firewall_clientfilter--> 
+  <message msgid="Sunday" msgstr="Domenica" />  
+  <message msgid="Monday" msgstr="Lunedì" /> 
+  <message msgid="Tuesday" msgstr="Martedì" />  
+  <message msgid="Wednesday" msgstr="Mercoledì" />    
+  <message msgid="Thursday" msgstr="Giovedì" />   
+  <message msgid="Friday" msgstr="Venerdì" />  
+  <message msgid="Saturday" msgstr="Sabato" />   
+  <message msgid="Forbid only" msgstr="Proibisci solo" />  
+  <message msgid="Permit only" msgstr="Permetti solo" />   
+  <message msgid="Start IP" msgstr="IP Iniziale" />  
+  <message msgid="End IP" msgstr="IP Finale" />  
+  <message msgid="Start Port" msgstr="Porta iniziale" />   
+  <message msgid="End Port" msgstr="Porta finale" />  
+  <message msgid="Start Time" msgstr="Ora di avvio" />  
+  <message msgid="End Time" msgstr="Ora di fine" />  
+  <message msgid="Start Week" msgstr="Settimana di partenza" />   
+  <message msgid="End Week" msgstr="Ultima settimana" />  
+  <message msgid="not to enter 'notag' in the Remarks field" msgstr="non selezionare 'notag' nel campo Note" />  
+  <message msgid="one rule must be entered when 'permit only' is selected" msgstr="Almeno una regola deve essere inserita quando viene selezionato 'permetti solo'!" /> 
+  <message msgid="Filter Mode" msgstr="Modalità di filtraggio" />  
+  <message msgid="Access Policy" msgstr="Regole di accesso" />  
+  <message msgid="Remarks" msgstr="Note" />   
+  <message msgid="Port" msgstr="Porta" />  
+  <message msgid="Type" msgstr="Tipologia" />  
+  <message msgid="Both" msgstr="Entrambi" />   
+  <message msgid="Time" msgstr="Ora" />  
+  <message msgid="Date" msgstr="Data" />   
+  <message msgid="Clear this item" msgstr="Elimina questa voce" />   
+  <message msgid="Clear" msgstr="Elimina" /> 
+  <message msgid="Firewall_clientfilter_Help_Inf1" msgstr="Per attivare la gestione in modalità LAN, controllare l`accesso LAN del computer mediante internet impostando il segmento IP. Prego fare riferimento alla guida utente per ulteriori dettagli." /> 
+  <message msgid="Firewall_clientfilter_Help_Inf2" msgstr=" Istruzioni: se si desidera eliminare una voce, selezionarla e cliccare sul pulsante &quot;Elimina&quot;, quindi cliccare su &quot;Salva&quot; per memorizzare l`impostazione." />
+  <message msgid="Firewall_clientfilter_Help_Inf3" msgstr="Proibisci: proibisci solo l' IP configurato o il segmento IP di accedere a internet." />
+  <message msgid="Firewall_clientfilter_Help_Inf4" msgstr="Permetti: permetti solo l' IP configurato o il segmento IP di accedere a internet." />
+  <message msgid="Firewall_clientfilter_Help_Inf5" msgstr=" Nota: quando l`ora viene impostata su 0:0~0:0, significa che saranno abilitati a tutte le ore." />
+   
+<!--firewall_mac-->  
+  <message msgid="Empty MAC address" msgstr="Svuotare indirizzo MAC" />    
+  <message msgid="Firewall_MAC_Help_Inf1" msgstr=" La funzione di filtro indirizzo MAC Vi permette di controllare l`accesso del computer nella LAN ad internet. Prego fare riferimento alla guida utente per ulteriori dettagli." /> 
+  <message msgid="Firewall_MAC_Help_Inf2" msgstr=" Istruzioni: se si desidera eliminare una delle voci, selezionarla e cliccare sul pulsante &quot;Elimina&quot;, quindi cliccare su &quot;Salva&quot; per attivare l`impostazione." /> 
+  <message msgid="Firewall_MAC_Help_Inf3" msgstr="Proibisci: proibisci solo l' IP configurato o il segmento IP di accedere a internet." /> 
+  <message msgid="Firewall_MAC_Help_Inf4" msgstr="Permetti: permetti solo l' IP configurato o il segmento IP di accedere a internet." />  
+  <message msgid="Firewall_MAC_Help_Inf5" msgstr="Nota: quando l`ora viene impostata su 0:0~0:0, significa che saranno abilitati a tutte le ore." />   
+   
+<!--firewall_urlfilter-->		
+  <message msgid="URL character string" msgstr="Colonna caratteri URL" />   
+  <message msgid="Firewall_URLFilter_Help_Inf1" msgstr="Per facilitare l`accesso alla gestione LAN del computer su siti internet, bloccare I siti indesiderati digitando l`URL Prego fare riferimento alla guida utente per ulteriori dettagli." />
+  <message msgid="Firewall_URLFilter_Help_Inf2" msgstr="Istruzioni: se si desidera configurare una delle voci desiderate, selezionarla e quindi cliccare sul pulsante &quot;Elimina&quot;, cliccare su &quot;Salva&quot; per attivare le impostazioni." />
+  <message msgid="Firewall_URLFilter_Help_Inf3" msgstr="Nota. Colonna carattere URL: Inserire solamente su una stringa di caratteri per ogni singola regola. Quando l`ora viene impostata su 0:0~0:0, significa che saranno abilitati a tutte le ore." />
+	  
+ <!--system_remote--> 
+  <message msgid="Can not be at the same segment with LAN  IP" msgstr="LAN  IP non possono essere posizionate sullo stesso segmento!" /> 
+  <message msgid="WAN IP address" msgstr="Indirizzo WAN IP" />  
+  <message msgid="remote_Help_Inf1" msgstr="Questa caratteristica Vi permettera' di gestire il router mediante internet. Per utilizzare questa funzione, selezionare “Abilita” e quindi impostare il router via porta specifica su PC." />
+  <message msgid="remote_Help_Inf2" msgstr="Porta: numero di porta che può essere utilizzato per gestione remota." />
+  <message msgid="remote_Help_Inf3" msgstr="Indirizzo IP:  Indirizzo IP del computer su internet per gestione remota WEB." />
+  
+  <!--menu.js-->
+  <message msgid="Ok" msgstr="Ok" />
+  <message msgid="Cancel" msgstr="Cancella" />
+
+<!--gozila.js -->  
+  <message msgid="invalid" msgstr="Non valido!" />   
+  <message msgid="contains illegal characters" msgstr="Contiene caratteri non validi:" />  
+  <message msgid="not numbers " msgstr="non numeri!" />  
+  <message msgid="beyond the range" msgstr="oltre il limite!" /> 
+  <message msgid="contains invalid  characters" msgstr="Contiene caratteri non validi:" /> 
+  <message msgid="Are you sure to exit" msgstr="Siete sicuri di uscire?" />   
+  <message msgid="not defined" msgstr="non definito!" />  
+  <message msgid="Password differs" msgstr="Password diversa!" />  
+  <message msgid="Change password" msgstr="Modificare la password?" /> 
+  <message msgid="the length is not within the range" msgstr="Lunghezza oltre il limite imposto!" />    
+  <message msgid="permanent" msgstr="permanente" />   
+  <message msgid="Day" msgstr="Giorno" />  
+  <message msgid="Don't enter Chinese characters" msgstr="Non inserire caratteri Asiatici!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Riavviare il router per rendere effettive le impostazioni, riavviare ora?" />
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Riavviare il modulo wireless per rendere effettive le impostazioni, riavviare ora?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Le note possono solamente contenere numeri, lettere e trattini-bassi!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="L'indirizzo MAC appartiene ad indirizzi riservati, prego re-inserirlo!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="L`indirizzo MAC appartiene ad indirizzi multicast, prego re-inserire!" />  
+  <message msgid="Help information" msgstr="Informazioni di assistenza" /> 
+
+</po>

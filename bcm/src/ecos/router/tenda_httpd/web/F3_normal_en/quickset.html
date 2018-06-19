@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Tenda Wizard</title>
+<link rel="shortcut icon" href="./favicon.ico">
+<link type="text/css" rel="stylesheet" href="./css/reasyui.css">
+<link type="text/css" rel="stylesheet" href="./css/quickset.css">
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 
+HTML5SHIV需放在头部，RESPOND.JS需要服务器--> 
+<!--[if lt IE 9]>
+<script src="./js/libs/respond.min.js"></script>
+<script src="./js/libs/html5shiv.min.js"></script>
+<![endif]--> 
+<script type="text/javascript" charset="utf-8" src="./lang/b28n.js"></script>
+</head>
+<body >
+<section class="container">
+  <article class="quickSet box-shadow center-block pull-none col-sm-9 col-md-8 col-lg-7">
+    <header class="row">
+      <div class="col-xs-6 col-sm-3"> 
+        <img src="img/logo.png" class="img-responsive">
+      </div>
+    </header>
+    <nav class="text-right">
+      <ol class="breadcrumb">
+        <li class="active">Internet</li>
+        <li> Wireless</li>
+        <li> Done</li>
+      </ol>
+    </nav>
+    <div class="quickContent text-center">
+      <section id="detect">
+  <header>
+    <h1>Tenda Setup Wizard</h1>
+  </header>
+  <section class="content"> <img src="img/loading-ico.gif" class="img-responsive center-block"> </section>
+  <footer>
+    <h2>We're detecting your Internet connection type</h2>
+    <p class="help-block">This may take less than a minute...Please wait...</p>
+  </footer>
+</section>
+<section id="error" class="none">
+  <section class="content"> <img src="img/cable-into.gif" class="img-responsive center-block">
+    <p class="text-danger"> Plug the Ethernet cable into the WAN port! </p>
+  </section>
+  <footer class="center-block col-sm-7 col-md-6 pull-none">
+    <button class="btn btn-default btn-block" id="skipLineoff">Skip</button>
+  </footer>
+</section>
+        <section id="quickSetPPPoEWrap" class="none">
+  <header>
+    <p>Please Type the user name and password from ISP</p>
+  </header>
+  <section class="center-block pull-none col-sm-7 col-md-6">
+    <div class="form-group ico-groups">
+      <label class="sr-only">User Name</label>
+      <label class="ico icon-user"></label>
+      <input type="text" id="wizardPPPoEUser" name="wizardPPPoEUser"
+              class="form-control validatebox ico-text" maxlength="128"
+              required="required" data-options='{"type": "pppoe"}'>
+    </div>
+    <div class="form-group ico-groups">
+      <label class="sr-only">Password</label>
+      <label class="ico icon-lock"></label>
+      <input type="password" id="wizardPPPoEPwd" name="wizardPPPoEPwd"
+             class="form-control validatebox ico-text" maxlength="128"
+             required="required" data-options='{"type": "pppoe"}'>
+    </div>
+    <footer class="form-actions">
+      <button class="btn btn-primary btn-block" id="pppoeNext">Next</button>
+      <button class="btn btn-default btn-block" id="pppoeSkip">Skip</button>
+    </footer>
+  </section>
+</section>
+      <section id="quickSetStaticWrap" class="none">
+  <header>
+    <p>Please type the static IP info from ISP</p>
+  </header>
+  <section class="center-block pull-none col-sm-7 col-md-6">
+    <div class="form-group">
+      <input type="text" id="wizardWanIP" name="wizardWanIP"
+              class="form-control validatebox" maxlength="15" 
+              required="required" data-options='{"type":"ip"}' placeholder="IP">
+    </div>
+    <div class="form-group">
+      <input type="text" id="wizardWanMask" name="wizardWanMask"
+             class="form-control validatebox" maxlength="15"
+             required="required" data-options='{"type":"mask"}' placeholder="Subnet Mask">
+    </div>
+    <div class="form-group">
+      <input type="text" id="wizardWanGateway" name="wizardWanGateway"
+             class="form-control validatebox" maxlength="15"
+             required="required" data-options='{"type":"ip"}' placeholder="Default Gateway">
+    </div>
+    <div class="form-group">
+      <input type="text" id="wizardWanDns1" name="wizardWanDns1"
+             class="form-control validatebox" maxlength="15"
+             required="required" data-options='{"type":"dns"}' placeholder="Preferred DNS Server">
+    </div>
+    <div class="form-group">
+      <input type="text" id="wizardWanDns2" name="wizardWanDns2"
+             class="form-control validatebox" maxlength="15"
+             data-options='{"type":"dns"}' placeholder="Alternative DNS Server">
+    </div>
+    <footer class="form-actions">
+      <button class="btn btn-primary btn-block" id="staticNext">Next</button>
+      <button class="btn btn-default btn-block" id="staticSkip">Skip</button>
+    </footer>
+  </section>
+</section>
+      <section id="quickSetDHCPWrap" class="none">
+  <header>&nbsp;</header>
+  <section class="center-block  pull-none col-sm-7 col-md-6">
+    <p class="text-wrap">Internet connected successfully.<br>
+      Click "Next" for wireless settings</p>
+    <footer class="form-actions">
+      <button class="btn btn-primary btn-block" id="dhcpNext">Next</button>
+    </footer>
+  </section>
+</section>
+      <section id="quickSetWiFiWrap" class="none">
+  <header>
+    <p>Secure Your WiFi</p>
+  </header>
+  <section class="center-block pull-none col-sm-7 col-md-6">
+    <div class="form-group ico-groups">
+      <label class="sr-only">WiFi Name</label>
+      <label class="ico icon-wireless"></label>
+      <input type="text" id="wizardSSID" name="wizardSSID"
+              class="form-control validatebox ico-text" maxlength="32"
+              required data-options='{"type": "ssid"}' placeholder="WiFi Name">
+    </div>
+    <div class="form-group ico-groups">
+      <label class="sr-only">WiFi Password</label>
+      <label class="ico icon-lock"></label>
+      <input type="password" id="wizardSSIDPwd" name="wizardSSIDPwd"
+             class="form-control validatebox ico-text" maxlength="63"
+             data-options='{"type":"ascii", "args":[8,63]}' placeholder="WiFi Password">
+    </div>
+    <footer class="form-actions">
+      <button class="btn btn-primary btn-block" id="wifiNext">Next</button>
+      <button class="btn btn-default btn-block" id="wifiBack">Back</button>
+    </footer>
+  </section>
+</section>
+<section id="DoneWrap" class="none">
+  <div id="savingWrap" class="">
+    <section class="content">
+      <h1 class="count" id="countWrap">8</h1>
+    </section>
+    <footer>
+      <h2>Saving...Please wait...</h2>
+    </footer>
+  </div>
+  <div id="savedWrap" class="none">
+    <section class="content"> 
+      <img src="img/conn-ok.png" class="img-responsive center-block">
+    </section>
+    <div>
+      <h2><span id="successinternetWrap" class="none">You're all set!<br></span>
+    You can now connect to <span id="ssid-msg">Tenda_AABBCC</span></h2>
+      <p class="help-block none" id="moreTips">For additional features or to change settings, click on the "More".</p>
+    </div>
+    <footer class="form-actions">
+      <button class="btn btn-primary" id="gohome">More</button>
+    </footer>
+  </div>
+</section>
+    </div>
+  </article>
+   <section id="wifiWarning" class="dialog-pancel none">
+    <header>
+      <div class="dialog-title">
+        <div class="dialog-close">&times;</div>
+      </div>
+    </header>
+    <section class="">
+      <div class="dialog-message">
+        <i class="ico icon-attention text-primary">&nbsp;</i>
+        <span>No WiFi password set.Set it now?</span>
+      </div>
+    </section>
+    <footer class="form-actions text-center">
+        <button class="btn btn-frist btn-primary" id="wifiWarningBack">OK</button>
+        <button class="btn" id="wifiWarningNext">Not Now</button>
+      </footer>
+  </section>
+</section>
+<div id="progress-overlay" class="modal fade"></div>
+</section>
+<script type="text/javascript" charset="utf-8" src="./js/libs/j.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libs/reasy-ui-1.0.3.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libs/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/quickset.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libs/time-zone.js"></script>
+</body>
+</html>

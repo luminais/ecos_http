@@ -1,0 +1,82 @@
+<section class="container-fluid">
+  <form class="form-horizontal">
+    <h2 class="legend">&nbsp;</h2>
+    <fieldset>
+<div class="form-group" style="margin-bottom: 4px;">
+  <label class="col-sm-4 col-md-3 control-label">Connection Type</label>
+  <div class="col-sm-8">
+    <label class="radio-inline" for="adsl">
+      <input type="radio" id="adsl" name="wanType" value="pppoe" />
+      PPPoE</label>
+    <label class="radio-inline" for="dhcp">
+      <input type="radio" id="dhcp" name="wanType" value="dhcp" />
+      Dynamic IP</label>
+    <label class="radio-inline" for="static">
+      <input type="radio" id="static" name="wanType" value="static" />
+      Static IP</label>
+  </div>
+</div>
+      <div id="wan">
+        <div id="pppoe-set" class="connect-type none">
+  <div class="form-group" style="margin-bottom: 4px;">
+    <label class="col-sm-4 col-md-3 control-label" for="wanPPPoEUser"></label>
+    <div class="col-sm-8 help-block">Select PPPoE if your Internet connection asks for the user name and password.</div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wanPPPoEUser">User Name</label>
+    <div class="col-sm-5 col-md-4">
+      <input type="text" id="wanPPPoEUser" class="form-control validatebox" name="wanPPPoEUser" required="required" data-options='{"type": "pppoe"}' maxLength="128"  />
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wanPPPoEPwd">Password</label>
+    <div class="col-sm-5 col-md-4">
+      <input type="password" id="wanPPPoEPwd" class="form-control validatebox" name="wanPPPoEPwd" required="required" data-options='{"type": "pppoe"}'  maxLength="128"/>
+    </div>
+  </div>
+</div>
+        <div id="dhcp-set" class="connect-type none">
+<div class="form-group" style="margin-bottom: 4px;">
+    <label class="col-sm-4 col-md-3 control-label"></label>
+    <div class="col-sm-8 help-block">Select Dynamic IP if your Internet can be auto-connected with no account or static IP info set.</div>
+  </div>
+</div>
+        <div id="static-set" class="connect-type none">
+  <div class="form-group" style="margin-bottom: 4px;">
+    <label class="col-sm-4 col-md-3 control-label"></label>
+    <div class="col-sm-8 help-block">Select Static IP if your Internet connection asks for static IP info.</div>
+  </div>
+  <p class="col-sm-offset-3 help-block"></p>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">IP Address</label>
+    <div class="col-sm-7 col-md-6 col-lg-5"> <span id="wanIP" name="wanIP" class="textboxs-ip validatebox" required="required" data-options='{"type": "ip"}'></span> </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Subnet Mask</label>
+    <div class="col-sm-7 col-md-6 col-lg-5"> <span id="wanMask" name="wanMask" class="textboxs-mask validatebox" required="required" data-options='{"type": "mask"}'></span> </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Default Gateway</label>
+    <div class="col-sm-7 col-md-6 col-lg-5"> <span id="wanGateway" name="wanGateway" class="textboxs-ip validatebox" required="required" data-options='{"type": "ip"}'></span> </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Preferred DNS</label>
+    <div class="col-sm-7 col-md-6 col-lg-5"> <span id="wanDns1" name="wanDns1" class="textboxs-ip validatebox" required="required" data-options='{"type": "ip"}'></span> </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Alternative DNS</label>
+    <div class="col-sm-7 col-md-6 col-lg-5"> <span id="wanDns2" name="wanDns2" class="textboxs-ip validatebox" data-options='{"type": "ip"}'></span>
+    <span class="help-block" style="display: inline-block;">(Optional)</span>
+    </div>
+  </div>
+</div>
+      </div>  
+<div id="connectInfo">
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Connection Status</label>
+    <div class="col-sm-8 form-control-static"> <span id="wanConnectStatus" class="text-success"></span> </div>
+  </div>
+</div>
+    </fieldset>
+  </form>
+</section>

@@ -1,0 +1,29 @@
+--- sys/netinet/ip_input.c.updated	Wed Jul  3 21:08:29 2002
++++ sys/netinet/ip_input.c	Sat Sep 14 06:30:21 2002
+@@ -371,6 +371,9 @@
+ 		struct mbuf *m0 = m;
+ 		if (fr_checkp && (*fr_checkp)(ip, hlen, m->m_pkthdr.rcvif, 0, &m0))
+ 			return;
++		if (m0 == 0) {  /* in case of 'fastroute' */
++			return;
++		}
+ 		ip = mtod(m = m0, struct ip *);
+ 	}
+ #endif
+--- sys/netinet/ip_output.c.updated	Wed Jul  3 21:08:30 2002
++++ sys/netinet/ip_output.c	Sat Sep 14 06:29:57 2002
+@@ -702,8 +702,12 @@
+ 		if (fr_checkp && (*fr_checkp)(ip, hlen, ifp, 1, &m0)) {
+ 			error = EHOSTUNREACH;
+ 			goto done;
+-		} else
+-			ip = mtod(m = m0, struct ip *);
++		}
++		if (m0 == 0) { /* in case of 'fastroute' */
++			error = 0;
++			goto done;
++		}
++		ip = mtod(m = m0, struct ip *);
+ 	}
+ #endif
+ 	/*

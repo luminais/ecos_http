@@ -1,0 +1,128 @@
+<po>
+<!--notice.asp-->
+<message msgid="Successfully Configure!" msgstr="성공적으로 설정되었습니다!" />
+
+<!--index.asp-->
+<message msgid="Account and password can not be empty" msgstr="사용자 ID와 비밀번호는 공란을 사용할 수 없습니다." />
+<message msgid="ssid can not be empty" msgstr="ssid 공란을 사용할 수 없습니다." />
+<message msgid="Account" msgstr="사용자 ID" />
+<message msgid="Password" msgstr="비밀번호" />
+<message msgid="Wireless password can not be empty" msgstr="무선 비밀번호는 공란을 사용할 수 없습니다." />
+<message msgid="the password can only be 8 characters in length" msgstr="비밀번호는 8자리로 입력해야합니다." />
+<message msgid="Wireless password" msgstr="무선 비밀번호" />
+<message msgid="Advanced Settings" msgstr="고급 설정" />
+<message msgid="Access to the Internet" msgstr="인터넷 액세스" />
+<message msgid="Access Method" msgstr="인터넷 연결 방식" />
+<message msgid="ADSL Dial-up" msgstr="PPPOE" />
+<message msgid="Access Account" msgstr="사용자 ID" />
+<message msgid="Access Password" msgstr="비밀번호" />
+<message msgid="other access methods" msgstr="공유기의 세부설정을 하려면 고급설정 메뉴를 클릭하십시오" />
+<message msgid="Wireless encryption" msgstr="무선 암호(WiFi 접속 비밀번호)" />
+<message msgid="Default password" msgstr="기본설정 비밀번호" />
+<message msgid="can only enter 8 characters" msgstr="보안을 위하여 무선비밀번호(8자리) 설정을 권장합니다" />
+<message msgid="DHCP" msgstr="DHCP(케이블모뎀,VDLS등)" /> 
+<message msgid="Optional" msgstr="선택사항" />-->
+<message msgid="Clone MAC Address" msgstr="MAC 주소 복사" />
+<message msgid="Ok" msgstr="Ok" />
+<message msgid="Cancel" msgstr="취소" />
+<message msgid="Static IP" msgstr="고정 IP" />
+<message msgid="DHCP" msgstr="유동 IP" />
+
+
+<!--login.asp-->
+<message msgid="Tenda 11N Wireless Router Login Screen" msgstr="Samsung 11N 무선 공유기 로그인 화면" />
+<message msgid="No Ethernet cable connected to WAN port!" msgstr="WAN 포트에 랜케이블이 연결되어 있지 않습니다!" />
+<message msgid="No Internet access, please check your online settings!" msgstr="인터넷이 연결되지 않았습니다. 설정을 확인하십시오!" />
+<message msgid="Password" msgstr="비밀번호" />
+<message msgid="OK" msgstr="확인" />
+<message msgid="Cancel" msgstr="취소" />
+<message msgid="Password can not be empty!" msgstr="비밀번호는 공란을 사용할 수 없습니다!" />
+<message msgid="Password can not exceed 12 characters in length!" msgstr="비밀번호는 12자리를 넘을수 없습니다!" />
+<message msgid="Login" msgstr="로그인" />
+<message msgid="Initial password" msgstr="비밀번호 초기화" />
+<message msgid="No longer prompts" msgstr="더 이상 보이지 않음" />
+
+<!--routing_table--> 
+  <message msgid="Destination IP" msgstr="목적지 IP" />  
+  <message msgid="Subnet mask" msgstr="서브넷 마스크" /> 
+  <message msgid="Gateway" msgstr="게이트웨이" />  
+  <message msgid="Hops" msgstr="홉(hops)" />    
+  <message msgid="Interface" msgstr="인터페이스" />   
+  <message msgid="Refresh" msgstr="새로고침" />  
+  <message msgid="routing_table_Help_Inf1" msgstr="홉(Hops): 인터페이스 단위." /> 
+  <message msgid="routing_table_Help_Inf2" msgstr="인터페이스: 3가지 타입을 제공 :eth0:WAN 인터페이스, ppp0:PPPoE 인터페이스, br0:LAN 인터페이스." />
+   
+<!--routing_static-->  
+  <message msgid="Delete" msgstr="삭제" />   
+  <message msgid="Max." msgstr="최대" />  
+  <message msgid="static routing" msgstr="고정 라우팅" />  
+  <message msgid="the specified static routing already exists" msgstr="수정된 고정 라우팅은 이미 존재합니다." /> 
+  <message msgid="Destination network IP address" msgstr="목적지 네트워크 IP 주소" />  
+  <message msgid="Operate" msgstr="동작" />    
+  <message msgid="add" msgstr="추가" />     
+  <message msgid="routing_static_Help_Inf1" msgstr="고정 라우팅: 한 네트워크 내부에 여러 라우터가 있을때, 고정 라우팅 설정이 필요합니다. 이는 데이터가 바로 해당 라우터로 전달될 수 있는 경로를 만들어주는 것입니다. 다른 IP 도메인 이름의 사용자가 이 장치를 통해 인터넷엑세를 하는 것을 허용합니다. 설정하는 동안 주의 하십시오." />  
+  <message msgid="routing_static_Help_Inf2" msgstr="이 기능은 자동으로 네트워크의 물리적 변경을 허용합니다. 만일, 고정 라우팅을 사용하려면, 반드시 DHCP기능을 사용하지 마십시오. 공유기를 재부팅하면 설정이 적용됩니다." />  
+  
+<!--nat_virtualportseg--> 
+  <message msgid="start port" msgstr="시작 포트" />  
+  <message msgid="end port" msgstr="마지막 포트" /> 
+  <message msgid="private IP" msgstr="사설 IP" />  
+  <!--add-->
+  <message msgid="Starting Port large than Ending Port" msgstr="시작 포트가 마지막 포트보다 큽니다." />
+  <!--add-->
+  <message msgid="Both" msgstr="Both" />    
+  <message msgid="NAT_Portseg_MSG" msgstr="네트워크상에서 사용할 포트범위를 설정하십시오. 웹서버, FTP서버, e-mail서버나 기타 인터넷 응용프로그램이 사용하는 포트등 서버 또는 서비스를 구축할때, 인터넷 통신을 위해 WAN포트에 설정된 LAN IP주소가 적용됩니다." />   
+  <message msgid="NO." msgstr="NO." />  
+  <message msgid="Start_port_End_port" msgstr="시작포트-마지막포트" />   
+  <message msgid="LAN IP" msgstr="랜 IP" />  
+  <message msgid="Protocol" msgstr="프로토콜" />  
+  <message msgid="Enable" msgstr="사용" />    
+  <message msgid="Well-known service ports" msgstr="알려진 서비스 포트" />  
+  <message msgid="Add to" msgstr="추가" />   
+  <message msgid="NAT_Portseg_Help_Inf1" msgstr="시작포트-마지막포트 : WAN 서비스 포트." />  
+  <message msgid="NAT_Portseg_Help_Inf2" msgstr="사용: 설정된 값이 적용됩니다." />
+  <message msgid="NAT_Portseg_Help_Inf3" msgstr="삭제:설정을 삭제합니다. 저장을 클릭하면 적용됩니다." />
+  <message msgid="NAT_Portseg_Help_Inf4" msgstr="추가 :알려진 서비스 포트를 시작포트 항목에 추가합니다." />
+    
+<!--nat_dmz-->  
+  <message msgid="Can not use the router IP address" msgstr="공유기 IP주소를 사용할수 없습니다." />   
+  <message msgid="DMZ host IP address" msgstr="DMZ 호스트 IP 주소" />  
+  <message msgid="not in the same segment with LAN IP" msgstr="LAN IP와 같은 값은 안됩니다" />   
+  <message msgid="illegal IP" msgstr="유효하지 않은 IP" />  
+  <message msgid="DMZ_Note" msgstr="NOTE: DMZ호스트를 사용할때, DMZ호스트의 방화벽 설정은 동작하지 않습니다." />  
+  <message msgid="DMZ_Help_Inf" msgstr="사설IP 환경의 접근이 제한적인 경우 이 DMZ 기능을 이용하면 원활한 연결이 가능합니다. DMZ호스트로 사용할 PC의 IP주소를 입력하면 해당 IP의 PC는 사실상 방화벽의 동작이 적용되지 않습니다." />   
+   
+<!--upnp_config-->		
+  <message msgid="Enable UPnP" msgstr="UPnP 사용" />   
+  <message msgid="UPNP_Help_Inf" msgstr="UPnP(Universal Plug and Play) : 네트워크상의 장치의 자동 검색과 연결이 가능합니다. 현재 UPnP은 Windows ME와 Windows XP이상의 시스템에서 지원을 합니다." /> 
+  
+   <!--menu.js -->
+  <message msgid="Ok" msgstr="확인" />
+  <message msgid="Cancel" msgstr="취소" /> 
+
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="유효하지 않습니다" />   
+  <message msgid="contains illegal characters" msgstr="유효하지 않은 문자가 있습니다." />  
+  <message msgid="not numbers " msgstr="숫자가 아닙니다" />  
+  <message msgid="beyond the range" msgstr="범위를 벗어났습니다" /> 
+  <message msgid="contains invalid characters" msgstr="유효하지 않은 문자가 있습니다." /> 
+  <message msgid="Are you sure to exit" msgstr="정말로 나가시겠습니까?" />   
+  <message msgid="not defined" msgstr="정의되지 않았습니다." />  
+  <message msgid="Password differs" msgstr="비밀번호가 다릅니다." />  
+  <message msgid="Change password" msgstr="정말로 비밀번호를 변경하시겠습니까?" /> 
+  <message msgid="the length is not within the range" msgstr="길이가 범위내에 있지 않습니다" />    
+  <message msgid="permanent" msgstr="permanent" />   
+  <message msgid="Day" msgstr="Day" />  
+  <message msgid="Don't enter Chinese characters" msgstr="한글을 입력하지 마십시오" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="재부팅을 해야 설정이 적용됩니다." /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="재부팅을 해야 무선의 설정이 적용됩니다." /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="숫자, 영문자, 언더라인(_)으로 입력해야합니다." />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC주소가 제한된 주소입니다. 다시 입력하십시오." />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC주소가 멀티캐스트 주소입니다. 다시 입력하십시오." />  
+  <message msgid="Help information" msgstr="도움말 정보" />
+
+<!--add-->
+<message msgid="IP address" msgstr="IP 주소" />
+<message msgid="Primary DNS" msgstr="기본 DNS" />
+<message msgid="Alternate DNS" msgstr="보조 DNS" />  
+</po>

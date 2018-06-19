@@ -1,0 +1,157 @@
+<section class="container-fluid">
+  <form id="staticIPMapping" class="form-horizontal">
+  <h2 class="legend">Static IP</h2>
+  <fieldset>
+    <div class="table-responsive">
+      <table class="table">
+        <thead id="staticHead">
+          <tr>
+            <th class="col-xs-3">IP Address</th>
+            <th class="col-xs-3">MAC Address</th>
+            <th class="col-xs-3">Remark</th>
+            <th class="col-xs-2">Action</th>
+          </tr>
+          <tr>
+            <td class="span-fixed">
+              <input type="text" id="staticIp" class="form-control input-medium" maxLength="15"></td>
+            <td>
+              <input type="text" id="staticMac" class="form-control input-medium" maxLength="17"></td>
+            <td>
+              <input type="text" id="staticRemark" class="form-control input-medium" maxLength="32"></td>
+            <td><span class="ico icon-plus-circled text-primary"></span></td>
+          </tr>
+        </thead>
+        <tbody id="staticTbody"></tbody>
+      </table>
+    </div>
+  </fieldset>
+</form>
+  <form id="protMapping" class="form-horizontal">
+  <h2 class="legend">Port Forwarding</h2>
+  <fieldset>
+    <div class="table-responsive">
+      <table class="table">
+        <thead id="portHead">
+          <tr>
+            <th class="col-xs-2">Internal IP</th>
+            <th class="col-xs-2">Internal Port</th>
+            <th class="col-xs-3">External IP</th>
+            <th class="col-xs-2">External Port</th>
+            <th class="col-xs-2">Protocol</th>
+            <th class="col-xs-1">Action</th>
+          </tr>
+          <tr>
+            <td class="span-fixed">
+              <input type="text" id="internalIP" class="form-control input-medium" maxLength="15"></td>
+            <td><span id="internalPort" class="dropdown input-medium" maxLength="5"></span></td>
+            <td><span id="externalIP" class="dropdown input-medium" maxLength="5"></span></td>
+            <td><input type="text" id="externalPort" class="form-control input-small" maxLength="5" /></td>           
+            <td>
+              <select id="protocol" class="form-control input-small">
+                <option value="both">Both</option>
+                <option value="tcp">TCP</option>
+                <option value="udp">UDP</option>  
+              </select>
+            </td>
+            <td><span class="ico icon-plus-circled text-primary"></span></td>
+          </tr>
+        </thead>
+        <tbody id="portTbody"></tbody>
+      </table>
+    </div>
+  </fieldset>
+</form>
+  <form id="dmzHost" class="form-horizontal">
+  <h2 class="legend">DMZ Host</h2>
+  <fieldset>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="dmzEnable">DMZ Host</label>
+      <div class="col-sm-4">
+        <label class="radio-inline" for="dmzEnable">
+          <input type="radio" id="dmzEnable" name="dmzEn" value="true" />
+          Enable </label>
+        <label class="radio-inline" for="dmzDisable">
+          <input type="radio" id="dmzDisable" name="dmzEn" value="false" />
+          Disable </label>
+      </div>
+    </div>
+    <!--Show when dmz is Enabled-->
+    <div id="dmzWrap" class="form-group none">
+      <label class="col-sm-4 col-md-3 control-label" for="dmzHostIP">Host IP</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control validatebox" id="dmzHostIP" name="dmzHostIP" data-options='{"type": "ip"}' required="required" maxlength="15">
+      </div>
+    </div>
+  </fieldset>
+</form>
+  <form class="form-horizontal">
+    <h2 class="legend">DDNS</h2>
+    <fieldset>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="ddnsEnable">DDNS</label>
+        <div class="col-sm-4">
+          <label class="radio-inline" for="ddnsEnable">
+            <input type="radio" id="ddnsEnable" name="ddnsEn" value="true" />
+            Enable </label>
+          <label class="radio-inline" for="ddnsDisable">
+            <input type="radio" id="ddnsDisable" name="ddnsEn" value="false" />
+            Disable </label>
+        </div>
+      </div>
+      <!--Show when Wi-Fi Schedule is Enabled-->
+      <div id="ddnsWrap" class="none">
+        <div class="form-group">
+          <label class="col-sm-4 col-md-3 control-label" for="ddnsServiceName">Service Provider</label>
+          <div class="col-sm-4">
+            <select class="form-control" id="ddnsServiceName" name="ddnsServiceName">
+              <!-- Leave for js or tpl to create-->
+              <option value="dyndns.org">dyndns.org</option>
+              <option value="3322.org">3322.org</option>
+              <option value="noip.com">noip.com</option>
+              <option value="88ip.cn">88ip.cn</option>
+            </select>
+          </div>
+          <div class="col-sm-4 col-md-5 help-block"> <a href="#" id="register">Register Now</a> </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 col-md-3 control-label" for="ddnsServer">DDNS Host Name</label>
+          <div class="col-sm-4">
+            <input type="text" name="ddnsServer" id="ddnsServer" class="form-control validatebox" maxlength="64" data-options='{"type": "domain"}' required="required">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 col-md-3 control-label" for="ddnsUser">DDNS Username</label>
+          <div class="col-sm-4">
+            <input type="text" name="ddnsUser" id="ddnsUser" class="form-control validatebox" maxlength="64" data-options='{"type": "ascii"}' required="required">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 col-md-3 control-label" for="ddnsPwd">DDNS Password</label>
+          <div class="col-sm-4">
+            <input type="text" name="ddnsPwd" id="ddnsPwd" class="form-control validatebox" data-options='{"type": "ascii"}' required="required" maxlength="64">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 col-md-3 control-label" for="ddnsStatus">Connection Status</label>
+          <div class="col-sm-4 form-control-static"> <span id="ddnsStatus" class="">Disconnected</span> </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  <form id="upnp" class="form-horizontal">
+  <h2 class="legend">UPNP</h2>
+  <fieldset>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="upnpEn">UPNP</label>
+      <div class="col-sm-4">
+        <label class="radio-inline" for="upnpEnable">
+          <input type="radio" id="upnpEnable" name="upnpEn" value="true" />
+          Enable </label>
+        <label class="radio-inline" for="upnpDisable">
+          <input type="radio" id="upnpDisable" name="upnpEn" value="false" />
+          Disable </label>
+      </div>
+    </div>
+  </fieldset>
+</form>
+</section>

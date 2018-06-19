@@ -1,0 +1,239 @@
+﻿<po>
+<!--system_hostname--> 
+  <message msgid="Hostname" msgstr="Sunucu adı " />  
+  <message msgid="Domain Name" msgstr="Domain adı" /> 
+  <message msgid="Time format wrong" msgstr="Zaman formatı yanlış" />  
+  <message msgid="Please enter the valid year ,month and date" msgstr="Lütfen geçerli bir yıl, ay ve gün girin" />    
+  <message msgid="Enter a valid date" msgstr="Geçerli bir tarih girin" />   
+  <message msgid="Enter a valid time" msgstr="Geçerli bir saat girin" />  
+  <message msgid="Time zone" msgstr="Zaman dilimi" /> 
+  <message msgid="West of International Date Line" msgstr="Uluslararası saat değişim hattının batısı" />  
+  <message msgid="Midway Island, Samoa" msgstr="Midway adası, Samoa" /> 
+  <message msgid="Hawaii, Honolulu" msgstr="Havai, Honolulu" />  
+  <message msgid="Alaska" msgstr="Alaska" />    
+  <message msgid="Pacific Time" msgstr="Pasifik saati (A.B.D Kanada) Tijuana" />   
+  <message msgid="Mountain Time" msgstr="Mountaın saati (A.B.D Kanada)" />  
+  <message msgid="Chihuahua, La Paz, Mazatlan" msgstr="Chihuahua, La Paz, Mazatlan" /> 
+  <message msgid="Arizona" msgstr="Arizona" />  
+  <message msgid="Central Time" msgstr="Merkez saat (A.B.D. Kanada)" /> 
+  <message msgid="Guadalajara, Mexico City, Monterrey" msgstr="Guadalajara, Meksika şehri, Monterrey" />  
+  <message msgid="Eastern Time" msgstr="Doğu saati (A.B.D. Kanada)" />    
+  <message msgid="India to Ann" msgstr="Hindistan dan Ann a (Doğu)" />   
+  <message msgid="Bogota, Lima, Quito" msgstr="Bogota, Lima" />  
+  <message msgid="Atlantic Time" msgstr="Atlantik saati (Kanada)" /> 
+  <message msgid="Manaus" msgstr="Manaus" />   
+  <message msgid="Caracas, La Paz" msgstr="Karakaş, La Paz" />  
+  <message msgid="Newfoundland and Labrador" msgstr="Newfoundland ve Labrador" /> 
+  <message msgid="Brasilia Asia" msgstr="Brezilya Asya" />  
+  <message msgid="Greenland" msgstr="Grönland" /> 
+  <message msgid="Buenos Aires, Georgetown" msgstr="Buenos Aires, Georgetown" />  
+  <message msgid="Atlantic" msgstr="Atlantik" />    
+  <message msgid="Azores" msgstr="Azores" />   
+  <message msgid="Cape Verde Islands" msgstr="Cape Verde Adalar" />  
+  <message msgid="Greenwich Mean Time" msgstr="Greenwich ortalama saat: Dublin, Edinburgh, Lisbon, Londra" /> 
+  <message msgid="Casablanca , Monrovia" msgstr="Kazablanka , Monrovia" />  
+  <message msgid="Belgrade, Bratislava, Budapest, Ljubljana, Prague" msgstr="Belgrad, Bratislav, Budapeşte, Ljubljana, Prag" /> 
+  <message msgid="Sarajevo, Skopje, Warsaw, Zagreb" msgstr="Sarajevo, Skopje, Varşova, Zagreb" />  
+  <message msgid="Brussels, Copenhagen, Madrid, Paris" msgstr="Brüksel, Kopenhag, Madrid, Paris" />    
+  <message msgid="West Africa" msgstr="Batı Afrika" />   
+  <message msgid="Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" msgstr="Amsterdam, Berlin, Bern, Roma, Stockholm, Viyana" />  
+  <message msgid="Athens, Bucharest, Istanbul" msgstr="Atina, Bükreş, Istanbul" /> 
+  <message msgid="Minsk" msgstr="Minsk" />   
+  <message msgid="Cairo" msgstr="Kahire" />  
+  <message msgid="Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" msgstr="Helsinki, Kiev, Riga, Sofya, Tallinn, Vilnius" />  
+  <message msgid="Jerusalem" msgstr="Jerusalem" /> 
+  <message msgid="temperature 'll have" msgstr="sıcaklık" />  
+  <message msgid="grams. Harare, Pretoria" msgstr="derece olacak. Harare, Pretoria" />    
+  <message msgid="Moscow, St. Petersburg, Volgograd" msgstr="Moskova, St. Petersburg, Volgograd" /> 
+  <message msgid="Kuwait, Riyadh" msgstr="Kuveyt, Riyad" />   
+  <message msgid="Baghdad" msgstr="Bağdat" />  
+  <message msgid="Nairobi" msgstr="Nairobi" />  
+  <message msgid="Tehran" msgstr="Tahran" /> 
+  <message msgid="Abu Dhabi, Muscat" msgstr="Abu Dabi, Muskat" />  
+  <message msgid="Baku" msgstr="Bakü" />    
+  <message msgid="Yerevan" msgstr="Yerevan" /> 
+  <message msgid="Tbilisi" msgstr="Tiflis" />   
+  <message msgid="Kabul" msgstr="Kabil" />  
+  <message msgid="Islamabad, Karachi, Tashkent" msgstr="İslamabad, Karaçi, Taşkent" />  
+  <message msgid="Yekaterinburg" msgstr="Yekaterinburg" /> 
+  <message msgid="Chennai, Kolkata, Mumbai, New Delhi" msgstr="Chennai, Kolkata, Mumbai, Yeni Delhi" />  
+  <message msgid="Kathmandu" msgstr="Katmandu" />    
+  <message msgid="Astana, Dhaka" msgstr="Astana, Dhaka" /> 
+  <message msgid="Almaty, Novosibirsk" msgstr="Almatı, Novosibirsk" />   
+  <message msgid="Colombo" msgstr="Kolombo" />  
+  <message msgid="Yangon" msgstr="Yangon (Rangoon)" />  
+  <message msgid="Krasnoyarsk" msgstr="Krasnoyarsk" /> 
+  <message msgid="Bangkok, Hanoi, Jakarta" msgstr="Bangkok, Hanoi, Jakarta" />  
+  <message msgid="Beijing, Chongqing, Hong Kong, Urumqi" msgstr="Pekin, Chongqing, Hong Kong, Urumçi" />    
+  <message msgid="Irkutsk grams, Ulaanbaatar" msgstr="Irkutsk grams, Ulaanbaatar" /> 
+  <message msgid="Kuala Lumpur, Singapore" msgstr="Kuala Lumpur, Singapur" />   
+  <message msgid="Perth" msgstr="Perth" />  
+  <message msgid="Yakutsk" msgstr="Yakutsk" />  
+  <message msgid="Osaka, Sapporo, Tokyo" msgstr="Osaka, Sapporo, Tokyo" /> 
+  <message msgid="Seoul" msgstr="Seul" />  
+  <message msgid="Darwin" msgstr="Darvin" />    
+  <message msgid="Adelaide" msgstr="Adelaide" /> 
+  <message msgid="Brisbane" msgstr="Brisbon" />   
+  <message msgid="Canberra, Melbourne Sydney" msgstr="Kanberra, Melbourn Sidney" />  
+  <message msgid="Guam, Port Moresby" msgstr="Guam, Moresby portu" />  
+  <message msgid="Vladivostok" msgstr="Vladivostok" /> 
+  <message msgid="Hobart" msgstr="Hobart" />  
+  <message msgid="Magadan, Solomon Islands, New Caledonia and more" msgstr="Magadan, Solomon adaları, Yeni Kaledonia ve dahası" />    
+  <message msgid="Fiji Islands, Kamchatka Peninsula, the Marshall Islands" msgstr="Fiji adaları, Kamçatka bölgesi, Marşal adaları" /> 
+  <message msgid="Auckland , Wellington" msgstr="Aukland , Wellington" />   
+  <message msgid="Nuku'alofa" msgstr="Nuku'alofa" />  
+  <message msgid="hostname_Note" msgstr="Not：GMT saati sadece internete eriştikten sonra alınabilir." />  
+  <message msgid="Customized time" msgstr="Özelleştirilmiş saat" /> 
+  <message msgid="Year" msgstr="Yıl" />  
+  <message msgid="Month" msgstr="Ay" />    
+  <message msgid="Date" msgstr="Gün" />  
+  <message msgid="Hour" msgstr="Saat" />   
+  <message msgid="Minute" msgstr="Dakika" />  
+  <message msgid="Second" msgstr="Saniye" />  
+  <message msgid="system_hostname_Help_Inf1" msgstr="Bu sayfa yönlendiricinin sistem saatini ayarlamak için kullanılır, saati manuel olarak ayarlamayı veya internetten GMT saatinden almayı seçebilirsiniz ve sistem saati güncellemek için otomatik olarak NTP sunucusuna bağlanır." /> 
+  <message msgid="system_hostname_Help_Inf2" msgstr="Not: Yönlendiriciyi kapattıktan sonra saat bilgisi kaybolackır, ve internete bir sonraki seferde ulaştığınızda, modem GMT saatini otomatik olarak alacaktır. GMT saatini almak için önce internete erişmelisiniz veya bu sayfada saati manuel olarak ayarlamalısınız, ve sonrasında diğer fonksiyonlarda saat ayarları etkili olabilir." /> 
+   
+<!--ddns_config-->  
+  <message msgid="Username" msgstr="Kullanıcı adı" />   
+  <message msgid="Password" msgstr="Şifre" />  
+  <message msgid="Please enter the entire DDNS information" msgstr="Lütfen tam bir DDNS bilgisi girin!" />  
+  <message msgid="Please enter the correct DDNS information" msgstr="Lütfen doğru bir DDNS adresi girin!" /> 
+  <message msgid="DDNS Service" msgstr="DDNS servisi" />  
+  <message msgid="Enable" msgstr="Etkinleştir" />    
+  <message msgid="Disable" msgstr="Etkinliği kaldır" />
+  <message msgid="Service Provider" msgstr="Servis sunucusu" />   
+  <message msgid="Sign up" msgstr="Oturum aç" />  
+  <message msgid="ddns_config_Help_Inf1" msgstr="DDNS (Dinamik DNS) Servisi dinamik WAN IP si için sabitlenmiş bir domain adı atamanıza izin verir böylece LAN internetinzi, TCP/IP FTP veya diğer TCP/IP yi gözlemleyebilirsiniz.DDNS i ayarlamadan önce, &quot;Oturum aç&quot; a tıklamalısınız ve ilgili bir domain adı kaydetmek için internet sayfasına gitmelisiniz." /> 
+  <message msgid="ddns_config_Help_Inf2" msgstr="DDNS servisi: Aşağı açılır menüden ilgili DDNS servis sunucusunu seçin ve servisi etkinleştirmek için kullanıcı adı, şifre ve sunucu adını girin." />
+     
+<!--system_backup-->  
+  <message msgid="Please select the file you want to import" msgstr="Lütfen almak istediğiniz dosyayı seçiniz!" />   
+  <message msgid="You need to restart after importing" msgstr="Aldıktan sonra yeniden başlatmalısınız!" />  
+  <message msgid="Export the configured parameters and specify a path to save them" msgstr="Konfigüre edilmiş parametreleri gönder ve kaydetmek için bir yol belirle." />  
+  <message msgid="backup restore current configuration" msgstr="Yönlendiricinin güncel konfigürasyonunu yedekleyebilir/geri yükleyebilirsiniz." /> 
+  <message msgid="Select the file directory to save the configured parameters" msgstr="Konfigüre edilmiş parametreleri kaydetmek için dosya dizini seçin:" />  
+  <message msgid="Select the configured file you want to import" msgstr="Almak istediğiniz konfigüre edilmiş dosyayı seçin:" />  
+  <message msgid="Backup" msgstr="yedekleyebilir" />  
+  <message msgid="Restore" msgstr="Geri yükle" /> 
+  <message msgid="system_backup_Help_Inf" msgstr="İlgili dizine güncel konfigürasyonu yedeklemek ve konfigüre edilmiş bir sistem yedekleme dosyası şekillendirmek için &quot;Yedekle&quot; ye tıklayın.Aynı şekilde, ilgili dizinden konfigüre edilmiş dosyayı seçmek için &quot;Tara&quot; ya tıklamalısınız, tamamlandıktan sonra &quot;Geri yükle&quot; ye basın ve yönlendiriciyi yeniden başlatın, ihtiyacınız olan sistem konfigürasyonu geri yüklenebilir. " />    
+    
+<!--system_restore-->  
+  <message msgid="restore_note" msgstr="Cihaz otomatik olarak yeniden başlayacaktır! IP 192.168.2.1 e ve şifre admin e güncellenecektir, eğer internet sayfası yenilenmedi ise, lütfen bilgisayarınızın ağ konfigürasyonunu yenileyin ve tekrardan giriş yapın." />   
+  <message msgid="Click this button to restore the router all settings to factory default" msgstr="Yönlendiricinin tüm ayarlarını fabrika varsayılanına döndürmek için bu butona tıklayın." />  
+  <message msgid="Restore to factory default" msgstr="Fabrika ayarlarını geri yükle" />   
+  <message msgid="system_restore_Help_Inf1" msgstr="Fabrika ayarlarına geri yükleme yönlendiricinin tüm ayarlarını varsayılan duruma getirir:" />
+  <!--<message msgid="system_restore_Help_Inf2" msgstr="Varsayılan kullanıcı adı: admin" />-->
+  <message msgid="system_restore_Help_Inf3" msgstr="Varsayılan şifre: admin" />
+  <message msgid="system_restore_Help_Inf4" msgstr="varsayılan ip adresi: 192.168.2.1" />
+  <message msgid="system_restore_Help_Inf5" msgstr="Varsayılan alt ağ maskesi: 255.255.255.0" />
+    
+<!--system_upgrade-->  
+  <message msgid="Upgrading" msgstr="Güncelliyor" />   
+  <message msgid="Please select the upgrade file" msgstr="Lütfen güncelleme dosyası seçin!" />  
+  <message msgid="Are you sure to upgrade" msgstr="Güncellemekten eminmisiniz?" />  
+  <message msgid="By upgrading the router software, you get new features." msgstr="Yönlendiricinin yazılımını güncelleyerek yeni özellikler alacaksınız." /> 
+  <message msgid="Select the firmware file" msgstr="Donanım yazılımı dosyası seç:" />  
+  <message msgid="Upgrade" msgstr="Güncelle" />    
+  <message msgid="Current system version" msgstr="Güncel sistem versiyonu" /> 
+  <message msgid="Publishing date" msgstr="Yayınlama tarihi" /> 
+  <message msgid="upgrade_note" msgstr="Not: Güncelleme esnasında yönlendiriciyi kapatmayın, aksi taktirde, yönlendirici hasar görebilir ve kullanılamayabilir. Başarılı güncellemeden sonra yönlendirici otomatik olarak yeniden başlayacaktır. Güncelleme işlemi bir kaç dakika sürmektedir, lütfen bekleyiniz!" /> 
+  <message msgid="system_upgrade_Help_Inf1" msgstr="Daha yüksek versiyonlu yazılımı indirmek için internet sitemize giriş yapın." /> 
+  <message msgid="system_upgrade_Help_Inf2" msgstr="Tarayarak ilgili güncelleme paketi yazılımını bulun." /> 
+  <message msgid="system_upgrade_Help_Inf3" msgstr="&quot;Güncelle&quot; ye tıklayın, tamamlandıktan sonra yönlendirici otomatik olarak yeniden başlayacaktır." /> 
+  
+<!--system_reboot-->
+  <message msgid="The system will re-connect to the initial page in about 50 seconds" msgstr="Sistem 50 saniye içerisinde ilk sayfaya tekrardan bağlanacaktır." />   
+  <message msgid="Click this button and the router will reboot" msgstr="Bu butona tıklayın ve yönlendirici yeniden başlayacaktır." />  
+  <message msgid="Reboot the router" msgstr="Yönlendiriciyi yeniden başlat" />  
+  <message msgid="system_reboot_Help_Inf" msgstr="Yönlendiricinin yeniden başlatılması düzenlenmiş ayarları etkin hale getirecektir. Yeniden başlatma esnasında tüm bağlantılar kesilecektir. Yeniden başlatmak için &quot;Tamam&quot; tıklayın." />
+          
+  <!--direct_reboot.asp-->
+  <message msgid="Rebooting" msgstr="Yeniden başlatılıyor..." />    
+  <message msgid="direct_reboot_Help_Inf" msgstr="Yönlendiricinin yeniden başlatılması düzenlenmiş ayarları etkin hale getirecektir. Yeniden başlatma esnasında tüm bağlantılar otomatik olarak kesilecektir." />   
+  
+ <!--system_password-->  
+  <message msgid="The initial password can only consist of letters and numbers" msgstr="İlk şifre sadece harflerden ve sayılardan oluşabilir!" />   
+  <message msgid="On this page ,you can change  the administrator password" msgstr="Bu sayfada, yöneticinin şifresini değiştirebilirsiniz." />  
+  <message msgid="password_note" msgstr="Not: Şifre sadece harflerden ve sayılardan oluşabilir." />  
+  <message msgid="Old password" msgstr="Eski şifre" /> 
+  <message msgid="New password" msgstr="Yeni şifre" />  
+  <message msgid="Confirm new password" msgstr="Yeni şifreyi onayla" />    
+  <message msgid="system_password_Help_Inf1" msgstr="Yönlendiricinin varsayılan şifresi admin. Yönlendiricinin şifresini değiştirmenizi öneririz. " /> 
+  <message msgid="system_password_Help_Inf2" msgstr="Eski şifre :Eski şifreyi girin . Yönlendiricinin varsayılan şifresi admin dir.(Not: Şifre bir defa kaybolduğunda veya unutulduğunda devam edilemez. Eğer şifrenizi unutmuş veya kaybetmiş iseniz, yönlendiriciyi fabrika ayarlarına sıfırlamalısınız)." /> 
+  <message msgid="system_password_Help_Inf3" msgstr="Yeni şifre: Yeni bir şifre girin. Şifre 0 ～ 12 karaktar uzunluğunda olmalı ve boşluk içermemelidir." /> 
+  <message msgid="system_password_Help_Inf4" msgstr="Şifre onayla: Onaylamak için yeni şifreyi tekrar girin." /> 
+  
+ <!--system_log-->  
+  <message msgid="the" msgstr="" />   
+  <message msgid="page log contents" msgstr="sayfa log içeriği" />  
+  <message msgid="Refresh" msgstr="Yenile" />  
+  <message msgid="Clear" msgstr="temizle" /> 
+  <message msgid="system_log_Help_Inf1" msgstr="Geçimiş kayıtlarını görüntüle" /> 
+  <message msgid="system_log_Help_Inf2" msgstr="Not : Loglar 15 sayfaya ulaştığında otomatik olarak temizlenecektir (150 kayıt)." />   
+   
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="geçersiz!" />   
+  <message msgid="contains illegal characters" msgstr="illegal karakterler içeriyor:" />  
+  <message msgid="not numbers " msgstr="sayılar değil!" />  
+  <message msgid="beyond the range" msgstr="oranın aşağısında !" /> 
+  <message msgid="contains invalid characters" msgstr="geçersiz karakterler içeriyor:" /> 
+  <message msgid="Are you sure to exit" msgstr="Çıkmaktan eminmisiniz?" />   
+  <message msgid="not defined" msgstr="tanımlanmamış!" />  
+  <message msgid="Password differs" msgstr="Şifre farklı!" />  
+  <message msgid="Change password" msgstr="Şifre değiştir?" /> 
+  <message msgid="the length is not within the range" msgstr="uzunluk kapsama alanında değil!" />    
+  <message msgid="permanent" msgstr="kalıcı" />   
+  <message msgid="Day" msgstr="Gün" />  
+  <message msgid="Don't enter Chinese characters" msgstr="Çince karakterler girmeyin!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="yönlendiriciin yeniden başlatılması düzenlenmiş ayarları etkin hale getirecektir, şimdi yeniden başlat?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Kablosuz modülün yeniden başlatılması düzenlenmiş ayarları etkin hale getirecektir, şimdi yeniden başlat?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Açıklamalar sadece sayıları, harfleri ve alt çizgileri içerebilir!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC adresi saklanmış adreslere aittir, lütfen yeniden girin!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC adresi çoklu yayın adreslere aittir, lütfen yeniden girin!" />  
+  <message msgid="Help information" msgstr="Yardım bilgisi" /> 
+  
+  <!--advance-->  
+  <message msgid="Tenda 11N Wireless Router" msgstr="Tenda 11N Kablosuz yönlendirici" />   
+  <message msgid="Initial page settings" msgstr="Başlangıç sayfa ayarları" />  
+  <message msgid="Log out" msgstr="Oturum kapat" />  
+  <message msgid="Advanced Settings" msgstr="Gelişmiş ayarlar" /> 
+  <message msgid="Wireless settings" msgstr="Kablosuz ayarları" />  
+  <message msgid="DHCP Server" msgstr="DHCP sunucu" />    
+  <message msgid="Virtual Server" msgstr="Sanal sunucu" />
+  <message msgid="Security settings" msgstr="Güvenlik ayarları" />   
+  <message msgid="Routing settings" msgstr="yönlendirici ayarları" />  
+  <message msgid="System Tools" msgstr="Sistem araçları" />   
+  <message msgid="System Status" msgstr="Sistem durumu" />  
+  <message msgid="WAN settings" msgstr="WAN ayarları" />  
+  <message msgid="MAC Clone" msgstr="MAC Clone" /> 
+  <message msgid="LAN settings" msgstr="LAN ayarları" /> 
+  <message msgid="DNS settings" msgstr="DNS ayarları" />  
+  <message msgid="WAN medium type" msgstr="WAN medium type" />  
+  <message msgid="Bandwidth control" msgstr="Bant genişliği kontrolü" />    
+  <message msgid="Traffic statistics" msgstr="Trafik istatistikleri" />
+  <message msgid="WAN speed" msgstr="WAN speed" />
+  <message msgid="Wireless Basic Settings" msgstr="Kablosuz temel ayarları" />   
+  <message msgid="Wireless Security" msgstr="Kablosuz güvenliği" /> 
+  <message msgid="Access Control" msgstr="Erişim kontrolü" /> 
+  <message msgid="Connection Status" msgstr="Bağlantı durumu" />    
+  <message msgid="DHCP Client list" msgstr="DHCP istemci listesi" />
+  <message msgid="Port Range Forwarding" msgstr="Port oranı iletimi" />   
+  <message msgid="DMZ Host" msgstr="DMZ sunucu" />  
+  <message msgid="UPNP settings" msgstr="UPNP ayarları" />   
+  <message msgid="Client Filter Settings" msgstr="Kullanıcı filtreleme ayarları" />  
+  <message msgid="MAC Address Filter Settings" msgstr="MAC adresi ayarları" />  
+  <message msgid="URL Filter Settings" msgstr="URL filtreleme ayarları" /> 
+  <message msgid="Remote Web Management" msgstr="Uzak internet yönetimi" />  
+  <message msgid="Routing table" msgstr="Yönlendirme tablosu" />    
+  <message msgid="Static routing" msgstr="Statik yönlendirme" />
+  <message msgid="Time Settings" msgstr="Zaman ayarları" />   
+  <message msgid="Backup/Restore Settings" msgstr="Yedekleme/Geri yükleme ayarları" />
+  <message msgid="Restore to Factory Default Settings" msgstr="Varsayılan fabrika ayarlarını geri yükle" />
+  <message msgid="Change password1" msgstr="Şifre değiştir" />    
+  <message msgid="Syslog" msgstr="Syslog" />
+ 
+  <!--menu.js--> 
+  <message msgid="Ok" msgstr="Tamam" />
+  <message msgid="Cancel" msgstr="İptal" />   
+</po>
+ 

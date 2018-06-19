@@ -1,0 +1,145 @@
+<po>
+	<message msgid="Ok" msgstr="OK" />
+	<message msgid="Cancel" msgstr="Cancel" />
+	<message msgid="Enable" msgstr="Enable" />    
+	<message msgid="Disable" msgstr="Disable" />
+	<message msgid="Refresh" msgstr="Refresh" />
+	<message msgid="Edit" msgstr="Edit" />
+	<message msgid="Delete" msgstr="Delete" />	
+	<message msgid="Clear" msgstr="Clear" />
+	
+	<!--menu-->
+	<message msgid="Status" msgstr="Status" />  
+	<message msgid="System Status" msgstr="System Status" />  
+	<message msgid="Internet Connection Setup" msgstr="Internet Connection Setup" />  
+	<message msgid="MAC Clone" msgstr="MAC Clone" /> 
+	<message msgid="WAN Speed" msgstr="WAN Speed" />
+	<message msgid="WAN Medium Type" msgstr="WAN Medium Type"/>
+	<message msgid="LAN Settings" msgstr="LAN Settings" /> 
+	<message msgid="DNS Settings" msgstr="DNS Settings" />
+	<message msgid="DHCP Server" msgstr=" DHCP Server " />
+	<message msgid="Virtual Server" msgstr="Virtual Server" />
+	<message msgid="Routing Settings" msgstr="Routing Settings" />
+	<message msgid="Bandwidth Control" msgstr="Bandwidth Control" />    
+	<message msgid="Traffic Statistics" msgstr="Traffic Statistics" />
+	<message msgid="Wireless Basic Settings" msgstr="Wireless Basic Settings" />   
+	<message msgid="Wireless Security" msgstr="Wireless Security" /> 
+	<message msgid="Access Control" msgstr="Access Control" /> 
+	<message msgid="Wireless Connection Status" msgstr="Wireless Connection Status" />    
+	<message msgid="DHCP Client List" msgstr="DHCP Client List" />
+	<message msgid="Port Range Forwarding" msgstr="Port Range Forwarding" />   
+	<message msgid="DMZ Host" msgstr="DMZ Host" />  
+	<message msgid="UPNP Settings" msgstr="UPNP Settings" />   
+	<message msgid="Client Filter Settings" msgstr="Client Filter Settings" />  
+	<message msgid="MAC Address Filter Settings" msgstr="MAC Address Filter Settings" />  
+	<message msgid="URL Filter Settings" msgstr="URL Filter Settings" /> 
+	<message msgid="Remote Web Management" msgstr="Remote Web Management" />  
+	<message msgid="Routing Table" msgstr="Routing Table" />    
+	<message msgid="Static Routing" msgstr="Static Routing" />
+	<message msgid="Time Settings" msgstr="Time Settings" />   
+	<message msgid="Backup/Restore" msgstr="Backup/Restore" />
+	<message msgid="Restore To Factory Default" msgstr=" Restore To Factory Default" />
+	<message msgid="Change Password" msgstr="Change Password" />     
+	<message msgid="Syslog" msgstr="Syslog" />
+	<message msgid="Reboot" msgstr="Reboot" />
+	<message msgid="Upgrade" msgstr="Upgrade" /> 
+	
+	<!--help -->
+	<message msgid="Connection Status" msgstr="Connection Status" />
+	<message msgid="Internet Connection Type" msgstr="Internet Connection Type" />
+	<message msgid="Help" msgstr="Help" />
+	<message msgid="Connection Time" msgstr="Connection Time" />
+	<message msgid="System Version" msgstr="System Version" />
+	<message msgid="Static IP" msgstr="Static IP" />
+	<message msgid="MAC Address" msgstr="MAC Address" />
+	<message msgid="Clone MAC Address" msgstr="Clone MAC Address" />
+	<message msgid="IP Address Pool" msgstr="IP Address Pool" />
+	<message msgid="Lease Time" msgstr="Lease Time" />
+	<message msgid="Bandwidth Range" msgstr="Bandwidth Range" />
+	<message msgid="Upload/Download" msgstr="Upload/Download" />
+	<message msgid="Note" msgstr="Note" />
+	<message msgid="DMZ Host IP Address" msgstr="DMZ Host IP Address" />
+	<message msgid="Restore Default MAC" msgstr="Restore Default MAC" />
+	<message msgid="SSID Broadcast" msgstr="SSID Broadcast" />
+	<message msgid="Channel" msgstr="Channel" />
+	<message msgid="Extension Channel" msgstr="Extension Channel" />
+	<message msgid="Security Key" msgstr="Security Key" />
+	<message msgid="WEP Key" msgstr="WEP Key" />
+	<message msgid="WPA/WPA2-Personal" msgstr="WPA/WPA2-Personal" />
+	<message msgid="Start Port-End Port" msgstr="Start Port-End Port" /> 
+	<message msgid="Old Password" msgstr="Old Password" /> 
+	<message msgid="New Password" msgstr="New Password" />  
+	<message msgid="Confirm New Password" msgstr="Confirm New Password" />
+	<message msgid="Default Password" msgstr="Default Password" />
+	<message msgid="Default IP Address" msgstr="Default IP Address" />
+	<message msgid="Default Subnet Mask" msgstr="Default Subnet Mask" />
+	<message msgid="Backup" msgstr="Backup" />    
+	<message msgid="Restore" msgstr="Restore" />
+	<message msgid="DDNS Service" msgstr="DDNS Service" /> 
+	<message msgid="Bandwidth" msgstr="Bandwidth" />
+	<message msgid="Add to" msgstr="Add to" />
+	<message msgid="IP Address" msgstr="IP Address" />
+	<message msgid="Port" msgstr="Port" /> 
+		
+	<!--gozila.js -->
+	<message msgid="invalid!" msgstr="invalid!" />
+	<message msgid="Please enter a valid %s!" msgstr="Please enter a valid %s!" />  	
+	<message msgid="Pleale specify a valid %s! Invalid characters include %s!" msgstr="Pleale specify a valid %s! Invalid characters include %s!" /> 
+	<message msgid="Please specify a valid %s!" msgstr="Please specify a valid %s!" /> 	
+	<message msgid="%s should be numbers!" msgstr="%s should be numbers!" />   
+	<message msgid="%s beyond the range!" msgstr="%s beyond the range!" /> 
+	<message msgid="Are you sure to exit?" msgstr="Are you sure to exit?" />   
+	<message msgid="not defined" msgstr="not defined!" />  
+	<message msgid="The passwords you entered do not match." msgstr="The passwords you entered do not match." />  
+	<message msgid="Change password?" msgstr="Change password?" /> 
+	<message msgid="%s the length is not within the range!" msgstr="%s the length is not within the range!" />    
+	<message msgid="Permanent" msgstr="Permanent" />   
+	<message msgid="Day" msgstr="Day" /> 
+	<message msgid="Day(s)" msgstr="Day(s)" /> 
+	<message msgid="Don't enter Chinese characters!" msgstr="Don't enter Chinese characters!" />  
+	<message msgid="Reboot the router to bring the settings into effect ,reboot now?" msgstr="Reboot the router to bring the settings into effect ,reboot now?" /> 
+	<message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Reboot wireless module to bring the settings into effect ,reboot now?" /> 
+	<message msgid="Please specify a valid policy name that include alphanumeric characters or underscore!" msgstr="Please specify a valid policy name that include alphanumeric characters or underscore!" />   
+	<message msgid="The MAC address belongs to reserved addresses, please re-enter!" msgstr="The MAC address belongs to reserved addresses, please re-enter!" />  
+	<message msgid="The MAC address belongs to multicast addresses, please re-enter!" msgstr="The MAC address belongs to multicast addresses, please re-enter!" />
+	<message msgid="Please enter a valid %s. The VLSM and CIDR can not be supported." msgstr="Please enter a valid %s. The VLSM and CIDR can not be supported." />
+	<message msgid="Please specify a valid SSID between 1-32 ASCII characters!" msgstr="Please specify a valid SSID between 1-32 ASCII characters!" />
+  
+    <!--tenda.js -->
+    <message msgid="Capital letter entered!" msgstr="Capital letter entered!" />
+	
+	<!--index.asp-->
+	<message msgid="Please enter the valid PPPoE username and PPPoE password provided by your ISP!" msgstr="Please enter the valid PPPoE username and PPPoE password provided by your ISP!" />
+	<message msgid="PPPoE Username" msgstr="PPPoE Username" />
+	<message msgid="PPPoE Password" msgstr="PPPoE Password" />
+	<message msgid="Security key must contain 8~63 characters!" msgstr="Security key must contain 8~63 characters!" />
+	<message msgid="PPPoE" msgstr="PPPoE" />
+	<message msgid="DHCP" msgstr="DHCP" />
+	<message msgid="For other connection types, click" msgstr="For other connection types, click" />
+	<message msgid="Wireless Security Setup" msgstr="Wireless Security Setup" />
+	<message msgid="Default" msgstr="Default" />
+	<message msgid="8~63 ASCII characters" msgstr="8~63 ASCII characters" />
+	<message msgid="Advanced" msgstr="Advanced" />
+	<message msgid="Enter username provided by ISP" msgstr="Enter username provided by ISP" />
+	<message msgid="Enter password provided by ISP" msgstr="Enter password provided by ISP" />
+	<message msgid="The security key will be changed to %s! Please reconnect to %s using the new security key!" msgstr="The security key will be changed to %s! Please reconnect to %s using the new security key!" />
+	
+	<!--login-->
+	<message msgid="Tenda 11N Wireless Router Login Screen" msgstr="Tenda 11N Wireless Router Login Screen" />
+	<message msgid="No Ethernet cable connected to WAN port!" msgstr="No Ethernet cable connected to WAN port!" />
+	<message msgid="No Internet access, please check your online settings!" msgstr="No Internet access, please check your online settings!" />
+	<message msgid="Password can not be empty!" msgstr="Password can not be empty!" />
+	<message msgid="Password can not exceed 12 characters in length!" msgstr="Password can not exceed 12 characters in length!" />
+	<message msgid="Login" msgstr="Login" />
+	<message msgid="Wrong password, please enter the password again!" msgstr="Wrong password, please enter the password again!" />
+	<message msgid="Initial password" msgstr="Initial password" />
+	<message msgid="Password" msgstr="Password" />
+	
+	<message msgid="wan ip error message" msgstr="Please enter valid WAN IP information (WAN IP,gateway,etc) provided by your ISP. WAN IP address should NOT be the same or on the same net segment as device LAN IP!" />
+	<message msgid="Warning: Up to 4 users can login to the router at a time!" msgstr="Warning: Up to 4 users can login to the router at a time!" />
+	<message msgid="Please specify a valid firmware file for upgrade!" msgstr="Please specify a valid firmware file for upgrade!" />
+	<message msgid="CGI write config file failed!" msgstr="CGI write config file failed!" />
+	<message msgid="Default:" msgstr="Default:"/>
+	<message msgid="Password:" msgstr="Password:"/>
+	<message msgid="Password error!" msgstr="Password error!" />
+</po>

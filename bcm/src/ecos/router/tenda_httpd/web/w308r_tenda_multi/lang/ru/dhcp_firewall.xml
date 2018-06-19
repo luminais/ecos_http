@@ -1,0 +1,119 @@
+<po>
+<!--lan_dhcps.asp-->
+<message msgid="IP pool start address" msgstr="Начальный IP-адрес диапазона" />
+<message msgid="IP pool end address" msgstr="Конечные IP-адрес диапазона" />
+<message msgid="IP pool start address can not bigger than IP pool end address" msgstr="Начальный IP-адрес не может быть больше, чем конечный IP-адрес" />
+<message msgid="Lease Time" msgstr="Время аренды" />
+<message msgid="One hour" msgstr="Один час" />
+<message msgid="Two hours" msgstr="Два часа" />
+<message msgid="Three hours" msgstr="Три часа" />
+<message msgid="One day" msgstr="Один день" />
+<message msgid="Two days" msgstr="Два дня" />
+<message msgid="One week" msgstr="Одна неделя" />
+<message msgid="Lan_dncps_helpinfo1" msgstr="DHCP-сервер автоматически назначает IP-адреса устройствам в сети. Если вы хотите использовать DHCP-сервер маршрутизатора, то включите его на этой странице и установите для устройств сети автоматическое получение IP-адреса." />
+<message msgid="Lan_dncps_helpinfo2" msgstr="Диапазон IP-адресов: Введите Начальный IP-адрес и Конечный IP-адрес для формирования динамического пула IP-адресов для названичения их устройствам сети." />
+<message msgid="Lan_dncps_helpinfo3" msgstr="Время аренды: Назначить время аренды IP-адреса для устройства в сети, после которого устройство должно возобновить его аренду." />
+<message msgid="Tenda 11N Wireless Router Login Screen" msgstr="Интерфейс TENDA 11N маршрутизатора" />
+<message msgid="DHCP Server" msgstr="Сервер DHCP" />
+<message msgid="Enable" msgstr="включить" />
+<message msgid="Disable" msgstr="Запретить" />
+
+<!--lan_dhcp_clients.asp-->
+<message msgid="Host Name" msgstr="Имя хоста" />
+<message msgid="IP-MAC Binding" msgstr="Привязка IP-адреса и  MAC-адреса" />
+<message msgid="NO." msgstr="Номер" />
+<message msgid="Max.16 static IP-MAC binding items" msgstr="Максимумально допустимо 16 записей таблицы соотвествия IP-адресов и MAC-адресов" />
+<message msgid="NO repeated IP!" msgstr="IP-адреса не могут повторяться!" />
+<message msgid="No repeated MAC address!" msgstr="MAC-адреса не могут повторяться!" />
+<message msgid="Static assignment" msgstr="Статическое выделение" />
+<message msgid="Add" msgstr="Добавить" />
+<message msgid="Refresh" msgstr="Обновить" />
+<message msgid="lan_dhcp_clients_helpinfo1" msgstr="Список выделенных IP-адресов для устройств в сети, назначенных DHCP-сервером." />
+<message msgid="lan_dhcp_clients_helpinfo2" msgstr="Чтобы определить нужным устройствам в сети постоянные IP-адреса, введите постоянный IP-адрес и соответствующий ему MAC-адрес устройства в сети и добавьте их в таблицу статического выделения." />
+<message msgid="lan_dhcp_clients_helpinfo3" msgstr="Внимание: после установки перезапустите маршрутизатор!" />
+<message msgid="IP Address" msgstr="IP-адрес" />
+<message msgid="MAC address" msgstr="MAC-адрес" />
+<message msgid="Delete" msgstr="Удалить" />
+
+<!--firewall_clientfilter--> 
+  <message msgid="Sunday" msgstr="Воскресенье" />  
+  <message msgid="Monday" msgstr="Понедельник" /> 
+  <message msgid="Tuesday" msgstr="Вторник" />  
+  <message msgid="Wednesday" msgstr="Среда" />    
+  <message msgid="Thursday" msgstr="Четверг" />   
+  <message msgid="Friday" msgstr="Пятница" />  
+  <message msgid="Saturday" msgstr="Суббота" />    
+  <message msgid="Forbid only" msgstr="Только запретить" />  
+  <message msgid="Permit only" msgstr="Только позволить" />   
+  <message msgid="Start IP" msgstr="Начальный IP-адрес" />  
+  <message msgid="End IP" msgstr="Конечный IP-адреса" />  
+  <message msgid="Start Port" msgstr="Начальный порт" />   
+  <message msgid="End Port" msgstr="Конечный порт" />  
+  <message msgid="Start Time" msgstr="Начальное время" />  
+  <message msgid="End Time" msgstr="Конечное время " />  
+  <message msgid="Start Week" msgstr="Начальная неделя" />   
+  <message msgid="End Week" msgstr="Конечная неделя " />  
+  <message msgid="not to enter 'notag' in the Remarks field" msgstr="Запрет ввода 'notag'" />  
+  <message msgid="one rule must be entered when 'permit only' is selected" msgstr="Когда выбран режим &quot;permit only&quot; (разрешить), надо обязательно создать правило." />   
+  <message msgid="Filter Mode" msgstr="Режим фильтрации" />  
+  <message msgid="Access Policy" msgstr="Политика доступа" />  
+  <message msgid="Remarks" msgstr="Комментарии" />   
+  <message msgid="Port" msgstr="Порт" />  
+  <message msgid="Type" msgstr="Тип" />  
+  <message msgid="Both" msgstr="Все" />   
+  <message msgid="Time" msgstr="Время" />  
+  <message msgid="Date" msgstr="Дата" />   
+  <message msgid="Clear this item" msgstr="Отменить данный пункт" />   
+  <message msgid="Clear" msgstr="Очистить" /> 
+  <message msgid="Firewall_clientfilter_Help_Inf1" msgstr="Вы можете контролировать соединение с интернетом по IP-адресам компьютеров. Подробности читайте в руководстве по настройке." /> 
+  <message msgid="Firewall_clientfilter_Help_Inf2" msgstr="Руководство по управлению: после внесения изменений нажмите кнопку &quot;сохранить&quot;." />
+  <message msgid="Firewall_clientfilter_Help_Inf3" msgstr="Только запрет: запретить подключатся с IP-адреса или группы IP-адресов к интернету." />
+  <message msgid="Firewall_clientfilter_Help_Inf4" msgstr="Только разрешение: разрешить подключатся с IP-адреса или группы IP-адресов к интернету." />
+  <message msgid="Firewall_clientfilter_Help_Inf5" msgstr="Внимание: настройка времени 0:0~0:0 означает всё время." />
+   
+<!--firewall_mac-->  
+  <message msgid="Empty MAC address" msgstr="Пустой MAC-адрес" />    
+  <message msgid="Firewall_MAC_Help_Inf1" msgstr="Вы можете контролировать соединение с интернетом по МАС-адресам компьютеров. Подробности читайте в руководстве по настройке." /> 
+  <message msgid="Firewall_MAC_Help_Inf2" msgstr="Руководство по управлению: после внесения изменений нажмите кнопку &quot;сохранить&quot;" /> 
+  <message msgid="Firewall_MAC_Help_Inf3" msgstr="Только запрет: запретить соединение с MAC-адреса к интернету." /> 
+  <message msgid="Firewall_MAC_Help_Inf4" msgstr="Только разрешить: разрешить соединение с MAC-адреса к интернету." />  
+  <message msgid="Firewall_MAC_Help_Inf5" msgstr="Внимание: настройка времени 0:0~0:0 означает всё время." />   
+   
+<!--firewall_urlfilter-->		
+  <message msgid="URL character string" msgstr="URL строка" />   
+  <message msgid="Firewall_URLFilter_Help_Inf1" msgstr="Вы можете контролировать соединения с интернетом с использованием URL-фильтра. Подробности читайте в руководстве по настройке." />
+  <message msgid="Firewall_URLFilter_Help_Inf2" msgstr="Руководство по управлению: после внесения изменений нажмите кнопку &quot;сохранить&quot;." />
+  <message msgid="Firewall_URLFilter_Help_Inf3" msgstr="Примечание: URL строка: Каждая запись может соответствовать только одной строке. Настройка времени 0:0~0:0 означает все время." />
+	  
+ <!--system_remote-->   
+  <message msgid="Can not be at the same segment with LAN  IP" msgstr="IP-адрес не может быть из группы адресов из локальной сети" /> 
+  <message msgid="WAN IP address" msgstr="WAN IP адрес" />  
+  <message msgid="remote_Help_Inf1" msgstr="После включения данной функции вы можете удалённо через Интернет управлять маршрутизатором. После включения для удаленного управления введите в обозревателе адрес маршрутизатора и назначенный порт управления." />
+  <message msgid="remote_Help_Inf2" msgstr="Порт: номер порта для удалённого управления." />
+  <message msgid="remote_Help_Inf3" msgstr="IP-адрес: IP-адрес с которого будет осуществляться удаленное управление маршрутизатором." />
+  
+   <!--menu.js--> 
+  <message msgid="Ok" msgstr="OK" />
+  <message msgid="Cancel" msgstr="Отмена" />
+  
+   <!--gozila.js -->  
+  <message msgid="invalid" msgstr="Недопустимо" />   
+  <message msgid="contains illegal characters" msgstr="Содержит недопустимые символы" />  
+  <message msgid="not numbers " msgstr="Цифры недопустимы!" />  
+  <message msgid="beyond the range" msgstr="Вне диапазона!" /> 
+  <message msgid="contains invalid characters" msgstr="Содержит неверные символы" /> 
+  <message msgid="Are you sure to exit" msgstr="Вы уверены, что хотите выйти?" />   
+  <message msgid="not defined" msgstr="Не определено" />  
+  <message msgid="Password differs" msgstr="Ошибочный пароль!" />  
+  <message msgid="Change password" msgstr="Сменить пароль" /> 
+  <message msgid="the length is not within the range" msgstr="Длина вне диапазона!" />    
+  <message msgid="permanent" msgstr="Постоянно" />   
+  <message msgid="Day" msgstr="День" />  
+  <message msgid="Don't enter Chinese characters" msgstr="Не вводите китайские символы" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Перезапустить маршрутизатор ,чтобы установка вступило в силу. Хотите сразу же перезапуск?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Необходимо перезапустить беспроводный модуль, чтобы установки вступили в силу. Перезапустить сейчас?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Комментарии могут содержать только цифры, буквы и символ нижнего подчеркивания!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC-адрес относится к служебными адресам, пожалуйста повторите ввод!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC-адрес относится к широковещательным адресам, пожалуйста повторите ввод!" />  
+  <message msgid="Help information" msgstr="Справка" />
+</po>

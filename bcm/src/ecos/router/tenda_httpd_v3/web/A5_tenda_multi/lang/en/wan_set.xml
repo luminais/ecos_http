@@ -1,0 +1,186 @@
+﻿<po>
+<!--system_status.asp-->
+<message msgid="Static IP" msgstr="Static IP" />
+<message msgid="Dynamic IP" msgstr="Dynamic IP" />
+<message msgid="Disable" msgstr="Disable" />
+<message msgid="Enable" msgstr="Enable" />
+<message msgid="Disconnected" msgstr="Disconnected" />
+<message msgid="Connecting" msgstr="Connecting" />
+<message msgid="Connected" msgstr="Connected" />
+<message msgid="Permanent" msgstr="Permanent" />
+<message msgid="Day" msgstr="Day" />
+<message msgid="WAN status" msgstr="WAN status" />
+<message msgid="Connection status" msgstr="Connection status" />
+<message msgid="Subnet Mask" msgstr="Subnet Mask" />
+<message msgid="Gateway" msgstr="Gateway" />
+<message msgid="DNS server" msgstr="DNS server" />
+<message msgid="Alternate DNS server" msgstr="Alternate DNS server" />
+<message msgid="Connection type" msgstr="Connection type" />
+<message msgid="Connection time" msgstr="Connection time" />
+<message msgid="Release" msgstr="Release" />
+<message msgid="Refresh" msgstr="Refresh" />
+<message msgid="Connect" msgstr="Connect" />
+<message msgid="Disconnect" msgstr="Disconnect" />
+<message msgid="System status" msgstr="System status" />
+<message msgid="LAN MAC address" msgstr="LAN MAC address" />
+<message msgid="WAN MAC address" msgstr="WAN MAC address" />
+<message msgid="System time" msgstr="System time" />
+<message msgid="Running time" msgstr="Running time" />
+<message msgid="Connected client" msgstr="Connected client" />
+<message msgid="Software version" msgstr="Software version" />
+<message msgid="Hardware version" msgstr="Hardware version" />
+<message msgid="System_status_helpinfo1" msgstr="Connection type: It displays the current WAN connection type." />
+<message msgid="System_status_helpinfo2" msgstr="Connection time: The connected time of the router’s WAN port when the connection type is dynamic IP, static IP, PPTP, P2TP or PPPoE." />
+<message msgid="System_status_helpinfo3" msgstr="Running time: The time that the router has been enabled." />
+<message msgid="System_status_helpinfo4" msgstr="System version :The router’s firmware version." />
+
+<!--wan_connected.asp-->
+<message msgid="Idle time" msgstr="Idle time" />
+<message msgid="Username or Password is empty" msgstr="Username or Password is empty!" />
+<message msgid="Account" msgstr="Account" />
+<message msgid="Username" msgstr="Username" />
+<message msgid="Password" msgstr="Password" />
+<message msgid="Time" msgstr="Time" />
+<message msgid="Time exceeds the specified range" msgstr="Time exceeds the specified range" />
+<message msgid="start time must be smaller than end time." msgstr="start time must be smaller than end time." />
+<message msgid="IP address" msgstr="IP address" />
+<message msgid="Primary DNS" msgstr="Primary DNS" />
+<message msgid="Alternate DNS" msgstr="Alternate DNS" />
+<message msgid="Server address is empty" msgstr="Server address is empty" />
+<message msgid="Server address" msgstr="Server address" />
+<message msgid="Server IP address" msgstr="Server IP address" />
+<message msgid="ISP Gateway" msgstr="ISP Gateway" />
+<message msgid="MTU value range" msgstr="MTU value range" />
+<message msgid="Wan_connected_helpinfo1" msgstr="Static IP: If your broadband ISP provides you a static IP, please select the static IP mode." />
+<message msgid="Wan_connected_helpinfo2" msgstr="Dynamic IP: If your ISP uses DHCP server, please select DHCP, and your ISP will automatically assign these values to you（includes the DNS server）." />
+<message msgid="Wan_connected_helpinfo3" msgstr="Inquire your ISP to make sure whether you can use PPPoE. If they provide PPPoE Then enter your username and password." />
+<message msgid="Wan_connected_helpinfo4" msgstr="Enter the PPTP server IP address, username, and password that are provided by your ISP. For the WAN IP address, Subnet Mask, Default Gateway, you can choose to either obtain automatically or manually enter the information provided by your ISP. MTU: Enter the MTU value for network connection, if you are not clear, use the default." />
+<message msgid="Wan_connected_helpinfo5" msgstr="Enter the L2TP server IP address, username, and password that are provided by your ISP. For the WAN IP address, Subnet Mask, Default Gateway, you can choose to either obtain automatically or manually enter the information provided by your ISP. MTU: Enter the MTU value for network connection, if you are not clear, use the default." />
+<message msgid="DO NOT modify it unless necessary, the default is 1500" msgstr="DO NOT modify it unless necessary, the default is 1500" />
+<message msgid="DO NOT modify it unless necessary, the default is 1492" msgstr="DO NOT modify it unless necessary, the default is 1492" />
+<message msgid="Access Account" msgstr="Access Account" />
+<message msgid="Access Password" msgstr="Access Password" />
+<message msgid="Server name" msgstr="Server name" />
+<!--add-->
+<message msgid="Service name" msgstr="Service name" />
+<!--add-->
+<message msgid="Select the corresponding connection mode according to your situation." msgstr="Select the corresponding connection mode according to your situation." />
+<message msgid="Connect automatically, Connect automatically to the Internet after rebooting the system or connection failure." msgstr="Connect automatically, Connect automatically to the Internet after rebooting the system or connection failure." />
+<message msgid="Connect on demand: Re-establish your connection to the Internet when there’s data transmitting." msgstr="Connect on demand: Re-establish your connection to the Internet when there’s data transmitting." />
+<message msgid="Max.idle time" msgstr="Max.idle time" />
+<message msgid="Wan_connected_Note" msgstr="Note: The &quot;Connect on fixed time&quot; function goes into effect only when you have set the current time in &quot;Time Settings&quot; from &quot;System Tools&quot;." />
+<message msgid="Connection time: from " msgstr="Connection time: from " />
+<message msgid="hours" msgstr="hours" />
+<message msgid="minutes" msgstr="minutes" />
+<message msgid="to" msgstr="to" />
+<message msgid="Second" msgstr="Second" />
+<message msgid="mode" msgstr="Mode" />
+<message msgid="Address mode" msgstr="Address mode" />
+<message msgid="Help information" msgstr="Help information" />
+<message msgid="Don not enter the information unless necessary." msgstr="Don’t enter the information unless necessary." />
+<message msgid="Connect manually: Connect to the Internet manually by the user." msgstr="Connect manually: Connect to the Internet manually by the user." />
+<message msgid="Connect on fixed time: Connect automatically to the Internet during the time you fix." msgstr="Connect on fixed time: Connect automatically to the Internet during the time you fix." />
+
+<!--lan.asp-->
+<message msgid="If the webpage doesn't update automatically,please update your computer's network settings and then log on with the new IP." msgstr="If the webpage doesn't update automatically,please update your computer's network settings and then log on with the new IP." />
+<message msgid="This page is used to set the basic network parameters for LAN" msgstr="This page is used to set the basic network parameters for LAN." />
+<message msgid="Lan_helpinfo" msgstr="Set the router's LAN IP and Subnet Mask. The default IP Address is 192.168.2.1,and default Subnet Mask 255.255.255.0." />
+
+<!--mac_clone.asp-->
+<message msgid="MAC Address Clone" msgstr="MAC Address Clone" />
+<message msgid="MAC Address" msgstr="MAC Address" />
+<message msgid="Restore Default MAC" msgstr="Restore Default MAC" />
+<message msgid="Clone MAC Address" msgstr="Clone MAC Address" />
+<message msgid="mac_clone_helpinfo1" msgstr="MAC Address clone: Some Internet service providers require end-user's MAC address to access their network. This feature copies the MAC address of your network device to the router." />
+<message msgid="mac_clone_helpinfo2" msgstr="MAC Address: The MAC address to be registered with your Internet service provider." />
+<message msgid="mac_clone_helpinfo3" msgstr="Restore Default MAC: Restore the default hardware MAC address." />
+<message msgid="mac_clone_helpinfo4" msgstr="Clone MAC: Register your PC's MAC address." />
+
+<!--wan_dns.asp-->
+<message msgid="Primary DNS address" msgstr="Primary DNS address" />
+<message msgid="Alternate DNS address" msgstr="Alternate DNS address" />
+<message msgid="DNS setting" msgstr="DNS setting" />
+<message msgid="DNS address" msgstr="DNS address" />
+<message msgid="Optional" msgstr="Optional" />
+<message msgid="Note: After the settings are completed, reboot the device to activate the modified settings." msgstr="Note: After the settings are completed, reboot the device to activate the modified settings." />
+<message msgid="Wan_dns_helpinfo1" msgstr="When the DNS setting is selected, you can enter the specified domain name server IP, by which to provide domain name resolution service. When not selected, broadband service provider will automatically assign." />
+<message msgid="Wan_dns_helpinfo2" msgstr="If the domain name server IP is wrong, it will cause the webpage not able to be open, we suggest keeping it the default." />
+
+<!--net_tc.asp-->
+<message msgid="Add to list" msgstr="Add to list" />
+<message msgid="Update to list" msgstr="Update to list" />
+<message msgid="All services" msgstr="All services" />
+<message msgid="WAN port bandwidth can not be empty!" msgstr="WAN port bandwidth can not be empty!" />
+<message msgid="Bandwidth can not be zero ,please re-enter" msgstr="Bandwidth can not be zero ,please re-enter!" />
+<message msgid="No." msgstr="No." />
+<message msgid="IP segment" msgstr="IP segment" />
+<message msgid="Destination" msgstr="Destination" />
+<message msgid="Bandwidth range" msgstr="Bandwidth range" />
+<message msgid="Edit" msgstr="Edit" />
+<message msgid="Delete" msgstr="Delete" />
+<message msgid="All ports" msgstr="All ports" />
+<message msgid="Download" msgstr="Download" />
+<message msgid="Upload" msgstr="Upload" />
+<message msgid="valid WAN bandwidth ranges 1~12800,please re-enter" msgstr="valid WAN bandwidth ranges 1~12800,please re-enter!" />
+<message msgid="Max." msgstr="Max." />
+<message msgid="bandwidth control records" msgstr=" bandwidth control records!" />
+<message msgid="Please enter the IP address" msgstr="Please enter the IP address!" />
+<message msgid="Start IP" msgstr="Start IP" />  
+<message msgid="End IP" msgstr="End IP" />  
+<message msgid="start IP bigger than end IP" msgstr="start IP bigger than end IP!" />
+<message msgid="Please enter the bandwidth" msgstr="Please enter the bandwidth!" />
+<message msgid="the port is beyond the range of 0~65535" msgstr="the port is beyond the range of 0~65535!" />
+<message msgid="bandwidth range should begin from small to big" msgstr="bandwidth range should begin from small to big!" />
+<message msgid="The configuration overlapped ,please re-enter" msgstr="The configuration overlapped ,please re-enter!" />
+<message msgid="Enable Bandwidth Control" msgstr="Enable Bandwidth Control" />
+<message msgid="Interface" msgstr="Interface" />
+<message msgid="Download bandwidth" msgstr="Download bandwidth" />
+<message msgid="Upload/Download" msgstr="Upload/Download" />
+<message msgid="Net_tc_helpinfo1" msgstr="This function can limit the LAN computers’ communications traffic." />
+<message msgid="Net_tc_helpinfo2" msgstr="Upload/Download: To limit the uploading and downloading bandwidth of the WAN port." />
+<message msgid="Net_tc_helpinfo3" msgstr="Bandwidth Range:Allows the smallest and biggest data traffic of the hosts in specified IP range when uploading or downloading. The unit is KB/s." />
+<message msgid="Net_tc_helpinfo4" msgstr="The uplink of the uploading and downloading can not exceed WAN uplink range." />
+
+<!--system_iptAccount.asp-->
+<message msgid="Enable  traffic statistics" msgstr="Enable  traffic statistics" />
+<message msgid="Uplink rate" msgstr="Uplink rate" />
+<message msgid="Downlink rate" msgstr="Downlink rate" />
+<message msgid="Sent message" msgstr="Sent message" />
+<message msgid="Sent Bytes" msgstr="Sent Bytes" />
+<message msgid="Received message" msgstr="Received message" />
+<message msgid="Received Bytes" msgstr="Received Bytes" />
+<message msgid="traffic statistics function enables viewing each computer's traffic information" msgstr="traffic statistics function enables viewing each computer's traffic information." />
+<!--add-->
+<message msgid="Giving up" msgstr="Giving up :( Cannot create an XMLHTTP instance" />
+<message msgid="There was a problem with the request." msgstr="There was a problem with the request." />
+<message msgid="Information: the security setting is automatically set to WPS,but you can manually modify it." msgstr="Information: the security setting is automatically set to WPS, \n but you can manually modify it." />
+<!--add-->
+
+<!--wan_speed.asp-->
+<message msgid="Choose the WAN speed" msgstr="Choose the WAN speed" />
+<message msgid="Wan_speed_helpinfo1" msgstr="Choose the WAN speed." />
+
+<!--menu.js-->
+<message msgid="Ok" msgstr="Ok" />
+<message msgid="Cancel" msgstr="Cancel" />
+
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="invalid!" />   
+  <message msgid="contains illegal characters" msgstr="contains illegal characters:" />  
+  <message msgid="not numbers " msgstr="not numbers!" />  
+  <message msgid="beyond the range" msgstr="beyond the range!" /> 
+  <message msgid="contains invalid characters" msgstr="contains invalid characters:" /> 
+  <message msgid="Are you sure to exit" msgstr="Are you sure to exit?" />   
+  <message msgid="not defined" msgstr="not defined!" />  
+  <message msgid="Password differs" msgstr="Password differs!" />  
+  <message msgid="Change password" msgstr="Change password?" /> 
+  <message msgid="the length is not within the range" msgstr="the length is not within the range!" />    
+  <message msgid="permanent" msgstr="permanent" />    
+  <message msgid="Don't enter Chinese characters" msgstr="Don't enter Chinese characters!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Reboot the router to bring the settings into effect ,reboot now?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Reboot wireless module to bring the settings into effect ,reboot now?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="remarks can only consist of numbers ,letters and  underlines!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="The MAC address belongs to reserved addresses, please re-enter!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="The MAC address belongs to multicast addresses, please re-enter!" />  
+
+</po>

@@ -1,0 +1,26 @@
+.wrap {
+	text-align: center;
+}
+.wrap .container {
+	position: relative;
+	text-align: left;
+}
+.main-content {
+	margin-left: 218px;
+	display: inline-block;
+}
+
+#main-nav,
+.masthead,
+.fixed-top,
+.aside-nav-main ul,
+.fixed-bottom {
+	position: absolute;
+}
+
+.aside-nav-main{
+	position: absolute;
+	margin-left: 0px;
+	z-index: 1000;
+	height: 100%;
+}

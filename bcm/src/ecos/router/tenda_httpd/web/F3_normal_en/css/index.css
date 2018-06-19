@@ -1,0 +1,372 @@
+@charset "UTF-8";
+/*页面组件*/
+html, body {
+  height: 100%;
+}
+
+.index-body {
+  background-color: #d7d7d7;
+  overflow-y: scroll;
+}
+
+.masthead {
+  min-width: 320px;
+  height: 40px;
+  margin-bottom: 25px;
+  margin-bottom: 20\0;
+  background: #ed7020;
+}
+
+.main-content {
+  background: #f2f2f2;
+  border-radius: 5px;
+  padding-bottom: 70px;
+}
+
+#nav-menu {
+  border-radius: 5px;
+}
+
+.nav-content {
+  padding: 30px 0;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .main-content, .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  nav > li > a {
+    padding: 10px 0 10px 30px;
+  }
+  #nav-menu {
+    display: none;
+    min-height: 100px !important;
+    position: absolute;
+    width: 240px;
+    top: 45px;
+    z-index: 1000;
+    right: -240px;
+    webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+  #nav-menu.nav-menu-push {
+    display: block;
+    right: 0;
+  }
+  .nav-content {
+    padding: 0;
+  }
+}
+
+#nav > * {
+  margin-left: -15px;
+  margin-right: -15px;
+  padding: 0;
+  background: #e3e3e3;
+}
+
+.nav > li:first-child {
+  border-top: 1px solid #d7d7d7;
+}
+
+.nav > li {
+  border-bottom: 1px solid #d7d7d7;
+}
+
+.nav > li > a {
+  padding: 13px 0 13px 30px;
+  color: #666;
+}
+
+.nav > li > a.active, .nav > li > a:hover {
+  margin-right: -1px;
+  background-color: #f2f2f2;
+  color: #ed7020;
+  font-weight: 600;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+  text-decoration: none;
+  color: #ed7020;
+}
+
+.main-footer {
+  padding-right: 35px;
+  height: 50px;
+  line-height: 50px;
+  text-align: right;
+  background-color: #f2f2f2;
+  border-top: 1px solid #ccc;
+  border-radius: 0 0 5px 5px;
+}
+
+#form-massage {
+  position: fixed;
+  top: 120px;
+  left: 50%;
+  margin-left: -119px;
+  width: 222px;
+  padding: 28px 8px;
+  color: #fff;
+  font-size: 14px;
+  z-index: 9999;
+  text-align: center;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #666;
+  opacity: .9;
+  filter: alpha(opacity=90);
+}
+
+#statistic small, #statistic p {
+  color: #999;
+  font-size: 14px;
+  padding-left: 5px;
+}
+
+.file {
+  position: relative;
+  /* background: #D0EEFF; */
+  /* border: 1px solid #99D3F5; */
+  border-radius: 4px;
+  overflow: hidden;
+  /* color: #1E88C7; */
+  text-decoration: none;
+  text-indent: 0;
+  line-height: 20px;
+}
+
+.file input {
+  position: absolute;
+  font-size: 200px;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+.file:hover {
+  color: #999;
+}
+
+.pic {
+  font-size: 46px;
+}
+
+.line {
+  margin-bottom: 2px;
+  height: 29px;
+}
+
+.top-line {
+  border-bottom: 1px solid #09c;
+}
+
+.bottom-line {
+  border-top: 1px solid #09c;
+}
+
+.pic-wan .icon-cancel {
+  top: 20px;
+  font-weight: bold;
+}
+
+.pic-wan-error {
+  color: #ccc;
+}
+
+.wan-error {
+  display: none;
+}
+
+.pic-wan-error .line {
+  border-color: #ccc;
+}
+
+.pic-wan-error .wan-error {
+  display: block;
+}
+
+.ico-small {
+  font-size: 16px;
+}
+
+.signal {
+  background: url(../img/wifi_strength.png) 0 no-repeat;
+  width: 20px;
+  height: 20px;
+}
+
+.signal_4 {
+  background-position: 0 7px;
+}
+
+.signal_3 {
+  background-position: -21px 7px;
+}
+
+.signal_2 {
+  background-position: -42px 7px;
+}
+
+.signal_1 {
+  background-position: -63px 7px;
+}
+
+.nav-footer-icon {
+  padding-top: 15px;
+  background: #e3e3e3;
+  height: 50px;
+}
+
+.nav-icon {
+  background-image: url(../img/nav-icon.png);
+  display: block;
+}
+
+.weibo {
+  background-position: 0px -60px;
+  width: 19px;
+  height: 15px;
+}
+
+.weibo:hover {
+  background-position: -40px -60px;
+  width: 19px;
+  height: 15px;
+}
+
+.facebox {
+  background-position: -6px 0px;
+  width: 7px;
+  height: 15px;
+}
+
+.facebox:hover {
+  background-position: -46px 0px;
+  width: 7px;
+  height: 15px;
+}
+
+.weixin {
+  background-position: 0px -40px;
+  width: 16px;
+  height: 16px;
+}
+
+.weixin:hover {
+  background-position: -40px -40px;
+  width: 16px;
+  height: 16px;
+}
+
+.twitter {
+  background-position: 0px -20px;
+  width: 16px;
+  height: 16px;
+}
+
+.twitter:hover {
+  background-position: -40px -20px;
+  width: 16px;
+  height: 16px;
+}
+
+.navbar-login {
+  margin-top: 5px;
+}
+
+.nav-lang {
+  background: #ed7020;
+  border: 0px;
+  float: right;
+  margin-top: 10px;
+  cursor: pointer;
+  margin-right: 20px;
+  color: #fff;
+  width: auto;
+}
+
+.nav-lang .lang, .nav-lang .caret {
+  color: #fff;
+}
+
+.nav-lang:focus {
+  border: 0px;
+}
+
+.nav-lang .dropdown-menu {
+  min-width: 90px;
+}
+
+#selectLang {
+  margin-left: 20px;
+  display: inline-block;
+}
+
+#loginout {
+  cursor: pointer;
+}
+
+.nav-icon-weixin {
+  position: absolute;
+  top: -120px;
+  width: 120px;
+  left: -38px;
+}
+
+#statistic fieldset:hover {
+  border-color: #ed7020;
+  cursor: pointer;
+}
+
+#statistic h1 {
+  font-size: 42px;
+}
+
+.span-fixed {
+  max-width: 300px;
+}
+
+@media (min-width: 1200px) {
+  fieldset .table-responsive {
+    overflow-x: visible;
+  }
+}
+
+form .legend {
+  margin-bottom: 4px;
+}
+
+.wifi-tips {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  padding: 5px;
+  color: #f00;
+}
+
+@media (min-width: 768px) {
+  .main-container .navbar-default {
+    background-color: #d7d7d7;
+    border: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .help-inline .wifi-tips {
+    position: static;
+  }
+}
+
+#attachedDevices .input-medium {
+  width: 120px;
+}
+
+#attachedDevices div, #controlsDevices div {
+  padding-left: 0;
+}

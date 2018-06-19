@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<po>
+	<message msgid="Tenda 11N Wireless Router" msgstr="腾达 11N 无线路由器"/>
+	<message msgid="Home" msgstr="返回首页"/>
+	<message msgid="Advanced" msgstr="高级设置"/>
+	<message msgid="Wireless" msgstr="无线设置"/>
+	<message msgid="QoS" msgstr="带宽控制"/>
+	<message msgid="Applications" msgstr="特殊应用"/>
+	<message msgid="Security" msgstr="安全设置"/>
+	<message msgid="Tools" msgstr="系统工具"/>
+	<message msgid="Wireless Extender" msgstr="无线扩展" />
+	<message msgid="Wireless Schedule" msgstr="Wireless Schedule" />
+	<message msgid="Wireless Signal" msgstr="Wireless Signal" />
+	<message msgid="Initial page settings" msgstr="初始页面设置"/>
+	<message msgid="Log out" msgstr="注销"/>
+	<message msgid="System_status_helpinfo1" msgstr="显示路由器WAN口的连接状态。"/>
+	<message msgid="System_status_helpinfo2" msgstr="点击高级设置 &gt; 上网设置进行设置。自动获取和ADSL拨号是最常见的两种上网方式。"/>
+	<message msgid="System_status_helpinfo3" msgstr="显示自动获取或ADSL拨号方式下的WAN口连接时段。"/>
+	<message msgid="System_status_helpinfo4" msgstr="显示当前路由器固件版本"/>
+	<message msgid="Wan_connected_helpinfo1" msgstr="静态IP：您的宽带供应商提供的是固定IP。"/>
+	<message msgid="Wan_connected_helpinfo2" msgstr="自动获取：不接路由器时，电脑不需要进行任何设置就可以直接上网。"/>
+	<message msgid="Wan_connected_helpinfo3" msgstr="ADSL拨号：不接路由器时，需在电脑上点击宽带连接，并且输入用户名和密码才能上网。"/>
+	<message msgid="Wan_connected_helpinfo4" msgstr="PPTP：您的宽带供应商提供的是PPTP用户名和密码。"/>
+	<message msgid="Wan_connected_helpinfo5" msgstr="L2TP：您的宽带供应商提供的是L2TP用户名和密码。"/>
+	<message msgid="Contact your ISP for help if you are not sure about which Internet connection type to use." msgstr="如果您不确定是哪种上网方式，建议查看您的宽带业务单据或咨询您的宽带运营商。"/>
+	<message msgid="mac_clone_helpinfo1" msgstr="部分宽带运营商可能会将宽带账户信息与您的电脑MAC地址绑定，此时您需要进行MAC地址克隆才能正常上网。"/>
+	<message msgid="mac_clone_helpinfo2" msgstr="被您的宽带供应商注册了（绑定）的MAC地址"/>
+	<message msgid="mac_clone_helpinfo3" msgstr="恢复默认硬件的MAC地址"/>
+	<message msgid="mac_clone_helpinfo4" msgstr="注册你电脑的MAC地址"/>
+	<message msgid="Wan_speed_helpinfo1" msgstr="此页可设置WAN口速率。建议保持默认设置&quot;自动&quot;。&#xA;如果路由器与上级供网设备距离较远，可能会导致WAN口连接失败，此时您可以试着选择“10M全双工”来解决这一问题。"/>
+	<message msgid="Wan_dns_helpinfo1" msgstr="此页可以手动设置DNS，或者从宽带供应商处自动获取DNS。备用DNS地址可选填。"/>
+	<message msgid="Wan_dns_helpinfo2" msgstr="若DNS地址信息输入不正确，网页将无法打开。"/>
+	<message msgid="Lan_helpinfo" msgstr="此页可设置LAN口IP和子网掩码。该IP地址用来登陆路由器管理界面。&#xA;如果您更改了此页设置，请记下新的登录IP信息。&#xA;默认设置：&#xA;LAN口IP：192.168.0.1&#xA;子网掩码：255.255.255.0"/>
+	<message msgid="Net_tc_helpinfo1" msgstr="带宽控制是通过限制上传下载速率来改善网络质量。"/>
+	<message msgid="Net_tc_helpinfo2" msgstr="从下拉列表中选择上传或下载。"/>
+	<message msgid="Net_tc_helpinfo3" msgstr="限制指定电脑的上传下载带宽。"/>
+	<message msgid="Net_tc_helpinfo4" msgstr="最大上传/下载带宽不能超过您宽带供应商提供的最大带宽。"/>
+	<message msgid="Traffic statistics allows you to see at a glance how much traffic each device in your network is using." msgstr="流量统计功能帮助您查看当前局域网内已连接的每台电脑的流量信息。"/>
+	<message msgid="routing_table_Help_Inf1" msgstr="一共有三种类型的接口：&lt;br&gt;  vlan2 - WAN 口,&lt;br&gt;  ppp0 - PPPoE 口,&lt;br&gt;  br0 - LAN口."/>
+	<message msgid="routing_static_Help_Inf1" msgstr="在网络中安装多个路由器时，您需要设置静态路由。"/>
+	<message msgid="routing_static_Help_Inf2" msgstr="静态路由功能确定数据沿网络前后通过路由器的路径。您可使用静态路由允许不同的 IP 域名用户通过此设备访问互联网。 请谨慎设置。在许多条件下最好使用动态路由，因为此功能允许路由器自动检测网络布局的物理变化。如果要使用静态路由，路由器的 DHCP 设定必须关闭。设置需要重新启动有才能生效。"/>
+	<message msgid="NAT_Portseg_Help_Inf5" msgstr="从1~65535中指定一个端口范围用于端口转发。（如果您想指定一个单一的端口，可以在开始端口和结束端口中输入相同的端口号。然后输入主机的IP地址。确保您填入的主机IP地址已在高级设置 &gt; DHCP客户端列表中静态分配给了该主机。）"/>
+	<message msgid="NAT_Portseg_Help_Inf1" msgstr="指定WAN服务端口"/>
+	<message msgid="NAT_Portseg_Help_Inf2" msgstr="勾选使设置生效。"/>
+	<message msgid="NAT_Portseg_Help_Inf3" msgstr="确定清除相应设置吗？"/>
+	<message msgid="NAT_Portseg_Help_Inf4" msgstr="确定添加常用服务端口至所选规则吗？"/>
+	<message msgid="UPNP_Help_Inf" msgstr="UPnP (通用即插即用)允许自动发现和设置联机在网络上的设备。 UPnP 目前仅被Windows ME和Windows XP及其以后的系统支持。"/>
+	<message msgid="DMZ_Help_Inf" msgstr="在某些特殊情况下，需要让局域网中的一台计算机完全暴露给广域网，以实现双向通信，此时可以把该计算机设置为DMZ主机。"/>
+	<message msgid="DMZ_Help_Inf1" msgstr="键入一个DMZ主机的IP地址。启用DMZ之后，实际上就关闭了本设备对DMZ主机的防火墙保护。确保您填入的主机IP地址已在高级设置 &gt; DHCP客户端列表中静态分配给了该主机。"/>
+	<message msgid="lan_dhcp_clients_helpinfo1" msgstr="DHCP服务器提供了为客户端自动分配IP地址的功能，如果您使用本路由器的DHCP服务器功能的话，您可以让DHCP服务器自动替您配置局域网中各计算机的TCP/IP协议。"/>
+	<message msgid="lan_dhcp_clients_helpinfo2" msgstr="您可以手动输入IP和MAC地址，将它转换为静态分配。"/>
+	<message msgid="Firewall_clientfilter_Help_Inf1" msgstr="此功能可帮助您通过IP地址限制设备的上网时间。在下拉的菜单中选择一条策略，并完成相应设置，您就可以限制指定设备的上网时间。"/>
+	<message msgid="Firewall_clientfilter_Help_Inf2" msgstr="当时间设置为0:0 到0:0时，这条规则将一天24小时生效。"/>
+	<message msgid="Firewall_URLFilter_Help_Inf1" msgstr="此功能可帮助您限制可访问的网站。从下拉菜单中选择一条策略，并完成相应设置。您就可以限制访问某网站的设备，时间。您可以输入完整的域名或者域名中的关键字。例如：您想限制访问www.baidu.com，您只需输入baidu即可。"/>
+	<message msgid="Firewall_URLFilter_Help_Inf2" msgstr="请确保您想要限制的设备在DHCP客户端列表中被分配了静态IP地址。"/>
+	<message msgid="Firewall_URLFilter_Help_Inf3" msgstr="当时间设置为0:0 到0:0时，这条规则将一天24小时生效。"/>
+	<message msgid="Firewall_MAC_Help_Inf1" msgstr="此功能可帮助您通过MAC地址限制设备的上网时间。在下拉的菜单中选择一条策略，并完成相应设置，您就可以限制指定设备的上网时间。"/>
+	<message msgid="Firewall_MAC_Help_Inf2" msgstr="当时间设置为0:0 到0:0时，这条规则将一天24小时生效。"/>
+	<message msgid="remote_Help_Inf1" msgstr="此功能允许网络管理员远程管理路由器。"/>
+	<message msgid="remote_Help_Inf2" msgstr="此端口为外部管理端口。默认：8080"/>
+	<message msgid="remote_Help_Inf3" msgstr="此处可设置远程管理IP地址。当此处IP被设置为0.0.0.0, 则表示所有互联网设备均可远程管理路由器。"/>
+	<message msgid="Lan_dncps_helpinfo1" msgstr="DHCP服务器提供了为客户端自动分配IP地址的功能，如果您使用本路由器的DHCP服务器功能的话，您可以让DHCP服务器自动替您配置局域网中各计算机的TCP/IP协议。"/>
+	<message msgid="Lan_dncps_helpinfo2" msgstr="此处可指定IP地址池的起始和终止IP地址。"/>
+	<message msgid="Lan_dncps_helpinfo3" msgstr="租约时间是指在刷新之前，该IP地址在这段时间内会被分配到该设备。"/>
+	<message msgid="system_log_Help_Inf1" msgstr="此处可查看路由器的历史记录。满150条后，早先的记录将被自动清除。"/>
+	<message msgid="system_password_Help_Inf1" msgstr="此功能允许您修改登录IP密码。"/>
+	<message msgid="system_password_Help_Inf2" msgstr="设备默认登录密码为“admin”。为了路由器的安全，建议修改登录密码。"/>
+	<message msgid="system_password_Help_Inf3" msgstr="输入旧密码。如果您是首次登录路由器，那么登录密码为&quot;admin&quot;。（注意：登录密码无法找回。）如果您修改了登录密码，并且不小心忘记了，您只能把路由器恢复到出厂设置。"/>
+	<message msgid="system_password_Help_Inf4" msgstr="输入新密码。0~12个字符，不包含空格。"/>
+	<message msgid="system_password_Help_Inf5" msgstr="重新输入新密码。"/>
+	<message msgid="direct_reboot_Help_Inf" msgstr="重启路由器使设置生效。路由器重启期间，将与其他设备断开连接，并在重启后重新连接。"/>
+	<message msgid="system_reboot_Help_Inf" msgstr="重启路由器使设置生效。路由器重启期间，将与其他设备断开连接，并在重启后重新连接。"/>
+	<message msgid="system_upgrade_Help_Inf1" msgstr="可从www.tenda.com.cn获取路由器的最新软件。"/>
+	<message msgid="system_upgrade_Help_Inf2" msgstr="请仔细阅读说明。"/>
+	<message msgid="system_upgrade_Help_Inf3" msgstr="从官网下载好升级软件后，将它保存至您的电脑，点击“浏览”选择该文件进行升级。并重启路由器使设置生效。"/>
+	<message msgid="system_restore_Help_Inf1" msgstr="所有设置将会恢复到出厂设置。"/>
+	<message msgid="system_backup_Help_Inf" msgstr="点击备份您的路由器设置。"/>
+	<message msgid="system_backup_Help_Inf1" msgstr="点击“浏览”选择您备份的配置文件，然后点击“恢复”上传配置文件至您的路由器即可恢复该设置。"/>
+	<message msgid="ddns_config_Help_Inf1" msgstr="动态域名服务把WAN口变化的IP地址映射到一个固定的域名上，您就可以在互联网上通过域名访问路由器LAN口。您需要有一个下拉列表中任一域名提供商的账号。"/>
+	<message msgid="ddns_config_Help_Inf2" msgstr="输入您的用户名，密码，和注册的动态域名账号来启用此服务。"/>
+	<message msgid="system_hostname_Help_Inf1" msgstr="本页设置路由器的系统时间，您可以选择自己设置时间或者从互联网上获取标准的GMT时间，然后系统会自动连接NTP服务器进行时间同步。"/>
+	<message msgid="system_hostname_Help_Inf2" msgstr="关闭路由器电源后，时间信息会丢失，当您下次开机连上Internet后，路由器将会自动获取GMT时间。"/>
+	<message msgid="wireless_basic_helpinfo1" msgstr="此处可设置路由器的无线功能，例如：无线信号名称 (SSID)，信道扩展。"/>
+	<message msgid="wireless_basic_helpinfo2" msgstr="此处为您的无线信号名称。默认为“Tenda_XXXXXX”(XXXXXX为路由器MAC地址后六位。)为了您的无线网络安全，建议您修改为新的名称。请注意，此处不能为空。"/>
+	<message msgid="wireless_basic_helpinfo3" msgstr="此处可广播您的无线信号名称。如果您选择禁用它，您的无线信号名称将会被隐藏。"/>
+	<message msgid="wireless_basic_helpinfo4" msgstr="您可以选择下拉列表中任何一个信道或选择自动模式，尽可能选择当前区域使用比较少的信道以避免干扰。"/>
+	<message msgid="wireless_basic_helpinfo5" msgstr="用于确定11n模式时本网络工作的频率段。"/>
+	<message msgid="Wireless_secrity_helpinfo" msgstr="您可以启用PSK混合模式，但是您需要确定您的无线设备也支持此模式。"/>
+	<message msgid="Wireless_secrity_helpinfo1" msgstr="此处可设置无线密码。建议使用WPA-PSK安全模式和AES加密规则。"/>
+	<message msgid="Wireless_secrity_helpinfo2" msgstr="必须为5或13个ASCII码或者10或26个十六进制字符。"/>
+	<message msgid="Wireless_secrity_helpinfo3" msgstr="必须为8~63个区分大小写的ASCII码。"/>
+	<message msgid="Wireless_filter_helpinfo" msgstr="为连接至路由器的无线设备设置“允许”或“禁止&quot;规则。除了被设置为“允许”的设备，其他设备均被禁止，反之亦然。"/>
+	<message msgid="Wireless_state_helpinfo1" msgstr="此处可以查看连接至路由器的无线设备。"/>
+	<message msgid="Wireless_state_helpinfo2" msgstr="无线连接的信道频宽。802.11n 要求40M。"/>
+	<message msgid="Wireless_apclient_helpinfo1" msgstr="本页可设置桥模式（万能中继）来扩大无线覆盖范围。"/>
+	<message msgid="Wireless_apclient_helpinfo2" msgstr="此模式下，把本机路由器当作无线网卡（客户端）一样扫描AP无线信号并进行连接，从而实现两个有线网络的无线连接，注意加密设置需要与连接的AP保持一致。"/>
+	<message msgid="Wireless_apclient_helpinfo3" msgstr="点击显示可连接的AP信号名称列表。"/>
+	<message msgid="Wired WAN Mode" msgstr="有线WAN模式"/>
+	<message msgid="Wireless WAN Mode" msgstr="无线WAN模式"/>
+	<message msgid="wireless_mode_helpinfo1" msgstr="此模式下，路由器通过WAN口有线连接上网。"/>
+	<message msgid="wireless_mode_helpinfo2" msgstr="此模式下，路由器通过无线上网。这种方式要求您的宽带供应商提供无线信号名称，信道，加密方式等信息。"/>
+	<message msgid="To select an Internet connection type, go to Internet Connection Setup" msgstr="请在上网设置页面选择一种连接方式。"/>
+	<message msgid="Open Scan" msgstr="开始扫描"/>
+</po>

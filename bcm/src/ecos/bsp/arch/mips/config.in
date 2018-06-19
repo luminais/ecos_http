@@ -1,0 +1,61 @@
+#
+#	$Id: config.in,v 1.1 2010-08-05 08:12:21 Exp $
+#
+
+mainmenu_name 'Broadcom eCos Platform Kernel Configuration'
+
+mainmenu_option next_comment
+comment 'BSP Library (CPU) Select'
+	bool 'Support for Broadcom MIPS-based boards' CONFIG_MIPS_BRCM
+	if [ "$CONFIG_MIPS_BRCM" = "y" ]; then
+		bool 'Support Broadcom BCM947XX' CONFIG_BCM947XX
+	fi
+	string 'eCos Kernel Config File' CONFIG_ECC
+endmenu
+
+mainmenu_option next_comment
+comment 'Hardware Configuration'
+	comment 'Watchdog Timer Settings'
+	bool 'Support Watchdog' CONFIG_WATCHDOG n
+	if [ "$CONFIG_WATCHDOG" = "y" ]; then
+		int '  Watchdog Timer Interval (seconds)' CONFIG_WATCHDOG_INTERVAL 15
+	fi
+endmenu
+
+mainmenu_option next_comment
+comment 'Software Module Options'
+	comment 'VLAN'
+	bool '  Support 802.1Q VLAN' CONFIG_VLAN
+
+	comment 'Bridge'
+	bool '  Support Bridge' CONFIG_BRIDGE
+	int '  Number of bridges' CONFIG_NUM_BRIDGES
+
+	comment 'PPP protocol stack'
+	int '  Maximum PPP sessions' CONFIG_PPP_NUM_SESSIONS 1
+
+	comment 'NAT options'
+	int '  Maximum NAT links' CONFIG_NAT_LINKS 4096
+endmenu
+
+mainmenu_option next_comment
+comment 'Device Drivers Options'
+	comment '10/100/1000 Ethernet support'
+	bool '  BCM47xx support' CONFIG_ET_47XX
+	bool '  BCM57xx Gigabit Ethernet support' CONFIG_BCM57XX
+
+	comment '802.11 Wireless support'
+	bool '  BCM43xx 802.11 Wireless support Support Wireless' CONFIG_WL
+	if [ "$CONFIG_WL" = "y" ]; then
+		choice '    Wireless feature variant' \
+		  "ap CONFIG_WL_USE_AP \
+		   sta CONFIG_WL_USE_STA \
+		   apsta CONFIG_WL_USE_APSTA"
+		string '   Config file for basic AP variant' \
+			   CONFIG_WL_AP wlconfig_ecos_router_ap
+		string '   Config file for basic STA variant' \
+			   CONFIG_WL_STA wlconfig_ecos_router_sta
+		string '   Config file for basic APSTA variant' \
+			   CONFIG_WL_APSTA wlconfig_ecos_router_apsta
+	fi
+endmenu

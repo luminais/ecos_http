@@ -1,0 +1,239 @@
+﻿<po>
+<!--system_hostname--> 
+  <message msgid="Hostname" msgstr="Nom d'hôte" />  
+  <message msgid="Domain Name" msgstr="Nom domaine" /> 
+  <message msgid="Time format wrong" msgstr="Erreur de format d'heure" />  
+  <message msgid="Please enter the valid year ,month and date" msgstr="Veuillez entrer l'année, le mois et la date valides" />    
+  <message msgid="Enter a valid date" msgstr="Entrez une date valide" />   
+  <message msgid="Enter a valid time" msgstr="Entrez une heure valide" />  
+  <message msgid="Time zone" msgstr="Fuseau horaire" /> 
+  <message msgid="West of International Date Line" msgstr="Ouest de la ligne internationale de changement de date" />  
+  <message msgid="Midway Island, Samoa" msgstr="Midway Island (Ile intermédiaire), Samoa" /> 
+  <message msgid="Hawaii, Honolulu" msgstr="Hawaï, Honolulu" />  
+  <message msgid="Alaska" msgstr="Alaska" />    
+  <message msgid="Pacific Time" msgstr="Heure du pacifique (États-Unis Canada) ; Tijuana" />   
+  <message msgid="Mountain Time" msgstr="Heure de montagne (États-Unis Canada)" />  
+  <message msgid="Chihuahua, La Paz, Mazatlan" msgstr="Chiwawa, La Paz, Mazatlan" /> 
+  <message msgid="Arizona" msgstr="Arizona" />  
+  <message msgid="Central Time" msgstr="Heure centrale (États-Unis Canada)" /> 
+  <message msgid="Guadalajara, Mexico City, Monterrey" msgstr="Guadalajara, Mexico, Monterrey" />  
+  <message msgid="Eastern Time" msgstr="Heure orientale (États-Unis Canada)" />    
+  <message msgid="India to Ann" msgstr="Inde à Ann (est)" />   
+  <message msgid="Bogota, Lima, Quito" msgstr="Bogota, Lima, Quito" />  
+  <message msgid="Atlantic Time" msgstr="Heure atlantique (Canada)" /> 
+  <message msgid="Manaus" msgstr="Manaus" />   
+  <message msgid="Caracas, La Paz" msgstr="Caracas, La Paz" />  
+  <message msgid="Newfoundland and Labrador" msgstr="Terre-Neuve et Labrador" /> 
+  <message msgid="Brasilia Asia" msgstr="Brasilia Asie" />  
+  <message msgid="Greenland" msgstr="Groenland" /> 
+  <message msgid="Buenos Aires, Georgetown" msgstr="Buenos Aires, Georgetown" />  
+  <message msgid="Atlantic" msgstr="Atlantique" />    
+  <message msgid="Azores" msgstr="Açores" />   
+  <message msgid="Cape Verde Islands" msgstr="Îles de Cap Vert" />  
+  <message msgid="Greenwich Mean Time" msgstr="Heure moyenne de Greenwich : Dublin, Edimbourg, Lisbonne, Londres" /> 
+  <message msgid="Casablanca , Monrovia" msgstr="Casablanca, Monrovia" />  
+  <message msgid="Belgrade, Bratislava, Budapest, Ljubljana, Prague" msgstr="Belgrade, Bratislava, Budapest, Ljubljana, Prague" /> 
+  <message msgid="Sarajevo, Skopje, Warsaw, Zagreb" msgstr="Sarajevo, Skopje, Varsovie, Zagreb" />  
+  <message msgid="Brussels, Copenhagen, Madrid, Paris" msgstr="Bruxelles, Copenhague, Madrid, Paris" />    
+  <message msgid="West Africa" msgstr="Afrique de l'Ouest" />   
+  <message msgid="Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" msgstr="Amsterdam, Berlin, Berne, Rome, Stockholm, Vienne" />  
+  <message msgid="Athens, Bucharest, Istanbul" msgstr="Athènes, Bucarest, Istanbul" /> 
+  <message msgid="Minsk" msgstr="Minsk" />   
+  <message msgid="Cairo" msgstr="Caire" />  
+  <message msgid="Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" msgstr="Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" />  
+  <message msgid="Jerusalem" msgstr="Jérusalem" /> 
+  <message msgid="temperature 'll have" msgstr="la température sera obtenue" />  
+  <message msgid="grams. Harare, Pretoria" msgstr="grams.  Harare, Pretoria" />    
+  <message msgid="Moscow, St. Petersburg, Volgograd" msgstr="Moscou, rue  Pétersbourg, Volgograd" /> 
+  <message msgid="Kuwait, Riyadh" msgstr="Kowéit, Riyadh" />   
+  <message msgid="Baghdad" msgstr="Bagdad" />  
+  <message msgid="Nairobi" msgstr="Nairobi" />  
+  <message msgid="Tehran" msgstr="Téhéran" /> 
+  <message msgid="Abu Dhabi, Muscat" msgstr="Abu Dhabi, Muscat" />  
+  <message msgid="Baku" msgstr="Bakou" />    
+  <message msgid="Yerevan" msgstr="Yerevan" /> 
+  <message msgid="Tbilisi" msgstr="Tbilisi" />   
+  <message msgid="Kabul" msgstr="Kaboul" />  
+  <message msgid="Islamabad, Karachi, Tashkent" msgstr="Islamabad, Karachi, Tashkent" />  
+  <message msgid="Yekaterinburg" msgstr="Yekaterinburg" /> 
+  <message msgid="Chennai, Kolkata, Mumbai, New Delhi" msgstr="Chennai, Kolkata, Mumbai, New Delhi" />  
+  <message msgid="Kathmandu" msgstr="Katmandou" />    
+  <message msgid="Astana, Dhaka" msgstr="Astana, Dhaka" /> 
+  <message msgid="Almaty, Novosibirsk" msgstr="Almaty, Novosibirsk" />   
+  <message msgid="Colombo" msgstr="Colombo" />  
+  <message msgid="Yangon" msgstr="Yangon (Rangoon)" />  
+  <message msgid="Krasnoyarsk" msgstr="Krasnoyarsk" /> 
+  <message msgid="Bangkok, Hanoi, Jakarta" msgstr="Bangkok, Hanoï, Jakarta" />  
+  <message msgid="Beijing, Chongqing, Hong Kong, Urumqi" msgstr="Pékin, Chongqing, Hong Kong, Urumqi" />    
+  <message msgid="Irkutsk grams, Ulaanbaatar" msgstr="Irkutsk grams, Ulaanbaatar" /> 
+  <message msgid="Kuala Lumpur, Singapore" msgstr="Kuala Lumpur, Singapour" />   
+  <message msgid="Perth" msgstr="Perth" />  
+  <message msgid="Yakutsk" msgstr="Yakutsk" />  
+  <message msgid="Osaka, Sapporo, Tokyo" msgstr="Osaka, Sapporo, Tokyo" /> 
+  <message msgid="Seoul" msgstr="Séoul" />  
+  <message msgid="Darwin" msgstr="Darwin" />    
+  <message msgid="Adelaide" msgstr="Adelaïde" /> 
+  <message msgid="Brisbane" msgstr="Brisbane" />   
+  <message msgid="Canberra, Melbourne Sydney" msgstr="Canberra, Melbourne, Sydney" />  
+  <message msgid="Guam, Port Moresby" msgstr="Guam, Port Moresby" />  
+  <message msgid="Vladivostok" msgstr="Vladivostok" /> 
+  <message msgid="Hobart" msgstr="Hobart" />  
+  <message msgid="Magadan, Solomon Islands, New Caledonia and more" msgstr="Magadan, îles Salomon, Nouvelle-Calédonie et plus" />    
+  <message msgid="Fiji Islands, Kamchatka Peninsula, the Marshall Islands" msgstr="Iles Fidji, Péninsule de Kamchatka, Iles Marshall" /> 
+  <message msgid="Auckland , Wellington" msgstr="Auckland, Wellington" />   
+  <message msgid="Nuku'alofa" msgstr="Nuku'alofa" />  
+  <message msgid="hostname_Note" msgstr="Note : L'heure GMT peut seulement être obtenue après l'accès à l'Internet." />  
+  <message msgid="Customized time" msgstr="Heure adaptée sur demande" /> 
+  <message msgid="Year" msgstr="Année" />  
+  <message msgid="Month" msgstr="Mois" />    
+  <message msgid="Date" msgstr="Date" />  
+  <message msgid="Hour" msgstr="Heure" />   
+  <message msgid="Minute" msgstr="Minute" />  
+  <message msgid="Second" msgstr="Seconde" />  
+  <message msgid="system_hostname_Help_Inf1" msgstr="Cette page est utilisée pour régler l'heure du système du routeur, vous pouvez choisir le réglage de l'heure manuel ou obtenir l'heure GMT de l'Internet et le système se connectera automatiquement au serveur de NTP pour synchroniser l'heure." /> 
+  <message msgid="system_hostname_Help_Inf2" msgstr="Note : L'information d'heure sera perdue après la mise hors tension du routeur, et quand vous accédez à l'Internet la prochaine fois, le routeur obtiendra l'heure GMT automatiquement.  Vous devriez d'abord accéder à l'Internet pour obtenir l'heure GMT ou pour régler l'heure manuellement à cette page, et alors les réglages de l'heure dans d'autres fonctions peuvent être efficaces." /> 
+   
+<!--ddns_config--> 
+  <message msgid="Username" msgstr="Pseudo" />   
+  <message msgid="Password" msgstr="Mot de passe" />  
+  <message msgid="Please enter the entire DDNS information" msgstr="Veuillez entrer l'information DNS dynamique entière!" />  
+  <message msgid="Please enter the correct DDNS information" msgstr="Veuillez entrer l'information DNS dynamique correcte!" /> 
+  <message msgid="DDNS Service" msgstr="Service de DNS dynamique" />  
+  <message msgid="Enable" msgstr="Activer" />    
+  <message msgid="Disable" msgstr="Déactiver" />
+  <message msgid="Service Provider" msgstr="Fournisseur d'accès" />   
+  <message msgid="Sign up" msgstr="S'inscrire" />  
+  <message msgid="ddns_config_Help_Inf1" msgstr="Le service DDNS (DNS dynamique) vous permet d'assigner un nom domaine fixe pour l'IP WAN dynamique afin de surveiller votre Web LAN, ftp de TCP/IP ou tout autre TCP/IP. Avant de régler le DDNS, vous devez cliquer sur « s'inscrire » et allez au site Web correspondant pour enregistrer un nom domaine." /> 
+  <message msgid="ddns_config_Help_Inf2" msgstr="Service DDNS : Choisissez le fournisseur de services DDNS correspondant à partir du menu déroulant et entrez dans le pseudo, le mot de passe et le nom d'hôte pour activer le service." />
+     
+<!--system_backup-->  
+  <message msgid="Please select the file you want to import" msgstr="Veuillez choisir le fichier que vous voulez importer!" />   
+  <message msgid="You need to restart after importing" msgstr="Vous devez démarrer après importation!" />  
+  <message msgid="Export the configured parameters and specify a path to save them" msgstr="Exportez les paramètres configurés et désignez un chemin pour les sauvegarder." />  
+  <message msgid="backup restore current configuration" msgstr="Vous pouvez sauvegarder la copie/remettre la configuration courante du routeur." /> 
+  <message msgid="Select the file directory to save the configured parameters" msgstr="Choisissez le répertoire de fichier pour sauvegarder les paramètres configurés:" />  
+  <message msgid="Select the configured file you want to import" msgstr="Choisissez le fichier configuré que vous voulez importer:" /> 
+  <message msgid="Backup" msgstr="secours" />    
+  <message msgid="Restore" msgstr="Restauration" /> 
+  <message msgid="system_backup_Help_Inf" msgstr="Cliquez sur « Backup » pour sauvegarder  la configuration courante au répertoire correspondant et former un fichier de secours configuré du système.De la même manière, vous devez seulement cliquer sur « Browse » pour choisir le fichier configuré à partir du répertoire correspondant, cliquez sur « Restore » et redémarrer le routeur après avoir fini, la configuration du système dont vous avez besoin peut être remise." />    
+    
+<!--system_restore-->  
+  <message msgid="restore_note" msgstr="L'appareil démarrera automatiquement !  L'IP sera mis à jour à 192.168.2.1, et le mot de passe sera mis à jour au « admin » ; si la page Web n'a pas été régénérée, régénérez SVP votre configuration et vous connectez de nouveau." />   
+  <message msgid="Click this button to restore the router all settings to factory default" msgstr="Cliquez sur cette touche pour reconstituer tous les réglages du routeur au défaut d'usine." />  
+  <message msgid="Restore to factory default" msgstr="Remise au défaut d'usine" />   
+  <message msgid="system_restore_Help_Inf1" msgstr="Le défaut d'usine reconstitue tous les réglages du routeur à l'état de défaut:" />
+  <!--<message msgid="system_restore_Help_Inf2" msgstr="Pseudo de défaut: admin" />-->
+  <message msgid="system_restore_Help_Inf3" msgstr="Mot de passe de défaut: admin" />
+  <message msgid="system_restore_Help_Inf4" msgstr="Adresse IP par défaut: 192.168.2.1" />
+  <message msgid="system_restore_Help_Inf5" msgstr="Masque de sous-réseau de défaut: 255.255.255.0" />
+   
+<!--system_upgrade-->  
+  <message msgid="Upgrading" msgstr="Mise à jour" />   
+  <message msgid="Please select the upgrade file" msgstr="Veuillez choisir le fichier de mise à jour!" />  
+  <message msgid="Are you sure to upgrade" msgstr="Êtes-vous sûr de faire la mise à jour?" />  
+  <message msgid="By upgrading the router software, you get new features." msgstr="En mettant à jour le logiciel du routeur, vous obtiendrez de nouvelles caractéristiques." /> 
+  <message msgid="Select the firmware file" msgstr="Choisir le fichier de firmware:" />  
+  <message msgid="Upgrade" msgstr="Mise à jour" />    
+  <message msgid="Current system version" msgstr="Version du système courante" /> 
+  <message msgid="Publishing date" msgstr="Date de publication" /> 
+  <message msgid="upgrade_note" msgstr="Note : Ne mettez pas hors tension le routeur lors de la mise à jour; autrement, le routeur sera endommagé et ne peut pas être utilisé. Après la mise à jour réussie, le routeur redémarrera automatiquement.  Le procédé de mise à jour prend quelques minutes, veuillez patienter!" /> 
+  <message msgid="system_upgrade_Help_Inf1" msgstr="Connectez-vous à notre site Web pour télécharger un logiciel de version plus récente." /> 
+  <message msgid="system_upgrade_Help_Inf2" msgstr="Trouvez le paquet de mise à jour correspondant du logiciel par la lecture rapide." /> 
+  <message msgid="system_upgrade_Help_Inf3" msgstr="Cliquez sur « Mise à jour », le routeur redémarrera automatiquement à la fin." /> 
+  
+<!--system_reboot-->
+  <message msgid="The system will re-connect to the initial page in about 50 seconds" msgstr="Le système se connectera à la page initiale dans 50 secondes environ." />
+  <message msgid="Click this button and the router will reboot" msgstr="Cliquer sur cette touche et le routeur redémarrera." />  
+  <message msgid="Reboot the router" msgstr="Redémarrer le routeur" />  
+  <message msgid="system_reboot_Help_Inf" msgstr="Le redémarrage du routeur mettra en oeuvre les réglages modifiés.  Tout en redémarrant, toutes les connexions seront coupées.  Cliquer sur « OK » pour redémarrer." />  
+  
+  <!--direct_reboot.asp-->
+  <message msgid="Rebooting" msgstr="Redémarrage..." />    
+  <message msgid="direct_reboot_Help_Inf" msgstr="Le redémarrage du routeur mettra en oeuvre les réglages modifiés.  Tout en redémarrant, toutes les connexions seront coupées." />  
+  
+ <!--system_password-->  
+  <message msgid="The initial password can only consist of letters and numbers" msgstr="Le mot de passe initial peut seulement se composer des lettres et des chiffres!" />   
+  <message msgid="On this page ,you can change  the administrator password" msgstr="À cette page, vous pouvez changer le mot de passe de l'administrateur." />  
+  <message msgid="password_note" msgstr="Note: Le mot de passe peut seulement se composer des lettres et des chiffres." />  
+  <message msgid="Old password" msgstr="Ancien mot de passe" /> 
+  <message msgid="New password" msgstr="Nouveau mot de passe" />  
+  <message msgid="Confirm new password" msgstr="Confirmer le nouveau mot de passe" />    
+  <message msgid="system_password_Help_Inf1" msgstr="Le mot de passe de défaut du routeur est admin.  Nous proposons de changer le mot de passe du routeur." /> 
+  <message msgid="system_password_Help_Inf2" msgstr="Ancien mot de passe : Entrer l’ancien mot de passe. Le mot de passe de défaut du routeur est admin.(Note : Le mot de passe ne peut pas être repris une fois qu'il est oublié ou perdu.  Si vous avez oublié ou perdu votre mot de passe, vous devrez remettre le routeur au défaut d'usine)." /> 
+  <message msgid="system_password_Help_Inf3" msgstr="Nouveau mot de passe : Entrer un nouveau mot de passe.  Le mot de passe doit être 0 ~ 12 caractères de long et exclure l'espace." /> 
+  <message msgid="system_password_Help_Inf4" msgstr="Confirmer le mot de passe : Ré-entrer le nouveau mot de passe pour confirmer." /> 
+  
+ <!--system_log-->  
+  <message msgid="the" msgstr="Contenus d'historique de la page" />   
+  <message msgid="page log contents" msgstr="" />  
+  <message msgid="Refresh" msgstr="Régénérer" />  
+  <message msgid="Clear" msgstr="Effacer l'historique" /> 
+  <message msgid="system_log_Help_Inf1" msgstr="Regarder les notes historiques" /> 
+  <message msgid="system_log_Help_Inf2" msgstr="Note : Les historiques seront effacés automatiquement quand ils couvrent 15 pages (soit 150 notes)." />   
+   
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="invalide!" />   
+  <message msgid="contains illegal characters" msgstr="contient des caractères illégaux:" />  
+  <message msgid="not numbers " msgstr="pas de chiffres!" />  
+  <message msgid="beyond the range" msgstr="au delà de la gamme!" /> 
+  <message msgid="contains invalid characters" msgstr="contient des caractères invalides:" /> 
+  <message msgid="Are you sure to exit" msgstr="Êtes-vous sûr de supprimer?" />   
+  <message msgid="not defined" msgstr="non défini!" />  
+  <message msgid="Password differs" msgstr="Le mot de passe diffère!" />  
+  <message msgid="Change password" msgstr="Changer le mot de passe?" /> 
+  <message msgid="the length is not within the range" msgstr="la longueur n'est pas dans la gamme!" />    
+  <message msgid="permanent" msgstr="permanent" />   
+  <message msgid="Day" msgstr="Jour" />  
+  <message msgid="Don't enter Chinese characters" msgstr="N'écrivez pas de caractère chinois!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Le redémarrage du routeur mettra en œuvre les réglages modifiés; redémarrer maintenant?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Le redémarrage du module sans fil mettra en œuvre les réglages; redémarrer maintenant?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="remarks peut seulement se composer des nombres, lettres et du trait en bas!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="L'adresse MAC appartient aux adresses réservées; ré-entrez SVP!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="L'adresse MAC appartient aux adresses de multi-émission; ré-entrez SVP!" />  
+  <message msgid="Help information" msgstr="Information d'aide" />
+  
+  <!--advance-->  
+  <message msgid="Tenda 11N Wireless Router" msgstr="Routeur Tenda de 11n sans fil" />   
+  <message msgid="Initial page settings" msgstr="Réglages de la page initiale" />  
+  <message msgid="Log out" msgstr="Se déconnecter" />  
+  <message msgid="Advanced Settings" msgstr="Réglages avancés" /> 
+  <message msgid="Wireless settings" msgstr="Réglages sans fil" />  
+  <message msgid="DHCP Server" msgstr="Serveur DHCP" />    
+  <message msgid="Virtual Server" msgstr="Serveur virtuel" />
+  <message msgid="Security settings" msgstr="Réglages de sécurité" />   
+  <message msgid="Routing settings" msgstr="Réglages de routing" />  
+  <message msgid="System Tools" msgstr="Outils de système" />   
+  <message msgid="System Status" msgstr="État du système" />  
+  <message msgid="WAN settings" msgstr="Réglages Réseau externe" />  
+  <message msgid="MAC Clone" msgstr="MAC Clone" /> 
+  <message msgid="LAN settings" msgstr="Réglages Réseau local" /> 
+  <message msgid="DNS settings" msgstr="Réglages DNS" />  
+  <message msgid="WAN medium type" msgstr="WAN medium type" />  
+  <message msgid="Bandwidth control" msgstr="Contrôle de la bande passante" />    
+  <message msgid="Traffic statistics" msgstr="Statistiques du trafic" />
+  <message msgid="WAN speed" msgstr="WAN speed" />
+  <message msgid="Wireless Basic Settings" msgstr="Réglages de base du réseau sans fil" />   
+  <message msgid="Wireless Security" msgstr="Sécurité du réseau sans fil" /> 
+  <message msgid="Access Control" msgstr="Contrôle d'accès" /> 
+  <message msgid="Connection Status" msgstr="Etat de connexion" />    
+  <message msgid="DHCP Client list" msgstr="Liste de clients DHCP " />
+  <message msgid="Port Range Forwarding" msgstr="Gamme de port d'envoi de données" />   
+  <message msgid="DMZ Host" msgstr="Hôte DMZ" />  
+  <message msgid="UPNP settings" msgstr="Réglages UPNP" />   
+  <message msgid="Client Filter Settings" msgstr="Réglages de filtre de client" />  
+  <message msgid="MAC Address Filter Settings" msgstr="Réglages d'adresse MAC" />  
+  <message msgid="URL Filter Settings" msgstr="Réglages de filtre d'URL" /> 
+  <message msgid="Remote Web Management" msgstr="Gestion de Web à distance" />  
+  <message msgid="Routing table" msgstr="Table de routage" />    
+  <message msgid="Static routing" msgstr="Statique de routage" />
+  <message msgid="Time Settings" msgstr="Réglages de temps" />   
+  <message msgid="Backup/Restore Settings" msgstr="Réglages de copie de secours/remise" />
+  <message msgid="Restore to Factory Default Settings" msgstr="Restauration des règlages d'usine" />
+  <message msgid="Change password1" msgstr="Changer le mot de passe" />     
+  <message msgid="Syslog" msgstr="Historique système" /> 
+  
+  <!--menu.js-->  
+  <message msgid="Ok" msgstr="Ok" />
+  <message msgid="Cancel" msgstr="Annuler" />  
+</po>
+ 

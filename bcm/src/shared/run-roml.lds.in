@@ -1,0 +1,85 @@
+OUTPUT_ARCH(TARGET_ARCH)
+ENTRY(startup)
+SECTIONS {
+	/* Boot section for startup and exception vectors */
+	. = TEXT_START;
+	.startup : {
+		_ftext = .;
+		text_start = .;
+		*(.text.startup)
+	}
+
+	. = 0x100;
+
+	/* ROM escape table */
+	ESC_TABLE
+
+	/* Data section shared by RAM and ROM */
+	SHDAT_MAP
+
+	/* Code section for regular code */
+	.text : {
+		*(.init)
+		*(.text)
+		*(.text.*)
+		*(.textrom.*)
+		*(.fini)
+		*(.glue_7)
+		*(.glue_7t)
+		*(.rdata)
+		*(.rdata.*)
+		*(.rodata)
+		*(.rodata.*)
+		*(.datarom.*)
+		ESC_KEEP
+	}
+	/* Special section for undefined symbols due to different compiler flags */
+	.undef : {
+		UNDEF_MAP
+		_etext = .;
+		text_end = .;
+	}
+
+	/* Data sections for regular initialized/uninitialized data */
+	.data : {
+		_fdata = .;
+		data_start = .;
+		*(.data)
+		*(.data.*)
+		*(.sdata)
+		_edata = .;
+		data_end = .;
+	}
+	.bss : {
+		_fbss = .;
+		bss_start = .;
+		*(.scommon)
+		*(.bss)
+		*(.bss.*)
+		*(.sbss)
+		*(COMMON)
+		bss_end = .;
+	}
+
+	/* Reclaim region 1 for BCMINITFN/BCMINITDATA */
+	.textrc1 : {
+		_rstart1 = .;
+		*(.textini1.*)
+	}
+	.datarc1 : {
+		*(.dataini1.*)
+		_rend1 = .;
+	}
+
+	/* Reclaim region 2 for BCMATTACHFN/BCMATTACHDATA */
+	.textrc2 : {
+		_rstart2 = .;
+		*(.textini2.*)
+	}
+	.datarc2 : {
+		*(.dataini2.*)
+		_rend2 = .;
+	}
+
+	_end = .;
+}

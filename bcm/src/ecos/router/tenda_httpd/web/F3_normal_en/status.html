@@ -1,0 +1,128 @@
+<section class="container-fluid">
+  <form class="form-horizontal hidden-xs" id="statusInternet">
+<h2 class="legend">Internet Connection Status</h2>
+<fieldset>
+  <div class="col-sm-5 pic-lan">
+    <div class="col-sm-7 text-right">
+      <i class="pic icon-device"></i>
+      <p class="help-block text-right">Devices</p>
+    </div>
+    <div class="col-sm-5" style="padding:0">
+      <div class="line top-line text-center">&nbsp;</div>
+      <div class="line bottom-line">&nbsp;</div>
+    </div>
+  </div>
+  <div class="col-sm-2 row text-center" style="padding:0; max-width: 108px">
+    <i class="pic icon-router"></i>
+    <p class="help-block text-center">Router</p>
+  </div>
+  <div class="col-sm-5 pic-wan pic-wan-error">
+    <div class="col-sm-5" style="padding:0">
+      <div class="line top-line text-center">
+        <i class="ico icon-cancel text-danger wan-error"></i>
+      </div>
+      <div class="line bottom-line">
+        <p class="hidden-sm text-center text-primary wan-error" style="margin-top: 6px;">Disconnected</p>
+      </div>
+    </div>
+    <div class="col-sm-7 text-left">
+      <i class="pic icon-internet"></i>
+      <p class="help-block text-left">Internet</p>
+    </div>
+  </div>
+  <p class="col-xs-12 col-sm-offset-1 col-sm-10">
+    <span>Connection Status<b>:</b></span>
+    <span class="text-danger" id="wan-connect-status"></span>
+  </p>
+</fieldset>
+</form>
+  <form class="form-horizontal"  id="statistic">
+  <h2 class="legend">Attached Devices and Real-time Statistics</h2>
+  <fieldset class="text-center">
+    <div class="col-xs-4">
+    <h1><span id="statusOnlineNumber" class="text-info"></span></h1>
+      <p><span class="ico icon-users"></span>
+         <span class="ico-text">Attached Devices</span></p>
+    </div>
+    <div class="col-xs-4">
+      <h1><span id="statusDownSpeed" class="text-success"></span><small>KB/s</small></h1>
+      <p><span class="ico icon-download"></span>
+      <span class="ico-text">Download Speed</span></p>
+    </div>
+    <div class="col-xs-4">
+      <h1><span id="statusUpSpeed" class="text-primary"></span><small>KB/s</small></h1>
+      <p><span class="ico icon-upload"></span>
+      <span class="ico-text">Upload Speed</span></p>
+    </div>
+  </fieldset>
+</form>
+  <form id="statusWAN" class="form-horizontal">
+  <h2 class="legend">System Info</h2>
+  <fieldset>
+    <div class="col-xs-12 col-md-6">
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Connection Type</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanType" class="help-block"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Connection Duration</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanConnectTime" class="help-block"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">WAN MAC</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanMAC" class="help-block"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">LAN IP</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusLanIP" class="help-block"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Firmware Version</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusFirmwareVersion" class="help-block"></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-6">
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">WAN IP</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanIP" class="help-block"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Subnet Mask</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanMask" class="help-block"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Default Gateway</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanGaterway" class="help-block"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Preferred DNS Server</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanDns1" class="help-block"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Alternative DNS Server</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanDns2" class="help-block"></p>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</form>
+</section>

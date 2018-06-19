@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Tenda | LOGIN</title>
+<link rel="shortcut icon" href="./favicon.ico">
+<link type="text/css" rel="stylesheet" href="./css/reasyui.css">
+<link type="text/css" rel="stylesheet" href="./css/login.css">
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 
+HTML5SHIV需放在头部，RESPOND.JS需要服务器--> 
+<!--[if lt IE 9]>
+<script src="./js/libs/respond.min.js"></script>
+<script src="./js/libs/html5shiv.min.js"></script>
+<![endif]--> 
+<script type="text/javascript" charset="utf-8" src="./lang/b28n.js"></script>
+</head>
+<body >
+<section class="container">
+  <form name="Login" method="post" action="/login/Auth">
+  <input type="hidden" name="password" id="password">
+    <div class="row">
+      <div class="center-block col-sm-8 col-md-6 col-lg-5 pull-none">
+        <article class="login box-shadow" id="loginWrap">
+          <header> 
+  <img src="img/logo.png" class="img-responsive"> 
+</header>
+<div class="form-group ico-groups country" id="loginLangWrap">
+  <label class="sr-only">Language</label>
+  <label class="ico icon-lang"></label>
+  <div id="country" name="country" class="form-control ico-text">
+  </div>
+</div>
+<div class="form-group ico-groups" id="loginPwdWrap">
+  <label class="sr-only">Password</label>
+  <label class="ico icon-lock" style="margin-left: 14px"></label>
+  <input id="login-password" type="password" class="form-control ico-text" maxlength="32">
+  <div id="errMsg" class="text-warning">&nbsp;</div>
+</div>
+          <div class="form-group">
+  <button type="button" class="btn btn-primary btn-lg btn-block" id="save">Login</button>
+</div>
+          <footer class="forget">
+  <p class="forget-link" id="forgotCaret">Forgot your password?<b id="login-caret" class="caret active"></b></p>
+  <div class="forget-info none">
+    <p> > First, push the reset button for about 8 seconds and then release it to reset your router.<br/>Second, set a new login password.</p>
+     <p class="hidden-xs">>Tip: Once complete, you will have to reconfigure the router for Internet access. </p>
+   </div>
+</footer>
+        </article>
+      </div>
+    </div>
+  </form>
+</section>
+<script type="text/javascript" charset="utf-8" src="./js/libs/j.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libs/reasy-ui-1.0.3.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libs/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/login.js"></script>
+</body>
+</html>

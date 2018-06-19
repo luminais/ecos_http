@@ -1,0 +1,1963 @@
+
+aisdram.o:     file format elf32-tradlittlemips
+
+Disassembly of section .text:
+
+00000000 <dmemc_init>:
+   0:	00000000 	nop
+   4:	00000101 	0x101
+   8:	00000001 	movf	zero,zero,$fcc0
+   c:	01030100 	0x1030100
+  10:	00000002 	srl	zero,zero,0x0
+  14:	01030101 	0x1030101
+  18:	00000003 	sra	zero,zero,0x0
+  1c:	01010101 	0x1010101
+  20:	00000005 	0x5
+  24:	00000100 	sll	zero,zero,0x4
+  28:	00000007 	srav	zero,zero,zero
+  2c:	01010000 	0x1010000
+  30:	00000008 	jr	zero
+  34:	00000100 	sll	zero,zero,0x4
+  38:	00000009 	jalr	zero,zero
+  3c:	00000100 	sll	zero,zero,0x4
+  40:	0000000a 	movz	zero,zero,zero
+  44:	01010101 	0x1010101
+  48:	0000000c 	syscall
+  4c:	00010200 	sll	zero,at,0x8
+  50:	00000010 	mfhi	zero
+  54:	0f00000a 	jal	c000028 <sdram_mem_cfg+0xbfff2d8>
+  58:	00000014 	0x14
+  5c:	64000000 	0x64000000
+  60:	0000001b 	divu	zero,zero,zero
+  64:	00000001 	movf	zero,zero,$fcc0
+  68:	0000001c 	0x1c
+  6c:	0039000a 	movz	zero,at,t9
+  70:	0000001d 	0x1d
+  74:	081b002b 	j	6c00ac <sdram_mem_cfg+0x6bf35c>
+  78:	0000001e 	0x1e
+  7c:	00000000 	nop
+  80:	0000001f 	0x1f
+  84:	00000000 	nop
+  88:	00000021 	move	zero,zero
+  8c:	000200c8 	0x200c8
+  90:	00000023 	negu	zero,zero
+  94:	000000c8 	0xc8
+  98:	00000024 	and	zero,zero,zero
+  9c:	00000000 	nop
+  a0:	0000007d 	0x7d
+  a4:	01010000 	0x1010000
+  a8:	0000007e 	0x7e
+  ac:	02000100 	0x2000100
+  b0:	00000081 	0x81
+  b4:	02000200 	0x2000200
+  b8:	00000084 	0x84
+  bc:	00000000 	nop
+  c0:	0000008a 	0x8a
+  c4:	00000000 	nop
+  c8:	0000008b 	0x8b
+  cc:	00000000 	nop
+  d0:	00000097 	0x97
+  d4:	00000005 	0x5
+  d8:	ffffffff 	sdc3	$31,-1(ra)
+
+000000dc <sdr_init>:
+  dc:	00000004 	sllv	zero,zero,zero
+  e0:	00000100 	sll	zero,zero,0x4
+  e4:	00000006 	srlv	zero,zero,zero
+  e8:	00000000 	nop
+  ec:	0000000b 	movn	zero,zero,zero
+  f0:	00030001 	0x30001
+  f4:	0000000e 	0xe
+  f8:	00020000 	sll	zero,v0,0x0
+  fc:	0000000f 	sync
+ 100:	0f000102 	jal	c000408 <sdram_mem_cfg+0xbfff6b8>
+ 104:	00000011 	mthi	zero
+ 108:	05000002 	bltz	t0,114 <sdr_init+0x38>
+ 10c:	00000012 	mflo	zero
+ 110:	00000003 	sra	zero,zero,0x0
+ 114:	00000013 	mtlo	zero
+ 118:	00090200 	sll	zero,t1,0x8
+ 11c:	00000015 	0x15
+ 120:	70006400 	0x70006400
+ 124:	00000016 	0x16
+ 128:	7f000070 	0x7f000070
+ 12c:	00000017 	0x17
+ 130:	00400000 	0x400000
+ 134:	00000018 	mult	zero,zero
+ 138:	09030600 	j	40c1800 <sdram_mem_cfg+0x40c0ab0>
+ 13c:	00000019 	multu	zero,zero
+ 140:	00170017 	0x170017
+ 144:	00000020 	add	zero,zero,zero
+ 148:	00320000 	0x320000
+ 14c:	00000022 	neg	zero,zero
+ 150:	000a4186 	0xa4186
+ 154:	ffffffff 	sdc3	$31,-1(ra)
+
+00000158 <ddr1_init>:
+ 158:	00000004 	sllv	zero,zero,zero
+ 15c:	00000100 	sll	zero,zero,0x4
+ 160:	00000006 	srlv	zero,zero,zero
+ 164:	00000100 	sll	zero,zero,0x4
+ 168:	0000000b 	movn	zero,zero,zero
+ 16c:	00030000 	sll	zero,v1,0x0
+ 170:	0000000e 	0xe
+ 174:	02030200 	0x2030200
+ 178:	0000000f 	sync
+ 17c:	0f010203 	jal	c04080c <sdram_mem_cfg+0xc03fabc>
+ 180:	00000011 	mthi	zero
+ 184:	06000002 	bltz	s0,190 <ddr1_init+0x38>
+ 188:	00000012 	mflo	zero
+ 18c:	00000006 	srlv	zero,zero,zero
+ 190:	00000013 	mtlo	zero
+ 194:	0010010e 	0x10010e
+ 198:	00000015 	0x15
+ 19c:	20006400 	addi	zero,zero,25600
+ 1a0:	00000016 	0x16
+ 1a4:	5700002a 	bnezl	t8,250 <ddr1_init+0xf8>
+ 1a8:	00000017 	0x17
+ 1ac:	00340000 	0x340000
+ 1b0:	00000018 	mult	zero,zero
+ 1b4:	0e030800 	jal	80c2000 <sdram_mem_cfg+0x80c12b0>
+ 1b8:	00000019 	multu	zero,zero
+ 1bc:	000f000f 	0xf000f
+ 1c0:	0000001a 	div	zero,zero,zero
+ 1c4:	000f000f 	0xf000f
+ 1c8:	00000020 	add	zero,zero,zero
+ 1cc:	00000000 	nop
+ 1d0:	00000022 	neg	zero,zero
+ 1d4:	000d2d89 	0xd2d89
+ 1d8:	0000007f 	0x7f
+ 1dc:	00000001 	movf	zero,zero,$fcc0
+ 1e0:	00000080 	sll	zero,zero,0x2
+ 1e4:	07000300 	bltz	t8,de8 <sdram_mem_cfg+0x98>
+ 1e8:	00000082 	srl	zero,zero,0x2
+ 1ec:	00010103 	sra	zero,at,0x4
+ 1f0:	00000083 	sra	zero,zero,0x2
+ 1f4:	00000200 	sll	zero,zero,0x8
+ 1f8:	00000085 	0x85
+ 1fc:	06120000 	bltzall	s0,200 <ddr1_init+0xa8>
+ 200:	00000086 	0x86
+ 204:	06120612 	bltzall	s0,1a50 <sdram_mem_cfg+0xd00>
+ 208:	00000087 	0x87
+ 20c:	06120612 	bltzall	s0,1a58 <sdram_mem_cfg+0xd08>
+ 210:	00000088 	0x88
+ 214:	00000612 	0x612
+ 218:	00000089 	0x89
+ 21c:	00000032 	tlt	zero,zero
+ 220:	0000008c 	syscall	0x2
+ 224:	001f4008 	0x1f4008
+ 228:	0000008d 	break	0x0,0x2
+ 22c:	001f4008 	0x1f4008
+ 230:	0000008e 	0x8e
+ 234:	002ee004 	sllv	gp,t6,at
+ 238:	0000008f 	0x8f
+ 23c:	002ee004 	sllv	gp,t6,at
+ 240:	00000092 	0x92
+ 244:	000f0033 	tltu	zero,t7
+ 248:	00000093 	0x93
+ 24c:	f4113c17 	sdc1	$f17,15383(zero)
+ 250:	00000094 	0x94
+ 254:	f4113c17 	sdc1	$f17,15383(zero)
+ 258:	00000095 	0x95
+ 25c:	26c00300 	addiu	zero,s6,768
+ 260:	00000096 	0x96
+ 264:	26c00300 	addiu	zero,s6,768
+ 268:	ffffffff 	sdc3	$31,-1(ra)
+
+0000026c <ddr2_init>:
+ 26c:	00000004 	sllv	zero,zero,zero
+ 270:	00010100 	sll	zero,at,0x4
+ 274:	00000006 	srlv	zero,zero,zero
+ 278:	00000000 	nop
+ 27c:	0000000b 	movn	zero,zero,zero
+ 280:	00030000 	sll	zero,v1,0x0
+ 284:	0000000e 	0xe
+ 288:	02030203 	0x2030203
+ 28c:	0000000f 	sync
+ 290:	0f030204 	jal	c0c0810 <sdram_mem_cfg+0xc0bfac0>
+ 294:	00000011 	mthi	zero
+ 298:	08000002 	j	8 <dmemc_init+0x8>
+ 29c:	00000012 	mflo	zero
+ 2a0:	00000004 	sllv	zero,zero,zero
+ 2a4:	00000013 	mtlo	zero
+ 2a8:	000f020e 	0xf020e
+ 2ac:	00000015 	0x15
+ 2b0:	16006400 	bnez	s0,192b4 <sdram_mem_cfg+0x18564>
+ 2b4:	00000016 	0x16
+ 2b8:	6026162a 	0x6026162a
+ 2bc:	00000017 	0x17
+ 2c0:	00340000 	0x340000
+ 2c4:	00000018 	mult	zero,zero
+ 2c8:	35060c00 	ori	a2,t0,0xc00
+ 2cc:	00000019 	multu	zero,zero
+ 2d0:	00200020 	add	zero,at,zero
+ 2d4:	0000001a 	div	zero,zero,zero
+ 2d8:	00200020 	add	zero,at,zero
+ 2dc:	00000020 	add	zero,zero,zero
+ 2e0:	006b0000 	0x6b0000
+ 2e4:	00000022 	neg	zero,zero
+ 2e8:	003848e1 	0x3848e1
+ 2ec:	0000007f 	0x7f
+ 2f0:	00000002 	srl	zero,zero,0x0
+ 2f4:	00000080 	sll	zero,zero,0x2
+ 2f8:	07000404 	bltz	t8,130c <sdram_mem_cfg+0x5bc>
+ 2fc:	00000082 	srl	zero,zero,0x2
+ 300:	03020304 	0x3020304
+ 304:	00000083 	sra	zero,zero,0x2
+ 308:	00000400 	sll	zero,zero,0x10
+ 30c:	00000085 	0x85
+ 310:	081b0000 	j	6c0000 <sdram_mem_cfg+0x6bf2b0>
+ 314:	00000086 	0x86
+ 318:	081b081b 	j	6c206c <sdram_mem_cfg+0x6c131c>
+ 31c:	00000087 	0x87
+ 320:	081b081b 	j	6c206c <sdram_mem_cfg+0x6c131c>
+ 324:	00000088 	0x88
+ 328:	0000081b 	0x81b
+ 32c:	00000089 	0x89
+ 330:	00400642 	0x400642
+ 334:	0000008c 	syscall	0x2
+ 338:	00164008 	0x164008
+ 33c:	0000008d 	break	0x0,0x2
+ 340:	00164008 	0x164008
+ 344:	0000008e 	0x8e
+ 348:	00236004 	sllv	t4,v1,at
+ 34c:	0000008f 	0x8f
+ 350:	00236004 	sllv	t4,v1,at
+ 354:	00000092 	0x92
+ 358:	000f0133 	tltu	zero,t7,0x4
+ 35c:	00000093 	0x93
+ 360:	f4112c17 	sdc1	$f17,11287(zero)
+ 364:	00000094 	0x94
+ 368:	f4112c17 	sdc1	$f17,11287(zero)
+ 36c:	00000095 	0x95
+ 370:	26c00300 	addiu	zero,s6,768
+ 374:	00000096 	0x96
+ 378:	26c00300 	addiu	zero,s6,768
+ 37c:	ffffffff 	sdc3	$31,-1(ra)
+
+00000380 <ai_draminit>:
+	.set	mips32
+	.set	noreorder
+
+	TRACE(0x415301)
+
+	move	t6,ra
+ 380:	03e07021 	move	t6,ra
+
+	/* Scan for a Denali DDR controller (a0) */
+	lw	a0,CC_EROMPTR(s2)
+ 384:	8e4400fc 	lw	a0,252(s2)
+	li	t0,KSEG1			# t0 = KSEG1
+ 388:	3c08a000 	lui	t0,0xa000
+	or	a0,a0,t0			# a0 points to the EROM
+ 38c:	00882025 	or	a0,a0,t0
+	lw	t0,0(t0)
+	add	t3,a0,4
+	xor	t3,t3,4
+	lw	t3,0(t3)
+#else
+	lw	t0,0(a0)			# t0 = CIA
+ 390:	8c880000 	lw	t0,0(a0)
+	lw	t3,4(a0)			# t3 = CIB
+ 394:	8c8b0004 	lw	t3,4(a0)
+#endif
+	and	t1,t0,ER_TAG
+ 398:	3109000e 	andi	t1,t0,0xe
+	TRACE(0x415303)
+	beq	t1,ER_END,noctrl
+ 39c:	2401000e 	li	at,14
+ 3a0:	11210014 	beq	t1,at,3f4 <noctrl>
+	nop
+ 3a4:	00000000 	nop
+	TRACE(0x415304)
+	beq	t1,ER_CI,2f
+ 3a8:	11200003 	beqz	t1,3b8 <ai_draminit+0x38>
+	nop
+ 3ac:	00000000 	nop
+	TRACE(0x415305)
+	b	1b
+ 3b0:	1000fff7 	b	390 <ai_draminit+0x10>
+	addi	a0,4
+ 3b4:	20840004 	addi	a0,a0,4
+
+2:	TRACE(0x415306)
+	and	s4,t0,CIA_CID_MASK
+ 3b8:	3c01000f 	lui	at,0xf
+ 3bc:	3421ff00 	ori	at,at,0xff00
+ 3c0:	0101a024 	and	s4,t0,at
+	srl	s4,s4,CIA_CID_SHIFT		# s4 has controler coreid
+ 3c4:	0014a202 	srl	s4,s4,0x8
+
+	beq	s4,DMEMC_CORE_ID,founddmemc
+ 3c8:	2401082e 	li	at,2094
+ 3cc:	1281000b 	beq	s4,at,3fc <founddmemc>
+	nop
+ 3d0:	00000000 	nop
+
+	beq	s4,DMEMS_CORE_ID,founddmemc
+ 3d4:	24010835 	li	at,2101
+ 3d8:	12810008 	beq	s4,at,3fc <founddmemc>
+	nop
+ 3dc:	00000000 	nop
+
+	beq	s4,AMEMC_CORE_ID,founddmemc
+ 3e0:	2401052e 	li	at,1326
+ 3e4:	12810005 	beq	s4,at,3fc <founddmemc>
+	nop
+ 3e8:	00000000 	nop
+
+	b	1b
+ 3ec:	1000ffe8 	b	390 <ai_draminit+0x10>
+	addi	a0,8				# Skip CIB too
+ 3f0:	20840008 	addi	a0,a0,8
+
+000003f4 <noctrl>:
+
+	/* No DMEMC controller found */
+noctrl:	TRACE(0x415307)
+	jr	t6
+ 3f4:	01c00008 	jr	t6
+	li	v0,-1
+ 3f8:	2402ffff 	li	v0,-1
+
+000003fc <founddmemc>:
+	TRACE(0x415308)
+	/* If we found the controller, but we are already in RAM, there is nothing
+	 * to do. This will change if/when we have an AI chip with MIPS and
+	 * SOCRAM only.
+	 */
+	bnez	s5,1f				# Not running from RAM, go ahead
+ 3fc:	16a00003 	bnez	s5,40c <founddmemc+0x10>
+	nop
+ 400:	00000000 	nop
+
+	jr	t6				# Return with 0 rc.
+ 404:	01c00008 	jr	t6
+	move	v0,zero
+ 408:	00001021 	move	v0,zero
+#if	defined(IL_BIGENDIAN) && defined(BCMHND74K)
+	add	a1,a0,8
+	xor	a1,a1,4
+	lw	a1,0(a1)
+#else
+	lw	a1,8(a0)
+ 40c:	8c850008 	lw	a1,8(a0)
+#endif
+	li	t2,AD_ADDR_MASK
+ 410:	240af000 	li	t2,-4096
+	and	a1,a1,t2
+ 414:	00aa2824 	and	a1,a1,t2
+	li	t0,KSEG1			# t0 = KSEG1
+ 418:	3c08a000 	lui	t0,0xa000
+	or	a1,a1,t0			# a1: dmemc regs
+ 41c:	00a82825 	or	a1,a1,t0
+	/* after that, the first slave wrapper will be its DMP registers */
+	addi	a0,12
+ 420:	2084000c 	addi	a0,a0,12
+1:
+#if	defined(IL_BIGENDIAN) && defined(BCMHND74K)
+	xor	t0,a0,4
+	lw	t0,0(t0)
+#else
+	lw	t0,0(a0)
+ 424:	8c880000 	lw	t0,0(a0)
+#endif
+	and	t1,t0,ER_TAG
+ 428:	3109000e 	andi	t1,t0,0xe
+	beq	t1,ER_ADD,addesc
+ 42c:	24010004 	li	at,4
+ 430:	11210003 	beq	t1,at,440 <addesc>
+	nop
+ 434:	00000000 	nop
+	b	1b
+ 438:	1000fffa 	b	424 <founddmemc+0x28>
+	addi	a0,4
+ 43c:	20840004 	addi	a0,a0,4
+
+00000440 <addesc>:
+
+addesc:	and	t1,t0,AD_ST_MASK
+ 440:	310900c0 	andi	t1,t0,0xc0
+	beq	t1,AD_ST_SWRAP,swrap
+ 444:	24010080 	li	at,128
+ 448:	11210003 	beq	t1,at,458 <swrap>
+	nop
+ 44c:	00000000 	nop
+	b	1b
+ 450:	1000fff4 	b	424 <founddmemc+0x28>
+	addi	a0,4
+ 454:	20840004 	addi	a0,a0,4
+
+00000458 <swrap>:
+
+swrap:	and	a2,t0,t2
+ 458:	010a3024 	and	a2,t0,t2
+	li	t0,KSEG1			# t0 = KSEG1
+ 45c:	3c08a000 	lui	t0,0xa000
+	or	a2,a2,t0			# a2: dmemc DMP regs
+ 460:	00c83025 	or	a2,a2,t0
+
+	/* Got our core, reset it */
+	TRACE(0x415309)
+	bal	ai_core_reset
+ 464:	041101af 	bal	b24 <ai_core_reset>
+	nop
+ 468:	00000000 	nop
+
+	/* Get package option for later */
+	TRACE(0x41530a)
+	li	t0,CID_PKG_MASK
+ 46c:	3c0800f0 	lui	t0,0xf0
+	and	t0,t0,s6
+ 470:	01164024 	and	t0,t0,s6
+	srl	s1,t0,CID_PKG_SHIFT		# s1 = package opt
+ 474:	00088d02 	srl	s1,t0,0x14
+
+	/* Find out the type of memory from the straps */
+	/* Corerevs 0 & 1 did not have this register, so we have to
+	 * check the corerev and use chipstatus for those two.
+	 */
+	and	t3,t3,CIB_REV_MASK
+ 478:	3c01ff00 	lui	at,0xff00
+ 47c:	01615824 	and	t3,t3,at
+	srl	s3,t3,CIB_REV_SHIFT		# s3 = core revision
+ 480:	000b9e02 	srl	s3,t3,0x18
+	beq     s4,DMEMS_CORE_ID,1f
+ 484:	24010835 	li	at,2101
+ 488:	12810007 	beq	s4,at,4a8 <swrap+0x50>
+	nop
+ 48c:	00000000 	nop
+
+	/* Go find nvram if the controller is AMEMC. */
+	beq     s4,AMEMC_CORE_ID,find_nvram
+ 490:	2401052e 	li	at,1326
+ 494:	1281000f 	beq	s4,at,4d4 <find_nvram>
+	nop
+ 498:	00000000 	nop
+
+	ble	s3,1,is16x
+ 49c:	2a610002 	slti	at,s3,2
+ 4a0:	14200006 	bnez	at,4bc <is16x>
+	nop
+ 4a4:	00000000 	nop
+
+1:	/* Not a 4716/47162 (a0?) read the stat register */
+	lw	t0,DMEMC_STAT(a1)
+ 4a8:	8ca801f0 	lw	t0,496(a1)
+	li	t1,DM_STAT_MASK
+ 4ac:	24090007 	li	t1,7
+	and	a3,t0,t1			# a3 == 4 if ddr2, 2 if ddr1, 1 if sdr.
+ 4b0:	01093824 	and	a3,t0,t1
+	b	find_nvram
+ 4b4:	10000007 	b	4d4 <find_nvram>
+	nop
+ 4b8:	00000000 	nop
+
+000004bc <is16x>:
+
+	/* Check chipc:	chipstatus for the ddr1/ddr2 strapping option */
+is16x:	TRACE(0x41530b)
+	lw	t0,CC_CHIPST(s2)
+ 4bc:	8e48002c 	lw	t0,44(s2)
+	li	t1,0x200
+ 4c0:	24090200 	li	t1,512
+	and	t0,t0,t1
+ 4c4:	01094024 	and	t0,t0,t1
+	beqz	t0,find_nvram
+ 4c8:	11000002 	beqz	t0,4d4 <find_nvram>
+	li	a3,DM_STAT_DDR2
+ 4cc:	24070004 	li	a3,4
+
+	li	a3,DM_STAT_DDR1
+ 4d0:	24070002 	li	a3,2
+
+000004d4 <find_nvram>:
+
+	/* Read sdram_config from nvram */
+find_nvram:
+	TRACE(0x41530c)
+	li	t0,KSEG1ADDR(SI_FLASH2 - NVRAM_SPACE)
+ 4d4:	3c08bbff 	lui	t0,0xbbff
+ 4d8:	35088000 	ori	t0,t0,0x8000
+	li	t1,FLASH_MIN
+ 4dc:	3c090002 	lui	t1,0x2
+	li	t2,SI_FLASH2_SZ
+ 4e0:	3c0a0200 	lui	t2,0x200
+	li	t3,NVRAM_MAGIC
+ 4e4:	3c0b4853 	lui	t3,0x4853
+ 4e8:	356b4c46 	ori	t3,t3,0x4c46
+	nop
+	b	embedded_nv
+	nop
+#endif
+
+1:	add	t4,t0,t1
+ 4ec:	01096020 	add	t4,t0,t1
+	lw	t5,0(t4)
+ 4f0:	8d8d0000 	lw	t5,0(t4)
+	beq	t3,t5,read_config
+ 4f4:	116d0022 	beq	t3,t5,580 <read_config>
+	nop
+ 4f8:	00000000 	nop
+
+	sll	t1,t1,1
+ 4fc:	00094840 	sll	t1,t1,0x1
+	ble	t1,t2,1b
+ 500:	0149082a 	slt	at,t2,t1
+ 504:	1020fff9 	beqz	at,4ec <find_nvram+0x18>
+	nop
+ 508:	00000000 	nop
+#if	defined(NFLASH_SUPPORT)
+embedded_nv:
+#endif
+	/* Try embedded NVRAM at 4 KB and 1 KB as last resorts */
+	TRACE(0x41530d)
+	li	t4,KSEG1ADDR(SI_FLASH1 + 0x1000)
+ 50c:	3c0cbfc0 	lui	t4,0xbfc0
+ 510:	358c1000 	ori	t4,t4,0x1000
+	lw	t5,0(t4)
+ 514:	8d8d0000 	lw	t5,0(t4)
+	beq	t3,t5,read_config
+ 518:	116d0019 	beq	t3,t5,580 <read_config>
+	nop
+ 51c:	00000000 	nop
+
+	TRACE(0x41530e)
+	li	t4,KSEG1ADDR(SI_FLASH1 + 0x400)
+ 520:	3c0cbfc0 	lui	t4,0xbfc0
+ 524:	358c0400 	ori	t4,t4,0x400
+	lw	t5,0(t4)
+ 528:	8d8d0000 	lw	t5,0(t4)
+	beq	t3,t5,read_config
+ 52c:	116d0014 	beq	t3,t5,580 <read_config>
+	nop
+ 530:	00000000 	nop
+
+	/* No nvram, pick sone defaults */
+
+	/* assume DDRM16MX16 if ddr1 */
+	TRACE(0x41530f)
+	bne	a3,DM_STAT_DDR1,1f
+ 534:	24010002 	li	at,2
+ 538:	14e10009 	bne	a3,at,560 <find_nvram+0x8c>
+	nop
+ 53c:	00000000 	nop
+
+	beq	s4,DMEMC_CORE_ID,init_dmemc
+ 540:	2401082e 	li	at,2094
+ 544:	12810019 	beq	s4,at,5ac <init_dmemc>
+	li	s0,0x283		# Value for dmemc
+ 548:	24100283 	li	s0,643
+
+	/* Use DDR1M16MX16 if QT and DDR1M32MX16 otherwise */
+	beq	s1,HWSIM_PKG_ID,init_dmemc
+ 54c:	2401000f 	li	at,15
+ 550:	12210016 	beq	s1,at,5ac <init_dmemc>
+	li	s0,0x103		# Value for dmems
+ 554:	24100103 	li	s0,259
+
+	b	init_dmemc
+ 558:	10000014 	b	5ac <init_dmemc>
+	li	s0,0x003		# Value for dmems at 200MHz
+ 55c:	24100003 	li	s0,3
+
+1:	beq	a3,DM_STAT_SDR,init_dmemc
+ 560:	24010001 	li	at,1
+ 564:	10e10011 	beq	a3,at,5ac <init_dmemc>
+	li	s0,0x002		# Value for SDR
+ 568:	24100002 	li	s0,2
+
+	/* For ddr2, use DDR2M32X16X2 if QT and DDR2M128X16X2 otherwise */
+	beq	s1,HWSIM_PKG_ID,init_dmemc
+ 56c:	2401000f 	li	at,15
+ 570:	1221000e 	beq	s1,at,5ac <init_dmemc>
+	li	s0,0x104
+ 574:	24100104 	li	s0,260
+
+	b	init_dmemc
+ 578:	1000000c 	b	5ac <init_dmemc>
+	li	s0,0x144
+ 57c:	24100144 	li	s0,324
+
+00000580 <read_config>:
+	 *	23:16	delay_dqs_3
+	 *	15:8	delay_dqs_2
+	 *	7:0	delay_dqs_1
+	 */
+	TRACE(0x415310)
+	lw	s0,12(t4)	# Pick up sdram_config & sdram_refresh
+ 580:	8d90000c 	lw	s0,12(t4)
+
+	/* Determine if it is DMEMC or AMEMC */
+	bne s4,AMEMC_CORE_ID,init_dmemc
+ 584:	2401052e 	li	at,1326
+ 588:	16810008 	bne	s4,at,5ac <init_dmemc>
+	lw	s8,16(t4)	# Pick up sdram_ncdl
+ 58c:	8d9e0010 	lw	s8,16(t4)
+
+	/* Initailize AMEMC */
+	la	t2,ai_amemcinit
+ 590:	3c0a0000 	lui	t2,0x0
+ 594:	254a0000 	addiu	t2,t2,0
+	add	t2,t2,s5
+ 598:	01555020 	add	t2,t2,s5
+	jalr	t2
+ 59c:	0140f809 	jalr	t2
+	nop
+ 5a0:	00000000 	nop
+
+	jr	t6
+ 5a4:	01c00008 	jr	t6
+	move	v0,zero
+ 5a8:	00001021 	move	v0,zero
+
+000005ac <init_dmemc>:
+
+	/* Initialize DMEMC/DMEMS */
+init_dmemc:
+	/* For DDR2, init pvt controller */
+	bne	a3,DM_STAT_DDR2,init_regs
+ 5ac:	24010004 	li	at,4
+ 5b0:	14e10005 	bne	a3,at,5c8 <init_regs>
+	nop
+ 5b4:	00000000 	nop
+
+	TRACE(0x415311)
+	li	t0,1
+ 5b8:	24080001 	li	t0,1
+	sw	t0,DMEMC_PVTGROUPJ(a1)
+ 5bc:	aca80420 	sw	t0,1056(a1)
+	sw	zero,DMEMC_PVTGROUPA(a1)
+ 5c0:	aca00400 	sw	zero,1024(a1)
+	sw	t0,DMEMC_PVTGROUPA(a1)
+ 5c4:	aca80400 	sw	t0,1024(a1)
+
+000005c8 <init_regs>:
+
+	/* Init the common regs */
+init_regs:
+	TRACE(0x415312)
+	la	a0,dmemc_init
+ 5c8:	3c040000 	lui	a0,0x0
+ 5cc:	24840000 	addiu	a0,a0,0
+	bal	dmemc_init_regs			# dmemc_init_regs(a0): Inits from the table @ a0
+ 5d0:	04110167 	bal	b70 <dmemc_init_regs>
+	nop
+ 5d4:	00000000 	nop
+
+	la	a0,sdr_init
+ 5d8:	3c040000 	lui	a0,0x0
+ 5dc:	248400dc 	addiu	a0,a0,220
+	beq	a3,DM_STAT_SDR,1f
+ 5e0:	24010001 	li	at,1
+ 5e4:	10e10008 	beq	a3,at,608 <init_regs+0x40>
+	nop
+ 5e8:	00000000 	nop
+
+	TRACE(0x415313)
+	la	a0,ddr1_init
+ 5ec:	3c040000 	lui	a0,0x0
+ 5f0:	24840158 	addiu	a0,a0,344
+	beq	a3,DM_STAT_DDR1,1f
+ 5f4:	24010002 	li	at,2
+ 5f8:	10e10003 	beq	a3,at,608 <init_regs+0x40>
+	nop
+ 5fc:	00000000 	nop
+
+	TRACE(0x415314)
+	la	a0,ddr2_init
+ 600:	3c040000 	lui	a0,0x0
+ 604:	2484026c 	addiu	a0,a0,620
+1:	bal	dmemc_init_regs
+ 608:	04110159 	bal	b70 <dmemc_init_regs>
+	nop
+ 60c:	00000000 	nop
+
+00000610 <fixs>:
+
+	/* Fixup differences between dmems & dmemc */
+fixs:	bne	s4,DMEMS_CORE_ID,fix2
+ 610:	24010835 	li	at,2101
+ 614:	16810015 	bne	s4,at,66c <fix2>
+	nop
+ 618:	00000000 	nop
+
+	li	t0,0x02020002
+ 61c:	3c080202 	lui	t0,0x202
+ 620:	35080002 	ori	t0,t0,0x2
+	beq	a3,DM_STAT_SDR,1f
+ 624:	24010001 	li	at,1
+ 628:	10e1000d 	beq	a3,at,660 <fixs+0x50>
+	nop
+ 62c:	00000000 	nop
+
+	li	t0,0x18006400
+ 630:	3c081800 	lui	t0,0x1800
+ 634:	35086400 	ori	t0,t0,0x6400
+	sw	t0,DMEMC_CONTROL21(a1)
+ 638:	aca80054 	sw	t0,84(a1)
+	li	t0,0x7f000018			# DLL DQS delay for DDR1
+ 63c:	3c087f00 	lui	t0,0x7f00
+ 640:	35080018 	ori	t0,t0,0x18
+	sw	t0,DMEMC_CONTROL22(a1)
+ 644:	aca80058 	sw	t0,88(a1)
+	li	t0,0x00500000
+ 648:	3c080050 	lui	t0,0x50
+	sw	t0,DMEMC_CONTROL23(a1)
+ 64c:	aca8005c 	sw	t0,92(a1)
+	li	t0,0x00320000			# Change MRS data for DDR1
+ 650:	3c080032 	lui	t0,0x32
+	sw	t0,DMEMC_CONTROL32(a1)
+ 654:	aca80080 	sw	t0,128(a1)
+
+	li	t0,0x02000002
+ 658:	3c080200 	lui	t0,0x200
+ 65c:	35080002 	ori	t0,t0,0x2
+
+1:	sw	t0,DMEMC_CONTROL52(a1)
+ 660:	aca800d0 	sw	t0,208(a1)
+	li	t0,0x00000001
+ 664:	24080001 	li	t0,1
+	sw	t0,DMEMC_CONTROL53(a1)
+ 668:	aca800d4 	sw	t0,212(a1)
+
+0000066c <fix2>:
+
+	/* Fixup differences in 47162 */
+fix2:	li	t0,CID_ID_MASK
+ 66c:	3408ffff 	li	t0,0xffff
+	and	t0,t0,s6
+ 670:	01164024 	and	t0,t0,s6
+	bne	t0,BCM47162_CHIP_ID,nvover
+ 674:	3401b83a 	li	at,0xb83a
+ 678:	15010009 	bne	t0,at,6a0 <nvover>
+	nop
+ 67c:	00000000 	nop
+
+	li	t0,0x16006400
+ 680:	3c081600 	lui	t0,0x1600
+ 684:	35086400 	ori	t0,t0,0x6400
+	sw	t0,DMEMC_CONTROL21(a1)
+ 688:	aca80054 	sw	t0,84(a1)
+	li	t0,0x00480000
+ 68c:	3c080048 	lui	t0,0x48
+	sw	t0,DMEMC_CONTROL23(a1)
+ 690:	aca8005c 	sw	t0,92(a1)
+
+	/* Presumaby this is for DDR1 only? */
+	li	t0,0x61161616
+ 694:	3c086116 	lui	t0,0x6116
+ 698:	35081616 	ori	t0,t0,0x1616
+	sw	t0,DMEMC_CONTROL22(a1)
+ 69c:	aca80058 	sw	t0,88(a1)
+
+000006a0 <nvover>:
+
+	/* Override the dll delays from nvram if provided */
+nvover:	beqz	s8,chhalf
+ 6a0:	13c00030 	beqz	s8,764 <chhalf>
+	nop
+ 6a4:	00000000 	nop
+
+	# Check for dmems (any rev)
+	beq	s4,DMEMS_CORE_ID,old_ncdl
+ 6a8:	24010835 	li	at,2101
+ 6ac:	12810025 	beq	s4,at,744 <old_ncdl>
+	nop
+ 6b0:	00000000 	nop
+
+	# Dmemc rev < 2?
+	ble	s3,1,old_ncdl
+ 6b4:	2a610002 	slti	at,s3,2
+ 6b8:	14200022 	bnez	at,744 <old_ncdl>
+	nop
+ 6bc:	00000000 	nop
+
+	li	t0,0x7f000000
+ 6c0:	3c087f00 	lui	t0,0x7f00
+	and	t0,t0,s0		# delay_dqs_0
+ 6c4:	01104024 	and	t0,t0,s0
+	srl	t0,t0,15
+ 6c8:	000843c2 	srl	t0,t0,0xf
+	lw	t1,DMEMC_CONTROL140(a1)
+ 6cc:	8ca90230 	lw	t1,560(a1)
+	li	t2,~0x0000fe00
+ 6d0:	3c0affff 	lui	t2,0xffff
+ 6d4:	354a01ff 	ori	t2,t2,0x1ff
+	and	t1,t1,t2
+ 6d8:	012a4824 	and	t1,t1,t2
+	or	t0,t0,t1
+ 6dc:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL140(a1)
+ 6e0:	aca80230 	sw	t0,560(a1)
+
+	li	t0,0x7f
+ 6e4:	2408007f 	li	t0,127
+	and	t0,t0,s8		# delay_dqs_1
+ 6e8:	011e4024 	and	t0,t0,s8
+	sll	t0,t0,9
+ 6ec:	00084240 	sll	t0,t0,0x9
+	lw	t1,DMEMC_CONTROL141(a1)
+ 6f0:	8ca90234 	lw	t1,564(a1)
+	and	t1,t1,t2
+ 6f4:	012a4824 	and	t1,t1,t2
+	or	t0,t0,t1
+ 6f8:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL141(a1)
+ 6fc:	aca80234 	sw	t0,564(a1)
+
+	li	t0,0x7f0000
+ 700:	3c08007f 	lui	t0,0x7f
+	and	t0,t0,s0		# clk_wr_delay_0
+ 704:	01104024 	and	t0,t0,s0
+	srl	t0,t0,8
+ 708:	00084202 	srl	t0,t0,0x8
+	lw	t1,DMEMC_CONTROL142(a1)
+ 70c:	8ca90238 	lw	t1,568(a1)
+	li	t2,~0x00007f00
+ 710:	240a80ff 	li	t2,-32513
+	and	t1,t1,t2
+ 714:	012a4824 	and	t1,t1,t2
+	or	t0,t0,t1
+ 718:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL142(a1)
+ 71c:	aca80238 	sw	t0,568(a1)
+
+	li	t0,0x7f000000
+ 720:	3c087f00 	lui	t0,0x7f00
+	and	t0,t0,s8		# clk_wr_delay_1
+ 724:	011e4024 	and	t0,t0,s8
+	srl	t0,t0,16
+ 728:	00084402 	srl	t0,t0,0x10
+	lw	t1,DMEMC_CONTROL143(a1)
+ 72c:	8ca9023c 	lw	t1,572(a1)
+	and	t1,t1,t2
+ 730:	012a4824 	and	t1,t1,t2
+	or	t0,t0,t1
+ 734:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL143(a1)
+ 738:	aca8023c 	sw	t0,572(a1)
+
+	b	chhalf
+ 73c:	10000009 	b	764 <chhalf>
+	nop
+ 740:	00000000 	nop
+
+00000744 <old_ncdl>:
+
+old_ncdl:
+	li	t0,0x7f000000
+ 744:	3c087f00 	lui	t0,0x7f00
+	and	t0,t0,s0		# delay_dqs_0
+ 748:	01104024 	and	t0,t0,s0
+	or	t0,t0,0x6400
+ 74c:	35086400 	ori	t0,t0,0x6400
+	sw	t0,DMEMC_CONTROL21(a1)
+ 750:	aca80054 	sw	t0,84(a1)
+	li	t0,0x007f0000
+ 754:	3c08007f 	lui	t0,0x7f
+	and	t0,t0,s0		# clk_wr_delay
+ 758:	01104024 	and	t0,t0,s0
+	sw	t0,DMEMC_CONTROL23(a1)
+ 75c:	aca8005c 	sw	t0,92(a1)
+
+	sw	s8,DMEMC_CONTROL22(a1)
+ 760:	acbe0058 	sw	s8,88(a1)
+
+00000764 <chhalf>:
+
+	/* Check for half-width */
+chhalf:	li	t0,0x80
+ 764:	24080080 	li	t0,128
+	and	t0,t0,s0
+ 768:	01104024 	and	t0,t0,s0
+	beqz	t0,ch8banks
+ 76c:	11000005 	beqz	t0,784 <ch8banks>
+	nop
+ 770:	00000000 	nop
+
+00000774 <setreduc>:
+
+setreduc:
+	/* Set reduc bit if half-wide */
+	TRACE(0x415315)
+	lw	t0,DMEMC_CONTROL08(a1)
+ 774:	8ca80020 	lw	t0,32(a1)
+	li	t1,0x01000000
+ 778:	3c090100 	lui	t1,0x100
+	or	t0,t0,t1
+ 77c:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL08(a1)
+ 780:	aca80020 	sw	t0,32(a1)
+
+00000784 <ch8banks>:
+
+	/* Check for 8-bank DDRs */
+ch8banks:
+	li	t0,0x40
+ 784:	24080040 	li	t0,64
+	and	t0,t0,s0
+ 788:	01104024 	and	t0,t0,s0
+	beqz	t0,docaslat
+ 78c:	11000017 	beqz	t0,7ec <docaslat>
+	nop
+ 790:	00000000 	nop
+
+00000794 <do8banks>:
+
+	/* Change regs for 8-bank DDRs */
+do8banks:
+	lw	t0,DMEMC_CONTROL05(a1)
+ 794:	8ca80014 	lw	t0,20(a1)
+	li	t1,0x00010000
+ 798:	3c090001 	lui	t1,0x1
+	or	t0,t0,t1
+ 79c:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL05(a1)
+ 7a0:	aca80014 	sw	t0,20(a1)
+
+	lw	t0,DMEMC_CONTROL19(a1)
+ 7a4:	8ca8004c 	lw	t0,76(a1)
+	li	t1,0x0000000e
+ 7a8:	2409000e 	li	t1,14
+	or	t0,t0,t1
+ 7ac:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL19(a1)
+ 7b0:	aca8004c 	sw	t0,76(a1)
+
+	lw	t0,DMEMC_CONTROL24(a1)
+ 7b4:	8ca80060 	lw	t0,96(a1)
+	li	t1,~0xff000000
+ 7b8:	3c0900ff 	lui	t1,0xff
+ 7bc:	3529ffff 	ori	t1,t1,0xffff
+	li	t2,0x22000000
+ 7c0:	3c0a2200 	lui	t2,0x2200
+	and	t0,t0,t1
+ 7c4:	01094024 	and	t0,t0,t1
+	or	t0,t0,t2
+ 7c8:	010a4025 	or	t0,t0,t2
+	sw	t0,DMEMC_CONTROL24(a1)
+ 7cc:	aca80060 	sw	t0,96(a1)
+
+	lw	t0,DMEMC_CONTROL34(a1)
+ 7d0:	8ca80088 	lw	t0,136(a1)
+	li	t1,~0x00ff0000
+ 7d4:	3c09ff00 	lui	t1,0xff00
+ 7d8:	3529ffff 	ori	t1,t1,0xffff
+	li	t2,0x00250000
+ 7dc:	3c0a0025 	lui	t2,0x25
+	and	t0,t0,t1
+ 7e0:	01094024 	and	t0,t0,t1
+	or	t0,t0,t2
+ 7e4:	010a4025 	or	t0,t0,t2
+	sw	t0,DMEMC_CONTROL34(a1)
+ 7e8:	aca80088 	sw	t0,136(a1)
+
+000007ec <docaslat>:
+
+	/* Set the right value for column size and CAS latency */
+docaslat:
+	TRACE(0x415316)
+	li	t0,0x0707
+ 7ec:	24080707 	li	t0,1799
+	and	t0,t0,s0
+ 7f0:	01104024 	and	t0,t0,s0
+	sw	t0,DMEMC_CONTROL13(a1)
+ 7f4:	aca80034 	sw	t0,52(a1)
+	andi	t0,s0,7			# Isolate cas
+ 7f8:	32080007 	andi	t0,s0,0x7
+	beq	s4,DMEMS_CORE_ID,setcaslin
+ 7fc:	24010835 	li	at,2101
+ 800:	12810026 	beq	s4,at,89c <setcaslin>
+	nop
+ 804:	00000000 	nop
+	ble	s3,1,setcaslin
+ 808:	2a610002 	slti	at,s3,2
+ 80c:	14200023 	bnez	at,89c <setcaslin>
+	nop
+ 810:	00000000 	nop
+	/* Additional settings required for dmemc rev >= 2 */
+	sll	t1,t0,8
+ 814:	00084a00 	sll	t1,t0,0x8
+	and	t1,0xf00
+ 818:	31290f00 	andi	t1,t1,0xf00
+	bne	a3,DM_STAT_DDR1,1f
+ 81c:	24010002 	li	at,2
+ 820:	14e10002 	bne	a3,at,82c <docaslat+0x40>
+	nop
+ 824:	00000000 	nop
+	and	t1,0x300
+ 828:	31290300 	andi	t1,t1,0x300
+1:	lw	t2,DMEMC_CONTROL128(a1)
+ 82c:	8caa0200 	lw	t2,512(a1)
+	and	t2,~0xf00
+ 830:	2401f0ff 	li	at,-3841
+ 834:	01415024 	and	t2,t2,at
+	or	t2,t2,t1
+ 838:	01495025 	or	t2,t2,t1
+	sw	t2,DMEMC_CONTROL128(a1)
+ 83c:	acaa0200 	sw	t2,512(a1)
+	sll	t1,t0,4
+ 840:	00084900 	sll	t1,t0,0x4
+	lw	t2,DMEMC_CONTROL137(a1)
+ 844:	8caa0224 	lw	t2,548(a1)
+	and	t2,~0x70
+ 848:	2401ff8f 	li	at,-113
+ 84c:	01415024 	and	t2,t2,at
+	or	t2,t2,t1
+ 850:	01495025 	or	t2,t2,t1
+	sw	t2,DMEMC_CONTROL137(a1)
+ 854:	acaa0224 	sw	t2,548(a1)
+	bne	a3,DM_STAT_DDR2,setcaslin
+ 858:	24010004 	li	at,4
+ 85c:	14e1000f 	bne	a3,at,89c <setcaslin>
+	nop
+ 860:	00000000 	nop
+	sub	t1,t0,1
+ 864:	2109ffff 	addi	t1,t0,-1
+	sll	t1,8
+ 868:	00094a00 	sll	t1,t1,0x8
+	lw	t2,DMEMC_CONTROL130(a1)
+ 86c:	8caa0208 	lw	t2,520(a1)
+	and	t2,~0xf00
+ 870:	2401f0ff 	li	at,-3841
+ 874:	01415024 	and	t2,t2,at
+	or	t2,t2,t1
+ 878:	01495025 	or	t2,t2,t1
+	sw	t2,DMEMC_CONTROL130(a1)
+ 87c:	acaa0208 	sw	t2,520(a1)
+	sll	t1,8
+ 880:	00094a00 	sll	t1,t1,0x8
+	lw	t2,DMEMC_CONTROL15(a1)
+ 884:	8caa003c 	lw	t2,60(a1)
+	and	t2,~0xf0000
+ 888:	3c01fff0 	lui	at,0xfff0
+ 88c:	3421ffff 	ori	at,at,0xffff
+ 890:	01415024 	and	t2,t2,at
+	or	t2,t2,t1
+ 894:	01495025 	or	t2,t2,t1
+	sw	t2,DMEMC_CONTROL15(a1)
+ 898:	acaa003c 	sw	t2,60(a1)
+
+0000089c <setcaslin>:
+setcaslin:
+	/* Set caslat_lin and caslat_lin_gate */
+	lw	t2,DMEMC_CONTROL16(a1)
+ 89c:	8caa0040 	lw	t2,64(a1)
+	/* Take care of fractional CAS latencies for DDR1 */
+	li	t3,0
+ 8a0:	240b0000 	li	t3,0
+	bne	a3,DM_STAT_DDR1,1f
+ 8a4:	24010002 	li	at,2
+ 8a8:	14e10006 	bne	a3,at,8c4 <setcaslin+0x28>
+	nop
+ 8ac:	00000000 	nop
+	andi	t1,t0,4
+ 8b0:	31090004 	andi	t1,t0,0x4
+	beqz	t1,1f
+ 8b4:	11200003 	beqz	t1,8c4 <setcaslin+0x28>
+	nop
+ 8b8:	00000000 	nop
+	andi	t0,t0,3			# take off half bit
+ 8bc:	31080003 	andi	t0,t0,0x3
+	li	t3,1
+ 8c0:	240b0001 	li	t3,1
+1:	sll	t0,t0,1			#  * 2
+ 8c4:	00084040 	sll	t0,t0,0x1
+	add	t0,t0,t3
+ 8c8:	010b4020 	add	t0,t0,t3
+	addi	t1,t0,1			#  + 1 => caslin
+ 8cc:	21090001 	addi	t1,t0,1
+	sll	t1,t1,8
+ 8d0:	00094a00 	sll	t1,t1,0x8
+	or	t2,t2,t1
+ 8d4:	01495025 	or	t2,t2,t1
+	addi	t0,t0,-1		# and -1 => caslin_gate
+ 8d8:	2108ffff 	addi	t0,t0,-1
+	sll	t0,t0,16
+ 8dc:	00084400 	sll	t0,t0,0x10
+	or	t2,t0,t2
+ 8e0:	010a5025 	or	t2,t0,t2
+	sw	t2,DMEMC_CONTROL16(a1)
+ 8e4:	acaa0040 	sw	t2,64(a1)
+
+000008e8 <ckbyp>:
+
+	/* Finally set bypass mode if needed, but always for quickturn */
+ckbyp:	beq	s1,HWSIM_PKG_ID,dobypass
+ 8e8:	2401000f 	li	at,15
+ 8ec:	12210005 	beq	s1,at,904 <dobypass>
+	nop
+ 8f0:	00000000 	nop
+	li	t0,0x20
+ 8f4:	24080020 	li	t0,32
+	and	t0,t0,s0
+ 8f8:	01104024 	and	t0,t0,s0
+	beqz	t0,ckvsim
+ 8fc:	11000033 	beqz	t0,9cc <ckvsim>
+	nop
+ 900:	00000000 	nop
+
+00000904 <dobypass>:
+
+dobypass:
+	TRACE(0x415317)
+
+	beq	s4,DMEMS_CORE_ID,1f
+ 904:	24010835 	li	at,2101
+ 908:	12810004 	beq	s4,at,91c <dobypass+0x18>
+	nop
+ 90c:	00000000 	nop
+
+	bgt	s3,1,4f
+ 910:	2a610002 	slti	at,s3,2
+ 914:	10200016 	beqz	at,970 <dobypass+0x6c>
+	nop
+ 918:	00000000 	nop
+
+1:	li	t0,0x00170017
+ 91c:	3c080017 	lui	t0,0x17
+ 920:	35080017 	ori	t0,t0,0x17
+	beq	a3,DM_STAT_SDR,2f
+ 924:	24010001 	li	at,1
+ 928:	10e10008 	beq	a3,at,94c <dobypass+0x48>
+	nop
+ 92c:	00000000 	nop
+
+	li	t0,0x000f000f
+ 930:	3c08000f 	lui	t0,0xf
+ 934:	3508000f 	ori	t0,t0,0xf
+	beq	a3,DM_STAT_DDR1,2f
+ 938:	24010002 	li	at,2
+ 93c:	10e10003 	beq	a3,at,94c <dobypass+0x48>
+	nop
+ 940:	00000000 	nop
+
+	li	t0,0x00200020
+ 944:	3c080020 	lui	t0,0x20
+ 948:	35080020 	ori	t0,t0,0x20
+
+2:	sw	t0,DMEMC_CONTROL25(a1)
+ 94c:	aca80064 	sw	t0,100(a1)
+	beq	s4,DMEMS_CORE_ID,3f
+ 950:	24010835 	li	at,2101
+ 954:	12810002 	beq	s4,at,960 <dobypass+0x5c>
+	nop
+ 958:	00000000 	nop
+	sw	t0,DMEMC_CONTROL26(a1)
+ 95c:	aca80068 	sw	t0,104(a1)
+
+3:	lw	t0,DMEMC_CONTROL28(a1)
+ 960:	8ca80070 	lw	t0,112(a1)
+	li	t1,0x00ff0000
+ 964:	3c0900ff 	lui	t1,0xff
+	or	t0,t0,t1
+ 968:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL28(a1)
+ 96c:	aca80070 	sw	t0,112(a1)
+
+4:	lw	t0,DMEMC_CONTROL29(a1)
+ 970:	8ca80074 	lw	t0,116(a1)
+	li	t1,~0x000000ff
+ 974:	2409ff00 	li	t1,-256
+	li	t2,0x0000005f
+ 978:	240a005f 	li	t2,95
+	and	t0,t0,t1
+ 97c:	01094024 	and	t0,t0,t1
+	or	t0,t0,t2
+ 980:	010a4025 	or	t0,t0,t2
+	sw	t0,DMEMC_CONTROL29(a1)
+ 984:	aca80074 	sw	t0,116(a1)
+
+	lw	t0,DMEMC_CONTROL05(a1)
+ 988:	8ca80014 	lw	t0,20(a1)
+	li	t1,0x00000001
+ 98c:	24090001 	li	t1,1
+	or	t0,t0,t1
+ 990:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL05(a1)
+ 994:	aca80014 	sw	t0,20(a1)
+
+	beq	s4,DMEMS_CORE_ID,ckvsim
+ 998:	24010835 	li	at,2101
+ 99c:	1281000b 	beq	s4,at,9cc <ckvsim>
+	nop
+ 9a0:	00000000 	nop
+
+	ble	s3,1,ckvsim
+ 9a4:	2a610002 	slti	at,s3,2
+ 9a8:	14200008 	bnez	at,9cc <ckvsim>
+	nop
+ 9ac:	00000000 	nop
+
+	lw	t0,DMEMC_CONTROL140(a1)
+ 9b0:	8ca80230 	lw	t0,560(a1)
+	li	t1,0x10000000
+ 9b4:	3c091000 	lui	t1,0x1000
+	or	t0,t0,t1
+ 9b8:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL140(a1)
+ 9bc:	aca80230 	sw	t0,560(a1)
+
+	lw	t0,DMEMC_CONTROL141(a1)
+ 9c0:	8ca80234 	lw	t0,564(a1)
+	or	t0,t0,t1
+ 9c4:	01094025 	or	t0,t0,t1
+	sw	t0,DMEMC_CONTROL141(a1)
+ 9c8:	aca80234 	sw	t0,564(a1)
+
+000009cc <ckvsim>:
+
+	/* For vsim change tinit so sims run faster */
+ckvsim:	bne	s1,HDLSIM_PKG_ID,turnon
+ 9cc:	2401000e 	li	at,14
+ 9d0:	16210003 	bne	s1,at,9e0 <turnon>
+	nop
+ 9d4:	00000000 	nop
+
+	TRACE(0x415318)
+	li	t0,0x36
+ 9d8:	24080036 	li	t0,54
+	sw	t0,DMEMC_CONTROL36(a1)
+ 9dc:	aca80090 	sw	t0,144(a1)
+
+000009e0 <turnon>:
+
+turnon:
+	/* We are ready, turn controller on */
+	TRACE(0x415319)
+	lw	t0,DMEMC_CONTROL09(a1)		# Read current control09 reg
+ 9e0:	8ca80024 	lw	t0,36(a1)
+	or	t0,t0,DMC09_START		# Add start bit
+ 9e4:	3c010100 	lui	at,0x100
+ 9e8:	01014025 	or	t0,t0,at
+	sw	t0,DMEMC_CONTROL09(a1)		# Start the controller
+ 9ec:	aca80024 	sw	t0,36(a1)
+
+	beq	s4,DMEMS_CORE_ID,2f
+ 9f0:	24010835 	li	at,2101
+ 9f4:	1281003e 	beq	s4,at,af0 <ack_ints+0x24>
+	nop
+ 9f8:	00000000 	nop
+
+	ble	s3,1,2f
+ 9fc:	2a610002 	slti	at,s3,2
+ a00:	1420003b 	bnez	at,af0 <ack_ints+0x24>
+	nop
+ a04:	00000000 	nop
+
+1:	lw	t0,DMEMC_CONTROL133(a1)		# Poll for INT_INIT_DONE (dmemc >=2)
+ a08:	8ca80214 	lw	t0,532(a1)
+	and	t1,t0,DM_INT_INIT_DONE
+ a0c:	31090010 	andi	t1,t0,0x10
+	beqz	t1,1b
+ a10:	1120fffd 	beqz	t1,a08 <turnon+0x28>
+	nop
+ a14:	00000000 	nop
+	/* Bypass mode programming */
+	lw	t0,DMEMC_CONTROL05(a1)
+ a18:	8ca80014 	lw	t0,20(a1)
+	li	t1,0x00000001
+ a1c:	24090001 	li	t1,1
+	and	t0,t0,t1
+ a20:	01094024 	and	t0,t0,t1
+	beqz	t0,ack_ints
+ a24:	11000029 	beqz	t0,acc <ack_ints>
+	nop
+ a28:	00000000 	nop
+	lw	t1,DMEMC_CONTROL144(a1)
+ a2c:	8ca90240 	lw	t1,576(a1)
+	srl	t1,t1,3
+ a30:	000948c2 	srl	t1,t1,0x3
+	lw	t2,DMEMC_CONTROL140(a1)
+ a34:	8caa0230 	lw	t2,560(a1)
+	li	t0,~0x03ff0000
+ a38:	3c08fc00 	lui	t0,0xfc00
+ a3c:	3508ffff 	ori	t0,t0,0xffff
+	and	t2,t2,t0
+ a40:	01485024 	and	t2,t2,t0
+	sll	t0,t1,16
+ a44:	00094400 	sll	t0,t1,0x10
+	or	t2,t2,t0
+ a48:	01485025 	or	t2,t2,t0
+	sw	t2,DMEMC_CONTROL140(a1)
+ a4c:	acaa0230 	sw	t2,560(a1)
+
+	lw	t2,DMEMC_CONTROL142(a1)
+ a50:	8caa0238 	lw	t2,568(a1)
+	li	t0,~0x01ff8000
+ a54:	3c08fe00 	lui	t0,0xfe00
+ a58:	35087fff 	ori	t0,t0,0x7fff
+	and	t2,t2,t0
+ a5c:	01485024 	and	t2,t2,t0
+	sll	t0,t1,1
+ a60:	00094040 	sll	t0,t1,0x1
+	add	t0,t0,t1
+ a64:	01094020 	add	t0,t0,t1
+	li	t1,0x3ff
+ a68:	240903ff 	li	t1,1023
+	and	t0,t0,t1
+ a6c:	01094024 	and	t0,t0,t1
+	sll	t0,t0,15
+ a70:	000843c0 	sll	t0,t0,0xf
+	or	t2,t2,t0
+ a74:	01485025 	or	t2,t2,t0
+	sw	t2,DMEMC_CONTROL142(a1)
+ a78:	acaa0238 	sw	t2,568(a1)
+
+	lw	t1,DMEMC_CONTROL145(a1)
+ a7c:	8ca90244 	lw	t1,580(a1)
+	srl	t1,t1,3
+ a80:	000948c2 	srl	t1,t1,0x3
+	lw	t2,DMEMC_CONTROL141(a1)
+ a84:	8caa0234 	lw	t2,564(a1)
+	li	t0,~0x03ff0000
+ a88:	3c08fc00 	lui	t0,0xfc00
+ a8c:	3508ffff 	ori	t0,t0,0xffff
+	and	t2,t2,t0
+ a90:	01485024 	and	t2,t2,t0
+	sll	t0,t1,16
+ a94:	00094400 	sll	t0,t1,0x10
+	or	t2,t2,t0
+ a98:	01485025 	or	t2,t2,t0
+	sw	t2,DMEMC_CONTROL141(a1)
+ a9c:	acaa0234 	sw	t2,564(a1)
+
+	lw	t2,DMEMC_CONTROL143(a1)
+ aa0:	8caa023c 	lw	t2,572(a1)
+	li	t0,~0x01ff8000
+ aa4:	3c08fe00 	lui	t0,0xfe00
+ aa8:	35087fff 	ori	t0,t0,0x7fff
+	and	t2,t2,t0
+ aac:	01485024 	and	t2,t2,t0
+	sll	t0,t1,1
+ ab0:	00094040 	sll	t0,t1,0x1
+	add	t0,t0,t1
+ ab4:	01094020 	add	t0,t0,t1
+	li	t1,0x3ff
+ ab8:	240903ff 	li	t1,1023
+	and	t0,t0,t1
+ abc:	01094024 	and	t0,t0,t1
+	sll	t0,t0,15
+ ac0:	000843c0 	sll	t0,t0,0xf
+	or	t2,t2,t0
+ ac4:	01485025 	or	t2,t2,t0
+	sw	t2,DMEMC_CONTROL143(a1)
+ ac8:	acaa023c 	sw	t2,572(a1)
+
+00000acc <ack_ints>:
+ack_ints:
+	/* Clear any pending interrupts from dmemc */
+	li	t1,DMC132_INTACK_MASK
+ acc:	240903ff 	li	t1,1023
+	and	t0,t0,t1			# t0 = control133 & mask
+ ad0:	01094024 	and	t0,t0,t1
+	lw	t2,DMEMC_CONTROL132(a1)
+ ad4:	8caa0210 	lw	t2,528(a1)
+	not	t1
+ ad8:	01204827 	nor	t1,t1,zero
+	and	t2,t1,t2			# t2 = control132 & ~mask
+ adc:	012a5024 	and	t2,t1,t2
+	or	t0,t0,t2			# Or them and ...
+ ae0:	010a4025 	or	t0,t0,t2
+	sw	t0,DMEMC_CONTROL132(a1)		# Ack all ints
+ ae4:	aca80210 	sw	t0,528(a1)
+	b	3f
+ ae8:	1000000c 	b	b1c <ack_ints+0x50>
+	nop
+ aec:	00000000 	nop
+
+2:	lw	t0,DMEMC_CONTROL24(a1)		# Poll for INT_INIT_DONE (dmems & dmemc<2)
+ af0:	8ca80060 	lw	t0,96(a1)
+	and	t1,t0,DM_INT_INIT_DONE
+ af4:	31090010 	andi	t1,t0,0x10
+	beqz	t1,2b
+ af8:	1120fffd 	beqz	t1,af0 <ack_ints+0x24>
+	nop
+ afc:	00000000 	nop
+	/* Clear any pending interrupts from dmemc */
+	li	t1,DMC23_INTACK_MASK
+ b00:	2409007f 	li	t1,127
+	and	t0,t0,t1			# t0 = control24 & mask
+ b04:	01094024 	and	t0,t0,t1
+	lw	t2,DMEMC_CONTROL23(a1)
+ b08:	8caa005c 	lw	t2,92(a1)
+	not	t1
+ b0c:	01204827 	nor	t1,t1,zero
+	and	t2,t1,t2			# t2 = control23 & ~mask
+ b10:	012a5024 	and	t2,t1,t2
+	or	t0,t0,t2			# Or them and ...
+ b14:	010a4025 	or	t0,t0,t2
+	sw	t0,DMEMC_CONTROL23(a1)		# Ack all ints
+ b18:	aca8005c 	sw	t0,92(a1)
+
+3:	jr	t6
+ b1c:	01c00008 	jr	t6
+	li	v0,0
+ b20:	24020000 	li	v0,0
+
+00000b24 <ai_core_reset>:
+
+	/* Reset core using DMP regs at (a2) */
+ai_core_reset:
+	/* Set reset while enabling the clock */
+	li	t9,(SICF_FGC | SICF_CLOCK_EN)
+ b24:	24190003 	li	t9,3
+	li	t8,AIRC_RESET
+ b28:	24180001 	li	t8,1
+	sw	t9,AI_IOCTRLSET(a2)
+ b2c:	acd90400 	sw	t9,1024(a2)
+	sw	t8,AI_RESETCTRL(a2)
+ b30:	acd80800 	sw	t8,2048(a2)
+
+	/* Read back and delay */
+	lw	t8,AI_RESETCTRL(a2)
+ b34:	8cd80800 	lw	t8,2048(a2)
+	lw	t8,AI_RESETCTRL(a2)
+ b38:	8cd80800 	lw	t8,2048(a2)
+	lw	t8,AI_RESETCTRL(a2)
+ b3c:	8cd80800 	lw	t8,2048(a2)
+
+	/* Clear reset */
+	li	t8,0
+ b40:	24180000 	li	t8,0
+	sw	t8,AI_RESETCTRL(a2)
+ b44:	acd80800 	sw	t8,2048(a2)
+
+	/* Read back and delay */
+	lw	t8,AI_RESETCTRL(a2)
+ b48:	8cd80800 	lw	t8,2048(a2)
+	lw	t8,AI_RESETCTRL(a2)
+ b4c:	8cd80800 	lw	t8,2048(a2)
+	lw	t8,AI_RESETCTRL(a2)
+ b50:	8cd80800 	lw	t8,2048(a2)
+
+	/* Clear Force Gated Clock */
+	li	t9,SICF_FGC
+ b54:	24190002 	li	t9,2
+	sw	t9,AI_IOCTRLCLEAR(a2)
+ b58:	acd90404 	sw	t9,1028(a2)
+
+	/* Read back and delay */
+	lw	t9,AI_IOCTRL(a2)
+ b5c:	8cd90408 	lw	t9,1032(a2)
+	lw	t9,AI_IOCTRL(a2)
+ b60:	8cd90408 	lw	t9,1032(a2)
+	lw	t9,AI_IOCTRL(a2)
+ b64:	8cd90408 	lw	t9,1032(a2)
+
+	jr	ra
+ b68:	03e00008 	jr	ra
+	nop
+ b6c:	00000000 	nop
+
+00000b70 <dmemc_init_regs>:
+
+	/* Use table at (a0) to init dmemc regs.
+	 * Assumes (a1) points to the regs.
+	 */
+dmemc_init_regs:
+	beq     s4,DMEMS_CORE_ID,loop_regs
+ b70:	24010835 	li	at,2101
+ b74:	12810005 	beq	s4,at,b8c <loop_regs>
+	li	t3,128
+ b78:	240b0080 	li	t3,128
+
+	ble	s3,1,loop_regs
+ b7c:	2a610002 	slti	at,s3,2
+ b80:	14200002 	bnez	at,b8c <loop_regs>
+	nop
+ b84:	00000000 	nop
+
+	li	t3,256
+ b88:	240b0100 	li	t3,256
+
+00000b8c <loop_regs>:
+
+loop_regs:
+	add	a0,a0,s5			# Relocate address
+ b8c:	00952020 	add	a0,a0,s5
+	li	t0,DMEMC_TABLE_END
+ b90:	2408ffff 	li	t0,-1
+1:	lw	t1,0(a0)			# Pick up reg num
+ b94:	8c890000 	lw	t1,0(a0)
+	bge	t1,t3,2f			# Return if the reg num >= num of supported regs
+ b98:	012b082a 	slt	at,t1,t3
+ b9c:	10200009 	beqz	at,bc4 <loop_regs+0x38>
+	nop
+ ba0:	00000000 	nop
+	beq	t1,t0,2f			# Return if done
+ ba4:	11280007 	beq	t1,t0,bc4 <loop_regs+0x38>
+	nop
+ ba8:	00000000 	nop
+
+	lw	t2,4(a0)			# Get reg value
+ bac:	8c8a0004 	lw	t2,4(a0)
+	sll	t1,2				# Reg num * 4 is reg offset
+ bb0:	00094880 	sll	t1,t1,0x2
+	addu	t1,a1,t1
+ bb4:	00a94821 	addu	t1,a1,t1
+#if	defined(IL_BIGENDIAN) && defined(BCMHND74K)
+	xor	t1,t1,4
+#endif
+	sw	t2,0(t1)			# Write reg
+ bb8:	ad2a0000 	sw	t2,0(t1)
+	b	1b
+ bbc:	1000fff5 	b	b94 <loop_regs+0x8>
+	addi	a0,8
+ bc0:	20840008 	addi	a0,a0,8
+
+2:	jr	ra
+ bc4:	03e00008 	jr	ra
+	nop
+ bc8:	00000000 	nop
+
+00000bcc <ai_amemcinit>:
+
+        /*
+         * ddr23_phy_init
+         */
+
+        li      t0, KSEG1ADDR(AI_DDRPHY_BASE)
+ bcc:	3c08b800 	lui	t0,0xb800
+ bd0:	3508f000 	ori	t0,t0,0xf000
+
+#ifndef CFG_QUICKTURN
+
+        li      t2, 0x10000000
+ bd4:	3c0a1000 	lui	t2,0x1000
+        li      t3, 0
+ bd8:	240b0000 	li	t3,0
+        li      t5, 0
+ bdc:	240d0000 	li	t5,0
+2:
+        /* Do recalibration */
+        beq     t5, PVT_MAX_RETRY, 9f
+ be0:	24010078 	li	at,120
+ be4:	11a10011 	beq	t5,at,c2c <ai_amemcinit+0x60>
+        lw      t7, DDR23PHY_ZQ_PVT_COMP_CTL(t0)
+ be8:	8d0f003c 	lw	t7,60(t0)
+        ddr_write(DDR23PHY_ZQ_PVT_COMP_CTL, 0x04000000);
+ bec:	3c040400 	lui	a0,0x400
+ bf0:	ad04003c 	sw	a0,60(t0)
+1:
+        /* Wait until sample_done == 1 */
+        lw      t1, DDR23PHY_ZQ_PVT_COMP_CTL(t0)
+ bf4:	8d09003c 	lw	t1,60(t0)
+        and     t1, t1, t2;
+ bf8:	012a4824 	and	t1,t1,t2
+        beq     t1, zero, 1b
+ bfc:	1120fffd 	beqz	t1,bf4 <ai_amemcinit+0x28>
+        nop
+ c00:	00000000 	nop
+
+        /* Increase total retry count */
+        add     t5, t5, 1
+ c04:	21ad0001 	addi	t5,t5,1
+
+        /* Check if the result is the same as previous one */
+        lw      t1, DDR23PHY_ZQ_PVT_COMP_CTL(t0)
+ c08:	8d09003c 	lw	t1,60(t0)
+        beq     t1, t7, 3f
+ c0c:	112f0003 	beq	t1,t7,c1c <ai_amemcinit+0x50>
+        nop
+ c10:	00000000 	nop
+
+        /* If not, clear matched count */
+        b       2b
+ c14:	1000fff2 	b	be0 <ai_amemcinit+0x14>
+        li      t3, 0
+ c18:	240b0000 	li	t3,0
+3:
+        /* If so, increase matched count; continue if matched count == 3 */
+        add     t3, t3, 1
+ c1c:	216b0001 	addi	t3,t3,1
+        bne     t3, PVT_MATCHED_COUNT, 2b
+ c20:	24010003 	li	at,3
+ c24:	1561ffee 	bne	t3,at,be0 <ai_amemcinit+0x14>
+        nop
+ c28:	00000000 	nop
+9:
+
+        /* setup PLL */
+        ddr_write(DDR23PHY_PLL_CONFIG,      0x8000000c);
+ c2c:	3c048000 	lui	a0,0x8000
+ c30:	3484000c 	ori	a0,a0,0xc
+ c34:	ad040014 	sw	a0,20(t0)
+        ddr_write(DDR23PHY_PLL_PRE_DIVIDER,
+ c38:	24043511 	li	a0,13585
+ c3c:	ad040018 	sw	a0,24(t0)
+                0x00000011 + (PLL_NDIV_INT_VAL << 8));
+        ddr_write(DDR23PHY_PLL_DIVIDER,     0x02000000);
+ c40:	3c040200 	lui	a0,0x200
+ c44:	ad04001c 	sw	a0,28(t0)
+        ddr_write(DDR23PHY_PLL_CONFIG,      0x80000008);
+ c48:	3c048000 	lui	a0,0x8000
+ c4c:	34840008 	ori	a0,a0,0x8
+ c50:	ad040014 	sw	a0,20(t0)
+
+        /* Wait for PLL locked */
+        li      t2, 1;
+ c54:	240a0001 	li	t2,1
+1:      /* Wait until lock == 1 */
+        lw      t1, DDR23PHY_PLL_STATUS(t0)
+ c58:	8d090010 	lw	t1,16(t0)
+        and     t1, t1, t2;
+ c5c:	012a4824 	and	t1,t1,t2
+        beq     t1, zero, 1b
+ c60:	1120fffd 	beqz	t1,c58 <ai_amemcinit+0x8c>
+        nop
+ c64:	00000000 	nop
+
+        /* De-assert PLL reset */
+        ddr_write(DDR23PHY_PLL_CONFIG,      0x80000000);
+ c68:	3c048000 	lui	a0,0x8000
+ c6c:	ad040014 	sw	a0,20(t0)
+        ddr_write(DDR23PHY_PLL_CONFIG,      0x00000000);
+ c70:	24040000 	li	a0,0
+ c74:	ad040014 	sw	a0,20(t0)
+        /*
+         * Calibrate VDL
+         */
+
+        /* calib_once + calib_fast (for all BL) */
+        ddr_write(DDR23PHY_BL3_VDL_CALIBRATE, 0x00000003);
+ c78:	24040003 	li	a0,3
+ c7c:	ad040104 	sw	a0,260(t0)
+        ddr_write(DDR23PHY_BL2_VDL_CALIBRATE, 0x00000003);
+ c80:	24040003 	li	a0,3
+ c84:	ad040204 	sw	a0,516(t0)
+        ddr_write(DDR23PHY_BL1_VDL_CALIBRATE, 0x00000003);
+ c88:	24040003 	li	a0,3
+ c8c:	ad040304 	sw	a0,772(t0)
+        ddr_write(DDR23PHY_BL0_VDL_CALIBRATE, 0x00000003);
+ c90:	24040003 	li	a0,3
+ c94:	ad040404 	sw	a0,1028(t0)
+
+        li      t2, 0x0000003;
+ c98:	240a0003 	li	t2,3
+        li      t0, KSEG1ADDR(AI_DDRPHY_BASE)
+ c9c:	3c08b800 	lui	t0,0xb800
+ ca0:	3508f000 	ori	t0,t0,0xf000
+1:      /* Wait until calib_idle == 1 and locked for all BL */
+        lw      t1, DDR23PHY_BL3_VDL_STATUS(t0)
+ ca4:	8d090108 	lw	t1,264(t0)
+        and     t1, t1, t2;
+ ca8:	012a4824 	and	t1,t1,t2
+        beq     t1, zero, 1b
+ cac:	1120fffd 	beqz	t1,ca4 <ai_amemcinit+0xd8>
+        nop
+ cb0:	00000000 	nop
+        lw      t1, DDR23PHY_BL2_VDL_STATUS(t0)
+ cb4:	8d090208 	lw	t1,520(t0)
+        and     t1, t1, t2;
+ cb8:	012a4824 	and	t1,t1,t2
+        beq     t1, zero, 1b
+ cbc:	1120fff9 	beqz	t1,ca4 <ai_amemcinit+0xd8>
+        nop
+ cc0:	00000000 	nop
+        lw      t1, DDR23PHY_BL1_VDL_STATUS(t0)
+ cc4:	8d090308 	lw	t1,776(t0)
+        and     t1, t1, t2;
+ cc8:	012a4824 	and	t1,t1,t2
+        beq     t1, zero, 1b
+ ccc:	1120fff5 	beqz	t1,ca4 <ai_amemcinit+0xd8>
+        nop
+ cd0:	00000000 	nop
+        lw      t1, DDR23PHY_BL0_VDL_STATUS(t0)
+ cd4:	8d090408 	lw	t1,1032(t0)
+        and     t1, t1, t2;
+ cd8:	012a4824 	and	t1,t1,t2
+        beq     t1, zero, 1b
+ cdc:	1120fff1 	beqz	t1,ca4 <ai_amemcinit+0xd8>
+        nop
+ ce0:	00000000 	nop
+
+        /* VDL override */
+        lw      t1, DDR23PHY_BL0_VDL_STATUS(t0)
+ ce4:	8d090408 	lw	t1,1032(t0)
+        srl     t1, t1, 8
+ ce8:	00094a02 	srl	t1,t1,0x8
+        andi    t2, t1, 0x3f                        /* VDL step size */
+ cec:	312a003f 	andi	t2,t1,0x3f
+        li      t1, 1
+ cf0:	24090001 	li	t1,1
+        sll     t1, 16
+ cf4:	00094c00 	sll	t1,t1,0x10
+        or      t2, t2, t1                          /* ovr_en */
+ cf8:	01495025 	or	t2,t2,t1
+        li      t1, 1
+ cfc:	24090001 	li	t1,1
+        sll     t1, 20
+ d00:	00094d00 	sll	t1,t1,0x14
+        or      t2, t2, t1                          /* ovr_force */
+ d04:	01495025 	or	t2,t2,t1
+        sw      t2, DDR23PHY_STATIC_VDL_OVERRIDE(t0)
+ d08:	ad0a0030 	sw	t2,48(t0)
+        /*
+         * Memory controller PL341 initialization
+         */
+
+        /* De-assert core reset */
+        move	t0, a2	# AMEMC DMP regs
+ d0c:	00c04021 	move	t0,a2
+        ddr_write(AI_RESETCTRL, 0x00000000)
+ d10:	24040000 	li	a0,0
+ d14:	ad040800 	sw	a0,2048(t0)
+
+        move	t0, a1 # AMEMC regs
+ d18:	00a04021 	move	t0,a1
+
+#ifdef CFG_DDR_REFRESH_PRD
+        /* refresh_prd */
+        ddr_write(PL341_refresh_prd, MEMCYCLES_MIN(CFG_DDR_REFRESH_PRD));
+ d1c:	24040a17 	li	a0,2583
+ d20:	ad040010 	sw	a0,16(t0)
+        ddr_write(PL341_t_rcd, MEMCYCLES(CFG_DDR_T_RCD));
+#endif
+
+#ifdef CFG_DDR_T_RFC
+        /* t_rfc [6:0]  schedule_rfc[14:8] */
+        ddr_write(PL341_t_rfc,
+ d24:	24042023 	li	a0,8227
+ d28:	ad04002c 	sw	a0,44(t0)
+        ddr_write(PL341_t_rrd, MEMCYCLES(CFG_DDR_T_RRD));
+#endif
+
+#ifdef CFG_DDR_T_WR
+        /* t_wr */
+        ddr_write(PL341_t_wr, MEMCYCLES(CFG_DDR_T_WR));
+ d2c:	24040005 	li	a0,5
+ d30:	ad040038 	sw	a0,56(t0)
+        ddr_write(PL341_t_faw,
+            ((MEMCYCLES(CFG_DDR_T_FAW) - 3) << 8) | MEMCYCLES(CFG_DDR_T_FAW));
+#endif
+
+        /* Check if sdram_config is nonzero */
+        and	t1, s0, 0xffff
+ d34:	3209ffff 	andi	t1,s0,0xffff
+        bne	t1, $0, sdram_mem_cfg
+ d38:	15200005 	bnez	t1,d50 <sdram_mem_cfg>
+        nop
+ d3c:	00000000 	nop
+
+        /* sdram_config is 0, configure by code-default values */
+        /* Figure out if it's a low cost package */
+        andi	t1, s1, 0x03
+ d40:	32290003 	andi	t1,s1,0x3
+
+        /* Standard package, assume 1024-column, 32-bit, 8-bank DDR */
+        beq	t1, $0, sdram_mem_cfg
+ d44:	11200002 	beqz	t1,d50 <sdram_mem_cfg>
+        li	s0, (0x0140 | CFG_DDR_CAS_LATENCY)
+ d48:	24100145 	li	s0,325
+
+        /* Low cost package, assume 1024-column, 16-bit, 8-bank DDR */
+        li	s0, (0x01c0 | CFG_DDR_CAS_LATENCY)
+ d4c:	241001c5 	li	s0,453
+
+00000d50 <sdram_mem_cfg>:
+        /* CAS Latency:
+        *  sdram_config[2:0]: CAS latency
+        *  PL341_cas_latency[3:1]: CL range from 2 to 6
+        *  PL341_write_latency[2:0]: CL - 1
+        */
+        andi	t1, s0, 0x07
+ d50:	32090007 	andi	t1,s0,0x7
+        sll	t2, t1, 1
+ d54:	00095040 	sll	t2,t1,0x1
+        sw	t2, PL341_cas_latency(a1)
+ d58:	acaa0014 	sw	t2,20(a1)
+        subu	t2, t1, 1
+ d5c:	252affff 	addiu	t2,t1,-1
+        sw	t2, PL341_write_latency(a1)
+ d60:	acaa0018 	sw	t2,24(a1)
+
+        /* PL341_memory_cfg: Rows and Columns */
+        lw	t2, PL341_memory_cfg(a1)	# Read PL341_memory_cfg
+ d64:	8caa000c 	lw	t2,12(a1)
+
+        /* Columns:
+        *  sdram_config[10:8]: 0=2048; 1=1024; 2=512; 3=256 columns
+        *  PL341_memory_cfg[2:0]: 1=9-bit; 2=10-bit; 3=11-bit; Others=Reserved.
+        */
+        li	t3, ~0x7			# columns(bit2:0)
+ d68:	240bfff8 	li	t3,-8
+        and	t2, t2, t3		# clear column
+ d6c:	014b5024 	and	t2,t2,t3
+        srl	t1, s0, 8			# Column fields from sdram_config s0(bit10:8)
+ d70:	00104a02 	srl	t1,s0,0x8
+        andi	t1, t1, 0x07
+ d74:	31290007 	andi	t1,t1,0x7
+        li	t3, 0x3
+ d78:	240b0003 	li	t3,3
+        subu	t1, t3, t1
+ d7c:	01694823 	subu	t1,t3,t1
+        andi	t1, t1, 0x07
+ d80:	31290007 	andi	t1,t1,0x7
+        or	t2, t2, t1
+ d84:	01495025 	or	t2,t2,t1
+        sw	t2, PL341_memory_cfg(a1)
+ d88:	acaa000c 	sw	t2,12(a1)
+
+        /* PL341_memory_cfg2: Bus width and Banks */
+        lw	t2, PL341_memory_cfg2(a1)	# Read PL341_memory_cfg2
+ d8c:	8caa004c 	lw	t2,76(a1)
+
+        /* Low cost package is 16-bit bus */
+        andi	t1, s1, 0x03
+ d90:	32290003 	andi	t1,s1,0x3
+        li	t3, ~0xc0
+ d94:	240bff3f 	li	t3,-193
+        bne	t1, $0, 2f	# nonzero: low cost package with 16-bit bus
+ d98:	15200005 	bnez	t1,db0 <sdram_mem_cfg+0x60>
+        and	t2, t2, t3	# Clear bit[7:6] to work in 16-bit mode
+ d9c:	014b5024 	and	t2,t2,t3
+
+        /* Bus width:
+        *  sdram_config[7]: 0 default bus width, 1: reduced width
+        *  PL341_memory_cfg2[7:6]: 00 for 16bit, 01=32bit, 10=64bit, 11=reserved
+        */
+        andi	t1, s0, 0x80
+ da0:	32090080 	andi	t1,s0,0x80
+        bne	t1, $0, 2f	# Work in 16-bit mode
+ da4:	15200002 	bnez	t1,db0 <sdram_mem_cfg+0x60>
+        nop
+ da8:	00000000 	nop
+        or	t2, t2, 0x40	# Set bit[7:6] to 32-bit mode
+ dac:	354a0040 	ori	t2,t2,0x40
+2:
+        /* Banks:
+        *  sdram_config[6]: 0 for 4 banks, 1 for 8 banks
+        *  PL341_memory_cfg2[5:4]: 00 for 4 banks, 11 for 8 banks
+        */
+        andi	t1, s0, 0x40	# Bank configuration
+ db0:	32090040 	andi	t1,s0,0x40
+        li	t3, ~0x30
+ db4:	240bffcf 	li	t3,-49
+        beq	t1, $0, 1f
+ db8:	11200002 	beqz	t1,dc4 <sdram_mem_cfg+0x74>
+        and	t2, t2, t3	# Clear bit[5:4] to work in 4-bank mode
+ dbc:	014b5024 	and	t2,t2,t3
+        or	t2, t2, 0x30	# Set bit[5:4] to 11 for 8-bank mode
+ dc0:	354a0030 	ori	t2,t2,0x30
+1:
+        sw	t2, PL341_memory_cfg2(a1);
+ dc4:	acaa004c 	sw	t2,76(a1)
+
+        /* chip0 configuration */
+        ddr_write(PL341_chip_0_cfg, 0x00000000);
+ dc8:	24040000 	li	a0,0
+ dcc:	ad040200 	sw	a0,512(t0)
+
+        /* user_config0 */
+        ddr_write(PL341_user_config0, 0x00000003);
+ dd0:	24040003 	li	a0,3
+ dd4:	ad040304 	sw	a0,772(t0)
+        /*
+         * DDR2 chip initialization
+         */
+
+        /* Issue NOP */
+        ddr_write(PL341_direct_cmd, MCHIP_CMD_NOP);
+ dd8:	3c04000c 	lui	a0,0xc
+ ddc:	ad040008 	sw	a0,8(t0)
+
+        /* issue precharge all */
+        ddr_write(PL341_direct_cmd, MCHIP_CMD_PRECHARGE_ALL);
+ de0:	24040000 	li	a0,0
+ de4:	ad040008 	sw	a0,8(t0)
+
+        /* Set EMR2 */
+        ddr_write(PL341_direct_cmd, MCHIP_CMD_MODE_REG | MCHIP_MODEREG_SEL(2));
+ de8:	3c04000a 	lui	a0,0xa
+ dec:	ad040008 	sw	a0,8(t0)
+
+        /* Set EMR3 */
+        ddr_write(PL341_direct_cmd, MCHIP_CMD_MODE_REG | MCHIP_MODEREG_SEL(3));
+ df0:	3c04000b 	lui	a0,0xb
+ df4:	ad040008 	sw	a0,8(t0)
+
+        /* DLL Enable */
+        ddr_write(PL341_direct_cmd,
+ df8:	3c040009 	lui	a0,0x9
+ dfc:	ad040008 	sw	a0,8(t0)
+            MCHIP_EMR1_DLL_DISABLE(0)
+            );
+
+        /* DLL Reset */
+        /* Set CAS to external memory devices */
+        lw	t1, PL341_cas_latency(a1)		# CAS value in bit3:1
+ e00:	8ca90014 	lw	t1,20(a1)
+        li	t2, (MCHIP_CMD_MODE_REG | MCHIP_MODEREG_SEL(0) | \
+ e04:	3c0a0008 	lui	t2,0x8
+ e08:	354a0902 	ori	t2,t2,0x902
+            MCHIP_MR_WRITE_RECOVERY(MEMCYCLES(CFG_DDR_T_WR)) | \
+            MCHIP_MR_DLL_RESET(1) | MCHIP_MR_BURST_LENGTH)
+        sll	t1, t1, 3		# Shift to bit6:4 for DDR MRS register
+ e0c:	000948c0 	sll	t1,t1,0x3
+        or	t2, t2, t1
+ e10:	01495025 	or	t2,t2,t1
+        sw	t2, PL341_direct_cmd(a1)
+ e14:	acaa0008 	sw	t2,8(a1)
+
+        /* issue precharge all */
+        ddr_write(PL341_direct_cmd, MCHIP_CMD_PRECHARGE_ALL);
+ e18:	24040000 	li	a0,0
+ e1c:	ad040008 	sw	a0,8(t0)
+
+        /* auto-refresh 2 times */
+        ddr_write(PL341_direct_cmd, MCHIP_CMD_AUTO_REFRESH);
+ e20:	3c040004 	lui	a0,0x4
+ e24:	ad040008 	sw	a0,8(t0)
+        ddr_write(PL341_direct_cmd, MCHIP_CMD_AUTO_REFRESH);
+ e28:	3c040004 	lui	a0,0x4
+ e2c:	ad040008 	sw	a0,8(t0)
+
+        /* DLL Reset=0 (Un-Reset DLL) */
+        and	t2, t2, ~MCHIP_MR_DLL_RESET(1)
+ e30:	2401feff 	li	at,-257
+ e34:	01415024 	and	t2,t2,at
+        sw	t2, PL341_direct_cmd(a1)
+ e38:	acaa0008 	sw	t2,8(a1)
+
+        /* DLL Enable & RTT 75ohm */
+        ddr_write(PL341_direct_cmd,
+ e3c:	3c040009 	lui	a0,0x9
+ e40:	34840004 	ori	a0,a0,0x4
+ e44:	ad040008 	sw	a0,8(t0)
+            MCHIP_EMR1_DLL_DISABLE(0) | MCHIP_EMR1_RTT_75_OHM |
+            MCHIP_EMR1_OCD_CALI_EXIT
+            );
+
+        /* OCD Defaults */
+        ddr_write(PL341_direct_cmd,
+ e48:	3c040009 	lui	a0,0x9
+ e4c:	34840184 	ori	a0,a0,0x184
+ e50:	ad040008 	sw	a0,8(t0)
+            MCHIP_EMR1_DLL_DISABLE(0) | MCHIP_EMR1_RTT_75_OHM |
+            MCHIP_EMR1_OCD_CALI_DEFAULT
+            );
+
+        /* OCD Exit */
+        ddr_write(PL341_direct_cmd,
+ e54:	3c040009 	lui	a0,0x9
+ e58:	34840004 	ori	a0,a0,0x4
+ e5c:	ad040008 	sw	a0,8(t0)
+            MCHIP_EMR1_DLL_DISABLE(0) | MCHIP_EMR1_RTT_75_OHM |
+            MCHIP_EMR1_OCD_CALI_EXIT
+            );
+
+        /* set MEMC to GO */
+        ddr_write(PL341_memc_cmd, 0);
+ e60:	24040000 	li	a0,0
+ e64:	ad040004 	sw	a0,4(t0)
+	...
+        nop
+        nop
+
+        jr      ra
+ e70:	03e00008 	jr	ra
+        nop
+ e74:	00000000 	nop
+	...

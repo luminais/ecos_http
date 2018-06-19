@@ -1,0 +1,128 @@
+ <po>
+	<!--advance-->
+	<message msgid="Tenda 11N Wireless Router" msgstr="Tenda 11N Wireless Router" />   
+	<message msgid="Home" msgstr="Home" />
+	<message msgid="Advanced" msgstr="Advanced" />
+	<message msgid="Wireless" msgstr="Wireless" />  
+	<message msgid="Qos" msgstr="Qos" />
+	<message msgid="Applications" msgstr="Applications" />
+	<message msgid="Security" msgstr="Security" />
+	<message msgid="Tools" msgstr="Tools" />
+	<message msgid="Initial page settings" msgstr="Initial page settings" />
+	<message msgid="Log out" msgstr="Log out" />
+	  
+	<message msgid="System_status_helpinfo1" msgstr="Refers to the connection between the router and the device connected to the router's WAN." />
+	<message msgid="System_status_helpinfo2" msgstr="This can be set in Advanced > Internet Connection Setup. DHCP and PPPoE are the most common. " />
+	<message msgid="System_status_helpinfo3" msgstr="Displays WAN connection duration for the DHCP/Dynamic IP and PPPoE connection type." />
+	<message msgid="System_status_helpinfo4" msgstr="Displays the current firmware version of the device." />
+
+	<message msgid="Wan_connected_helpinfo1" msgstr="Static IP is a connection type that allows you to specify the Static IP information provided by your ISP or that corresponds with your existing networking equipment. If you have a fixed (or static IP) address, your ISP will have provided you with the required information. Select Static IP option and type the IP Address, Subnet Mask and Gateway IP Address into the correct boxes." />
+	<message msgid="Wan_connected_helpinfo2" msgstr="DHCP or Dynamic IP is a connection type that allows the router to automatically acquire IP information from your ISP or your existing networking equipment for Internet access. No configurations are needed if this option is selected." />
+	<message msgid="Wan_connected_helpinfo3" msgstr="PPPoE is a connection type associated with some DSL connections that requires Username and Password. Contact your ISP if you need assistance with these login credentials." />
+	<message msgid="Wan_connected_helpinfo4" msgstr="PPTP (Point-To-Point Tunneling Protocol) is a network protocol that enables the secure transfer of data from a remote client to a private enterprise server by creating a VPN across TCP/IP-based data. Enter your ISP provided information to establish a connection. Select the PPTP option and type the PPTP user name and password provided by your ISP into the correct boxes if your ISP is using a PPTP connection. Contact your ISP if you need assistance with these login credentials." />
+	<message msgid="Wan_connected_helpinfo5" msgstr="L2TP (Layer 2 Tunneling Protocol) is a network protocol that enables the secure transfer of data from a remote client to a private enterprise server by creating a VPN across TCP/IP-based data. Enter the information your ISP provided to establish a connection. Select the L2TP option and type the L2TP user name and password provided by your ISP into the correct boxes if your ISP is using a L2TP connection. Contact your ISP if you need assistance with these login credentials." />
+	<message msgid="Contact your ISP for help if you are not sure about which Internet connection type to use." msgstr="Contact your ISP for help if you are not sure about which Internet connection type to use." />
+
+	<message msgid="mac_clone_helpinfo1" msgstr="Some Internet service providers (ISPs) require end-user’s MAC address to access their network. This feature copies the MAC address of your network device to the router." />
+	<message msgid="mac_clone_helpinfo2" msgstr="The MAC address to be registered with your ISP." />
+	<message msgid="mac_clone_helpinfo3" msgstr="Restore the default hardware MAC address." />
+	<message msgid="mac_clone_helpinfo4" msgstr="Register your PC’s MAC address." />
+	
+	<message msgid="Wan_speed_helpinfo1" msgstr="Here you can limit the WAN speed. It is recommended to use the default &quot;AUTO&quot; setting to allow maximum speed. However, WAN connection may fail if your router is too distant from the Internet-enabled modem. In this case, select the 10M full duplex mode." />
+	
+	<message msgid="Wan_dns_helpinfo1" msgstr="Here you can manually set the DNS (Domain Name Server) settings or obtain them from your ISP automatically. The Alternate DNS Address is optional. " />
+	<message msgid="Wan_dns_helpinfo2" msgstr="If the DNS Addresses entered are incorrect, web pages will not be able to open." />
+	
+	<message msgid="Lan_helpinfo" msgstr="Here you can set the LAN IP Address and Subnet Mask. This IP Address is to be used to access the router's homepage through a web browser. Be sure to make a note of any changes you apply to this page. Default settings are 192.168.0.1 and 255.255.255.0." />
+	
+	<message msgid="Net_tc_helpinfo1" msgstr="The Bandwidth Control helps you to improve network performance by specifying the download/upload speed for computers." />
+	<message msgid="Net_tc_helpinfo2" msgstr="Select upload or download from the drop-down list." />
+	<message msgid="Net_tc_helpinfo3" msgstr="Set a upload/download bandwidth limit on specified PC(s)." />
+	<message msgid="Net_tc_helpinfo4" msgstr="The maximum upload/download bandwidth should not exceed the bandwidth provided by your ISP." />
+	
+	<message msgid="Traffic statistics allows you to see at a glance how much traffic each device in your network is using." msgstr="Traffic Statistics allows you to see at a glance how much traffic each device in your network is using." />
+	
+	<message msgid="routing_table_Help_Inf1" msgstr="There are three types of interfaces:&lt;br&gt; vlan2 - WAN interface,&lt;br&gt; ppp0 - PPPoE interface,&lt;br&gt; br0 - LAN interface." /> 
+	
+	<message msgid="routing_static_Help_Inf1" msgstr="When there are several routers in the network, you may want to set up static routing." />  
+	<message msgid="routing_static_Help_Inf2" msgstr="Static routing determines the path of the data in your network. You can use this feature to allow users on different IP domains to access the Internet via this device. It is not recommended to use this setting unless you are familiar with static routing. In most cases, dynamic routing is recommended, because this feature allows the router to detect the physical changes of the network layout automatically. If you want to use static routing, make sure the router's DHCP function is disabled." />
+
+	<message msgid="NAT_Portseg_Help_Inf5" msgstr="To forward ports to an internal host, specify a range of ports from 1~65535  (for a single port, enter the port number in both Start and End fields. Then enter the internal host's IP Address. Be sure to statically assign the host's IP Address in the Advanced > DHCP Client List section to make this function effective. Specify the protocol required for the service utilizing the port(s). Click Enable and then OK." />  
+	<message msgid="NAT_Portseg_Help_Inf1" msgstr="Specify the WAN service ports." />
+	<message msgid="NAT_Portseg_Help_Inf2" msgstr="Check to activate corresponding settings." />
+	<message msgid="NAT_Portseg_Help_Inf3" msgstr="Click this button and then OK to clear corresponding settings." />
+	<message msgid="NAT_Portseg_Help_Inf4" msgstr="Click to add well-known service ports to the selected item/rule." />
+	
+	<message msgid="UPNP_Help_Inf" msgstr="UPnP(Universal Plug and Play) allows Windows based systems to configure the device for various Internet applications automatically." />
+	
+	<message msgid="DMZ_Help_Inf" msgstr="The DMZ (De-Militarized Zone) function disables the firewall on the router for one device for a special service, such as Internet gaming or video conferencing." />   
+	<message msgid="DMZ_Help_Inf1" msgstr="The IP address of the device for which the router's firewall will be disabled. Be sure to statically set the IP address of that device in the DHCP Client List Section to ensure that this function is consistent." />
+	
+	<message msgid="lan_dhcp_clients_helpinfo1" msgstr="DHCP Client List displays a list of devices that have obtained IP addresses from the router's DHCP Server." />
+	<message msgid="lan_dhcp_clients_helpinfo2" msgstr="You can manually assign a static IP address to a device by entering the device's MAC address and your desired IP address, and click on &quot;Add&quot; at last." />
+	
+	<message msgid="Firewall_clientfilter_Help_Inf1" msgstr="This section allows you to set the times specific clients can or cannot access the Internet via the devices'IP addresses. Select a Policy from the drop-down menu and briefly describe it in the corresponding field. You can set the access restriction or permission in detail including the time period, and specific days of the week." /> 
+	<message msgid="Firewall_clientfilter_Help_Inf2" msgstr="When Time is set to 0:0 to 0:0, the rule will be applied 24 hrs/day." />
+	
+	<message msgid="Firewall_URLFilter_Help_Inf1" msgstr="This section allows you to control websites access. Select a policy from the drop-down menu and briefly describe it in the corresponding field. You can set the access restriction in details including the IP address range of devices, time period, and specific days of the week. Domain name can be entered the full name(for example www.google.com) or keyword(for example google),but only support one domain name for one rule. " />
+	<message msgid="Firewall_URLFilter_Help_Inf2" msgstr="Be sure to statically assign IP Address of the devices you want to filter in the DHCP Client List section for this function to be consistent." />
+	<message msgid="Firewall_URLFilter_Help_Inf3" msgstr="When Time is set to 0:0 to 0:0, the rule will be applied 24 hrs/day." />
+	
+	<message msgid="Firewall_MAC_Help_Inf1" msgstr="This section allows you to set the time specific clients can or cannot access the Internet via the devices' MAC adresses. Select a Policy from the drop-down menu and briefly describe it in the corresponding field. You can set the access restriction or permission in detail including the time period, and specific days of the week." /> 
+	<message msgid="Firewall_MAC_Help_Inf2" msgstr="When Time is set to 0:0 to 0:0, the rule will be applied 24 hrs/day." /> 
+	
+	<message msgid="remote_Help_Inf1" msgstr="This section allows network administrator to manage the router remotely." />
+	<message msgid="remote_Help_Inf2" msgstr="This is the management port to be open to outside access. The default setting is 8080." />
+	<message msgid="remote_Help_Inf3" msgstr="Here you can specify the IP address for remote management.When IP address is set to 0.0.0.0, the device becomes  romotely accessible to all PCs on Internet." />
+	
+	<message msgid="Lan_dncps_helpinfo1" msgstr="DHCP server (Dynamic Host Configuration Protocol) assigns an IP address to each device on the LAN/private network. When you enable the DHCP Server, the DHCP Server will automatically allocate an unused IP address from the IP address pool to the requesting device as long as the device is set to &quot;Obtain an IP Address Automatically&quot;." />
+	<message msgid="Lan_dncps_helpinfo2" msgstr="You can specify the starting and ending address of the IP address pool here." />
+	<message msgid="Lan_dncps_helpinfo3" msgstr="The lease time is the duration that the IP address is assigned to each device before it is refreshed." />
+	
+	<message msgid="system_log_Help_Inf1" msgstr="Here you can view the history of the router's actions. After 150 entries, the previous logs will be cleared automatically." /> 
+	
+	<message msgid="system_password_Help_Inf1" msgstr="This section allows you to change the login password." /> 
+	<message msgid="system_password_Help_Inf2" msgstr="Device's default password is &quot;admin&quot;. It is advisable to change it for better security. Otherwise, anyone in your network may access this utility to view or change your settings. " /> 
+	<message msgid="system_password_Help_Inf3" msgstr="Enter the old password. If you use the device for the first time, the password is admin by default. (Note: Password cannot be retrieved once forgot) If you already changed the password and unfortunately forget, restore the device to factory defaults." /> 
+	<message msgid="system_password_Help_Inf4" msgstr="Input a new password. Password must only include 0 ~ 12 characters without any space. " /> 
+	<message msgid="system_password_Help_Inf5" msgstr="Re-enter the new password for confirmation. " />
+	
+	<message msgid="direct_reboot_Help_Inf" msgstr="Rebooting the router will activate any modified settings on the router. While the router is rebooting, all connections will be lost and reconnected automatically later." />
+
+	<message msgid="system_reboot_Help_Inf" msgstr="Rebooting the router will activate any modified settings on the router. While the router is rebooting, all connections will be lost and reconnected automatically later." />
+	
+	<message msgid="system_upgrade_Help_Inf1" msgstr="The latest firmware can be found at www.tendacn.com." /> 
+	<message msgid="system_upgrade_Help_Inf2" msgstr="Be sure to follow the instructions carefully. " /> 
+	<message msgid="system_upgrade_Help_Inf3" msgstr="Once you have downloaded the firmware file from our website and saved it to your computer, click on &quot;Browse&quot; to select the file. Then click on &quot;Upgrade&quot; to start the process and reboot the router." /> 
+	
+	<message msgid="system_restore_Help_Inf1" msgstr="All settings will be set back to default." />
+	
+	<message msgid="system_backup_Help_Inf" msgstr="Click on this button to save a copy of your router's configurations to your computer." />    
+	<message msgid="system_backup_Help_Inf1" msgstr="First click on &quot;Browse&quot; to browse your computer and select the configuration file you want to upload to your router. Then click on the &quot;Restore&quot; button to　upload your selection and apply the settings saved in that file." />
+	
+	<message msgid="ddns_config_Help_Inf1" msgstr="DDNS (Dynamic DNS) Service allows you to assign a fixed domain name for your dynamic WAN IP address so that you can remotely access your LAN from the web. You need to have an account of  any Service Providers in the drop-down menu first." /> 
+	<message msgid="ddns_config_Help_Inf2" msgstr="Enter your Username, Password, and Domain Name (Host Name) that you registered with the DDNS service provider to enable the service for this router." />
+	
+	<message msgid="system_hostname_Help_Inf1" msgstr="This page is used to set the router's system time. You can choose to set the time manually or get the GMT time from the Internet and the system will automatically connect to NTP server to synchronize the time." /> 
+	<message msgid="system_hostname_Help_Inf2" msgstr="Configured time and date info will be lost when the device is disconnected from power supply. However, it will be updated automatically when the device reconnects to Internet.  To activate time-based features (e.g. firewall), the time and date info shall be set correctly first, either manually or automatically." />
+	
+	<message msgid="wireless_basic_helpinfo1" msgstr="In this section you can configure the wireless settings of the router such as the SSID (name of the network) and Broadcast Channel." />
+	<message msgid="wireless_basic_helpinfo2" msgstr="This is the public name of your wireless network. It is preset to &quot;Tenda_XXXXXX&quot; (where &quot;XXXXXX&quot; represents the last six characters in device MAC address.) by default. Please change it for better security. Note that this field should not be left blank." />
+	<message msgid="wireless_basic_helpinfo3" msgstr="This option allows you to have your network names (SSIDs) publicly broadcast or if you choose to disable it, the SSID will be hidden." />
+	<message msgid="wireless_basic_helpinfo4" msgstr="Select from 1~11 channels or AutoSelect. The best selection is a channel that is the least used by neighboring networks." />
+	<message msgid="wireless_basic_helpinfo5" msgstr="This is used to ensure N speeds for 802.11n devices on the network." />
+	
+	<message msgid="Wireless_secrity_helpinfo" msgstr="You can enable personal (PSK) or mixed mode, but you must make sure that the wireless client also supports the selected Security mode." />
+	<message msgid="Wireless_secrity_helpinfo1" msgstr="Here you can set the wireless password for your wireless network. You are recommended to select WPA-PSK as Security Mode and AES as WPA Algorithms Type." />
+	<message msgid="Wireless_secrity_helpinfo2" msgstr="Must be either 5 or 13 ASCII characters or 10 or 26 Hex characters." />
+	<message msgid="Wireless_secrity_helpinfo3" msgstr="Must be between 8~63 case-sensitive ASCII characters." />
+	
+	<message msgid="Wireless_filter_helpinfo" msgstr="Specify a list of wireless devices to &quot;Permit&quot;  or &quot;Forbid&quot; a connection to your router via the devices' MAC addresses.     All other devices not listed as Permitted will be Forbidden and vice versa." />
+	
+	<message msgid="Wireless_state_helpinfo1" msgstr="Here you can see a list of wireless devices connected to the router." />
+	<message msgid="Wireless_state_helpinfo2" msgstr="The channel frequency width of each connection. 40M is required for 802.11n speeds." />
+
+	<message msgid="wireless_mode_helpinfo1" msgstr="In this mode the router access to the Internet via the Wired WAN port." />
+	<message msgid="wireless_mode_helpinfo2" msgstr="In this mode, the router wirelessly access to the Internet. This method requires you to set the SSID, Channel and security mode as that are provided by your ISP." />
+	<message msgid="To select an Internet connection type, go to Internet Connection Setup" msgstr="To select an Internet connection type, go to Internet Connection Setup" />
+</po>

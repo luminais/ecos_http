@@ -1,0 +1,197 @@
+﻿<po>
+<!--system_status.asp-->
+<message msgid="Static IP" msgstr="고정 IP" />
+<message msgid="Dynamic IP" msgstr="유동 IP" />
+<message msgid="Disable" msgstr="사용안함" />
+<message msgid="Enable" msgstr="사용" />
+<message msgid="Disconnected" msgstr="연결끊김" />
+<message msgid="Connecting" msgstr="연결중" />
+<message msgid="Connected" msgstr="연결됨" />
+<message msgid="Permanent" msgstr="항상" />
+<message msgid="Day" msgstr="날짜" />
+<message msgid="WAN status" msgstr="WAN 상태" />
+<message msgid="Connection status" msgstr="연결 상태" />
+<message msgid="Subnet Mask" msgstr="서브넷 마스크" />
+<message msgid="Gateway" msgstr="게이트웨이" />
+<message msgid="DNS server" msgstr="DNS 서버" />
+<message msgid="Alternate DNS server" msgstr="보조 DNS 서버" />
+<message msgid="Connection type" msgstr="연결 타입" />
+<message msgid="Connection time" msgstr="연결 시간" />
+<message msgid="Release" msgstr="재임대" />
+<message msgid="Refresh" msgstr="새로고침" />
+<message msgid="Connect" msgstr="연결" />
+<message msgid="Disconnect" msgstr="연결끊기" />
+<message msgid="System status" msgstr="시스템 상태" />
+<message msgid="LAN MAC address" msgstr="LAN MAC 주소" />
+<message msgid="WAN MAC address" msgstr="WAN MAC 주소" />
+<message msgid="System time" msgstr="시스템 시간" />
+<message msgid="Running time" msgstr="동작 시간" />
+<message msgid="Connected client" msgstr="연결된 클라이언트" />
+<message msgid="Software version" msgstr="소프트웨어 버전" />
+<message msgid="Hardware version" msgstr="하드웨어 버전" />
+<message msgid="System_status_helpinfo1" msgstr="연결 타입: 현재 WAN연결 타입을 보여줍니다." />
+<message msgid="System_status_helpinfo2" msgstr="연결 시간: 유동 IP 또는 PPPoE의 WAN포트 연결된 시간입니다." />
+<message msgid="System_status_helpinfo3" msgstr="동작 시간: 공유기 사용시간입니다." />
+<message msgid="System_status_helpinfo4" msgstr="시스템 버전 : 공유기 펌웨어 버전입니다." />
+
+<!--wan_connected.asp-->
+<message msgid="Idle time" msgstr="지연 시간" />
+<message msgid="Username or Password is empty" msgstr="사용자 이름 또는 비밀번호기 공란입니다." />
+<message msgid="Account" msgstr="계정" />
+<message msgid="Username" msgstr="사용자 이름" />
+<message msgid="Password" msgstr="비밀번호" />
+<message msgid="Time" msgstr="시간" />
+<message msgid="Time exceeds the specified range" msgstr="시간이 설정된 범위를 벗어났습니다" />
+<message msgid="start time must be smaller than end time." msgstr="시작 시간은 종료시간보다 반드시 작아야합니다." />
+<message msgid="IP address" msgstr="IP 주소" />
+<message msgid="Primary DNS" msgstr="기본 DNS" />
+<message msgid="Alternate DNS" msgstr="보조 DNS" />
+<message msgid="Server address is empty" msgstr="서버 주소가 공란입니다." />
+<message msgid="Server address" msgstr="서버 주소" />
+<message msgid="Service name" msgstr="서비스 이름" />
+<message msgid="Server IP address" msgstr="서버 IP 주소" />
+<message msgid="ISP Gateway" msgstr="ISP 게이트웨이" />
+<message msgid="MTU value range" msgstr="MTU 값 범위" />
+<message msgid="Wan_connected_helpinfo1" msgstr="고정 IP: 통신사로부터 고정IP를 제공받는다면, 고정IP모드를 선택하십시오." />
+<message msgid="Wan_connected_helpinfo2" msgstr="유동 IP: 통신사가 DHCP서버를 이용하여 자동으로 IP가 할당된다면 유동IP모드를 선택하십시오(케이블모뎀방식, VDSL, 광랜등）." />
+<message msgid="Wan_connected_helpinfo3" msgstr="통신사가 PPPoE방식을 이용하고 있다면, 사용자 이름과 비밀번호를 입력하십시오." />
+<message msgid="Wan_connected_helpinfo4" msgstr="통신사가 제공하는 PPTP서버의 IP주소, 사용자이름, 비밀번호를 입력하십시오. WAN IP주소, 서비넷 마스크 게이트웨이는 자동으로 할당 받거나 통신사로부터 제공받은 정보를 직접 입력할 수 있습니다. MTU: 네트워크 연결의 MTU값을 입력하십시오. 만일 정화하게 알고 있지 않다면 기본값으로 사용합니다." />
+<message msgid="Wan_connected_helpinfo5" msgstr="통신사가 제공하는 L2TP서버의 IP주소, 사용자이름, 비밀번호를 입력합니다.  WAN IP주소, 서비넷 마스크 게이트웨이는 자동으로 할당 받거나 통신사로부터 제공받은 정보를 직접 입력할 수 있습니다. MTU: 네트워크 연결의 MTU값을 입력하십시오. 만일 정화하게 알고 있지 않다면 기본값으로 사용합니다." />
+<message msgid="DO NOT modify it unless necessary, the default is 1500" msgstr="필요하지 않은 경우, 수정하지 마십시오. 기본값은 1500입니다." />
+<message msgid="DO NOT modify it unless necessary, the default is 1492" msgstr="필요하지 않은 경우, 수정하지 마십시오. 기본값은 1492입니다." />
+<message msgid="Access Account" msgstr="엑세스 계정" />
+<message msgid="Access Password" msgstr="엑세스 비밀번호" />
+<message msgid="Server name" msgstr="서버 이름" />
+<!--add-->
+<message msgid="Service name" msgstr="서비스 이름" />
+<message msgid="DHCP" msgstr="유동 IP" />
+<!--add-->
+<message msgid="Select the corresponding connection mode according to your situation." msgstr="정확한 연결 모드를 선택하십시오." />
+<message msgid="Connect automatically, Connect automatically to the Internet after rebooting the system or connection failure." msgstr="자동연결: 시스템 재부팅 또는 연결 실패시 자동으로 재연결을 합니다." />
+<message msgid="Connect on demand: Re-establish your connection to the Internet when there’s data transmitting." msgstr="연결 요청: 데이터 전송시에 인터넷 연결을 재시도합니다." />
+<message msgid="Max.idle time" msgstr="최대 지연시간" />
+<message msgid="Wan_connected_Note" msgstr="Note: 고정 연결 시간 기능은 시스템 툴의 현재 시간을 설정한 것을 기준으로 해당 시간을 기준으로 동작이 됩니다." />
+<message msgid="Connection time: from " msgstr="연결 시간:   ~   " />
+<message msgid="hours" msgstr="시간" />
+<message msgid="minutes" msgstr="분" />
+<message msgid="to" msgstr="to" />
+<message msgid="Second" msgstr="초" />
+<message msgid="mode" msgstr="모드" />
+<message msgid="Address mode" msgstr="주소 모드" />
+<message msgid="Help information" msgstr="도움말 정보" />
+<message msgid="Don not enter the information unless necessary." msgstr="필요하지 않은 경우 입력하지 마십시오." />
+<message msgid="Connect manually: Connect to the Internet manually by the user." msgstr="수동 연결: 사용자가 직접 인터넷 연결." />
+<message msgid="Connect on fixed time: Connect automatically to the Internet during the time you fix." msgstr="설정된 시간 연결: 설정된 시간동안 인터넷을 자동으로 연결합니다." />
+
+<!--lan.asp-->
+<message msgid="The segment of the router IP has been changed,please re-configure the related parameter!" msgstr="공유기 IP주소가 변경되어 재구성되었습니다." />
+<message msgid="The segment of the router IP has been changed,please re-configure the related parameter!If the webpage doesn't update automatically,please update your computer's network settings and then log on with the new IP." msgstr="공유기 IP주소가 변경되어 재구성되었습니다.만일, 웹페이지가 자동으로 업데이트 되지 않는다면, 사용하는 PC의 네트워크설정을 업데이트하여 IP를 다시 할당받아 로그인을 하십시오." />
+<message msgid="This page is used to set the basic network parameters for LAN" msgstr="이 페이지는 LAN의 기본 네트워크 설정을 할 수 있습니다." />
+<message msgid="Lan_helpinfo" msgstr="공유기의 LAN IP, 서브넷 마스크를 설정합니다. 기본 IP주소는 192.168.123.254이고, 기본 서브넷 마스크는 255.255.255.0 입니다." />
+<!--mac_clone.asp-->
+<message msgid="MAC Address Clone" msgstr="MAC 주소 복사" />
+<message msgid="MAC Address" msgstr="MAC 주소" />
+<message msgid="Restore Default MAC" msgstr="기본설정 MAC 주소 복원" />
+<message msgid="Clone MAC" msgstr="MAC 주소 복사" />
+<message msgid="Clone MAC Address" msgstr="MAC 주소 복사" />
+<message msgid="WAN MAC clone" msgstr="WAN MAC 주소 복사" />
+<message msgid="MAC Address clone:" msgstr="MAC 주소 복사:" />
+<message msgid="mac_clone_helpinfo1" msgstr="일부 인터넷 서비스 제공자의 경우 인터넷 연결을 위해서 사용자의 MAC주소를 요구할 수 있습니다. 
+이 기능은 랜카드의 MAC을 공유기에 복사하는 기능입니다." />
+<message msgid="mac_clone_helpinfo2" msgstr="ISP에 등록된 MAC주소입니다." />
+<message msgid="Restore Default MAC:" msgstr="기본 공유기 자체의 MAC주소로 복원됩니다." />
+<message msgid="mac_clone_helpinfo3" msgstr="기본 공유기 자체의 MAC주소로 복원됩니다." />
+<message msgid="Clone MAC:" msgstr="MAC주소 복사" />
+<message msgid="mac_clone_helpinfo4" msgstr="PC의 MAC주소를 WAN에 복사합니다." />
+
+<!--wan_dns.asp-->
+<message msgid="Primary DNS address" msgstr="기본 DNS 주소" />
+<message msgid="Alternate DNS address" msgstr="보조 DNS 주소" />
+<message msgid="DNS setting" msgstr="DNS 설정" />
+<message msgid="DNS address" msgstr="DNS 주소" />
+<message msgid="Optional" msgstr="선택사항" />
+<message msgid="Note: After the settings are completed, reboot the device to activate the modified settings." msgstr="Note: 설정이 완료된 후에 재부팅을 해야 수정된 설정이 적용됩니다." />
+<message msgid="Wan_dns_helpinfo1" msgstr="DNS설정을 선택하면, 도메인 서버 IP를 입력할 수 있습니다. 선택을 하지 않으면, 통신사로부터 자동으로 부여받습니다." />
+<message msgid="Wan_dns_helpinfo2" msgstr="만일 도메인 서버 IP주소가 잘못되면, 웹페이지가 열리지 않게 됩니다. 기본값을 사용하는 것을 권장합니다." />
+
+<!--net_tc.asp-->
+<message msgid="Add to list" msgstr="목록 추가" />
+<message msgid="Update to list" msgstr="목록 업데이트" />
+<message msgid="All services" msgstr="모든 서비스" />
+<message msgid="WAN port bandwidth can not be empty!" msgstr="WAN 포트 대역은 공란을 사용할수 없습니다!" />
+<message msgid="Bandwidth can not be zero ,please re-enter" msgstr="대역폭은 0을 사용할 수 없습니다. 다시 입력하십시오." />
+<message msgid="No." msgstr="No." />
+<message msgid="IP segment" msgstr="IP 주소" />
+<message msgid="Destination" msgstr="목적지" />
+<message msgid="Bandwidth range" msgstr="대역폭 범위" />
+<message msgid="Edit" msgstr="수정" />
+<message msgid="Delete" msgstr="삭제" />
+<message msgid="All ports" msgstr="모든 포트" />
+<message msgid="Download" msgstr="다운로드" />
+<message msgid="Upload" msgstr="업로드" />
+<message msgid="valid WAN bandwidth ranges 1~12800,please re-enter" msgstr="WAN대역폭의 범위는 1~12800입니다. 다시 입력하십시오." />
+<message msgid="Max." msgstr="최대" />
+<message msgid="bandwidth control records" msgstr=" 대역폭 제어 기록" />
+<message msgid="Please enter the IP address" msgstr="IP주소를 입력하십시오." />
+<message msgid="Start IP" msgstr="시작 IP" />  
+<message msgid="End IP" msgstr="마지막 IP" />  
+<message msgid="start IP bigger than end IP" msgstr="시작 IP가 마지막 IP보다 큽니다." />
+<message msgid="Please enter the bandwidth" msgstr="대역폭을 입력하십시오." />
+<message msgid="the port is beyond the range of 0~65535" msgstr="포트는 0~65535의 범위를 벗어났습니다." />
+<message msgid="bandwidth range should begin from small to big" msgstr="대역폭 범위는 작은 수에서 큰수로 해야합니다." />
+<message msgid="The configuration overlapped ,please re-enter" msgstr="설정이 중복됩니다. 다시 입력하십시오." />
+<message msgid="Enable Bandwidth Control" msgstr="대역폭 제어 사용" />
+<message msgid="Interface" msgstr="인터페이스" />
+<message msgid="Download bandwidth" msgstr="다운로드 대역폭" />
+<message msgid="Upload/Download" msgstr="업로드/다운로드" />
+<message msgid="Net_tc_helpinfo1" msgstr="이 기능은 LAN상의 PC들통신트래픽을 제한할 수 있습니다." />
+<message msgid="Net_tc_helpinfo2" msgstr="업로드/다운로드: WAN포트의 업로드와 다운로드 대여폭을 제한할수 있습니다." />
+<message msgid="Net_tc_helpinfo3" msgstr="대역폭 범위 : 설정된 IP 범위의 업로드와 다운로드의 최소와 최대 값을 적용할 수 있습니다. 단위 KB/s." />
+<message msgid="Net_tc_helpinfo4" msgstr="업로드와 다운로드의 업링크는 WAN의 업링크 범위를 벗어날수 없습니다." />
+
+<!--system_iptAccount.asp-->
+<message msgid="Enable  traffic statistics" msgstr="트래픽 통계 사용" />
+<message msgid="Uplink rate" msgstr="업링크율" />
+<message msgid="Downlink rate" msgstr="다운링크율" />
+<message msgid="Sent message" msgstr="보낸 메세지" />
+<message msgid="Sent Bytes" msgstr="보낸 바이트" />
+<message msgid="Received message" msgstr="받은 메세지" />
+<message msgid="Received Bytes" msgstr="받은 바이트" />
+<message msgid="traffic statistics function enables viewing each computer's traffic information" msgstr="트래픽 통계 기능은 컴퓨터들의 트래픽 정보를 보여줍니다." />
+<!--add-->
+<message msgid="Giving up" msgstr="중단 중입니다. XML/HTTP인터페이스를 생성할 수 없습니다." />
+<message msgid="There was a problem with the request." msgstr="요청된 내용에 문제가 있습니다." />
+<message msgid="Information: the security setting is automatically set to WPS,but you can manually modify it." msgstr="정보: 보안 설정은 WPS로 자동 설정됩니다. 직접 수정을 할 수 있습니다." />
+<!--add-->
+<!--erro2.asp-->
+<message msgid="Successfully Configure" msgstr="공유기 구성설정 완료" />
+
+<!--wan_speed.asp-->
+<message msgid="Choose the WAN speed" msgstr="WAN 속도 선택" />
+<message msgid="Wan_speed_helpinfo1" msgstr="WAN 속도 선택." />
+
+
+<!--menu.js-->
+<message msgid="Ok" msgstr="확인" />
+<message msgid="Cancel" msgstr="취소" />
+
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="유효하지 않습니다." />   
+  <message msgid="contains illegal characters" msgstr="유효하지 않은 문자가 포함되어 있습니다." />  
+  <message msgid="not numbers " msgstr="숫자가 아닙니다." />  
+  <message msgid="beyond the range" msgstr="범위를 벗어났습니다." /> 
+  <message msgid="contains invalid characters" msgstr="유효하지 않은 문자가 포함되어 있습니다." /> 
+  <message msgid="Are you sure to exit" msgstr="종료하시겠습니까?" />   
+  <message msgid="not defined" msgstr="정의 되지 않았습니다." />  
+  <message msgid="Password differs" msgstr="비밀번호가 다릅니" />  
+  <message msgid="Change password" msgstr="정말로 비밀번호를 변경하시겠습니까?" /> 
+  <message msgid="the length is not within the range" msgstr="길이가 범위내에 있지 않습니다." />    
+  <message msgid="permanent" msgstr="permanent" />    
+  <message msgid="Don't enter Chinese characters" msgstr="영문자이외의 문자를 입력하지 마십시오." />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="재부팅을 해야 설정이 적용됩니다." /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="재부팅을 해야 설정이 적용됩니다." /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="자, 영문자, 밑줄(_)만 사용할 수 있습니다." />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC주소가 이미 존재합니다. 다시 입력하십시오." />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC주소가 멀티캐스트 주소입니다. 다시 입력하십시오." />  
+
+</po>

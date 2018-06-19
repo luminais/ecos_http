@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<po>
+	<message msgid="Ok" msgstr="保存"/>
+	<message msgid="Cancel" msgstr="取消"/>
+	<message msgid="Enable" msgstr="启用"/>
+	<message msgid="Disable" msgstr="禁用"/>
+	<message msgid="Refresh" msgstr="刷新"/>
+	<message msgid="Edit" msgstr="编辑"/>
+	<message msgid="Delete" msgstr="删除"/>
+	<message msgid="Clear" msgstr="清空"/>
+	<message msgid="Status" msgstr="状态"/>
+	<message msgid="System Status" msgstr="系统状态"/>
+	<message msgid="Internet Connection Setup" msgstr="上网设置"/>
+	<message msgid="MAC Clone" msgstr="MAC克隆"/>
+	<message msgid="WAN Speed" msgstr="WAN口速率"/>
+	<message msgid="WAN Medium Type" msgstr="WAN口介质类型"/>
+	<message msgid="LAN Settings" msgstr="LAN口设置"/>
+	<message msgid="DNS Settings" msgstr="DNS设置"/>
+	<message msgid="DHCP Server" msgstr="DHCP设置"/>
+	<message msgid="Virtual Server" msgstr="虚拟服务器"/>
+	<message msgid="Routing Settings" msgstr="路由设置"/>
+	<message msgid="Bandwidth Control" msgstr="带宽控制"/>
+	<message msgid="Traffic Statistics" msgstr="流量统计"/>
+	<message msgid="Wireless Basic Settings" msgstr="无线基本设置"/>
+	<message msgid="Wireless Security" msgstr="无线加密"/>
+	<message msgid="Access Control" msgstr="访问控制"/>
+	<message msgid="Wireless Connection Status" msgstr="无线连接状态"/>
+	<message msgid="DHCP Client List" msgstr="DHCP客户端列表"/>
+	<message msgid="Port Range Forwarding" msgstr="端口转发"/>
+	<message msgid="DMZ Host" msgstr="DMZ主机"/>
+	<message msgid="UPNP Settings" msgstr="UPnP设置"/>
+	<message msgid="Client Filter Settings" msgstr="客户端过滤"/>
+	<message msgid="MAC Address Filter Settings" msgstr="MAC地址过滤"/>
+	<message msgid="URL Filter Settings" msgstr="网站过滤"/>
+	<message msgid="Remote Web Management" msgstr="远程Web管理"/>
+	<message msgid="Routing Table" msgstr="路由表"/>
+	<message msgid="Static Routing" msgstr="静态路由"/>
+	<message msgid="Time Settings" msgstr="网络时间"/>
+	<message msgid="Backup/Restore" msgstr="备份/恢复"/>
+	<message msgid="Restore To Factory Default" msgstr="恢复出厂设置"/>
+	<message msgid="Change Password" msgstr="登录密码"/>
+	<message msgid="Syslog" msgstr="系统日志"/>
+	<message msgid="Reboot" msgstr="重启"/>
+	<message msgid="Upgrade" msgstr="升级"/>
+	<message msgid="Connection Status" msgstr="连接状态"/>
+	<message msgid="Internet Connection Type" msgstr="连接方式"/>
+	<message msgid="Help" msgstr="帮助"/>
+	<message msgid="Connection Time" msgstr="连接时间"/>
+	<message msgid="System Version" msgstr="系统版本"/>
+	<message msgid="Static IP" msgstr="静态IP"/>
+	<message msgid="MAC Address" msgstr="MAC地址"/>
+	<message msgid="Clone MAC Address" msgstr="MAC地址克隆"/>
+	<message msgid="IP Address Pool" msgstr="IP地址池"/>
+	<message msgid="Lease Time" msgstr="租约时间"/>
+	<message msgid="Bandwidth Range" msgstr="带宽范围"/>
+	<message msgid="Upload/Download" msgstr="上传/下载"/>
+	<message msgid="Note" msgstr="注意"/>
+	<message msgid="DMZ Host IP Address" msgstr="DMZ主机IP地址"/>
+	<message msgid="Restore Default MAC" msgstr="恢复默认MAC地址"/>
+	<message msgid="SSID Broadcast" msgstr="广播SSID"/>
+	<message msgid="Channel" msgstr="信道"/>
+	<message msgid="Extension Channel" msgstr="信道扩展"/>
+	<message msgid="Security Key" msgstr="密码"/>
+	<message msgid="WEP Key" msgstr="WEP密码"/>
+	<message msgid="WPA/WPA2-Personal" msgstr="WPA/WPA2-PSK"/>
+	<message msgid="Start Port-End Port" msgstr="开始端口-结束端口"/>
+	<message msgid="Old Password" msgstr="旧密码"/>
+	<message msgid="New Password" msgstr="新密码"/>
+	<message msgid="Confirm New Password" msgstr="确认新密码"/>
+	<message msgid="Default Password" msgstr="默认密码"/>
+	<message msgid="Default IP Address" msgstr="默认IP地址"/>
+	<message msgid="Default Subnet Mask" msgstr="默认子网掩码"/>
+	<message msgid="Backup" msgstr="备份"/>
+	<message msgid="Restore" msgstr="恢复"/>
+	<message msgid="DDNS Service" msgstr="DDNS服务"/>
+	<message msgid="Bandwidth" msgstr="带宽"/>
+	<message msgid="Add to" msgstr="加入"/>
+	<message msgid="IP Address" msgstr="IP地址"/>
+	<message msgid="Port" msgstr="端口"/>
+	<message msgid="invalid!" msgstr="无效！"/>
+	<message msgid="Please enter a valid %s!" msgstr="请输入一个有效的%s!"/>
+	<message msgid="Pleale specify a valid %s! Invalid characters include %s!" msgstr="请输入一个有效的%s! 包含无效字符%s!"/>
+	<message msgid="Please specify a valid %s!" msgstr="请输入一个有效的%s!"/>
+	<message msgid="%s should be numbers!" msgstr="%s必须为数字！"/>
+	<message msgid="%s beyond the range!" msgstr="%s超出范围！"/>
+	<message msgid="Are you sure to exit?" msgstr="确定退出？"/>
+	<message msgid="not defined" msgstr="未定义！"/>
+	<message msgid="The passwords you entered do not match." msgstr="您两次输入的密码不一致。"/>
+	<message msgid="Change password?" msgstr="修改密码？"/>
+	<message msgid="%s the length is not within the range!" msgstr="%s长度超出范围！"/>
+	<message msgid="Permanent" msgstr="永久"/>
+	<message msgid="Day" msgstr="天"/>
+	<message msgid="Day(s)" msgstr="天"/>
+	<message msgid="Don't enter Chinese characters!" msgstr="不要输入中文字符！"/>
+	<message msgid="Reboot the router to bring the settings into effect ,reboot now?" msgstr="需重启路由器使设置生效。立即重启？"/>
+	<message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="无线模块重启，无线连接将会断开。若重启后无线连接未恢复，请手动重新连接。"/>
+	<message msgid="Please specify a valid policy name that include alphanumeric characters or underscore!" msgstr="请输入一个有效的规则名称，可包含数字、字母或者下划线。"/>
+	<message msgid="The MAC address belongs to reserved addresses, please re-enter!" msgstr="该MAC地址为预留MAC地址。请重新输入！"/>
+	<message msgid="The MAC address belongs to multicast addresses, please re-enter!" msgstr="该MAC地址为多播MAC地址。请重新输入！"/>
+	<message msgid="Please enter a valid %s. The VLSM and CIDR can not be supported." msgstr="请输入一个有效的%s。不支持VLSM和CIDR。"/>
+	<message msgid="Please specify a valid SSID between 1-32 ASCII characters!" msgstr="请输入一个有效的SSID。1~32个ASCII 码。"/>
+	<message msgid="Capital letter entered!" msgstr="您正在输入大写字母！"/>
+	<message msgid="Please enter the valid PPPoE username and PPPoE password provided by your ISP!" msgstr="请输入正确的宽带用户名称和密码！"/>
+	<message msgid="PPPoE Username" msgstr="宽带用户名称"/>
+	<message msgid="PPPoE Password" msgstr="宽带密码"/>
+	<message msgid="Security key must contain 8~63 characters!" msgstr="密码必须为8~63个字符。"/>
+	<message msgid="PPPoE" msgstr="ADSL拨号"/>
+	<message msgid="DHCP" msgstr="自动获取"/>
+	<message msgid="For other connection types, click" msgstr="其他连接方式，点击"/>
+	<message msgid="Wireless Security Setup" msgstr="无线加密"/>
+	<message msgid="Default" msgstr="默认"/>
+	<message msgid="8~63 ASCII characters" msgstr="8~63个ASCII码"/>
+	<message msgid="Advanced" msgstr="高级设置"/>
+	<message msgid="Enter username provided by ISP" msgstr="输入宽带用户名称"/>
+	<message msgid="Enter password provided by ISP" msgstr="输入宽带密码"/>
+	<message msgid="The security key will be changed to %s! Please reconnect to %s using the new security key!" msgstr="密码已经被修改为%s!请用%s重新连接！"/>
+	<message msgid="Tenda 11N Wireless Router Login Screen" msgstr="腾达 11N 无线路由器登录页面"/>
+	<message msgid="No Ethernet cable connected to WAN port!" msgstr="检测到WAN口没有网线！"/>
+	<message msgid="No Internet access, please check your online settings!" msgstr="无互联网访问。请检查你的上网设置！"/>
+	<message msgid="Password can not be empty!" msgstr="密码不能为空！"/>
+	<message msgid="Password can not exceed 12 characters in length!" msgstr="密码不能超过12个字符。"/>
+	<message msgid="Login" msgstr="登录"/>
+	<message msgid="Wrong password, please enter the password again!" msgstr="密码错误！请重新输入！"/>
+	<message msgid="Initial password" msgstr="初始密码"/>
+	<message msgid="Password" msgstr="密码"/>
+	<message msgid="wan ip error message" msgstr="请输入有效的WAN口信息（您网络供应商提供的WAN口IP，网关等）。WAN口IP不能与路由器的LAN口IP在同一网段。"/>
+	<message msgid="Warning: Up to 4 users can login to the router at a time!" msgstr="注意：最多允许4位用户同时登录路由器！"/>
+	<message msgid="Please specify a valid firmware file for upgrade!" msgstr="请选择正确的升级软件！"/>
+	<message msgid="CGI write config file failed!" msgstr="CGI写入配置文件失败！"/>
+	<message msgid="Default:" msgstr="默认："/>
+	<message msgid="Password:" msgstr="密码："/>
+	<message msgid="Password error!" msgstr="密码错误！"/>
+	<message msgid="Universal Repeater" msgstr="无线信号放大模式"/>
+</po>

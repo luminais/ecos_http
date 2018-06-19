@@ -1,0 +1,116 @@
+<po>
+<!--notice.asp-->
+<message msgid="Successfully Configure!" msgstr="Successfully Configure!" />
+
+<!--index.asp-->
+<message msgid="Account and password can not be empty" msgstr="Поля логина и пароля не могут быть пустыми" />
+<message msgid="Account" msgstr="Учетная запись" />
+<message msgid="Password" msgstr="пароль" />
+<message msgid="Wireless password can not be empty" msgstr="Поле для ввода пароля беспроводной сети не может быть пустым" />
+<message msgid="the password can only be 8 characters in length" msgstr="Длина пароля может быть только 8 символов" />
+<message msgid="Wireless password" msgstr="Пароль для беспроводной сети" />
+<message msgid="Advanced Settings" msgstr="Дополнительные настройки" />
+<message msgid="Access to the Internet" msgstr="Подключение к сети интернет" />
+<message msgid="Access Method" msgstr="Способ подключения к сети интернет" />
+<message msgid="ADSL Dial-up" msgstr="ADSL соединение" />
+<message msgid="DHCP" msgstr="DHCP" />
+<message msgid="Access Account" msgstr="Учетная запись" />
+<message msgid="Access Password" msgstr="Пароль доступа" />
+<message msgid="other access methods" msgstr="Для возможности использовать другие  способы подключения к сети интернет выберите дополнительные настройки" />
+<message msgid="Wireless encryption" msgstr="Шифрование беспроводной сети" />
+<message msgid="can only enter 8 characters" msgstr="Можно вводить только 8 символов" />
+<message msgid="Ok" msgstr="OK" />
+<message msgid="Cancel" msgstr="Отмена" />
+<message msgid="Default password" msgstr="Пароль по умолчанию" />
+
+<!--login-->
+<message msgid="Tenda 11N Wireless Router Login Screen" msgstr="Интерфейс TENDA 11N маршрутизатора" />
+<message msgid="No Ethernet cable connected to WAN port!" msgstr="Нет кабельного подключения к WAN-порту" />
+<message msgid="No Internet access, please check your online settings!" msgstr="Нет доступа к сети инернет, пожалуйста, проверьте настройки соединения!" />
+<message msgid="Password can not be empty!" msgstr="Поле для ввода пароля не может быть пустым!" />
+<message msgid="Password can not exceed 12 characters in length!" msgstr="Длина пароля не может превышать 12 символов!" />
+<message msgid="Login" msgstr="Регистрация" />
+<message msgid="Username" msgstr="Имя пользователя" />
+<message msgid="Initial password" msgstr="Первоначальный пароль" />
+<message msgid="Initial Username" msgstr="Первоначальный Имя пользователя" />
+<message msgid="No longer prompts " msgstr="Больне не напоминать" />
+
+<!--routing_table--> 
+  <message msgid="Destination IP" msgstr="Назначенный  IP-адрес" />  
+  <message msgid="Subnet mask" msgstr="Маска сети" /> 
+  <message msgid="Gateway" msgstr="Шлюз" />  
+  <message msgid="Hops" msgstr="Количество &quot;скачков&quot;" />    
+  <message msgid="Interface" msgstr="Интерфейс" />   
+  <message msgid="Refresh" msgstr="Обновить" />  
+  <message msgid="routing_table_Help_Inf1" msgstr="Количество &quot;скачков&quot;: метрика интерфейса." /> 
+  <message msgid="routing_table_Help_Inf2" msgstr="Интерфейс: три вида: vlan2:Интерфейс WAN, ppp0:Интерфейс PPPOE, br0:Интерфейс LAN." />
+   
+<!--routing_static-->  
+  <message msgid="Delete" msgstr="Отмена" />   
+  <message msgid="Max." msgstr="Максимально" />  
+  <message msgid="static routing" msgstr=" Статическая маршрутизация" />  
+  <message msgid="the specified static routing already exists" msgstr="Указанные статические маршруты уже существуют" /> 
+  <message msgid="Destination network IP address" msgstr="Назначенный локальный IP-адрес" />  
+  <message msgid="Operate" msgstr="Управление" />    
+  <message msgid="add" msgstr="Добавление" />     
+  <message msgid="routing_static_Help_Inf1" msgstr="Статическая маршрутизация: при наличии нескольких маршрутизаторов в сети необходимо установить статические маршруты. Статическая маршрутизация существует для определения сетей, что находятся за маршрутизаторами. Пожалуйста, внимательно прочитайте руководство по настройке маршрутизатора." />  
+  <message msgid="routing_static_Help_Inf2" msgstr="Во многих случаях лучше всего использовать динамическую маршрутизацию, т.к. это позволяет маршрутизатору автоматически обнаруживать изменения конфигурации сети. Если используется статическая маршрутизация, настройки DHCP маршрутизатора должны быть выключены. Чтобы настройки вступили в силу, необходимо перезагрузить устройство." />  
+  
+<!--nat_virtualportseg--> 
+  <message msgid="start port" msgstr="Начальный порт" />  
+  <message msgid="end port" msgstr="Конечный порт" /> 
+  <message msgid="private IP" msgstr="Частный IP адрес" />  
+  <!--add-->
+  <message msgid="Starting Port large than Ending Port" msgstr="Номер начального порта больше, чем номер конечного" />
+  <!--add-->
+  <message msgid="Both" msgstr="Все" />    
+  <message msgid="NAT_Portseg_MSG" msgstr="Раздел определяет перенаправление портов WAN на внешнем IP-адресе маршрутизатора на указанные IP-адреса в сети LAN." />   
+  <message msgid="NO." msgstr="Порядковый номер" />  
+  <message msgid="Start_port_End_port" msgstr="Начальный порт - конечный порт" />   
+  <message msgid="LAN IP" msgstr="IP-адреса во внутренней сети" />  
+  <message msgid="Protocol" msgstr="Протокол" />  
+  <message msgid="Enable" msgstr="включить" />    
+  <message msgid="Well-known service ports" msgstr="Общеупотребительные сервистные порты" />  
+  <message msgid="Add to" msgstr="Добавить к…" />   
+  <message msgid="NAT_Portseg_Help_Inf1" msgstr="Начальные порты - заключительные порты: сервисные порты WAN, что перенаправляются." />  
+  <message msgid="NAT_Portseg_Help_Inf2" msgstr="Включить: включить выбранное правило перенаправления." />
+  <message msgid="NAT_Portseg_Help_Inf3" msgstr="Отмена: отменить введенные изменения." />
+  <message msgid="NAT_Portseg_Help_Inf4" msgstr="Можно назначить часто используемый сервис на начальный порт с помощью поля общеупотребительных сервисов." />
+    
+<!--nat_dmz-->  
+  <message msgid="Can not use the router IP address" msgstr="Нельзя использовать IP-адрес маршрутизатора" />   
+  <message msgid="DMZ host IP address" msgstr="IP-адрес DMZ-хоста" />  
+  <message msgid="not in the same segment with LAN IP" msgstr="Не в едином сегменте LAN IP!" />   
+  <message msgid="illegal IP" msgstr="Запрещенный IP-адрес!" />  
+  <message msgid="DMZ_Note" msgstr="Внимание: после установки DMZ-хоста сетевой экран данного IP будет отключен ." />  
+  <message msgid="DMZ_Help_Inf" msgstr="В некоторых особых случаях для обеспечения двусторонней связи нужно, чтобы в компьютере включенном в локальную сеть, был отключен межсетевой экран. После этого компьютер может быть установлен как DMZ-хост. Введите IP-адрес данного DMZ-хоста: включается DMZ-хост и выключается сетевой экран DMZ." />   
+   
+<!--upnp_config-->		
+  <message msgid="Enable UPnP" msgstr="включить Upnp" />   
+  <message msgid="UPNP_Help_Inf" msgstr="Функция автоматически находит и устанавливает оборудование, которое подключено к сети. Текущая версия UPnP поддерживает только Windows ME, Windows XP, а также более поздние операционные системы." /> 
+  
+   <!--menu.js -->
+  <message msgid="Ok" msgstr="OK" />
+  <message msgid="Cancel" msgstr="Отмена" /> 
+
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="Недопустимо!" />   
+  <message msgid="contains illegal characters" msgstr="Содержит недопустимые символы" />  
+  <message msgid="not numbers " msgstr="Цифры недопустимы!" />  
+  <message msgid="beyond the range" msgstr="Вне диапазона!" /> 
+  <message msgid="contains invalid characters" msgstr="Содержит неверные символы" /> 
+  <message msgid="Are you sure to exit" msgstr="Вы уверены, что хотите выйти?" />   
+  <message msgid="not defined" msgstr="Не определено!" />  
+  <message msgid="Password differs" msgstr="Ошибочный пароль!" />  
+  <message msgid="Change password" msgstr="Сменить пароль?" /> 
+  <message msgid="the length is not within the range" msgstr="Длина вне диапазона!" />    
+  <message msgid="permanent" msgstr="Постоянно" />   
+  <message msgid="Day" msgstr="День" />  
+  <message msgid="Don't enter Chinese characters" msgstr="Не вводите китайские символы" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Для применения настроек необходимо перезапустить маршрутизатора. Сделать это сейчас?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Для применения настроек необходимо перезапустить беспроводный модуль. Сделать это сейчас?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Комментарии могут содержать только  цифры, буквы и символ нижнего подчеркивания!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC-адрес относится к служебными адресам, пожалуйста повторите ввод!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC-адрес относится к широковещательным адресам, пожалуйста повторите ввод!" />  
+  <message msgid="Help information" msgstr="Справка" />
+</po>

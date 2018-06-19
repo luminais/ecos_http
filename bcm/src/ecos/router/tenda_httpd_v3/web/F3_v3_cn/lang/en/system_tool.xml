@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<po>
+	<message msgid="Hostname" msgstr="主机名"/>
+	<message msgid="Please enter valid time information!" msgstr="请输入有效时间！"/>
+	<message msgid="Please enter valid year between 1971-2037!" msgstr="请输入一个1971~2037之间的年份！"/>
+	<message msgid="Please enter valid year/month/day info!" msgstr="请输入有效的年/月/日！"/>
+	<message msgid="Please enter a valid day!" msgstr="请输入有效的日！"/>
+	<message msgid="Please enter valid time info!" msgstr="请输入有效的时间！"/>
+	<message msgid="Time Zone" msgstr="时区"/>
+	<message msgid="(GMT-12:00) West of International Date Line" msgstr="国际日期变更线以西"/>
+	<message msgid="(GMT-11:00) Midway Island, Samoa" msgstr="中途岛，萨摩亚群岛"/>
+	<message msgid="(GMT-10:00) Hawaii, Honolulu" msgstr="夏威夷，火奴鲁鲁"/>
+	<message msgid="(GMT-09:00) Alaska" msgstr="阿拉斯加"/>
+	<message msgid="(GMT-08:00) Pacific Time" msgstr="太平洋时间 (美国和加拿大)，蒂华纳"/>
+	<message msgid="(GMT-07:00) Mountain Time" msgstr="山地时间 (美国和加拿大)"/>
+	<message msgid="(GMT-07:00) Chihuahua, La Paz, Mazatlan" msgstr="奇瓦瓦，拉巴斯，马萨特兰"/>
+	<message msgid="(GMT-07:00) Arizona" msgstr="亚利桑那"/>
+	<message msgid="(GMT-06:00) Central Time" msgstr="中部时间 (美国和加拿大)"/>
+	<message msgid="(GMT-06:00) Guadalajara, Mexico City, Monterrey" msgstr="瓜达拉哈拉，墨西哥城，蒙特雷"/>
+	<message msgid="(GMT-05:00) Eastern Time" msgstr="东部时间 (美国和加拿大)"/>
+	<message msgid="(GMT-05:00) India to Ann" msgstr="印第安那（东）"/>
+	<message msgid="(GMT-05:00) Bogota, Lima, Quito" msgstr="波哥大，利马，基多"/>
+	<message msgid="(GMT-04:00) Atlantic Time" msgstr="大西洋时间 (加拿大)"/>
+	<message msgid="(GMT-04:00) Manaus" msgstr="玛瑙斯"/>
+	<message msgid="(GMT-04:00) Caracas, La Paz" msgstr="加拉加斯，拉巴斯"/>
+	<message msgid="(GMT-03:30) Newfoundland and Labrador" msgstr="纽芬兰和拉布拉多"/>
+	<message msgid="(GMT-03:00) Brasilia Asia" msgstr="巴西利亚"/>
+	<message msgid="(GMT-03:00) Greenland" msgstr="格陵兰"/>
+	<message msgid="(GMT-03:00) Buenos Aires, Georgetown" msgstr="布宜诺斯艾利斯，乔治敦"/>
+	<message msgid="(GMT-02:00) Atlantic" msgstr="大西洋中部"/>
+	<message msgid="(GMT-01:00) Azores" msgstr="亚速尔群岛"/>
+	<message msgid="(GMT-01:00) Cape Verde Islands" msgstr="佛得角群岛"/>
+	<message msgid="(GMT) Greenwich Mean Time" msgstr="格林威治标准时间：都柏林，爱丁堡，里斯本，伦敦"/>
+	<message msgid="(GMT) Casablanca , Monrovia" msgstr="卡萨布兰卡，蒙罗维亚"/>
+	<message msgid="(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague" msgstr="贝尔格兰德，布拉迪斯拉发，布达佩斯卢布尔雅那，布拉格"/>
+	<message msgid="(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb" msgstr="萨拉热窝，斯科普里，华沙，萨格勒布"/>
+	<message msgid="(GMT+01:00) Brussels, Copenhagen, Madrid, Paris" msgstr="布鲁塞尔，哥本哈根，马德里，巴黎"/>
+	<message msgid="(GMT+01:00) West Africa" msgstr="西中非"/>
+	<message msgid="(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" msgstr="阿姆斯特丹，柏林，伯尔尼，罗马，斯德哥尔摩，维也纳"/>
+	<message msgid="(GMT+02:00) Athens, Bucharest, Istanbul" msgstr="雅典，布加勒斯特，伊斯坦布尔"/>
+	<message msgid="(GMT+02:00) Minsk" msgstr="明斯克"/>
+	<message msgid="(GMT+02:00) Cairo" msgstr="开罗"/>
+	<message msgid="(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" msgstr="赫尔辛基，基辅，里加，索非亚，塔林，维尔纽斯"/>
+	<message msgid="(GMT+02:00) Jerusalem" msgstr="耶路撒冷"/>
+	<message msgid="(GMT+02:00) temperature 'll have" msgstr="温得和克"/>
+	<message msgid="(GMT+02:00) grams. Harare, Pretoria" msgstr="哈拉雷，比勒陀利亚"/>
+	<message msgid="(GMT+03:00) Moscow, St. Petersburg, Volgograd" msgstr="莫斯科，圣彼得堡，伏尔加格勒"/>
+	<message msgid="(GMT+03:00) Kuwait, Riyadh" msgstr="科威特，利雅得"/>
+	<message msgid="(GMT+03:00) Baghdad" msgstr="巴格达"/>
+	<message msgid="(GMT+03:00) Nairobi" msgstr="内罗毕"/>
+	<message msgid="(GMT+03:30) Tehran" msgstr="德黑兰"/>
+	<message msgid="(GMT+04:00) Abu Dhabi, Muscat" msgstr="阿布扎比，马斯喀特"/>
+	<message msgid="(GMT+04:00) Baku" msgstr="巴库"/>
+	<message msgid="(GMT+04:00) Yerevan" msgstr="埃里温"/>
+	<message msgid="(GMT+04:00) Tbilisi" msgstr="第比利斯"/>
+	<message msgid="(GMT+04:30) Kabul" msgstr="喀布尔"/>
+	<message msgid="(GMT+05:00) Islamabad, Karachi, Tashkent" msgstr="伊斯兰堡，卡拉奇，塔什干"/>
+	<message msgid="(GMT+05:00) Yekaterinburg" msgstr="叶卡捷琳堡"/>
+	<message msgid="(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi" msgstr="钦奈，加尔各答，孟买，新德里"/>
+	<message msgid="(GMT+05:45) Kathmandu" msgstr="加德满都"/>
+	<message msgid="(GMT+06:00) Astana, Dhaka" msgstr="阿斯塔纳，达卡"/>
+	<message msgid="(GMT+06:00) Almaty, Novosibirsk" msgstr="阿拉木图，新西伯利亚"/>
+	<message msgid="(GMT+06:00) Colombo" msgstr="科伦坡"/>
+	<message msgid="(GMT+06:30) Yangon" msgstr="仰光（仰光）"/>
+	<message msgid="(GMT+07:00) Krasnoyarsk" msgstr="克拉斯诺亚尔斯克"/>
+	<message msgid="(GMT+07:00) Bangkok, Hanoi, Jakarta" msgstr="曼谷，河内，雅加达"/>
+	<message msgid="(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi" msgstr="北京，重庆，香港特别行政区，乌鲁木齐"/>
+	<message msgid="(GMT+08:00) Irkutsk grams, Ulaanbaatar" msgstr="伊尔库茨克，乌兰巴托"/>
+	<message msgid="(GMT+08:00) Kuala Lumpur, Singapore" msgstr="基隆陂，新加坡"/>
+	<message msgid="(GMT+08:00) Perth" msgstr="珀斯"/>
+	<message msgid="(GMT+09:00) Yakutsk" msgstr="雅库茨克"/>
+	<message msgid="(GMT+09:00) Osaka, Sapporo, Tokyo" msgstr="大阪，札幌，东京"/>
+	<message msgid="(GMT+09:00) Seoul" msgstr="首尔"/>
+	<message msgid="(GMT+09:30) Darwin" msgstr="达尔文"/>
+	<message msgid="(GMT+09:30) Adelaide" msgstr="阿德莱德"/>
+	<message msgid="(GMT+10:00) Brisbane" msgstr="布里斯班"/>
+	<message msgid="(GMT+10:00) Canberra, Melbourne Sydney" msgstr="堪培拉，墨尔本，悉尼"/>
+	<message msgid="(GMT+10:00) Guam, Port Moresby" msgstr="关岛，波尔兹比港"/>
+	<message msgid="(GMT+10:00) Vladivostok" msgstr="符拉迪沃斯托克"/>
+	<message msgid="(GMT+10:00) Hobart" msgstr="霍巴特"/>
+	<message msgid="(GMT+11:00) Magadan, Solomon Islands, New Caledonia and more" msgstr="马加丹，所罗门群岛，新喀里多"/>
+	<message msgid="(GMT+12:00) Fiji Islands, Kamchatka Peninsula, the Marshall Islands" msgstr="斐济群岛，堪察加半岛，马绍尔群岛"/>
+	<message msgid="(GMT+12:00) Auckland , Wellington" msgstr="奥克兰，惠灵顿"/>
+	<message msgid="(GMT+12:00) Nuku'alofa" msgstr="努库阿洛法"/>
+	<message msgid="hostname_Note" msgstr="注意：系统时间仅在联网之后，或者选择下面的&quot;自定义时间&quot;，并手动设置正确的时间后，才能正确显示。"/>
+	<message msgid="Customized Time" msgstr="自定义时间"/>
+	<message msgid="Year" msgstr="年"/>
+	<message msgid="Month" msgstr="月"/>
+	<message msgid="Hour" msgstr="时"/>
+	<message msgid="Minute" msgstr="分"/>
+	<message msgid="Second" msgstr="秒"/>
+	<message msgid="Please select the configuration file before clicking on Restore." msgstr="点击“恢复”前，请先选择配置文件。"/>
+	<message msgid="The config file selected must have a cfg suffix in the name!" msgstr="配置文件必须是以.cfg为后缀的文件。"/>
+	<message msgid="To activate loaded settings, you must reboot the router." msgstr="您需要重启路由器使设置生效。"/>
+	<message msgid="Please select a path on your computer to save the configuration file." msgstr="请选择一个路径保存你的配置文件。"/>
+	<message msgid="backup note" msgstr="此页可以备份您当前的路由器配置，或者恢复之前保存的配置文件。"/>
+	<message msgid="Click here to save a configuration file to your computer:" msgstr="点击保存配置文件至您的电脑："/>
+	<message msgid="restore_note" msgstr="路由器将自动重启！登录IP为192.168.0.1，登录密码为admin。&#xA;设备重启后，若页面没有自动刷新，重新连接您的电脑至路由器，并使用新的登录IP登录。"/>
+	<message msgid="Click this button to restore all settings to factory default." msgstr="点击恢复出厂设置。"/>
+	<message msgid="Upgrading" msgstr="升级中…"/>
+	<message msgid="Please select a firmware before you click on Upgrade!" msgstr="升级前请先选择升级文件！"/>
+	<message msgid="Please click on OK to confirm to upgrade your router!" msgstr="确定升级？"/>
+	<message msgid="By upgrading the router’software, you’ll get new features." msgstr="通过升级本路由器的软件，您将获得新的功能。"/>
+	<message msgid="Select the firmware file" msgstr="选择升级文件："/>
+	<message msgid="Current System Version" msgstr="当前系统版本："/>
+	<message msgid="Publishing Date" msgstr="发布日期"/>
+	<message msgid="upgrade_note" msgstr="注意：升级过程不能关闭路由器电源，否则将导致路由器损坏而无法使用。请用网线把您的电脑连接至路由器，避免因连接中断而导致路由器损坏。升级成功后，路由器将自动重启。升级过程约10秒钟，请等候。"/>
+	<message msgid="Click on OK to continue. The reboot process will take about 10 seconds." msgstr="确定重启？重启过程约为10秒。"/>
+	<message msgid="Click the button to reboot the router:" msgstr="点击重启路由器："/>
+	<message msgid="Reboot The Router" msgstr="重启路由器"/>
+	<message msgid="Rebooting" msgstr="重启中…"/>
+	<message msgid="Reboot the router to bring the settings into effect." msgstr="重启路由器使设置生效。"/>
+	<message msgid="Password must be alpha-numeric characters." msgstr="密码必须由字母或数字组成。"/>
+	<message msgid="Administrator Login Credentials" msgstr="管理员登录证书"/>
+	<message msgid="Password must be alpha-numeric." msgstr="密码必须由字母或数字组成。"/>
+	<message msgid="Logs in page" msgstr="登录页面"/>
+</po>

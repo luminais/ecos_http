@@ -1,0 +1,44 @@
+# Broadcom 802.11abg Networking Device Driver Configuration file
+#
+# Copyright (C) 2010, Broadcom Corporation. All Rights Reserved.
+# 
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+# SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+# OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+# CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+# $Id: wlconfig_rte_4322_bmac_ap,v 1.4 2010-01-27 07:09:09 Exp $
+#
+# For RTE development: support cores from 4325 and 4329 with 11n features
+# Use minimum (?) values for buffer, SCB, BSS counts.
+
+# basic common code
+WL=1
+BCMNVRAMR=0
+BCMNVRAMW=1
+BCMDMA32=1
+# BMAC split
+WL_LOW=1
+WL_HIGH=0
+
+# features
+AP=1
+STA=1
+WLRM=1
+BCMCCX=1
+WME=1
+WL11N=1
+
+BCMSIBUS=1
+SOCI_SB=1
+
+WLCNT=1
+WLDIAG=1
+WLLED=1

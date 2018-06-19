@@ -1,0 +1,104 @@
+.form-actions {
+  padding-top: 10px;
+  margin-top: 18px;
+  margin-bottom: 30px;
+}
+
+.quickSet {
+  margin-top: 80px;
+  padding: 20px 40px;
+  min-height: 480px;
+}
+
+.quickContent header {
+  margin: 40px 0 20px 0;
+}
+
+@media (max-width: 767px) {
+  .quickSet {
+    margin-top: 15px;
+    padding: 10px;
+    min-height: 460px;
+  }
+  .quickContent header {
+    margin: 10px 0;
+  }
+}
+
+#quickSetStaticWrap .form-group {
+  margin-bottom: 5px;
+}
+
+.quickSet h1 {
+  font-size: 22px;
+  color: #ed7020;
+}
+
+.quickSet h2 {
+  font-size: 18px;
+}
+
+.quickContent .content {
+  padding: 40px 0 20px;
+}
+
+.text-wrap {
+  padding: 20px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.count {
+  color: #666;
+  line-height: 96px;
+  background: #fff url(../img/loading-ico.gif) center center no-repeat;
+}
+
+.dialog-pancel {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  margin-left: -25%;
+  width: 50%;
+  background: #fff;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  z-index: 3000;
+  border: 1px solid #f2f2f2;
+  padding: 0;
+}
+
+@media (max-width: 767px) {
+  .dialog-pancel {
+    left: 0;
+    right: 0;
+    margin: 15px;
+    width: auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .dialog-pancel {
+    margin-left: -20%;
+    width: 40%;
+  }
+}
+
+.dialog-message {
+  margin-top: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.dialog-title {
+  height: 45px;
+  line-height: 45px;
+  background: #f2f2f2;
+}
+
+.dialog-close {
+  float: right;
+  cursor: pointer;
+  font-size: 22px;
+  margin-right: 10px;
+}

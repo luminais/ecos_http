@@ -1,0 +1,1024 @@
+
+boot.o:     file format elf32-tradlittlemips
+
+Disassembly of section .text:
+
+00000000 <startup>:
+	TRACEINIT(0x424f00)
+	# XXX: the following code snipet sets clk frequency to 200M
+	# correct pll clk freq to real speed in the 5350 case.
+	# unless its vsim which we detect as pkg option 1 (should be 0xe)
+	# It is Ugly...but
+	li	s2,KSEG1ADDR(SI_ENUM_BASE)	# s2 = SI_ENUM_BASE
+       0:	3c12b800 	lui	s2,0xb800
+	li	a3,BCM5350_CHIP_ID		# 5350 ChipID
+       4:	24075350 	li	a3,21328
+	lw	s1,CC_CHIPID(s2)		# s1 = ChipID register
+       8:	8e510000 	lw	s1,0(s2)
+	li	t2,CID_ID_MASK			# chip id is bit 0-15
+       c:	340affff 	li	t2,0xffff
+	and	t2,s1,t2
+      10:	022a5024 	and	t2,s1,t2
+	bne	t2,a3,2f			# if not 5350 then skip
+      14:	1547000f 	bne	t2,a3,54 <startup+0x54>
+	nop
+      18:	00000000 	nop
+	
+	TRACE(0x424f01)
+	li	t2,CID_PKG_MASK			# if it is a vsim 5350, also skip
+      1c:	3c0a00f0 	lui	t2,0xf0
+	and	t2,s1,t2
+      20:	022a5024 	and	t2,s1,t2
+	li	a3,(HDLSIM5350_PKG_ID << CID_PKG_SHIFT)
+      24:	3c070010 	lui	a3,0x10
+	beq	t2,a3,initcpu			# if pkg opt 1 then skip
+      28:	11470040 	beq	t2,a3,12c <initcpu>
+	nop
+      2c:	00000000 	nop
+
+	TRACE(0x424f02)
+	li	a3,CLKC_5350_N
+      30:	24070311 	li	a3,785
+	lw	t3,CC_CLKC_N(s2)
+      34:	8e4b0090 	lw	t3,144(s2)
+	beq	a3,t3,initcpu			# move ahead if clk freq set correctly
+      38:	10eb003c 	beq	a3,t3,12c <initcpu>
+	nop
+      3c:	00000000 	nop
+	sw	a3,CC_CLKC_N(s2)		# set control N1 to select 6
+      40:	ae470090 	sw	a3,144(s2)
+	li	t3,1
+      44:	240b0001 	li	t3,1
+	sw	t3,CC_WATCHDOG(s2)		# set WatchDog Reset
+      48:	ae4b0080 	sw	t3,128(s2)
+1:	b	1b
+      4c:	1000ffff 	b	4c <startup+0x4c>
+	nop
+      50:	00000000 	nop
+
+2:	li	a3,BCM5354_CHIP_ID		# 5354 ChipID
+      54:	24075354 	li	a3,21332
+	bne	t2,a3,initcpu			# if not 5354 then skip
+      58:	15470034 	bne	t2,a3,12c <initcpu>
+	nop
+      5c:	00000000 	nop
+
+	TRACE(0x424f03)
+	li	t2,CID_REV_MASK			# Get chip rev
+      60:	3c0a000f 	lui	t2,0xf
+	and	t2,s1,t2
+      64:	022a5024 	and	t2,s1,t2
+	li	t3,(3 << CID_REV_SHIFT)		# Is it an a3?
+      68:	3c0b0003 	lui	t3,0x3
+	blt	t2,t3,a0a1a2
+      6c:	014b082a 	slt	at,t2,t3
+      70:	14200005 	bnez	at,88 <a0a1a2>
+	nop 
+      74:	00000000 	nop
+
+	/* Fix up for a3 (and up?) */
+	li	a0,0x01330000			# Value for regcontrol 2
+      78:	3c040133 	lui	a0,0x133
+	li	t2,2
+      7c:	240a0002 	li	t2,2
+	sw	t2,PMU_REG_CONTROL_ADDR(s2)
+      80:	ae4a0658 	sw	t2,1624(s2)
+	sw	a0,PMU_REG_CONTROL_DATA(s2)
+      84:	ae44065c 	sw	a0,1628(s2)
+
+00000088 <a0a1a2>:
+	
+a0a1a2:
+	li	a0,0x00002000			# Value for regcontrol 0
+      88:	24042000 	li	a0,8192
+	li	a1,0x06800000			# Value for regcontrol 1
+      8c:	3c050680 	lui	a1,0x680
+	li	a3,0x02000000			# Value for regcontrol 3
+      90:	3c070200 	lui	a3,0x200
+
+00000094 <fixregctl>:
+	
+fixregctl:
+	li	t2,0x1				# Need define
+      94:	240a0001 	li	t2,1
+	sw	t2,PMU_REG_CONTROL_ADDR(s2)
+      98:	ae4a0658 	sw	t2,1624(s2)
+	sw	a1,PMU_REG_CONTROL_DATA(s2)
+      9c:	ae45065c 	sw	a1,1628(s2)
+	
+	/* 
+	 * Trim the output voltage of the 1.2V BB switcher and 2.5V
+	 * regulator to the correct value.
+	 */
+	li	t2,0x0
+      a0:	240a0000 	li	t2,0
+	sw	t2,PMU_REG_CONTROL_ADDR(s2)
+      a4:	ae4a0658 	sw	t2,1624(s2)
+	sw	a0,PMU_REG_CONTROL_DATA(s2)	# BB switcher to get 1.2V
+      a8:	ae44065c 	sw	a0,1628(s2)
+	li	t2,0x3
+      ac:	240a0003 	li	t2,3
+	sw	t2,PMU_REG_CONTROL_ADDR(s2)
+      b0:	ae4a0658 	sw	t2,1624(s2)
+	sw	a3,PMU_REG_CONTROL_DATA(s2)	# of VDDP LDO to get 2.5V
+      b4:	ae47065c 	sw	a3,1628(s2)
+
+	lw	t2,PMU_CTL(s2)			# Check if PLL has been programmed
+      b8:	8e4a0600 	lw	t2,1536(s2)
+	andi	t2,t2,PCTL_XTALFREQ_MASK
+      bc:	314a007c 	andi	t2,t2,0x7c
+	bnez	t2,3f				# Yup, leave it alone
+      c0:	1540000f 	bnez	t2,100 <fixregctl+0x6c>
+	nop
+      c4:	00000000 	nop
+
+	li	t2,0x7ffff			# Should only turn off the PLL bit
+      c8:	3c0a0007 	lui	t2,0x7
+      cc:	354affff 	ori	t2,t2,0xffff
+	sw	t2,PMU_MIN_RES_MASK(s2)		# Disable base band PLL
+      d0:	ae4a0618 	sw	t2,1560(s2)
+	sw	t2,PMU_MAX_RES_MASK(s2)
+      d4:	ae4a061c 	sw	t2,1564(s2)
+
+	li	t2,0x1
+      d8:	240a0001 	li	t2,1
+	sw	t2,PMU_PLL_CONTROL_ADDR(s2)
+      dc:	ae4a0660 	sw	t2,1632(s2)
+	li	t2,0x66666602			# Set the PLL Mode properly
+      e0:	3c0a6666 	lui	t2,0x6666
+      e4:	354a6602 	ori	t2,t2,0x6602
+	sw	t2,PMU_PLL_CONTROL_DATA(s2)
+      e8:	ae4a0664 	sw	t2,1636(s2)
+	li	t2,0xfffff			# Enable base band PLL 
+      ec:	3c0a000f 	lui	t2,0xf
+      f0:	354affff 	ori	t2,t2,0xffff
+	sw	t2,PMU_MIN_RES_MASK(s2)
+      f4:	ae4a0618 	sw	t2,1560(s2)
+	sw	t2,PMU_MAX_RES_MASK(s2)
+      f8:	ae4a061c 	sw	t2,1564(s2)
+	nop
+      fc:	00000000 	nop
+
+	/* Init code for ff4 space without TLB, enabling RAC */
+3:	TRACE(0x424f04)
+	li 	t0,0x1fa0000c			# Set up CBR to 0x1fax_xxxx
+     100:	3c081fa0 	lui	t0,0x1fa0
+     104:	3508000c 	ori	t0,t0,0xc
+	.set	mips32
+	mtc0 	t0,$22,6
+     108:	4088b006 	mtc0	t0,$22,6
+	li 	t1,0x1fa00000
+     10c:	3c091fa0 	lui	t1,0x1fa0
+	lw 	t2,0x14(t1)
+     110:	8d2a0014 	lw	t2,20(t1)
+	or 	t3,t2,0xc0000000		# enable ffxx_xxxx space # without programming TLB
+     114:	3c01c000 	lui	at,0xc000
+     118:	01415825 	or	t3,t2,at
+	sw 	t3,0x14(t1) 
+     11c:	ad2b0014 	sw	t3,20(t1)
+	li 	t0,0xff40000c			# change CBR to ff4x_xxxx
+     120:	3c08ff40 	lui	t0,0xff40
+     124:	3508000c 	ori	t0,t0,0xc
+	mtc0 	t0,$22,6
+     128:	4088b006 	mtc0	t0,$22,6
+
+0000012c <initcpu>:
+
+
+	/* Initialize processor state    */
+initcpu:	
+	TRACE(0x424f05)
+	mfc0	t0,C0_STATUS
+     12c:	40086000 	mfc0	t0,c0_status
+	li	t1,~(ST0_CU | ST0_RP | ST0_RE | ST0_TS | ST0_SR | ST0_NMI | ST0_UM | ST0_IE)
+     130:	3c0905c7 	lui	t1,0x5c7
+     134:	3529ffee 	ori	t1,t1,0xffee
+	and	t0,t1
+     138:	01094024 	and	t0,t0,t1
+	li	t1,ST0_IM
+     13c:	3409ff00 	li	t1,0xff00
+	or	t0,t1
+     140:	01094025 	or	t0,t0,t1
+	mtc0	t0,C0_STATUS
+     144:	40886000 	mtc0	t0,c0_status
+
+	mtc0	zero,C0_CAUSE
+     148:	40806800 	mtc0	zero,c0_cause
+
+	mtc0	zero,C0_COUNT
+     14c:	40804800 	mtc0	zero,c0_count
+
+	li	t0,-1
+     150:	2408ffff 	li	t0,-1
+	mtc0	t0,C0_COMPARE
+     154:	40885800 	mtc0	t0,c0_compare
+
+00000158 <initram>:
+
+initram:
+	/* Check if we booted from SDRAM */
+	bal	1f
+     158:	04110001 	bal	160 <initram+0x8>
+	nop
+     15c:	00000000 	nop
+
+1:	li	t0,PHYSADDR_MASK
+     160:	3c081fff 	lui	t0,0x1fff
+     164:	3508ffff 	ori	t0,t0,0xffff
+	and	t0,t0,ra
+     168:	011f4024 	and	t0,t0,ra
+	li	t1,SI_FLASH1
+     16c:	3c091fc0 	lui	t1,0x1fc0
+	blt	t0,t1,chkcacheon
+     170:	0109082a 	slt	at,t0,t1
+     174:	14200023 	bnez	at,204 <chkcacheon>
+	move	s5,zero				# In ram, relocate factor is 0
+     178:	0000a821 	move	s5,zero
+
+	/* If we are in flash, compute reloc for text addresses */
+	TRACE(0x424f06)
+	li	t0,KSEG0ADDR(SI_FLASH1)
+     17c:	3c089fc0 	lui	t0,0x9fc0
+	la	t1,text_start
+     180:	3c090000 	lui	t1,0x0
+     184:	25290000 	addiu	t1,t1,0
+	sub	s5,t0,t1			# s5: Relocate factor
+     188:	0109a822 	sub	s5,t0,t1
+
+0000018c <chkchiptype>:
+	
+	/* Figure out if we have an SB or AI chip */
+chkchiptype:
+	TRACE(0x424f08)
+	li	t0,CID_TYPE_MASK
+     18c:	3c08f000 	lui	t0,0xf000
+	and	t0,t0,s1
+     190:	01114024 	and	t0,t0,s1
+	srl	s7,t0,CID_TYPE_SHIFT		# s7 = ChipType (0 for SB, = 1 for AI)
+     194:	0008bf02 	srl	s7,t0,0x1c
+
+	bnez	s7,chkcacheon			# If ai chip no need to check chipc rev
+     198:	16e0001a 	bnez	s7,204 <chkcacheon>
+	nop
+     19c:	00000000 	nop
+
+	/* Is this chipc rev 11 or 12 and a serial flash? */
+	TRACE(0x424f0a)
+	li	t0,KSEG1ADDR(SI_ENUM_BASE)
+     1a0:	3c08b800 	lui	t0,0xb800
+	lw	t1,(SBCONFIGOFF + SBIDHIGH)(t0)
+     1a4:	8d090ffc 	lw	t1,4092(t0)
+	and	t2,t1,SBIDH_CC_MASK
+     1a8:	312a8ff0 	andi	t2,t1,0x8ff0
+	srl	t2,t2,SBIDH_CC_SHIFT
+     1ac:	000a5102 	srl	t2,t2,0x4
+	bne	t2,CC_CORE_ID,chkcacheon	# Not chipc
+     1b0:	24010800 	li	at,2048
+     1b4:	15410013 	bne	t2,at,204 <chkcacheon>
+	nop
+     1b8:	00000000 	nop
+	and	t2,t1,SBIDH_RC_MASK
+     1bc:	312a000f 	andi	t2,t1,0xf
+	and	t3,t1,SBIDH_RCE_MASK
+     1c0:	312b7000 	andi	t3,t1,0x7000
+	srl	t3,t3,SBIDH_RCE_SHIFT
+     1c4:	000b5a02 	srl	t3,t3,0x8
+	or	t2,t3
+     1c8:	014b5025 	or	t2,t2,t3
+	ble	t2,10,chkcacheon		# ccrev <= 10
+     1cc:	2941000b 	slti	at,t2,11
+     1d0:	1420000c 	bnez	at,204 <chkcacheon>
+	nop
+     1d4:	00000000 	nop
+	bge	t2,13,chkcacheon		# ccrev >= 13
+     1d8:	2941000d 	slti	at,t2,13
+     1dc:	10200009 	beqz	at,204 <chkcacheon>
+	nop
+     1e0:	00000000 	nop
+	lw	t0,CC_CAPABILITIES(t0)
+     1e4:	8d080004 	lw	t0,4(t0)
+	and	t0,t0,CC_CAP_FLASH_MASK
+     1e8:	31080700 	andi	t0,t0,0x700
+	beq	t0,SFLASH_AT,switchkseg0	# Atmel sflash
+     1ec:	24010200 	li	at,512
+     1f0:	110104d5 	beq	t0,at,1548 <switchkseg0>
+	nop
+     1f4:	00000000 	nop
+	beq	t0,SFLASH_ST,switchkseg0	# ST sflash
+     1f8:	24010100 	li	at,256
+     1fc:	110104d2 	beq	t0,at,1548 <switchkseg0>
+	nop
+     200:	00000000 	nop
+
+00000204 <chkcacheon>:
+
+chkcacheon:
+	TRACE(0x424f0b)
+	/* Check if the caches are already on */
+	mfc0	t0,C0_CONFIG
+     204:	40088000 	mfc0	t0,c0_config
+	and	t0,CONF_CM_CMASK
+     208:	31080007 	andi	t0,t0,0x7
+	beq	t0,CONF_CM_UNCACHED,initcaches
+     20c:	24010002 	li	at,2
+     210:	1101047b 	beq	t0,at,1400 <initcaches>
+	nop
+     214:	00000000 	nop
+
+	b	switchkseg0
+     218:	100004cb 	b	1548 <switchkseg0>
+	nop
+     21c:	00000000 	nop
+	...
+
+00000380 <bevtrap>:
+	...
+bevtrap:
+	TRACE2(0x424f0380)
+	nop
+	nop
+	.set	mips32
+	wait
+     388:	42000020 	wait
+	...
+	.set	mips0
+	nop
+	nop
+	b	bevtrap
+     394:	1000fffa 	b	380 <bevtrap>
+	nop
+     398:	00000000 	nop
+	...
+     3e0:	4249535a 	c0	0x49535a
+	...
+
+00000400 <embedded_nvram>:
+     400:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     410:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     420:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     430:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     440:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     450:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     460:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     470:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     480:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     490:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     4a0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     4b0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     4c0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     4d0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     4e0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     4f0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     500:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     510:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     520:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     530:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     540:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     550:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     560:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     570:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     580:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     590:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     5a0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     5b0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     5c0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     5d0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     5e0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     5f0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     600:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     610:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     620:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     630:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     640:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     650:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     660:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     670:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     680:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     690:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     6a0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     6b0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     6c0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     6d0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     6e0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     6f0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     700:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     710:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     720:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     730:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     740:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     750:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     760:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     770:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     780:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     790:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     7a0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     7b0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     7c0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     7d0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     7e0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     7f0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     800:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     810:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     820:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     830:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     840:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     850:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     860:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     870:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     880:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     890:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     8a0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     8b0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     8c0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     8d0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     8e0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     8f0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     900:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     910:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     920:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     930:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     940:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     950:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     960:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     970:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     980:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     990:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     9a0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     9b0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     9c0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     9d0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     9e0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     9f0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     a00:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     a10:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     a20:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     a30:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     a40:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     a50:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     a60:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     a70:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     a80:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     a90:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     aa0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ab0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ac0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ad0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ae0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     af0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     b00:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     b10:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     b20:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     b30:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     b40:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     b50:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     b60:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     b70:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     b80:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     b90:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ba0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     bb0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     bc0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     bd0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     be0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     bf0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     c00:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     c10:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     c20:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     c30:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     c40:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     c50:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     c60:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     c70:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     c80:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     c90:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ca0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     cb0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     cc0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     cd0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ce0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     cf0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     d00:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     d10:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     d20:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     d30:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     d40:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     d50:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     d60:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     d70:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     d80:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     d90:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     da0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     db0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     dc0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     dd0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     de0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     df0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     e00:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     e10:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     e20:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     e30:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     e40:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     e50:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     e60:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     e70:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     e80:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     e90:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ea0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     eb0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ec0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ed0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ee0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ef0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     f00:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     f10:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     f20:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     f30:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     f40:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     f50:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     f60:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     f70:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     f80:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     f90:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     fa0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     fb0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     fc0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     fd0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     fe0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+     ff0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1000:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1010:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1020:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1030:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1040:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1050:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1060:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1070:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1080:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1090:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    10a0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    10b0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    10c0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    10d0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    10e0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    10f0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1100:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1110:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1120:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1130:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1140:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1150:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1160:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1170:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1180:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1190:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    11a0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    11b0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    11c0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    11d0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    11e0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    11f0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1200:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1210:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1220:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1230:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1240:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1250:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1260:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1270:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1280:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1290:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    12a0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    12b0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    12c0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    12d0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    12e0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    12f0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1300:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1310:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1320:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1330:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1340:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1350:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1360:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1370:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1380:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    1390:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    13a0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    13b0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    13c0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    13d0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    13e0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+    13f0:	b7acb3b9 b7acb3b9 b7acb3b9 b7acb3b9     ................
+
+00001400 <initcaches>:
+	.fill	0x400,4,~(0x48534c46)
+	
+
+initcaches:
+	TRACE(0x424f0c)
+	li	t0,(HDLSIM_PKG_ID << CID_PKG_SHIFT)	# vsim package option
+    1400:	3c0800e0 	lui	t0,0xe0
+	li	t2,CID_PKG_MASK			# isolate chip package
+    1404:	3c0a00f0 	lui	t2,0xf0
+	and	t2,s1,t2
+    1408:	022a5024 	and	t2,s1,t2
+	beq	t0,t2,chcach			# Skip cache init if vsim
+    140c:	110a0048 	beq	t0,t2,1530 <chcach>
+
+	/* Figure if it is a mips32r2 CPU which we take as an indication that
+	 * there is no BRCM CP0 register and the D$ tags are in select 2
+	 */
+	mfc0	s6,C0_CONFIG
+    1410:	40168000 	mfc0	s6,c0_config
+	andi	s6,CONF_AR			# s6 != 0 if mips32r2
+    1414:	32d61c00 	andi	s6,s6,0x1c00
+	beqz	s6,1f
+    1418:	12c00003 	beqz	s6,1428 <initcaches+0x28>
+	nop
+    141c:	00000000 	nop
+	b	2f
+    1420:	10000006 	b	143c <initcaches+0x3c>
+	nop
+    1424:	00000000 	nop
+
+	/* Turn on the caches in the CP0 register */
+1:	TRACE(0x424f0d)
+	mfc0	t0,C0_DIAGNOSTIC
+    1428:	4008b000 	mfc0	t0,$22
+	or	t0,(BRCM_IC_ENABLE | BRCM_DC_ENABLE) # Enable both I$ and D$
+    142c:	3c01c000 	lui	at,0xc000
+    1430:	01014025 	or	t0,t0,at
+	mtc0	t0,C0_DIAGNOSTIC
+    1434:	4088b000 	mtc0	t0,$22
+	nop
+    1438:	00000000 	nop
+
+2:	/* Get cache sizes */
+	TRACE(0x424f0e)
+	.set	mips32
+	mfc0	a0,C0_CONFIG,1			# a0 has CP0 CONFIG1
+    143c:	40048001 	mfc0	a0,c0_config1
+	.set	mips0
+
+	li	a1,CONF1_DL_MASK
+    1440:	24051c00 	li	a1,7168
+	and	a1,a0
+    1444:	00a42824 	and	a1,a1,a0
+	beq	a1,zero,initic
+    1448:	10a0001e 	beqz	a1,14c4 <initic>
+	nop
+    144c:	00000000 	nop
+
+	srl	a1,CONF1_DL_SHIFT
+    1450:	00052a82 	srl	a1,a1,0xa
+	li	t0,CONF1_DL_BASE
+    1454:	24080002 	li	t0,2
+	sll	a1,t0,a1			# a1 has D$ cache line size
+    1458:	00a82804 	sllv	a1,t0,a1
+
+	li	a2,CONF1_DA_MASK
+    145c:	24060380 	li	a2,896
+	and	a2,a0
+    1460:	00c43024 	and	a2,a2,a0
+	srl	a2,CONF1_DA_SHIFT
+    1464:	000631c2 	srl	a2,a2,0x7
+	addiu	a2,CONF1_DA_BASE		# a2 now has D$ associativity
+    1468:	24c60001 	addiu	a2,a2,1
+
+	li	t0,CONF1_DS_MASK
+    146c:	3408e000 	li	t0,0xe000
+	and	t0,a0
+    1470:	01044024 	and	t0,t0,a0
+	srl	t0,CONF1_DS_SHIFT
+    1474:	00084342 	srl	t0,t0,0xd
+	li	a3,CONF1_DS_BASE
+    1478:	24070040 	li	a3,64
+	sll	a3,a3,t0			# a3 has D$ sets per way
+    147c:	01073804 	sllv	a3,a3,t0
+
+	multu	a2,a3				# sets/way * associativity
+    1480:	00c70019 	multu	a2,a3
+	mflo	t0				# total cache lines
+    1484:	00004012 	mflo	t0
+
+	multu	a1,t0				# D$ linesize * lines
+    1488:	00a80019 	multu	a1,t0
+	mflo	a2				# a2 is now D$ size in bytes
+    148c:	00003012 	mflo	a2
+
+	/* Initilize the D$: */
+	beqz	s6,1f
+    1490:	12c00005 	beqz	s6,14a8 <initcaches+0xa8>
+	nop
+    1494:	00000000 	nop
+	.set	mips32
+	mtc0	zero,C0_TAGLO,2			# For mips32r2 the D$ Tags are in select 2
+    1498:	4080e002 	mtc0	zero,$28,2
+	mtc0	zero,C0_TAGHI,2
+    149c:	4080e802 	mtc0	zero,$29,2
+	.set	mips0
+	b	2f
+    14a0:	10000003 	b	14b0 <initcaches+0xb0>
+	nop
+    14a4:	00000000 	nop
+
+1:	mtc0	zero,C0_TAGLO
+    14a8:	4080e000 	mtc0	zero,c0_taglo
+	mtc0	zero,C0_TAGHI
+    14ac:	4080e800 	mtc0	zero,c0_taghi
+
+2:	li	t0,KSEG0			# Just an address for the first $ line
+    14b0:	3c088000 	lui	t0,0x8000
+	addu	t1,t0,a2			#  + size of cache == end
+    14b4:	01064821 	addu	t1,t0,a2
+
+	.set	mips32
+3:	cache	Index_Store_Tag_D,0(t0)
+    14b8:	bd090000 	cache	0x9,0(t0)
+	.set	mips0
+	bne	t0,t1,3b
+    14bc:	1509fffe 	bne	t0,t1,14b8 <initcaches+0xb8>
+	addu	t0,a1
+    14c0:	01054021 	addu	t0,t0,a1
+
+000014c4 <initic>:
+
+initic:
+	/* Now we get to do it all again for the I$ */
+
+	TRACE(0x424f0f)
+	li	a1,CONF1_IL_MASK
+    14c4:	3c050038 	lui	a1,0x38
+	and	a1,a0
+    14c8:	00a42824 	and	a1,a1,a0
+	beq	a1,zero,chcach
+    14cc:	10a00018 	beqz	a1,1530 <chcach>
+	nop
+    14d0:	00000000 	nop
+
+	srl	a1,CONF1_IL_SHIFT
+    14d4:	00052cc2 	srl	a1,a1,0x13
+	li	t0,CONF1_IL_BASE
+    14d8:	24080002 	li	t0,2
+	sll	a1,t0,a1			# a1 has I$ cache line size
+    14dc:	00a82804 	sllv	a1,t0,a1
+
+	li	a2,CONF1_IA_MASK
+    14e0:	3c060007 	lui	a2,0x7
+	and	a2,a0
+    14e4:	00c43024 	and	a2,a2,a0
+	srl	a2,CONF1_IA_SHIFT
+    14e8:	00063402 	srl	a2,a2,0x10
+	addiu	a2,CONF1_IA_BASE		# a2 now has I$ associativity
+    14ec:	24c60001 	addiu	a2,a2,1
+
+	li	t0,CONF1_IS_MASK
+    14f0:	3c0801c0 	lui	t0,0x1c0
+	and	t0,a0
+    14f4:	01044024 	and	t0,t0,a0
+	srl	t0,CONF1_IS_SHIFT
+    14f8:	00084582 	srl	t0,t0,0x16
+	li	a3,CONF1_IS_BASE
+    14fc:	24070040 	li	a3,64
+	sll	a3,a3,t0			# a3 has I$ sets per way
+    1500:	01073804 	sllv	a3,a3,t0
+
+	multu	a2,a3				# sets/way * associativity
+    1504:	00c70019 	multu	a2,a3
+	mflo	t0				# total cache lines
+    1508:	00004012 	mflo	t0
+
+	multu	a1,t0				# I$ linesize * lines
+    150c:	00a80019 	multu	a1,t0
+	mflo	a2				# a2 is cache size in bytes
+    1510:	00003012 	mflo	a2
+
+	/* Initilize the I$: */
+	mtc0	zero,C0_TAGLO
+    1514:	4080e000 	mtc0	zero,c0_taglo
+	mtc0	zero,C0_TAGHI
+    1518:	4080e800 	mtc0	zero,c0_taghi
+
+	li	t0,KSEG0			# Just an address for the first $ line
+    151c:	3c088000 	lui	t0,0x8000
+	addu	t1,t0,a2			#  + size of cache == end
+    1520:	01064821 	addu	t1,t0,a2
+
+	.set	mips32
+1:	cache	Index_Store_Tag_I,0(t0)
+    1524:	bd080000 	cache	0x8,0(t0)
+	.set	mips0
+	bne	t0,t1,1b
+    1528:	1509fffe 	bne	t0,t1,1524 <initic+0x60>
+	addu	t0,a1
+    152c:	01054021 	addu	t0,t0,a1
+
+00001530 <chcach>:
+
+chcach:	
+	TRACE(0x424f10)
+	/* Caches initialized, change cacheability */
+	mfc0	t0,C0_CONFIG
+    1530:	40088000 	mfc0	t0,c0_config
+	and	t0,~CONF_CM_CMASK
+    1534:	2401fff8 	li	at,-8
+    1538:	01014024 	and	t0,t0,at
+	or	t0,CONF_CM_CACHABLE_NONCOHERENT
+    153c:	35080003 	ori	t0,t0,0x3
+	mtc0	t0,C0_CONFIG
+    1540:	40888000 	mtc0	t0,c0_config
+	nop
+    1544:	00000000 	nop
+
+00001548 <switchkseg0>:
+
+switchkseg0:
+	la	t2,board_draminit
+    1548:	3c0a0000 	lui	t2,0x0
+    154c:	254a0000 	addiu	t2,t2,0
+	add	t2,t2,s5
+    1550:	01555020 	add	t2,t2,s5
+	la	ra,backfbd
+    1554:	3c1f0000 	lui	ra,0x0
+    1558:	27ff1568 	addiu	ra,ra,5480
+	add	ra,ra,s5
+    155c:	03f5f820 	add	ra,ra,s5
+	jr	t2
+    1560:	01400008 	jr	t2
+	nop
+    1564:	00000000 	nop
+
+00001568 <backfbd>:
+
+	/* Should return ram size in v0 */
+backfbd:
+	bnez	v0,1f
+    1568:	14400003 	bnez	v0,1578 <panic+0x8>
+	nop
+    156c:	00000000 	nop
+
+00001570 <panic>:
+
+panic:	TRACE2(0x424f0bad)
+	b	panic
+    1570:	1000ffff 	b	1570 <panic>
+	nop
+    1574:	00000000 	nop
+
+	/* Re-check if we booted from SDRAM */
+1:	TRACE(0x424f11)
+	bal	2f
+    1578:	04110001 	bal	1580 <panic+0x10>
+	nop
+    157c:	00000000 	nop
+
+2:	li	t0,PHYSADDR_MASK
+    1580:	3c081fff 	lui	t0,0x1fff
+    1584:	3508ffff 	ori	t0,t0,0xffff
+	and	t0,t0,ra
+    1588:	011f4024 	and	t0,t0,ra
+	li	t1,SI_FLASH1
+    158c:	3c091fc0 	lui	t1,0x1fc0
+	blt	t0,t1,inram
+    1590:	0109082a 	slt	at,t0,t1
+    1594:	14200018 	bnez	at,15f8 <clearbss>
+	nop
+    1598:	00000000 	nop
+
+0000159c <copy2ram>:
+#ifdef	CONFIG_XIP
+	la	a0,text_end
+	la	a1,data_start
+	la	a2,data_end
+#else
+	li	a0,KSEG0ADDR(SI_FLASH1)
+    159c:	3c049fc0 	lui	a0,0x9fc0
+	la	a1,text_start
+    15a0:	3c050000 	lui	a1,0x0
+    15a4:	24a50000 	addiu	a1,a1,0
+	li	t0,PHYSADDR_MASK		# Uncached writes to avoid a flush
+    15a8:	3c081fff 	lui	t0,0x1fff
+    15ac:	3508ffff 	ori	t0,t0,0xffff
+	and	a1,a1,t0
+    15b0:	00a82824 	and	a1,a1,t0
+	li	t1,KSEG1
+    15b4:	3c09a000 	lui	t1,0xa000
+	or	a1,a1,t1
+    15b8:	00a92825 	or	a1,a1,t1
+	la	a2,data_end
+    15bc:	3c060000 	lui	a2,0x0
+    15c0:	24c60000 	addiu	a2,a2,0
+	and	a2,a2,t0
+    15c4:	00c83024 	and	a2,a2,t0
+	or	a2,a2,t1
+    15c8:	00c93025 	or	a2,a2,t1
+
+000015cc <copydata2>:
+	b	copydone			# bypass copydata2 since data
+	nop					# copy is done
+#endif /* NFLASH_SUPPORT */
+
+copydata2:
+1:	lw	t0,0(a0)
+    15cc:	8c880000 	lw	t0,0(a0)
+	sw	t0,0(a1)
+    15d0:	aca80000 	sw	t0,0(a1)
+	add	a0,4
+    15d4:	20840004 	addi	a0,a0,4
+	add	a1,4
+    15d8:	20a50004 	addi	a1,a1,4
+	blt	a1,a2,1b
+    15dc:	00a6082a 	slt	at,a1,a2
+    15e0:	1420fffa 	bnez	at,15cc <copydata2>
+	nop
+    15e4:	00000000 	nop
+
+000015e8 <copydone>:
+
+copydone:
+	/* Go execute from ram now */
+	la	t0,inram
+    15e8:	3c080000 	lui	t0,0x0
+    15ec:	250815f8 	addiu	t0,t0,5624
+	jr	t0
+    15f0:	01000008 	jr	t0
+	nop
+    15f4:	00000000 	nop
+
+000015f8 <clearbss>:
+
+inram:	
+clearbss:
+	TRACE(0x424f13)
+	/* Clear BSS */	
+	la	a0,bss_start
+    15f8:	3c040000 	lui	a0,0x0
+    15fc:	24840000 	addiu	a0,a0,0
+	la	a1,bss_end
+    1600:	3c050000 	lui	a1,0x0
+    1604:	24a50000 	addiu	a1,a1,0
+1:	sw	zero,0(a0)
+    1608:	ac800000 	sw	zero,0(a0)
+	addi	a0,a0,4
+    160c:	20840004 	addi	a0,a0,4
+	blt	a0,a1,1b
+    1610:	0085082a 	slt	at,a0,a1
+    1614:	1420fffc 	bnez	at,1608 <clearbss+0x10>
+	nop
+    1618:	00000000 	nop
+
+	/* Setup trap handlers */
+	TRACE(0x424f14)
+	la	t0,trap_init
+    161c:	3c080000 	lui	t0,0x0
+    1620:	25080000 	addiu	t0,t0,0
+	jalr	t0
+    1624:	0100f809 	jalr	t0
+	nop
+    1628:	00000000 	nop
+
+	/* Record the memory size */
+2:	TRACE(0x424f15)
+	la	t0,_memsize
+    162c:	3c080000 	lui	t0,0x0
+    1630:	25080000 	addiu	t0,t0,0
+	sw	v0,0(t0)
+    1634:	ad020000 	sw	v0,0(t0)
+
+	/* Set up stack pointer */
+	or	v0,KSEG0
+    1638:	3c018000 	lui	at,0x8000
+    163c:	00411025 	or	v0,v0,at
+	sub	sp,v0,4
+    1640:	205dfffc 	addi	sp,v0,-4
+	sw	sp,0(t1)
+	sub	sp,sp,4
+#endif /* DL_NVRAM */
+
+	/* Jump to C */
+	la	t0,c_main
+    1644:	3c080000 	lui	t0,0x0
+    1648:	25080000 	addiu	t0,t0,0
+	jal	t0
+    164c:	0100f809 	jalr	t0
+	move	a0,ra
+    1650:	03e02021 	move	a0,ra
+
+00001654 <theend>:
+	...
+	/* In case c_main returns */
+theend:	TRACE2(0x424feedd)
+	nop
+	nop
+	.set	mips32
+	wait
+    165c:	42000020 	wait
+	...
+	.set	mips0
+	nop
+	nop
+	b	theend
+    1668:	1000fffa 	b	1654 <theend>
+	nop
+    166c:	00000000 	nop
+	...

@@ -1,0 +1,240 @@
+﻿<po>
+<!--system_hostname--> 
+  <message msgid="Hostname" msgstr="호스트 이름" />  
+  <message msgid="Domain Name" msgstr="도메인 이름" /> 
+  <message msgid="Time format wrong" msgstr="시간 형식이 잘못되었습니다." />  
+  <message msgid="Please enter the valid year ,month and date" msgstr="유효한 년, 월, 일 정보를 입력하십시오." />    
+  <message msgid="Enter a valid date" msgstr="유효한 날짜 정보를 입력하십시오" />   
+  <message msgid="Enter a valid time" msgstr="유효한 시간 정보를 입력하십시오" />  
+  <message msgid="Time zone" msgstr="시간 영역" /> 
+  <message msgid="West of International Date Line" msgstr="West of International Date Line" />  
+  <message msgid="Midway Island, Samoa" msgstr="Midway Island, Samoa" /> 
+  <message msgid="Hawaii, Honolulu" msgstr="Hawaii, Honolulu" />  
+  <message msgid="Alaska" msgstr="Alaska" />    
+  <message msgid="Pacific Time" msgstr="Pacific Time (U.S. Canada)Tijuana" />   
+  <message msgid="Mountain Time" msgstr="Mountain Time (U.S. Canada)" />  
+  <message msgid="Chihuahua, La Paz, Mazatlan" msgstr="Chihuahua, La Paz, Mazatlan" /> 
+  <message msgid="Arizona" msgstr="Arizona" />  
+  <message msgid="Central Time" msgstr="Central Time (U.S. Canada)" /> 
+  <message msgid="Guadalajara, Mexico City, Monterrey" msgstr="Guadalajara, Mexico City, Monterrey" />  
+  <message msgid="Eastern Time" msgstr="Eastern Time (U.S. Canada)" />    
+  <message msgid="India to Ann" msgstr="India to Ann (East)" />   
+  <message msgid="Bogota, Lima, Quito" msgstr="Bogota, Lima, Quito" />  
+  <message msgid="Atlantic Time" msgstr="Atlantic Time (Canada)" /> 
+  <message msgid="Manaus" msgstr="Manaus" />   
+  <message msgid="Caracas, La Paz" msgstr="Caracas, La Paz" />  
+  <message msgid="Newfoundland and Labrador" msgstr="Newfoundland and Labrador" /> 
+  <message msgid="Brasilia Asia" msgstr="Brasilia Asia" />  
+  <message msgid="Greenland" msgstr="Greenland" /> 
+  <message msgid="Buenos Aires, Georgetown" msgstr="Buenos Aires, Georgetown" />  
+  <message msgid="Atlantic" msgstr="Atlantic" />    
+  <message msgid="Azores" msgstr="Azores" />   
+  <message msgid="Cape Verde Islands" msgstr="Cape Verde Islands" />  
+  <message msgid="Greenwich Mean Time" msgstr="Greenwich Mean Time: Dublin, Edinburgh, Lisbon, London" /> 
+  <message msgid="Casablanca , Monrovia" msgstr="Casablanca , Monrovia" />  
+  <message msgid="Belgrade, Bratislava, Budapest, Ljubljana, Prague" msgstr="Belgrade, Bratislava, Budapest, Ljubljana, Prague" /> 
+  <message msgid="Sarajevo, Skopje, Warsaw, Zagreb" msgstr="Sarajevo, Skopje, Warsaw, Zagreb" />  
+  <message msgid="Brussels, Copenhagen, Madrid, Paris" msgstr="Brussels, Copenhagen, Madrid, Paris" />    
+  <message msgid="West Africa" msgstr="West Africa" />   
+  <message msgid="Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" msgstr="Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" />  
+  <message msgid="Athens, Bucharest, Istanbul" msgstr="Athens, Bucharest, Istanbul" /> 
+  <message msgid="Minsk" msgstr="Minsk" />   
+  <message msgid="Cairo" msgstr="Cairo" />  
+  <message msgid="Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" msgstr="Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" />  
+  <message msgid="Jerusalem" msgstr="Jerusalem" /> 
+  <message msgid="temperature 'll have" msgstr="temperature 'll have" />  
+  <message msgid="grams. Harare, Pretoria" msgstr="grams. Harare, Pretoria" />    
+  <message msgid="Moscow, St. Petersburg, Volgograd" msgstr="Moscow, St. Petersburg, Volgograd" /> 
+  <message msgid="Kuwait, Riyadh" msgstr="Kuwait, Riyadh" />   
+  <message msgid="Baghdad" msgstr="Baghdad" />  
+  <message msgid="Nairobi" msgstr="Nairobi" />  
+  <message msgid="Tehran" msgstr="Tehran" /> 
+  <message msgid="Abu Dhabi, Muscat" msgstr="Abu Dhabi, Muscat" />  
+  <message msgid="Baku" msgstr="Baku" />    
+  <message msgid="Yerevan" msgstr="Yerevan" /> 
+  <message msgid="Tbilisi" msgstr="Tbilisi" />   
+  <message msgid="Kabul" msgstr="Kabul" />  
+  <message msgid="Islamabad, Karachi, Tashkent" msgstr="Islamabad, Karachi, Tashkent" />  
+  <message msgid="Yekaterinburg" msgstr="Yekaterinburg" /> 
+  <message msgid="Chennai, Kolkata, Mumbai, New Delhi" msgstr="Chennai, Kolkata, Mumbai, New Delhi" />  
+  <message msgid="Kathmandu" msgstr="Kathmandu" />    
+  <message msgid="Astana, Dhaka" msgstr="Astana, Dhaka" /> 
+  <message msgid="Almaty, Novosibirsk" msgstr="Almaty, Novosibirsk" />   
+  <message msgid="Colombo" msgstr="Colombo" />  
+  <message msgid="Yangon" msgstr="Yangon (Rangoon)" />  
+  <message msgid="Krasnoyarsk" msgstr="Krasnoyarsk" /> 
+  <message msgid="Bangkok, Hanoi, Jakarta" msgstr="Bangkok, Hanoi, Jakarta" />  
+  <message msgid="Beijing, Chongqing, Hong Kong, Urumqi" msgstr="Beijing, Chongqing, Hong Kong, Urumqi" />    
+  <message msgid="Irkutsk grams, Ulaanbaatar" msgstr="Irkutsk grams, Ulaanbaatar" /> 
+  <message msgid="Kuala Lumpur, Singapore" msgstr="Kuala Lumpur, Singapore" />   
+  <message msgid="Perth" msgstr="Perth" />  
+  <message msgid="Yakutsk" msgstr="Yakutsk" />  
+  <message msgid="Osaka, Sapporo, Tokyo" msgstr="Osaka, Sapporo, Tokyo" /> 
+  <message msgid="Seoul" msgstr="서울" />  
+  <message msgid="Darwin" msgstr="Darwin" />    
+  <message msgid="Adelaide" msgstr="Adelaide" /> 
+  <message msgid="Brisbane" msgstr="Brisbane" />   
+  <message msgid="Canberra, Melbourne Sydney" msgstr="Canberra, Melbourne Sydney" />  
+  <message msgid="Guam, Port Moresby" msgstr="Guam, Port Moresby" />  
+  <message msgid="Vladivostok" msgstr="Vladivostok" /> 
+  <message msgid="Hobart" msgstr="Hobart" />  
+  <message msgid="Magadan, Solomon Islands, New Caledonia and more" msgstr="Magadan, Solomon Islands, New Caledonia and more" />    
+  <message msgid="Fiji Islands, Kamchatka Peninsula, the Marshall Islands" msgstr="Fiji Islands, Kamchatka Peninsula, the Marshall Islands" /> 
+  <message msgid="Auckland , Wellington" msgstr="Auckland , Wellington" />   
+  <message msgid="Nuku'alofa" msgstr="Nuku'alofa" />  
+  <message msgid="hostname_Note" msgstr="Note：GMT 시간은 인터넷이 연결된 후에 사용이 가능합니다." />  
+  <message msgid="Customized time" msgstr="사용자 설정 시간" /> 
+  <message msgid="Year" msgstr="년" />  
+  <message msgid="Month" msgstr="월" />    
+  <message msgid="Date" msgstr="일" />  
+  <message msgid="Hour" msgstr="시" />   
+  <message msgid="Minute" msgstr="분" />  
+  <message msgid="Second" msgstr="초" />  
+  <message msgid="system_hostname_Help_Inf1" msgstr="이 페이지는 공유기의 시스템 시간을 설정합니다. 직접 입력하거나 GMT시간을 설정하여 NTP서버로부터 자동으로 정확한 시간정보를 가지고 올 수 있습니다." /> 
+  <message msgid="system_hostname_Help_Inf2" msgstr="Note: 공유기를 끄면 시간 정보가 사라지고, GMT설정이 된 경우, 인터넷이 연결되면 자동으로 시간 정보를 가지고 옵니다. 스케쥴설정등 정확한 동작을 위해 정확한 시간 정보가 설정되어야 합니다. " /> 
+   
+<!--ddns_config--> 
+  <message msgid="Username" msgstr="사용자 이름" />   
+  <message msgid="Password" msgstr="비밀번호" />  
+  <message msgid="Please enter the entire DDNS information" msgstr="DDNS 정보를 입력하십시오" />  
+  <message msgid="Please enter the correct DDNS information" msgstr="정확한 DDNS정보를 입력하십시오" /> 
+  <message msgid="DDNS Service" msgstr="DDNS 서비스" />  
+  <message msgid="Enable" msgstr="사용" />    
+  <message msgid="Disable" msgstr="사용안함" />
+  <message msgid="Service Provider" msgstr="서비스 제공자" />   
+  <message msgid="Sign up" msgstr="등록" />  
+  <message msgid="ddns_config_Help_Inf1" msgstr="DDNS (Dynamic DNS)서비스는 고정된 도메인 이름을 동적인 WAN IP주소와 맵핑을 하여 로컬상의 다양한 서버/서비스(Web, TCP/IP FTP 등)을 손쉽게 액세스 할 수 있게 해줍니다. DDNS 설정하기 전에 DDNS 계정을 먼저 생성하십시오." /> 
+  <message msgid="ddns_config_Help_Inf2" msgstr="DDNS 서비스: 사용하는 DDNS서비스를 선택하고, 사용자 이름과 비밀번호, 호스트 이름을 입력하십시오." />
+     
+<!--system_backup-->  
+  <message msgid="Please select the file you want to import" msgstr="파일을 선택하십시오." />   
+  <message msgid="You need to restart after importing" msgstr="적용후 재부팅을 해야합니다." />  
+  <message msgid="Export the configured parameters and specify a path to save them" msgstr="백업은 구성된 값들을 PC의 지정된 경로로 저장하게 됩니다." />  
+  <message msgid="backup restore current configuration" msgstr="현재의 구성을 백업/복원할 수 있습니다." /> 
+  <message msgid="Select the file directory to save the configured parameters" msgstr="구성된 값들이 저장될 경로를 선택하십시오" />  
+  <message msgid="Select the configured file you want to import" msgstr="불러올 파일을 선택하십시오" /> 
+  <message msgid="Backup" msgstr="백업" />    
+  <message msgid="Restore" msgstr="복원" /> 
+  <message msgid="system_backup_Help_Inf" msgstr="백업 버튼을 클릭하여 현재의 구성값을 특정경로에 저장할 수 있고, 마찬가지로, 특정경로의 저장된 파일을 통해 복원이 가능합니다. 복원을 할 때는 복원이 완료된후 공유기를 재부팅해야합니다." />    
+    
+<!--system_restore-->  
+  <message msgid="restore_note" msgstr="공유기는 자동으로 재시작합니다. 기본 IP주소는 192.168.123.254입니다. 
+만일 현재의 웹페이지가 갱신되지 않는다면, 새로고침(F5)버튼을 누르거나 PC의 랜카드 구성을 갱신하십시오." />   
+  <message msgid="Click this button to restore the router all settings to factory default" msgstr="이 버튼을 클릭하면, 모든 설정이 공장 초기화 됩니다" />  
+  <message msgid="Restore to factory default" msgstr="공장 초기화" />   
+  <message msgid="system_restore_Help_Inf1" msgstr="공장초기화를 통한 복원이 되면 모든 설정이 기본값으로 됩니다:" />
+  <!--<message msgid="system_restore_Help_Inf2" msgstr="기본 사용자 이름: admin" />-->
+  <message msgid="system_restore_Help_Inf3" msgstr="기본 비밀번호: admin" />
+  <message msgid="system_restore_Help_Inf4" msgstr="기본 IP 주소: 192.168.123.254" />
+  <message msgid="system_restore_Help_Inf5" msgstr="서브넷 마스크: 255.255.255.0" />
+   
+<!--system_upgrade-->  
+  <message msgid="Upgrading" msgstr="업그레이드" />   
+  <message msgid="Please select the upgrade file" msgstr="업그레이드 파일을 선택하십시오" />  
+  <message msgid="Are you sure to upgrade" msgstr="정말 업그레이드 하시겠습니까" />  
+  <message msgid="By upgrading the router software, you get new features." msgstr="펌웨어 업그레이드." /> 
+  <message msgid="Select the firmware file" msgstr="펌웨어 파일을 선택하십시오" />  
+  <message msgid="Upgrade" msgstr="업그레이드" />    
+  <message msgid="Current system version" msgstr="현재 시스템 버전" /> 
+  <message msgid="Publishing date" msgstr="발행일" /> 
+  <message msgid="upgrade_note" msgstr="Note : 업그레이드 중에 공유기의 전원을 끄지 마십시오. 그렇지 않으면, 공유기에 손상이 가해져 정상 동작이 안됩니다. 업그레이드가 완료되면 공유기는 자동으로 재부팅됩니다. 업그레이드는 몇 분정도 소요됩니다." /> 
+  <message msgid="system_upgrade_Help_Inf1" msgstr="그렇지 않으면, 공유기에 손상이 가해져 정상 동작이 안됩니다." /> 
+  <message msgid="system_upgrade_Help_Inf2" msgstr="업그레이드가 완료되면 공유기는 자동으로 재부팅됩니다." /> 
+  <message msgid="system_upgrade_Help_Inf3" msgstr="업그레이드는 몇 분정도 소요됩니다." /> 
+  
+<!--system_reboot-->
+  <message msgid="The system will re-connect to the initial page in about 50 seconds" msgstr="시스템이 재부팅되며 약 50초 이내에 초기 페이지로 재연결합니다." />   
+  <message msgid="Click this button and the router will reboot" msgstr="공유기를 재부팅합니다." />  
+  <message msgid="Reboot the router" msgstr="공유기 재부팅" />  
+  <message msgid="system_reboot_Help_Inf" msgstr="공유기를 재부팅하면 수정된 설정이 적용됩니다. 재부팅중에는 모든 연결이 끊어집니다. 재부팅을 &quot;확인&quot;을 클릭하십시오"/>  
+  
+  <!--direct_reboot.asp-->
+  <message msgid="Rebooting" msgstr="재부팅중" />    
+  <message msgid="direct_reboot_Help_Inf" msgstr="공유기를 재부팅하면 수정된 설정이 적용됩니다. 재부팅중에는 모든 연결이 끊어집니다." />  
+  
+ <!--system_password-->  
+  <message msgid="The initial password can only consist of letters and numbers" msgstr="비밀번호는 숫자와 영문자만 가능합니다." />   
+  <message msgid="On this page ,you can change  the administrator password" msgstr="이 페이지에서 관리자 비밀번호를 변경할 수 있습니다." />  
+  <message msgid="password_note" msgstr="Note: 비밀번호는 숫자와 영문자만 가능합니다." />  
+  <message msgid="Old password" msgstr="이전 비밀번호" /> 
+  <message msgid="New password" msgstr="새 비밀번호" />  
+  <message msgid="Confirm new password" msgstr="새 비밀번호 확인" />    
+  <message msgid="system_password_Help_Inf1" msgstr="이전 비밀번호 : 공유기의 기본 비밀번호는 없습니다. 공란으로 두십시오." /> 
+  <message msgid="system_password_Help_Inf2" msgstr="만일 이전에 비밀번호를 설정하였다면, 해당 비밀번호를 입력하십시오." /> 
+  <message msgid="system_password_Help_Inf3" msgstr=" 새 비밀번호: 새 비밀번호를 입력합니다. 비밀번호는 반드시 0~12개의 문자로 입력합니다." /> 
+  <message msgid="system_password_Help_Inf4" msgstr="새 비밀번호 확인 : 새 비밀번호를 다시 입력합니다." /> 
+  
+ <!--system_log-->  
+  <message msgid="the" msgstr="The" />   
+  <message msgid="page log contents" msgstr="로그 페이지" />  
+  <message msgid="Refresh" msgstr="새로고침" />  
+  <message msgid="Clear" msgstr="삭제" /> 
+  <message msgid="system_log_Help_Inf1" msgstr="기록 내용 보기" /> 
+  <message msgid="system_log_Help_Inf2" msgstr="Note : 15페이지가 넘게 되면 자동으로 삭제가 됩니다.(약 150개의 기록)." />   
+   
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="유효하지 않습니다" />   
+  <message msgid="contains illegal characters" msgstr="유효하지 않은 문자를 포함하고 있습니다" />  
+  <message msgid="not numbers " msgstr="숫자가 아닙니다" />  
+  <message msgid="beyond the range" msgstr="범위를 벗어났습니다" /> 
+  <message msgid="contains invalid characters" msgstr="유효하지 않은 문자를 포함하고 있습니다" /> 
+  <message msgid="Are you sure to exit" msgstr="정말 종료하겠습니까?" />   
+  <message msgid="not defined" msgstr="정의되지 않았습니다" />  
+  <message msgid="Password differs" msgstr="비밀번호가 다릅니다" />  
+  <message msgid="Change password" msgstr="정말로 비밀번호를 변경하시겠습니까?" /> 
+  <message msgid="the length is not within the range" msgstr="길이가 범위를 벗어났습니다" />    
+  <message msgid="permanent" msgstr="항상" />   
+  <message msgid="Day" msgstr="날짜" />  
+  <message msgid="Don't enter Chinese characters" msgstr="영문자 이외의 문자를 사용하지 마십시오" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="설정이 적용되려면 공유기가 재부팅되어야합니다." /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="설정이 적용되려면 공유기가 재부팅되어야합니다" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="숫자, 영문자, 밑줄(_)만 사용이 가능합니다." />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC주소가 이미 존재합니다. 다시 입력하십시오" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC주소가 멀티캐스트 주소입니다. 다시 입력하십시오" />  
+  <message msgid="Help information" msgstr="도움말 정보" /> 
+  
+  <!--advance-->  
+  <message msgid="Tenda 11N Wireless Router" msgstr="삼성 11N 무선 공유기" />   
+  <message msgid="Initial page settings" msgstr="초기 페이지 설정" />  
+  <message msgid="Log out" msgstr="로그아웃" />  
+  <message msgid="Advanced Settings" msgstr="고급설정" /> 
+  <message msgid="Wireless settings" msgstr="무선설정" />  
+  <message msgid="DHCP Server" msgstr="DHCP 설정" />    
+  <message msgid="Virtual Server" msgstr="가상서버" />
+  <message msgid="Security settings" msgstr="보안설정" />   
+  <message msgid="Routing settings" msgstr="라우팅설정" />  
+  <message msgid="System Tools" msgstr="시스템툴" />   
+  <message msgid="System Status" msgstr="시스템상태" />  
+  <message msgid="WAN settings" msgstr="WAN 설정" />  
+  <message msgid="LAN settings" msgstr="LAN 설정" /> 
+  <message msgid="MAC Clone" msgstr="MAC 복사" />
+  <message msgid="DNS settings" msgstr="DNS 설정" />  
+  <message msgid="WAN medium type" msgstr="WAN 연결 방식" />   
+  <message msgid="Bandwidth control" msgstr="대역폭 제어" />    
+  <message msgid="Traffic statistics" msgstr="트래픽 통계" />
+  <message msgid="WAN speed" msgstr="WAN 속도" />
+  <message msgid="Wireless Basic Settings" msgstr="무선 기본 설정" />   
+  <message msgid="Wireless Security" msgstr="무선 보안" /> 
+  <message msgid="Access Control" msgstr="액세스 제어" /> 
+  <message msgid="Connection Status" msgstr="연결 상태" />    
+  <message msgid="DHCP Client list" msgstr="DHCP 클라이언트 목록" />
+  <message msgid="Port Range Forwarding" msgstr="포트 범위 포워딩" />   
+  <message msgid="DMZ Host" msgstr="DMZ 호스트" />  
+  <message msgid="UPNP settings" msgstr="UPNP 설정" />   
+  <message msgid="Client Filter Settings" msgstr="클라이언트 필터 설정" />  
+  <message msgid="MAC Address Filter Settings" msgstr="MAC 주소 필터 설정" />  
+  <message msgid="URL Filter Settings" msgstr="URL 필터 설정" /> 
+  <message msgid="Remote Web Management" msgstr="원격 웹관리" />  
+  <message msgid="Routing table" msgstr="라우팅 테이블" />    
+  <message msgid="Static routing" msgstr="고정라우팅" />
+  <message msgid="Time Settings" msgstr="시간 설정" />   
+  <message msgid="Backup/Restore Settings" msgstr="백업/복원 설정" />
+  <message msgid="Restore to Factory Default Settings" msgstr="공장 초기화 설정" />
+  <message msgid="Change password1" msgstr="비밀번호 변경"  />     
+  <message msgid="Syslog" msgstr="시스템 로그" /> 
+  
+  <!--menu.js-->  
+  <message msgid="Ok" msgstr="확인" />
+  <message msgid="Cancel" msgstr="취소" />  
+</po>
+ 

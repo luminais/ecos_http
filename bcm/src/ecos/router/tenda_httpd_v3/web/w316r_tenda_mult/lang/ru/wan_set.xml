@@ -1,0 +1,205 @@
+﻿<po>
+<!--system_status.asp-->
+<message msgid="Static IP" msgstr="статический IP-адрес" />
+<message msgid="Dynamic IP" msgstr="динамический IP-адрес" />
+<message msgid="Disable" msgstr="отключить" />
+<message msgid="Enable" msgstr="включить" />
+<message msgid="Disconnected" msgstr="отключено" />
+<message msgid="Connecting" msgstr="идет соединение" />
+<message msgid="Connected" msgstr="подключено" />
+<message msgid="Permanent" msgstr="Постоянный" />
+<message msgid="Day" msgstr="День" />
+<message msgid="WAN status" msgstr="Состояние WAN" />
+<message msgid="Connection status" msgstr="Состояние подключения" />
+<message msgid="Subnet Mask" msgstr="маска сети" />
+<message msgid="Gateway" msgstr="шлюз" />
+<message msgid="DNS server" msgstr="Сервер доменных имен" />
+<message msgid="Alternate DNS server" msgstr="Альтернативный сервер доменных имен" />
+<message msgid="Connection type" msgstr="Тип подключения" />
+<message msgid="Connection time" msgstr="Время подключения" />
+<message msgid="Release" msgstr="Освободить" />
+<message msgid="Refresh" msgstr="Обновить" />
+<message msgid="Connect" msgstr="Подключить" />
+<message msgid="Disconnect" msgstr="отключить" />
+<message msgid="System status" msgstr="Состояние системы" />
+<message msgid="LAN MAC address" msgstr="MAC-адрес LAN" />
+<message msgid="WAN MAC address" msgstr="MAC-адрес WAN" />
+<message msgid="System time" msgstr="Время системы" />
+<message msgid="Running time" msgstr="Время работы" />
+<message msgid="Connected client" msgstr="Подключенные клиенты" />
+<message msgid="Software version" msgstr="Версия прошивки" />
+<message msgid="Hardware version" msgstr="Версия оборудования" />
+<message msgid="System_status_helpinfo1" msgstr="Способ соединения: показывается текущий режим доступа на порту WAN." />
+<message msgid="System_status_helpinfo2" msgstr="Время соединения: В случае соединения посредством динамического IP или PPPOE, отображается время соединения на порту WAN маршрутизатора." />
+<message msgid="System_status_helpinfo3" msgstr="Время работы: Время с момента включения маршрутизатора." />
+<message msgid="System_status_helpinfo4" msgstr="Версия системы: версия маршрутизатора." />
+
+<!--wan_connected.asp-->
+<message msgid="Idle time" msgstr="Время простоя" />
+<message msgid="Username or Password is empty" msgstr="Поле имени или пароля не заполнено" />
+<message msgid="Account" msgstr="Аккаунт" />
+<message msgid="Username" msgstr="имя пользователя" />
+<message msgid="Password" msgstr="Пароль" />
+<message msgid="Time" msgstr="Время" />
+<message msgid="Time exceeds the specified range" msgstr="Время превышает допустимый диапазон" />
+<message msgid="start time must be smaller than end time." msgstr="Начальное время должно быть меньше конечного" />
+<message msgid="IP address" msgstr="IP-адрес" />
+<message msgid="Primary DNS" msgstr="Основной DNS сервер" />
+<message msgid="Alternate DNS" msgstr="Альтернативный DNS сервер" />
+<message msgid="Server address is empty" msgstr="Нет адреса сервера" />
+<message msgid="Server address" msgstr="Адрес сервера" />
+<message msgid="Server IP address" msgstr="IP-адрес сервера" />
+<message msgid="ISP Gateway" msgstr="Адрес шлюза провайдера" />
+<message msgid="MTU value range" msgstr="Диапазон MTU" />
+<message msgid="Wan_connected_helpinfo1" msgstr="Статический  IP-адрес: Если провайдер предоставляет вам статический IP-адрес, то выбирайте режим статического IP." />
+<message msgid="Wan_connected_helpinfo2" msgstr="Динамический IP-адрес: Если провайдер предоставляет адрес автоматически с помощью DHCP-сервера, то выбирайте &quot;DHCP&quot;" />
+<message msgid="Wan_connected_helpinfo3" msgstr="Вы можете уточнить у провайдера, нужно ли работать по протоколу PPPOE. Если да, то введите ваш Аккаунт и пароль" />
+<message msgid="Wan_connected_helpinfo4" msgstr="Провайдер предоставляет IP-адрес PPTP-сервера, аккаунт и пароль.  IP-адрес WAN, маска подсети, адрес шлюза по умолчанию вы получаете автоматически или можете ввести вручную. MTU: Введите MTU, или выберите MTU по умолчанию." />
+<message msgid="Wan_connected_helpinfo5" msgstr="Провайдер предоставляет IP-адрес L2TP-сервера, аккаунт и пароль.  IP-адрес WAN, маска подсети, адрес шлюза по умолчанию вы получаете автоматически или можете ввести вручную. MTU: Введите MTU, или выберите MTU по умолчанию." />
+<message msgid="Wan_connected_helpinfo6" msgstr="Вы можете узанть у провайтера ,можно ли рабоать способом PPPOE.Если можно , введите ваш Аккаунт и пароль пожалуйста !" />
+<message msgid="DO NOT modify it unless necessary, the default is 1500" msgstr="Пожалуйста, не изменяйте параметры, если в этом нет необходимости! Параметром MTU по умолчаню является 1500" />
+<message msgid="DO NOT modify it unless necessary, the default is 1492" msgstr="Пожалуйста, не изменяйте параметры, если в этом нет необходимости! Параметром MTU по умолчаню является 1492" />
+<message msgid="Access Account" msgstr="Учетная запись доступа" />
+<message msgid="Access Password" msgstr="пароль доступа" />
+<message msgid="Server name" msgstr="Имя сервера" />
+<message msgid="Service name" msgstr="Имя сервиса" />
+<!--add-->
+<message msgid="Select the corresponding connection mode according to your situation." msgstr="выберите соотвественный режим соединения" />
+<message msgid="Connect automatically, Connect automatically to the Internet after rebooting the system or connection failure." msgstr="Автоматическое соединение, в случае включения и выключения компьютера автоматически подключится к интернету." />
+<message msgid="Connect on demand: Re-establish your connection to the Internet when there’s data transmitting." msgstr="Подключение по требованию: автоматически подключается к интернету когда это требуется." />
+<message msgid="Max.idle time" msgstr="Максимальное время ожидания" />
+<message msgid="Wan_connected_Note" msgstr="Примечание: После установки текущего время в меню &quot;настройки системы&quot;, соединение в назначенное время вступит в силу." />
+<message msgid="Connection time: from " msgstr="Время соединения: От " />
+<message msgid="hours" msgstr="часы" />
+<message msgid="minutes" msgstr="минуты" />
+<message msgid="to" msgstr="по" />
+<message msgid="Second" msgstr="Секунд" />
+<message msgid="mode" msgstr="Режим" />
+<message msgid="Address mode" msgstr="Режим адреса" />
+<message msgid="Help information" msgstr="Справка" />
+<message msgid="Don not enter the information unless necessary." msgstr="Если нет необходимости, не заполняйте пожалуйста." />
+<message msgid="Connect manually: Connect to the Internet manually by the user." msgstr="Ручное подключение: абонент вручную подключается к интернету." />
+<message msgid="Connect on fixed time: Connect automatically to the Internet during the time you fix." msgstr="Соединить в назначенное время: в назначенный промежуток времени маршрутизатор автоматически подключается к интернету." />
+
+<!--lan.asp-->
+<message msgid="If the webpage doesn't update automatically,please update your computer's network settings and then log on with the new IP." msgstr="Если страница автоматически не обновляется, то обновите настройки Вашего сетевого подключения и введите новый IP-адрес." />
+<message msgid="This page is used to set the basic network parameters for LAN" msgstr="На данной странице настройте основные сетевые параметры порта LAN." />
+<message msgid="Lan_helpinfo" msgstr="Установите LAN IP-адрес и маску сети маршрутизатора. По умолчанию IP-адрес установлен в 192.168.1.1, маска сети 255.255.255.0." />
+<message msgid="warning_str1" msgstr="сегмент IP адреса маршрутизатора был изменен, пожалуйста, переконфигурируйте соответствующий параметр." />
+<message msgid="warning_str2" msgstr="Если интернет страница не обновляется автоматически, измените сетевые настройку компьютера и затем войдите с нового IP-адреса!" />
+
+<!--mac_clone.asp-->
+<message msgid="MAC Address Clone" msgstr="Клон МАС адреса" />
+<message msgid="MAC Address" msgstr="MAC адрес" />
+<message msgid="Restore Default MAC" msgstr="Восстановить MAC адрес" />
+<message msgid="Clone MAC Address" msgstr="Клонировать МАС адрес" />
+<message msgid="mac_clone_helpinfo1" msgstr="Клонирование МАС адреса: некоторые интернет-провайдеры позволяют выходить в сеть только устройствам с определенным МАС-адресом. Эта опция копирует МАС адреса Вашего сетевого устройства/копьютера на маршрутизатор." />
+<message msgid="mac_clone_helpinfo2" msgstr="MAC адрес: MAC адрес зарегистрированный Вашим интернет-провайдером." />
+<message msgid="mac_clone_helpinfo3" msgstr="Восстановление МАС адреса по умолчанию: Установите аппаратный МАС адрес по умолчанию." />
+<message msgid="mac_clone_helpinfo4" msgstr="Клонирование МАС адреса: зарегистрируйте MAC адрес Вашего ПК." />
+
+<!--wan_dns.asp-->
+<message msgid="Primary DNS address" msgstr="Адрес первичного DNS" />
+<message msgid="Alternate DNS address" msgstr="Адрес альтернативного DNS" />
+<message msgid="DNS setting" msgstr="Адрес DNS" />
+<message msgid="Current WAN mode" msgstr="Выберите режим WAN" />  
+<message msgid="DHCP or static IP" msgstr="DHCP или статический IP-адрес" />  
+<message msgid="PPPOE,PPTP or L2TP" msgstr="PPPOE,PPTP или L2TP" />  
+<message msgid="Internal DNS address" msgstr="предпочитаемый DNS-сервер" />    
+<message msgid="External DNS address" msgstr="Альтермативный DNS-сервер" />   
+<message msgid="DNS address" msgstr="DNS адрес" />
+<message msgid="Optional" msgstr="опционально" />
+<message msgid="Note: After the settings are completed, reboot the device to activate the modified settings." msgstr="Замечание: После ввода значений необходимо перезагрузить устройство, чтобы установки вступили в силу." />
+<message msgid="Wan_dns_helpinfo1" msgstr="После перезапуска маршрутизатора установки вступят в силу." />
+<message msgid="Wan_dns_helpinfo2" msgstr="Рекомендуем вернуть настройки по умолчанию если DNS введен неверно и web страницы не открываются." />
+
+<!--net_tc.asp-->
+<message msgid="Add to list" msgstr="Добавить в список" />
+<message msgid="Update to list" msgstr="Обновить в списке" />
+<message msgid="All services" msgstr="Все сервисы" />
+<message msgid="WAN port bandwidth can not be empty!" msgstr="Поле пропускной способность WAN порта не может быть незаполненным!" />
+<message msgid="Bandwidth can not be zero ,please re-enter" msgstr="Пропускная способность не может быть &quot;ноль&quot;" />
+<message msgid="No." msgstr="Порядковый номер" />
+<message msgid="IP segment" msgstr="Сегмент IP" />
+<message msgid="Destination" msgstr="Назначение" />
+<message msgid="Bandwidth range" msgstr="Диапазон  пропускной  способности" />
+<message msgid="Edit" msgstr="Редактировать" />
+<message msgid="Delete" msgstr="Отмена" />
+<message msgid="All ports" msgstr="Все порты" />
+<message msgid="Download" msgstr="Скачать" />
+<message msgid="Upload" msgstr="Загрузить" />
+<message msgid="valid WAN bandwidth ranges 1~12800,please re-enter" msgstr="Действительный диапазон пропускной способности порта WAN находится в пределах 1-12800." />
+<message msgid="Max." msgstr="Максимально" />
+<message msgid="bandwidth control records" msgstr="журнал контроля пропускной способности!" />
+<message msgid="Please enter the IP address" msgstr="Введите IP-адрес!" />
+<message msgid="Start IP" msgstr="Начальный IP-адрес" />  
+<message msgid="End IP" msgstr="Конечный IP-адрес" />  
+<message msgid="start IP bigger than end IP" msgstr="Начальный IP-адреса больше конечного IP-адреса!" />
+<message msgid="Please enter the bandwidth" msgstr="Укажите, пожалуйста, пропускную способность!" />
+<message msgid="the port is beyond the range of 0~65535" msgstr="Порт не находится в диапазоне 0-65535!" />
+<message msgid="bandwidth range should begin from small to big" msgstr="Диапазон пропускной способности должен быть указан с малого значения до большого!" />
+<message msgid="The configuration overlapped ,please re-enter" msgstr="Информация о настройках дублируется, введите заново, пожалуйста!" />
+<message msgid="Enable Bandwidth Control" msgstr="Активировать контроль пропускной способности" />
+<message msgid="Interface" msgstr="Интерфейс" />
+<message msgid="Download bandwidth" msgstr="Пропускная способность скачивания" />
+<message msgid="Upload/Download" msgstr="загрузка/скачивание" />
+<message msgid="Net_tc_helpinfo1" msgstr="Данная функция может ограничить пропускную способность компьютеров в локальной сети." />
+<message msgid="Net_tc_helpinfo2" msgstr="Направление ограничения скорости: ограничить пропускную способность загрузки и скачивания на порту WAN." />
+<message msgid="Net_tc_helpinfo3" msgstr="Диапазон пропускной способности: позволить хосту в диапазоне назначенных IP-адресов скачивать и загружать на указанной максимальной скорости (KB/s)." />
+<message msgid="Net_tc_helpinfo4" msgstr="Пропускная способность загрузки и скачивания не может быть больше максимальной скорости порта WAN." />
+
+<!--system_iptAccount.asp-->
+<message msgid="Enable  traffic statistics" msgstr="Включить сбор статистики по трафику" />
+<message msgid="Uplink rate" msgstr="Скорость загрузки" />
+<message msgid="Downlink rate" msgstr="Скорость скачивания" />
+<message msgid="Sent message" msgstr="Отправленные сообщения" />
+<message msgid="Sent Bytes" msgstr="Отправленные байты" />
+<message msgid="Received message" msgstr="Принятые сообщения" />
+<message msgid="Received Bytes" msgstr="Принятые байты" />
+<message msgid="traffic statistics function enables viewing each computer's traffic information" msgstr="При помощи статистики Вы можете узнать информацию о трафике каждого компьютера." />
+<!--add-->
+<message msgid="Giving up" msgstr="Отказ: (не возможно создать пример XML HTTP)" />
+<message msgid="There was a problem with the request." msgstr="Проблема с запросом." />
+<message msgid="Information: the security setting is automatically set to WPS,but you can manually modify it." msgstr="Информация: Настройки безопасности автоматически уставливаются в WPS. Вы можете изменить его вручную на нужный." />
+<!--add-->
+
+<!--wan_speed.asp-->
+<message msgid="Choose the WAN speed" msgstr="Выберите скорость подключения WAN" />
+<message msgid="Wan_speed_helpinfo1" msgstr="Выберите скорость подключения WAN." />
+
+<!--menu.js-->
+  <message msgid="Ok" msgstr="OK" />
+  <message msgid="Cancel" msgstr="Отмена" /> 
+
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="Недействительный!" />   
+  <message msgid="contains illegal characters" msgstr="Содержит недопустимые символы:" />  
+  <message msgid="not numbers " msgstr="Не цифры!" />  
+  <message msgid="beyond the range" msgstr="Вне диапазона!" /> 
+  <message msgid="contains invalid characters" msgstr="Содержит недопустимые символы:" /> 
+  <message msgid="Are you sure to exit" msgstr="Вы уверены, что хотите выйти?" />   
+  <message msgid="not defined" msgstr="Не определен!" />  
+  <message msgid="Password differs" msgstr="Ошибочный пароль!" />  
+  <message msgid="Change password" msgstr="Изменить пароль?" /> 
+  <message msgid="the length is not within the range" msgstr="Длина вне диапазона!" />    
+  <message msgid="permanent" msgstr="Постоянно" />    
+  <message msgid="Don't enter Chinese characters" msgstr="Не вводите китайские символы!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Для применения установок нужно перезапустить маршрутизатор. Сделать это сейчас?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Для применения установок нужно перезапустить беспроводной модуль. Сделать это сейчас?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Комментарии должны содержать только буквы, цифры и нижние подчеркивания!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC-адрес является зарезервированным адресом, пожалуйста, введите его заново!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC-адрес является широковещательным адресом, пожалуйста, введите его заново!" /> 
+  <message msgid="Password error!" msgstr="Неверный пароль!" />
+  <message msgid="Successfully Configure!" msgstr="Конфигурация успешно завершена!" />
+  <message msgid="Get upgrade file failed!" msgstr="Ошибка получения файла обновлений!" />
+  <message msgid="Check upgrade file error!" msgstr="Ошибка проверки файла обновлений!" />
+  <message msgid="Write upgrade file error!" msgstr="Ошибка записи файла обновления!" />
+  <message msgid="CGI get config file failed!" msgstr="Ошибка получения файла конфигурации общего интерфейса шлюза (CGI)!" />
+  <message msgid="CGI write config file failed!" msgstr="Ошибка записи файла конфигурации общего интерфейса шлюза (CGI)!" />
+  <message msgid="system error!" msgstr="Системная ошибка!" />
+  <message msgid="invalid,network aggregation not supported!" msgstr=" Ошибка, не поддерживается сетевая агрегация!" />
+  <message msgid="invalid,subnet division not supported!" msgstr="Ошибка, не поддерживается разделение подсети!" />
+  <message msgid="LAN_WAN_IP_ERROR" msgstr="ОШИБКА: сегмент WAN совпадает с LAN (ЛВС)!" />
+  <message msgid="WAN_IP_ERROR" msgstr="ОШИБКА: WAN IP принадлежит диапазону LAN (ЛВС)!" /> 
+  
+</po>

@@ -1,0 +1,1669 @@
+﻿/*!
+ * REasy.css v1.0.0
+ *****************************************/
+
+/* CSS reset */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
+pre, a, abbr, address, big, cite, code, del, dfn, em, img, ins, kbd, q, samp, small,
+strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form,
+label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, s,
+details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby,
+section, summary, time, mark, audio, video{margin: 0; padding: 0;border: 0;vertical-align: baseline;}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section{display:block;}
+audio, canvas, video{display: inline-block;*display: inline;*zoom: 1;}
+address, button, caption, cite, code, dfn, em, input, optgroup, option, select, strong,
+textarea, th, var{ font: inherit }
+button, input, select, textarea{margin: 0; font-size: 100%; vertical-align: middle}
+button::-moz-focus-inner, input::-moz-focus-inner {padding: 0;border: 0;}
+button, input { line-height: normal; *overflow: visible; }
+button, input[type='button'], input[type='reset'], input[type='submit'] {cursor: pointer;-webkit-appearance: button;}
+textarea { height: auto; overflow: auto; vertical-align: top;}
+ul { list-style: none;}
+table { border-collapse: collapse; border-spacing: 0; }
+caption, th { text-align: left;}
+h1, h2, h3, h4, h5, h6 { font-weight:bold;}
+blockquote, q { quotes: none;}
+blockquote:before, blockquote:after, q:before, q:after{content: ''; content: none;}
+sup { vertical-align:text-top;}
+sub{ vertical-align:baseline;}
+img {-ms-interpolation-mode: bicubic;}
+del { text-decoration: line-through;}
+/*============== end css reset ==============*/
+
+/*============== normalize tags ==============*/
+html {
+	height: 100%;
+}
+body{
+	height: 100%;
+	background-color: #fff;
+	color: #333;
+	font: 13px/2 'Microsoft YaHei','Times New Roman';
+	line-height: 20px;
+
+	*font-size: small; /* for IE */
+	*font: x-small; /* for IE in quirks mode */
+}
+hr {
+	display: block;
+	height: 1px;
+	border: 0;
+
+	/* TODO: change border color for you need */
+	border-top:1px solid #ccc;
+	margin: 1em 0;
+	padding: 0
+}
+ins {
+	background-color: #ff9;
+	color: #000;
+	text-decoration:none
+}
+mark {
+	background-color: #ff9;
+	color: #000;
+	font-style: italic;
+	font-weight: bold;
+}
+
+abbr[title], dfn[title], acronym[title] {
+	border-bottom: 1px dotted;
+	cursor:help;
+}
+
+a:link, a:visited{
+	text-decoration: none;
+	outline: 0
+}
+
+/* For ie7 when focus has outline */
+a, input[type='radio'] , input[type='checkbox'] {
+	*hide-focus: expression(this.hideFocus=true);
+}
+
+a:hover, a:focus, a:active, a:focus  {
+	outline: 0;
+}
+h1 {
+	font-size: 138.5%;
+}
+h2 {
+	font-size: 123.1%;
+}
+h3 {
+	font-size: 108%;
+}
+
+p {
+	margin-bottom: 6px;
+}
+optgroup {
+	font-weight:normal;
+}
+
+table {
+	max-width: 100%;
+	background-color: transparent;
+	font-size: inherit;
+}
+pre, code, kbd, samp, tt {
+	font-family: monospace;
+	*font-size: 108%;
+	line-height: 100%;
+}
+pre {
+	margin: .2em 0 0 0;
+	padding: .2em;
+	background: whiteSmoke;
+	border: 1px dotted #785;
+}
+code{
+	white-space: pre;
+}
+a:link acronym[title], a:visited acronym[title] {
+	cursor:pointer
+}
+
+/*============== form elements ==============*/
+label, input, button, select, textarea {
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 20px;
+}
+
+input, button, select, textarea{
+	font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+select, textarea,
+input[type='text'], input[type='password'], input[type='number'],
+input[type='datetime'], input[type='datetime-local'], input[type='date'],
+input[type='month'], input[type='time'], input[type='week'], input[type='email'],
+input[type='url'], input[type='search'], input[type='tel'], input[type='color'],
+.uneditable-input, .text-input, .text {
+	display: inline-block;
+	height: 20px;
+	border: 1px solid #ccc;
+	padding: 3px 6px;
+	font-size: 14px;
+	line-height: 20px;
+	color: #333;
+	-webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+			border-radius: 3px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+       -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+		 -o-transition: border linear 0.2s, box-shadow linear 0.2s;
+			transition: border linear 0.2s, box-shadow linear 0.2s;
+
+}
+
+select {
+	-webkit-border-radius: 0;
+}
+
+select:focus, textarea:focus,  input[type="datetime"]:focus, input[type="datetime-local"]:focus,
+input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus,
+input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus,
+input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus,
+input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus,
+.uneditable-input:focus,  .text-input:focus, .text:focus, .password-box-focus {
+	border: 1px solid #ed7020;
+	background: #fff;
+	outline: none;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 102, 51, .6);
+       -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 102, 51, .6);
+			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 102, 51, .6);
+}
+input, textarea, .uneditable-input{
+	width: 206px;
+}
+
+select {
+	width: 220px;
+
+	/* In IE7, the height of the select element cannot be changed by height, only font-size */
+	height: 28px;
+
+	/* For IE7, add top margin to align select with labels */
+	*margin-top: 4px;
+}
+
+label[for], select, button, input[type="button"], input[type="reset"],
+input[type="submit"], input[type="radio"], input[type="checkbox"] {
+  cursor: pointer;
+}
+
+input[type='radio'], input[type='checkbox'] {
+	margin-top: 4px;
+	line-height: normal;
+	cursor:pointer;
+
+	/* For ie8*/
+	margin-top: 1px \9;
+	outline: none;
+
+	/* For ie7*/
+	*margin-top: 0;
+}
+
+input[type='file'], input[type='image'], input[type='submit'], input[type='reset'],
+input[type='button'], input[type='radio'], input[type='checkbox'] {
+	width: auto;
+	cursor: pointer;
+}
+
+legend, .legend{
+	display: block;
+	width: 100%;
+	margin-bottom: 12px;
+	border-bottom: 1px solid #e5e5e5;
+	color: #ed7020;
+	font-size: 14px;
+	line-height: 30px;
+	font-weight: bold;
+}
+
+legend small {
+	font-size: 12px;
+	color: #999;
+}
+
+label.radio, label.checkbox{
+	display: inline-block;
+	min-height: 18px;
+	padding-left: 15px;
+	padding-left: 15px;
+	padding-top: 5px;
+	margin-left: -15px;
+	margin-right: 20px;
+	vertical-align: middle
+
+	/* For IE7 */
+	*margin-right: 18px;
+	outline: none;
+}
+label.radio input, label.checkbox input {
+	float: left;
+	width: auto;
+	margin-right: 4px;
+
+	/* For IE8 */
+	margin-right: 1px \9;
+
+	/* For IE7 */
+	*margin-right: 0px;
+	*zoom: 1;
+	*outline: none;
+}
+
+.disabled,
+input[disabled],
+select[disabled],
+textarea[disabled],
+input[readonly],
+select[readonly],
+textarea[readonly] {
+	cursor: not-allowed;
+	background-color: #eeeeee;
+}
+
+input[type="radio"][disabled],
+input[type="checkbox"][disabled],
+input[type="radio"][readonly],
+input[type="checkbox"][readonly] {
+	background-color: transparent;
+}
+
+.input-mic-mini, input.input-mic-mini{
+	width: 24px;
+	padding: 3px 4px;
+}
+.input-mini-medium, input.input-mini-medium{
+	width: 39px;
+}
+
+.input-mini, input.input-mini{
+	width: 60px;
+}
+.input-little, input.input-little{
+	width:70px;
+}
+.input-small, input.input-small{
+	width: 90px;
+}
+.input-medium, input.input-medium{
+	width: 150px;
+}
+.input-large, input.input-large {
+	width: 210px;
+}
+.input-xlarge, input.input-xlarge {
+	width: 270px;
+}
+.input-xxlarge, input.input-xxlarge {
+	width: 530px;
+}
+/* Placeholder */
+.placeholder-content {
+	position: relative;
+}
+
+input.placeholder-text,
+.placeholder-text {
+	color: #c6c3c0;
+	opacity: 1;
+}
+.placeholder-content .placeholder-text {
+	position: absolute;
+	min-width: 200px;
+	top: -2px;
+	left: 7px;
+}
+
+/* Form control-group */
+.control-group {
+	margin-bottom: 12px;
+	*zoom: 1;
+}
+.control-group:before, .control-group:after {
+	display: table;
+	line-height: 0;
+	content: '';
+}
+.control-group:after{
+	clear: both;
+}
+
+.control-label{
+	float: left;
+	width: 150px;
+	padding-top: 4px;
+	font-size: 14px;
+	text-align: left;
+	color: #333;
+}
+.control-label-title {
+	float: none;
+}
+.controls{
+	margin-left: 160px;
+	color: #333;
+
+	/* for IE7 */
+	*display: inline-block;
+	*padding-left: 20px;
+	*margin-left: 0;
+}
+
+.controls-text {
+	padding-top: 3px;
+	color: #666;
+}
+/* for IE7 */
+.controls:first-child{
+	*padding-left:180px;
+}
+table .control-label {
+	float: none;
+	padding-bottom: 12px;
+}
+table .controls {
+	padding-bottom: 12px;
+	padding-left: 20px;
+}
+.help-block, .help-inline{
+	color: #b3b3b3;
+}
+
+.help-block {
+	display: block;
+}
+.help-inline {
+	display:inline-block;
+	padding-left: 5px;
+	vertical-align: middle;
+
+	/* for IE7 */
+	*display: inline;
+	*zoom: 1;
+}
+
+.text-warning {
+	color: #c09853;
+}
+.text-title {
+	color: #ed7020;
+}
+.text-error {
+	color: #ff0000;
+}
+.text-tips {
+	color: #ed7020;
+}
+.text-info{
+	color: #3a87ad;
+}
+.text-success{
+	color: #468847;
+}
+.text-tip {
+	color:#676767;
+	cursor:default;
+}
+
+/*============== table ==============*/
+.table {
+	width: 100%;
+	margin: 18px 0px;
+}
+.table th, .table td {
+	padding: 4px;
+	padding-left: 8px;
+	border: 1px solid #dddddd;
+	line-height: 20px;
+	text-align: left;
+	vertical-align:middle;
+}
+.table th {
+	background-color: #f5f5f5;
+	font-weight: 500;
+	font-size: 13px;
+}
+
+.table-fixed {
+	table-layout: fixed;
+}
+.table-fixed  tr  td.fixed, .table-fixed  tr  th.fixed {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: keep-all;
+	white-space: nowrap;
+}
+.table-fixed  tr  td[title], .table-fixed  tr  th[title] {
+	cursor: pointer;
+}
+
+/*============== button ==============*/
+.btn {
+	display: inline-block;
+	width: auto;
+	padding: 3px 14px;
+	border: 1px solid #ccc;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	border-bottom-color: #b3b3b3;
+	background-color: #f4f4f4;
+	line-height: 20px;
+	color: #333333;
+	font-size: 14px;
+	text-align: center;
+	vertical-align: middle;
+	overflow: visible;
+	cursor: pointer;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e3e3e3));
+	background-image: -webkit-linear-gradient(top, #ffffff, #e3e3e3);
+	background-image: -o-linear-gradient(top, #ffffff, #e3e3e3);
+	background-image: linear-gradient(to bottom, #ffffff, #e3e3e3);
+	background-image: -moz-linear-gradient(top, #ffffff, #e3e3e3);
+	-webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+			border-radius: 4px;
+
+
+	/* For ie7, ie8 */
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe3e3e3', GradientType=0);
+
+	/* For ie7 */
+	*height: 30px;
+	*display: inline;
+	*margin-left: .3em;
+	*zoom: 1;
+
+}
+
+/* Opera and Firefcx nosupport change line-height, default line-height is 16px*/
+input.btn {
+	line-height: 16px;
+	padding: 5px 14px;
+}
+
+.btn-em {
+	border-color: #777;
+	border-bottom-color: #777;
+}
+
+.btn:hover,
+.btn:focus {
+	border: 1px solid #ed7020;
+}
+
+.btn.active,
+.btn:active {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn.disabled, .btn[disabled] ,
+.btn-em.disabled, .btn-em[disabled]  {
+	border: 1px solid #ccc;
+	background-image: none;
+	cursor: default;
+	opacity: 0.65;
+	filter: alpha(opacity=65);
+}
+
+.btn.disabled:hover, .btn[disabled]:hover {
+  border: 1px solid #ccc;
+}
+
+.btn-icon {
+	font-size: 20px;
+	font-weight: bold;
+	margin-left: 20px;
+}
+.btn-add {
+	color: green;
+}
+
+.btn-remove {
+	color: red;
+}
+
+.btn-large {
+	padding: 9px 16px;
+	border-radius: 5px;
+	font-size: 16px;
+	line-height: normal;
+}
+
+.btn-small {
+	padding: 3px 12px;
+	font-size: 13px;
+	line-height: 18px;
+}
+
+.btn-mini {
+	padding: 2px 6px;
+	font-size: 12px;
+	line-height: 17px;
+}
+
+.btn-link{
+	margin-top:15px;
+	text-decoration:none;
+}
+
+.btn-group {
+	text-align: center;
+	margin-top: 20px;
+}
+.btn-group .btn-link,
+.btn-group .btn {
+	margin-left: 15px;
+}
+
+.btn-group-right {
+	text-align: right;
+}
+
+.btn-group-right .btn-link,
+.btn-group-right .btn {
+	margin-right: 15px;
+}
+
+/* input append */
+.caret {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	vertical-align: top;
+	border-top: 4px solid #000000;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	content: "";
+	margin-top:8px;
+}
+
+.input-append {
+	display:inline-block;
+	float:left;
+}
+.input-append input {
+	float:left;
+}
+
+.input-select {
+	position:relative;
+	width:100%;
+	z-index: 100;
+}
+
+.input-append + .help-inline, input[type="button"] + .help-inline {
+	margin-left:14px;
+}
+
+
+
+.input-append>input {
+-webkit-border-radius:4px 0 0 4px ;
+       -moz-border-radius: 4px 0 0 4px;
+			border-radius:4px 0 0 4px;
+display:inline-block;
+}
+
+.input-append > .btn-group {
+	margin-top:0px;
+	width:30px;
+	height:28px;
+	white-space: nowrap;
+	word-spacing: 0px;
+	margin-left:0px;
+	display:inline-block;
+}
+.input-append > .btn-group > .btn-small {
+	margin-left:0px;
+	line-height:20px;
+	border-left:0px none;
+	-webkit-border-radius: 0 4px 4px 0;
+		-moz-border-radius: 0 4px 4px 0;
+			border-radius: 0 4px 4px 0;
+	display:inline-block;
+}
+
+.input-append > .btn-group > .btn-small:hover{
+	border:1px solid #cccccc;
+	border-left:0px none;
+}
+/*============== layout ==============*/
+.container {
+	width: 980px;
+}
+[class*='span'] {
+	float: left;
+	min-height: 1px;
+	margin-left: 20px;
+}
+
+/* for IE 6 */
+.span1, .span2, .span3, .span4, .span5, .span6,
+.span7, .span8, .span9, .span10, .span11, .span12 {
+	_float: left;
+	_height: 1px;
+	_margin-left: 20px;
+}
+
+.span12{width: 940px;}
+.span11{width: 860px;}
+.span10{width: 780px;}
+.span9{width: 700px;}
+.span8{width: 620px;}
+.span7{width: 540px;}
+.span6{width: 460px;}
+.span5{width: 380px;}
+.span4{width: 300px;}
+.span3{width: 220px;}
+.span2{width: 140px;}
+.span1{width: 60px;}
+
+.offset12 {margin-left: 980px;}
+.offset11 {margin-left: 900px;}
+.offset10 {margin-left: 820px;}
+.offset9 {margin-left: 740px;}
+.offset8 {margin-left: 660px;}
+.offset7 { margin-left: 580px;}
+.offset6 { margin-left: 500px;}
+.offset5 {margin-left: 420px;}
+.offset4 {margin-left: 340px;}
+.offset3 {margin-left: 260px;}
+.offset2 {margin-left: 180px;}
+.offset1 {margin-left: 100px;}
+
+.container{
+	margin-right: auto;
+	margin-left: auto;
+
+	/* For ie7 */
+	*zoom: 1;
+}
+.container:before, .container:after {
+	display: table;
+	line-height: 0;
+	content: '';
+}
+.container:after {
+	clear:both;
+}
+
+.row {
+	*zoom: 1;
+}
+
+.row:before,
+.row:after {
+	display: table;
+	line-height: 0;
+	content: "";
+}
+.row:after {
+	clear: both;
+}
+
+.row [class*="span"]:first-child {
+  margin-left: 0;
+}
+
+
+/* Imasge icons */
+.icons, .img-icons{
+	background-image: url(../img/img-icons.png);
+	background-repeat: no-repeat;
+	border: none;
+}
+.icons {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+}
+
+.icons-signal-1 {
+	background-position: -2px  -263px;
+}
+.icons-signal-2 {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	background-position: -27px -263px;
+}
+.icons-signal-3 {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	background-position: -2px  -287px;
+}
+.icons-signal-4 {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	background-position: -27px -287px;
+}
+.icons-signal-5 {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	background-position: -2px -311px;
+}
+
+
+/***************************** UI Dialog *********************************/
+.overlay {
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	margin: 0;
+	z-index: 2999;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.50;
+	filter: alpha(opacity=50);
+	-moz-opacity: 0.5;
+
+	/* for ie6 ,does not work with position fixed*/
+	_position: absolute;
+    _top: expression((0 + (ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop)) + 'px');
+    _right: expression((0 + (ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft)) + 'px');
+	_height: 980px;
+}
+.dialog {
+	position: fixed;
+	z-index: 3000;
+	top: 30%;
+	left: 40%;
+	width: 360px;
+	border: 1px solid #666;
+	background-color: #fff;
+	text-align: right;
+	color: #000;
+	font-size: 12px;
+
+	/* for ie6 */
+	_position: absolute;
+}
+.dialog-title {
+	height: 36px;
+	padding-left: 14px;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fafafa), to(#d6d6d6));
+	background-image: -webkit-linear-gradient(top, #fafafa, #d6d6d6);
+	background-image: -o-linear-gradient(top, #fafafa, #d6d6d6);
+	background-image: linear-gradient(to bottom, #fafafa, #d6d6d6);
+	background-image: -moz-linear-gradient(top, #fafafa, #d6d6d6);
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fffafafa', endColorstr='#ffd6d6d6', GradientType=0);
+	color: #ed7020;
+	line-height: 36px;
+	text-align: left;
+	font-size: 14px;
+	font-weight: bold;
+	overflow: hidden;
+}
+.dialog-title span{
+	float: left;
+}
+.dialog .close {
+	float: right;
+	padding: 0px 14px;
+	margin-right: 4px;
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 20px;
+	color: #666;
+	text-shadow: 0 1px 0 #ffffff;
+}
+.dialog .close:hover {
+	border: 1px solid #ccc;
+	color: #ed7020;
+}
+.dialog-content {
+	padding: 10px 16px;
+	text-align: left;
+}
+.dialog-content-massage {
+	padding: 20px 16px;
+}
+.dialog-content p {
+	text-align: left;
+}
+
+.dialog .dialog-btn-group {
+	border-top: 1px solid #ccc;
+	padding: 6px;
+}
+.dialog .dialog-btn-group .btn {
+	margin-left: 12px;
+}
+
+/* Textboxs */
+.textboxs {
+	display: inline-block;
+	margin-left: -1px;
+	border: 1px solid #fff;
+}
+.textboxs input {
+	text-align: center;
+	margin-left: 1px;
+}
+.textboxs input:first-child,
+.textboxs .first {
+	margin-left: 0;
+}
+
+/*******data Check*******/
+.validatebox-em {
+	position: relative;
+	margin: 0;
+	width: 0;
+	min-width: 0;
+	height: 0;
+	min-height: 0;
+}
+
+.validatebox-tip {
+  position: absolute;
+  width: 240px;
+  height: auto;
+  visibility: hidden;
+  z-index: 999;
+}
+
+.validatebox-em .validatebox-tip{
+	left: 1px;
+	top: 0px;
+}
+.validatebox-tip-content {
+  display: inline-block;
+  position: absolute;
+  top: -3px;
+  left: 8px;
+  max-width: 240px;
+  border-width: 1px;
+  border-style: solid;
+  padding: 3px 5px;
+  z-index: 9900001;
+  font-size: 12px;
+}
+.validatebox-tip-pointer {
+  display: inline-block;
+  position: absolute;
+  width: 8px;
+  height: 16px;
+  left: 1px;
+  top: 0px;
+  z-index: 9900002;
+}
+
+.validatebox-invalid,
+input.validatebox-invalid,
+input.validatebox-invalid:focus {
+  border-color: #f00;
+}
+
+.validatebox-invalid input.text {
+	-webkit-border-radius: 0;
+	   -moz-border-radius: 0;
+			border-radius: 0;
+}
+
+.validatebox-tip-pointer {
+  background: url('../img/validatebox_arrows.png') no-repeat -4px center;
+}
+.validatebox-tip-content {
+  border-color: #CC9933;
+  background-color: #FFFFCC;
+  color: #000;
+}
+
+/* Utilities */
+.f14 {
+	font-size:14px;
+}
+
+.cursor-p {
+	cursor:pointer;
+}
+
+.cb {
+	clear:both;
+}
+.none {
+	display:none
+}
+.fl {
+	float:left;
+	display:inline-block;
+}
+.fr {
+	float: right;
+	display: inline-block;
+}
+.clearfix {
+	*zoom: 1;
+}
+
+.clearfix:before,
+.clearfix:after {
+	display: table;
+	line-height: 0;
+	content: "";
+}
+.clearfix:after {
+	clear: both;
+}
+
+/*============================ dropdown ==============================*/
+.dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left:0px;
+	min-width:100%;
+	white-space: nowrap;
+	*width:186px;
+	z-index: 100;
+	display:none;
+	padding: 5px 0;
+	margin: 1px 0 0;
+	list-style: none;
+	background-color: #ffffff;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	background-clip: padding-box;
+	text-color:#333333;
+}
+
+.dropdown-menu li {
+	margin:0;
+	text-align:left;
+}
+.divider {
+	border-top:1px solid #cccccc;
+	height:1px;
+}
+
+.dropdown-menu li a {
+	display: block;
+	font-size:14px;
+	color:#333333;
+	cursor:pointer;
+	padding:3px 8px;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+	color: #fff;
+	text-decoration: none;
+	background-color: #ed7020;
+}
+
+.info-block {
+	display:inline-block;
+	font-size:14px;
+	padding:0;
+	padding-top:4px;
+	margin-bottom:0px;
+	line-height:22px;
+}
+
+/* reboot and upgrading */
+#gbx_overlay {
+	position: fixed;
+	left: 0;
+	top: 0;
+	margin: 0;
+	z-index: 2999;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	-moz-opacity: 0.5;
+
+	_position: absolute;
+}
+#loading_div {
+	display: none;
+	position: fixed;
+	z-index: 3000;
+	height: 150px;
+	width: 260px;
+	background-color: #363636;
+	text-align: center;
+	color: #fff;
+	font-size: 12px;
+
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#545454), to(#414141));
+	background-image: -webkit-linear-gradient(top, #545454, #414141);
+	background-image: -o-linear-gradient(top, #545454, #414141);
+	background-image: linear-gradient(to bottom, #545454, #414141);
+	background-image: -moz-linear-gradient(top, #545454, #414141);
+
+
+	/* For ie7, ie8 */
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ff545454', endColorstr='#ff414141', GradientType=0);
+}
+#loading_div #loadding , #upgrading {
+	width: 200px;
+	height: 24px;
+	background-color: #fff;
+	display: inline-block;
+	text-align: left;
+	margin-top: 50px;
+}
+#loading_div #load_pc {
+	background: #ed7020 center repeat-x;
+	height: 24px;
+	display: inline-block;
+}
+#loading_div #loading_text{ margin-top: 5px;}
+#loading_div #upgrading{ width: 260px;}
+#loading_div #upgrade_pc{
+	background: #ed7020 center repeat-x;
+	height: 24px;
+	display: inline-block
+}
+
+
+#ajax-massage {
+	position: fixed;
+	z-index: 2002;
+	top: 55px;
+	left: 44%;
+	width: 220px;
+	padding: 12px;
+	background: #ffcc00;
+	color: #630;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	-webkit-border-radius: 0 0 4px 4px;
+	   -moz-border-radius: 0 0 4px 4px;
+			border-radius: 0 0 4px 4px;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ed7020), to(#ffcc00));
+	background-image: -webkit-linear-gradient(top, #ed7020, #ffcc00);
+	background-image: -o-linear-gradient(top, #ed7020, #ffcc00);
+	background-image: linear-gradient(to bottom, #ed7020, #ffcc00);
+	background-image: -moz-linear-gradient(top, #ed7020, #ffcc00);
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffed7020', endColorstr='#ffffcc00', GradientType=0);
+}
+
+/*hidden  fileUpLoadBtn*/
+.controls .fileUpLoadBtn {
+	position: absolute;
+	display:inline-block;
+	opacity:0;
+	filter: alpha(opacity=0);
+	width:87px;
+	height:28px;
+	cursor: pointer;
+	font-size: 18px;
+	padding:0;
+}
+
+/* Specific pages */
+/*============================ index ==============================*/
+.index-html {
+	overflow-y: scroll;
+	/* overflow-x: hidden; */
+	background-color: #d7d7d7;
+}
+.index-body {
+	position: relative;
+	background-color: #d7d7d7;
+}
+/*============== head ==============*/
+.masthead {
+	position: fixed;
+	background: #ed7020;
+	top: 0;
+	right: 0;
+	left: 0;
+	min-width: 1000px;
+	z-index: 1000;
+}
+.masthead .footer {
+	height: 24px;
+	background: #d7d7d7;
+}
+.head-inner {
+	padding: 5px 0;
+}
+.masthead .easy-logo {
+	float: right;
+	width: 110px;
+	height: 45px;
+	/*background: url(../img/icon-easy.png) no-repeat;*/
+}
+.head-inner .brand {
+	float: left;
+	width: 200px;
+	height: 45px;
+	background: url(../img/tenda-logo-big.png) no-repeat 0 0;
+}
+
+.wrap {
+	height: 100%;
+}
+.wrap .container {
+	position: relative;
+	background-color: #f2f2f2;
+	min-height: 100%;
+}
+
+.aside-nav {
+	width: 220px;
+	margin-left: 0;
+	border-right: 1px solid #ccc;
+	background-color: #e5e5e5;
+}
+.main-content {
+	width: 713px;
+	margin-left: 221px;
+	padding: 0 26px 0 20px;
+	background-color: #f2f2f2;
+}
+
+/* Fixed top and bottom */
+.fixed-top {
+	position: fixed;
+	z-index: 200;
+	top: 79px;
+	height: 30px;
+	width: 100%;
+	background:#d7d7d7 url(../img/img-radius.png) no-repeat -1px -35px;
+}
+
+.fixed-bottom {
+	position: fixed;
+	bottom: 0;
+	z-index: 200;
+	height: 66px;
+	background:#d7d7d7 url(../img/img-radius.png) no-repeat -1px -38px;
+}
+.fixed-bottom  .aside-nav,
+.fixed-bottom  .main-content {
+	background: none;
+	height: 40px;
+}
+.fixed-bottom  .main-content {
+	border-top: 1px solid #ccc;
+	height: 39px;
+}
+.fixed-bottom  .main-content .btn {
+	float: right;
+	margin: 6px 0 8px 12px;
+	height: 28px;
+}
+
+/* Main aside navigation */
+.aside-nav-main {
+	position: absolute;
+	left: 0;
+	border-right: 1px solid #ccc;
+	background-color: #e5e5e5;
+	min-height: 100%;
+	font-family: 'Microsoft YaHei';
+	font-size: 15px;
+}
+.aside-nav-main ul {
+	position: fixed;
+	width: 220px;
+	top: 109px;
+	background-color: #e5e5e5;
+	border-bottom: 1px solid #d7d7d7;
+
+	/* For	IE7 */
+	*margin-top: 5px;
+}
+
+.nav-list .nav-icon {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	background-color: #ed7020;
+}
+.nav-list{
+	border-top: 1px solid #d7d7d7;
+	border-bottom: none;
+}
+.nav-list a{
+	display: block;
+	padding: 18px 20px;
+	padding-left: 90px;
+	color: #666;
+	border-top: none;
+	border-bottom: none;
+
+	/* For ie7 */
+	*zoom: 1;
+}
+
+.nav-list .icons-internet {
+	background-position: 40px 0;
+}
+.nav-list .icons-control {
+	background-position: 40px -64px;
+}
+.nav-list .icons-wireless {
+	background-position: 40px -128px;
+}
+.nav-list .icons-config {
+	background-position: 40px -192px;
+}
+.nav-list .icons-wifi {
+	background-position: 40px -434px;
+}
+.nav-list .icons-signal {
+	background-position: 40px -498px;
+}
+
+.nav-list a:hover{
+	background-color: #f2f2f2;
+	color: #ed7020;
+}
+.nav-list a.active{
+	margin-right: -1px;
+	background-color: #f2f2f2;
+	color: #ed7020;
+	font-weight: 600;
+}
+/*多国语言去掉图标节省内存
+.weixin {
+	cursor: default;
+}
+
+#weixin-weibo {
+	margin-top: 370px;
+	border-bottom: none;
+}
+#weixin-weibo a,
+#weixin-weibo a:active,
+#weixin-weibo a:visited {
+	position: relative;
+	display: block;
+	padding: 5px;
+	padding-left: 50px;
+	color: #666;
+}
+#weixin-weibo .weibo:hover {
+	text-decoration: underline;
+}
+#weixin-weibo img {
+	vertical-align: middle;
+}
+#weixin-weibo span {
+	text-align: center;
+}
+
+#weixin-weibo .two-dimension-code {
+	display: none;
+	position: absolute;
+	width: 100px;
+	background-color: #fff;
+	top: -117px;
+	left: 36px;
+	border: 1px solid #ccc;
+	padding: 5px;
+	padding-top: 2px;
+	z-index: 9999;
+
+}
+#weixin-weibo a:hover .two-dimension-code {
+	display: block;
+}*/
+
+
+/* Main container */
+#main {
+
+	/* For IE7 */
+	*padding-bottom: 80px;
+}
+.row .main-content {
+	float: left;
+	margin-top: 104px;
+	margin-bottom: 70px;
+	clear: both;
+
+	/* For IE7 */
+	*margin-bottom: 140px;
+}
+.main-content p {
+	margin-left: 14px;
+	margin-left: 14px;
+	font-size: 14px;
+}
+.main-content h2 {
+	margin-top: 8px;
+	margin-left: 14px;
+	font-size: 14px;
+	font-weight: 600;
+	color:#666666;
+}
+.fieldset-section {
+	margin: 6px 0 20px 0;
+}
+.main-content fieldset {
+	padding: 14px;
+	padding-bottom: 2px;
+	border: 1px solid #ddd;
+	border-bottom: none;
+	border-top: none;
+	background-color: #fff;
+}
+.fieldset-bottom, .fieldset-top {
+	height: 8px;
+	width: 713px;
+}
+.fieldset-top {
+	background:#f2f2f2 url(../img/img-radius.png) no-repeat -1px 0;
+}
+.fieldset-bottom {
+	background:#f2f2f2 url(../img/img-radius.png) no-repeat -1px -22px;
+}
+
+p.help-block {
+	margin-left: 160px;
+	margin-top: -6px;
+	margin-bottom: 18px;
+}
+
+/* Redirect_set_wlsec And login*/
+.login {
+	width:382px;
+	margin: 0 auto;
+	margin-top: 180px;
+	border:1px solid #cccccc;
+	background-color: #fff
+}
+.login .container{
+	width:260px;
+	text-align: left;
+}
+.login-massage {
+	margin: 10px auto;
+	width: 260px;
+	height: 20px;
+	font-size: 14px;
+}
+.login .text {
+	width: 173px;
+}
+.login-title{
+	height:40px;
+	padding-left:18px;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fafafa), to(#d6d6d6));
+	background-image: -webkit-linear-gradient(top, #fafafa, #d6d6d6);
+	background-image: -o-linear-gradient(top, #fafafa, #d6d6d6);
+	background-image: linear-gradient(to bottom, #fafafa, #d6d6d6);
+	background-image: -moz-linear-gradient(top, #fafafa, #d6d6d6);
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fffafafa', endColorstr='#ffd6d6d6', GradientType=0);
+	color: #ed7020;
+	line-height: 40px;
+	text-align: left;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.login #pwd_err_msg {
+	margin-top: 12px;
+	text-align: left;
+}
+.login .control-label{
+	font-size: 15px;
+	width: 60px;
+	color: #000;
+	text-align: left;
+	font-weight: bold;
+}
+.login .controls{
+	margin-left: 70px;
+
+	/* For IE7 */
+	*margin-left: 0;
+	*padding-left: 8px;
+}
+.login .btn-group {
+	margin: 30px 0;
+}
+.login .btn-group .btn-link{
+	margin-top: 0;
+}
+
+/* Login */
+.login-body {
+	position: relative;
+	min-height: 100%;
+	text-align: center;
+	background-color: #d7d7d7;
+}
+.login-body .masthead {
+	position: absolute;
+}
+.login-body .btn {
+
+}
+.login-body .password-box .text {
+	width: 210px;
+	_width: 204px;
+}
+.login-body .btn-group {
+	margin: 10px 0;
+	margin-bottom: 40px;
+}
+.login-body .btn-group .btn {
+	width: 260px;
+	margin-left: 0;
+	padding: 8px;
+}
+.login-body .login .control-label{
+	width: 35px;
+	height: 28px;
+	background: url(../img/img-icons.png) no-repeat 4px -393px;
+}
+.login-body .login .controls{
+	margin-left: 35px;
+
+	/* For IE7 */
+	*margin-left: 0;
+	*padding-left: 0;
+}
+
+.password-box input.text{
+	padding: 6px;
+	border: none;
+	-webkit-border-radius: none;
+       -moz-border-radius: none;
+			border-radius: none;
+	-webkit-box-shadow: none;
+	   -moz-box-shadow: none;
+			box-shadow: none;
+	-webkit-transition: none;
+       -moz-transition: none;
+		 -o-transition: none;
+			transition: none;
+
+	/* For IE6 */
+	_border: 1px solid #fff;
+}
+
+.password-box {
+	display: inline-block;
+	position: relative;
+	border: 1px solid #ccc;
+	-webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+			border-radius: 3px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+       -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+		 -o-transition: border linear 0.2s, box-shadow linear 0.2s;
+			transition: border linear 0.2s, box-shadow linear 0.2s;
+}
+.password-box-focus {
+	border: 1px solid #ed7020;
+	background: #fff;
+	outline: none;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 102, 51, .6);
+       -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 102, 51, .6);
+			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 102, 51, .6);
+}
+#password-placeholder {
+	display: none;
+	position: absolute;
+	color: #ccc;
+	top: 6px;
+	left: 42px;
+	font-size: 15px;
+}
+
+#forgetpwd {
+	display: none;
+	position:  relative;
+	color: #676767;
+	margin-left: 9px;
+	cursor: default;
+	font-size: 13px;
+}
+
+#forgetpwd .tip {
+	display: none;
+	position: absolute;
+	top:  -90px;
+	left: 70px;
+	border: 1px solid #ccc;
+	padding: 5px;
+	width: 300px;
+	background-color: #fff;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+#forgetpwd:hover .tip{
+	display: block;
+}
+
+/* redirect_set_wlsec */
+.redirect-body .login{
+	width:480px;
+}
+.redirect-body {
+	background-color: #d7d7d7;
+}
+.redirect-body .login-title {
+	font-size: 16px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	height: auto;
+	line-height: normal;
+}
+.redirect-body .login .container  {
+	margin-top: 20px;
+	width: 380px
+}
+
+.redirect-body .login .control-label {
+	width: 150px;
+}
+.redirect-body .login .text {
+	width: 210px;
+}
+/* net control */
+.switch {
+
+    display: block;
+    background: url(../img/btn-switch.png) no-repeat right center;
+    width: 70px;
+    height: 30px;
+}
+
+.switch.off {
+    background-position: left;
+}
+
+/* Wireless repeaters */
+#ssidInfo,
+#ssid-text {
+	color: #333;
+}
+
+/* wifi_control.htm */
+#week-content label {
+  margin-right: 10px;
+}
+#wifi-control .controls .clearfix{
+  margin-bottom: 8px;
+}
+
+
+/* System */
+#MAC_CHECK .checkbox {
+	margin-right: 0;
+}
+#curTime {
+	display: inline-block;
+	padding-top: 4px;
+	margin-right: 20px;
+}
+#timeZone {
+	width: 470px;
+}
+/* loading */
+.img-loading {
+	vertical-align: middle;
+	margin-left: 7px;
+}
+.select-net {
+	line-height: 40px;
+}
+
+/*new with wifi-control*/
+.text-bridge {
+	margin: 0 1px;
+	font-size: 13px;
+	vertical-align: middle;
+}
+/*!
+ * REasy Responsive v1.0.0
+ */
+@media (max-width: 980px) {
+  .masthead,
+  .fixed-top,
+  .aside-nav-main ul,
+  .fixed-bottom {
+    position: absolute;
+  }
+}
+
+@media (max-height: 605px) {
+	.aside-nav-main ul,
+	.fixed-bottom {
+		position: absolute;
+	}
+
+}
+

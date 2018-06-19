@@ -1,0 +1,117 @@
+﻿<po>
+	<!--system_status.asp-->
+	<message msgid="Dynamic IP" msgstr="DHCP" />
+	<message msgid="Disconnected" msgstr="Disconnected" />
+	<message msgid="Connecting" msgstr="Connecting" />
+	<message msgid="Connected" msgstr="Connected" />
+	<message msgid="WAN Status" msgstr="WAN Status" />
+	<message msgid="Subnet Mask" msgstr="Subnet Mask" />
+	<message msgid="subnet mask" msgstr="subnet mask" />
+	<message msgid="Gateway" msgstr="Gateway" />
+	<message msgid="gateway" msgstr="gateway" />
+	<message msgid="DNS server" msgstr="DNS server" />
+	<message msgid="Alternate DNS Server" msgstr="Alternate DNS Server" />
+	<message msgid="Release" msgstr="Release" />
+	<message msgid="Connect" msgstr="Connect" />
+	<message msgid="Disconnect" msgstr="Disconnect" />
+	<message msgid="LAN MAC Address" msgstr="LAN MAC Address" />
+	<message msgid="WAN MAC Address" msgstr="WAN MAC Address" />
+	<message msgid="System Time" msgstr="System Time" />
+	<message msgid="Running Time" msgstr="Running Time" />
+	<message msgid="Connected Client" msgstr="Connected Client" />
+	<message msgid="Hardware Version" msgstr="Hardware Version" />
+	<message msgid="Diagnose Connection Status" msgstr="Diagnose Connection Status" />
+	<message msgid="Please check hardware connection of the WAN port." msgstr="Please check hardware connection of the WAN port."/>
+	<message msgid="No response from your Internet Service Provider(ISP), please consult your ISP." msgstr="No response from your Internet Service Provider(ISP), please consult your ISP."/>
+	<message msgid="Authentication failed! Please check PPPoE Username and PPPoE Password." msgstr="Authentication failed! Please check PPPoE Username and PPPoE Password."/>
+	<message msgid="Connected to Internet successfully!" msgstr="Connected to Internet successfully!"/>
+	<message msgid="IP conflict!The LAN IP address will be changed into %s automatically and it will be the new login IP address." msgstr="IP conflict!The LAN IP address will be changed into %s automatically and it will be the new login IP address."/>
+	<message msgid="Idle time" msgstr="Idle time" />
+	<message msgid="The WAN gateway and the IP must be in the same network segment!" msgstr="The WAN gateway and the IP must be in the same network segment!" />
+	<message msgid="Please enter the valid User name and Password provided by your ISP." msgstr="Please enter the valid User name and Password provided by your ISP." />
+	<message msgid="Username" msgstr="Username" />
+	<message msgid="Time" msgstr="Time" />
+	<message msgid="Please specify valid time information!" msgstr="Please specify valid time information!" />
+	<message msgid="Start time must be earlier than end time!" msgstr="Start time must be earlier than end time!" />
+	<message msgid="IP address" msgstr="IP address" />
+	<message msgid="DNS Server" msgstr="DNS Server" />
+	<message msgid="alternate DNS server address" msgstr="alternate DNS server address" />
+	<message msgid="Please enter a valid server address!" msgstr="Please enter a valid server address!" />
+	<message msgid="Server Address" msgstr="Server Address" />
+	<message msgid="server address" msgstr="server address" />
+	<message msgid="Server IP address" msgstr="Server IP address" />
+	<message msgid="ISP gateway" msgstr="ISP gateway" />
+	<message msgid="Please enter an MTU value between 256 and 1500!" msgstr="Please enter an MTU value between 256 and 1500!" />
+	<message msgid="The default value is 1500. Do not modify it unless required by your ISP." msgstr="The default value is 1500. Do not modify it unless required by your ISP." />
+	<message msgid="The default value is 1492. Do not modify it unless required by your ISP." msgstr="The default value is 1492. Do not modify it unless required by your ISP." />
+	<message msgid="PPPoE Username" msgstr="PPPoE Username" />
+	<message msgid="PPPoE Password" msgstr="PPPoE Password" />
+	<message msgid="Server Name" msgstr="Server Name" />
+	<!--add-->
+	<message msgid="Service Name" msgstr="Service Name" />
+	<!--add-->
+	<message msgid="server name" msgstr="server name" />
+	<message msgid="service name" msgstr="service name" />
+	<message msgid="Select the corresponding connection mode according to your situation." msgstr="Select the corresponding connection mode according to your situation." />
+	<message msgid="Connect automatically: Connect automatically to the Internet after rebooting the system or connection failure." msgstr="Connect automatically: Connect automatically to the Internet after rebooting the system or connection failure." />
+	<message msgid="Connect on demand: Re-establish your connection to the Internet when there’s data transmitting." msgstr="Connect on demand: Re-establish your connection to the Internet when there’s data transmitting." />
+	<message msgid="Max Idle Time" msgstr="Max Idle Time" />
+	<message msgid="Wan_connected_Note" msgstr="Note: To use the &quot;Connect During Specified Time Period&quot; mode, you must set the &quot;Time Settings&quot; in &quot;Tools&quot; first." />
+	<message msgid="Connection Time: From" msgstr="Connection Time: From" />
+	<message msgid="Hours" msgstr="Hours" />
+	<message msgid="Minutes" msgstr="Minutes" />
+	<message msgid="To" msgstr="To" />
+	<message msgid="seconds" msgstr="seconds" />
+	<message msgid="Address Mode" msgstr="Address Mode" />
+	<message msgid="Only enter this information if instructed by ISP." msgstr="Only enter this information if instructed by ISP." />
+	<message msgid="Connect Manually: Require the user to manually connect to the Internet before each session." msgstr="Connect Manually: Require the user to manually connect to the Internet before each session." />
+	<message msgid="Connect During Specified Time Period: Connect automatically to Internet during a specified time length." msgstr="Connect During Specified Time Period: Connect automatically to Internet during a specified time length." />
+	<message msgid="MTU value! It must be numeric" msgstr="MTU value! It must be numeric" />
+	<message msgid="Static" msgstr="Static" />
+	<message msgid="Dynamic" msgstr="Dynamic" />
+	<!--mac_clone.asp-->
+	<message msgid="Please specify a valid MAC address!" msgstr="Please specify a valid MAC address!" />
+	<message msgid="The MAC address of %s is invalid! Please specify a valid MAC address!" msgstr="The MAC address of %s is invalid! Please specify a valid MAC address!" />
+	<!--wan_speed.asp-->
+	<message msgid="Choose The WAN Speed" msgstr="Choose The WAN Speed" />
+	
+	<!--lan.asp-->
+	<message msgid="Router's IP Address has been changed! Please update related settings!" msgstr="Router's IP Address has been changed! Please update related settings!" />
+	<message msgid="You have changed the IP address of this router, please click on OK to confirm this change. The router will reboot. After reboot, if the webpage doesn't update automatically, please renew your computer's connection to the router and then use the new IP address to login." msgstr="You have changed the IP address of this router, please click on &quot;OK&quot; to confirm this change. The router will reboot. After reboot, if the webpage doesn't update automatically, please renew your computer's connection to the router and then use the new IP address to login." />
+	<message msgid="This page is used to set the basic network parameters for LAN." msgstr="This page is used to set the basic network parameters for LAN." />
+
+	<!--wan_dns.asp-->
+	<message msgid="Primary DNS Address" msgstr="Primary DNS Address" />
+	<message msgid="Alternate DNS Address" msgstr="Alternate DNS Address" />
+	<message msgid="primary DNS address" msgstr="primary DNS address" />
+	<message msgid="alternate DNS address" msgstr="alternate DNS address" />
+	<message msgid="Enable Manual DNS Assignment" msgstr="Enable Manual DNS Assignment" />
+	<message msgid="Optional" msgstr="Optional" />
+	<message msgid="Note: To activate new settings, you must reboot the device." msgstr="Note: To activate new settings, you must reboot the device." />
+	
+	<!--lan_dhcps.asp-->
+	<message msgid="IP pool start address" msgstr="IP pool start address" />
+	<message msgid="IP pool end address" msgstr="IP pool end address" />
+	<message msgid="IP Pool Start Address" msgstr="IP Pool Start Address" />
+	<message msgid="IP Pool End Address" msgstr="IP Pool End Address" />
+	<message msgid="Please enter an IP pool start address that is smaller than the IP pool end address." msgstr="Please enter an IP pool start address that is smaller than the IP pool end address." />
+	<message msgid="One hour" msgstr="One hour" />
+	<message msgid="Two hours" msgstr="Two hours" />
+	<message msgid="Three hours" msgstr="Three hours" />
+	<message msgid="One day" msgstr="One day" />
+	<message msgid="Two days" msgstr="Two days" />
+	<message msgid="One week" msgstr="One week" />
+	<message msgid="Tenda 11N Wireless Router Login Screen" msgstr="Tenda 11N Wireless Router Login Screen" />
+	<message msgid="The router will reboot automatically!" msgstr="The router will reboot automatically!" />
+	
+	<!--lan_dhcp_clients.asp-->
+	<message msgid="Host Name" msgstr="Host Name" />
+	<message msgid="IP-MAC Binding" msgstr="IP-MAC Binding" />
+	<message msgid="NO." msgstr="NO." />
+	<message msgid="Up to 16 Address Reservations are supported!" msgstr="Up to 16 Address Reservations are supported!" />
+	<message msgid="Please don't add the LAN IP address or the IP address that already exists in the address Reservation table!" msgstr="Please don't add the LAN IP address or the IP address that already exists in the address Reservation table!" />
+	<message msgid="Please don't add MAC address that already exists in the address Reservation table!" msgstr="Please don't add MAC address that already exists in the address Reservation table!" />
+	<message msgid="Static Assignment" msgstr="Static Assignment" />
+	<message msgid="Add" msgstr="Add" />
+	<message msgid="MAC address" msgstr="MAC address" />
+</po>

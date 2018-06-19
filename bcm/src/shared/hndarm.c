@@ -1,0 +1,422 @@
+/*
+ * BCM43XX Sonics SiliconBackplane ARM core routines
+ *
+ * Copyright (C) 2010, Broadcom Corporation. All Rights Reserved.
+ * 
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+ * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+ * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+ * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * $Id: hndarm.c,v 1.71.2.3 2010-10-18 21:53:25 Exp $
+ */
+
+#include <typedefs.h>
+#include <bcmdefs.h>
+#include <osl.h>
+#include <bcmutils.h>
+#include <siutils.h>
+#include <hndsoc.h>
+#include <sbchipc.h>
+#include <hndcpu.h>
+#include <arminc.h>
+#include <sbhndarm.h>
+#include <hndpmu.h>
+#include <bcmdevs.h>
+#include <sbsocram.h>
+
+/* Global arm regs pointer */
+void *hndarm_armr = NULL;
+/* Global arm core rev */
+uint32 hndarm_rev = 0;
+
+#if defined(__ARM_ARCH_4T__)
+/* point to either arm7sr0_wait() or arm_wfi() */
+static void (*arm7s_wait)(si_t *sih) = NULL;
+
+/* Stub. arm7tdmi-s has only one IRQ */
+uint
+BCMINITFN(si_irq)(si_t *sih)
+{
+	return 0;
+}
+
+#if BCMCHIPID == BCM4328_CHIP_ID
+#ifdef HNDRTE_TEST
+static void
+arm7sr0_sleep(si_t *sih)
+{
+	W_REG(sih->osh, ARMREG(hndarm_armr, sleepcontrol), 1);
+	__asm__ __volatile__("nop; nop; nop; nop; nop");
+}
+#endif	/* HNDRTE_TEST */
+#endif	/* BCMCHIPID == BCM4328_CHIP_ID */
+
+void
+hnd_cpu_wait(si_t *sih)
+{
+	if (arm7s_wait != NULL) {
+		arm7s_wait(sih);
+		return;
+	}
+	while (1);
+}
+
+#elif defined(__ARM_ARCH_7M__)
+/*
+ * Map SB cores sharing the ARM IRQ0 to virtual dedicated OS IRQs.
+ * Per-port BSP code is required to provide necessary translations between
+ * the shared ARM IRQ0 and the virtual OS IRQs based on SB core flag.
+ *
+ * See sb_irq() for the mapping.
+ */
+static uint shirq_map_base = 0;
+
+/*
+ * Returns the ARM IRQ assignment of the current core. On Cortex-M3
+ * it's mapped 1-to-1 with the backplane flag:
+ *
+ *	IRQ 0 - shared by multiple cores based on isrmask register
+ *	IRQ 1 to 14 <==> flag + 1
+ *	IRQ 15 - serr
+ */
+static uint
+BCMINITFN(si_getirq)(si_t *sih)
+{
+	osl_t *osh;
+	void *regs;
+	uint flag;
+	uint idx;
+	uint irq;
+
+	osh = si_osh(sih);
+	flag = si_flag(sih);
+
+	idx = si_coreidx(sih);
+	regs = si_setcore(sih, ARM_CORE_ID, 0);
+	ASSERT(regs);
+
+	if (R_REG(osh, ARMREG(regs, isrmask)) & (1 << flag))
+		irq = ARMCM3_SHARED_INT;
+	else
+		irq = flag + 1;
+
+	si_setcoreidx(sih, idx);
+	return irq;
+}
+
+static void
+BCMINITFN(si_armcm3_serror_int)(si_t *sih, bool enable)
+{
+	osl_t *osh;
+	void *regs;
+	uint idx;
+	uint32 isrmask;
+	uint32 nmimask;
+	int irq = 15;
+
+	osh = si_osh(sih);
+	idx = si_coreidx(sih);
+
+	regs = si_setcore(sih, ARM_CORE_ID, 0);
+	isrmask = R_REG(osh, ARMREG(regs, isrmask));
+	nmimask = R_REG(osh, ARMREG(regs, nmimask));
+
+	if (enable) {
+		isrmask |= (1 << 31);
+		nmimask |= (1 << 31);
+		enable_arm_ints(ARMCM3_INT(irq));
+		W_REG(osh, ARMREG(regs, isrmask), isrmask);
+	}
+	else {
+		isrmask &= ~(1 << 31);
+		nmimask &= ~(1 << 31);
+		disable_arm_ints(ARMCM3_INT(irq));
+		W_REG(osh, ARMREG(regs, isrmask), isrmask);
+		W_REG(osh, ARMREG(regs, nmimask), nmimask);
+	}
+	si_setcoreidx(sih, idx);
+}
+/*
+ * Assigns the specified ARM IRQ to the specified core. Shared ARM
+ * IRQ 0 may be assigned more than once. ARM IRQ is enabled after
+ * the assignment.
+ */
+static void
+BCMATTACHFN(si_setirq)(si_t *sih, uint irq, uint coreid, uint coreunit)
+{
+	osl_t *osh;
+	void *regs;
+	uint32 flag;
+	uint idx;
+
+	osh = si_osh(sih);
+
+	idx = si_coreidx(sih);
+	regs = si_setcore(sih, coreid, coreunit);
+	ASSERT(regs);
+
+	flag = si_flag(sih);
+	ASSERT(irq == flag + 1 || irq == ARMCM3_SHARED_INT);
+
+	regs = si_setcore(sih, ARM_CORE_ID, 0);
+	ASSERT(regs);
+
+	if (irq != ARMCM3_SHARED_INT) {
+		uint32 isrmask = R_REG(osh, ARMREG(regs, isrmask)) & ~(1 << flag);
+		if (isrmask == 0)
+			disable_arm_ints(ARMCM3_INT(ARMCM3_SHARED_INT));
+		enable_arm_ints(ARMCM3_INT(flag + 1));
+		W_REG(osh, ARMREG(regs, isrmask), isrmask);
+	}
+	else {
+		disable_arm_ints(ARMCM3_INT(flag + 1));
+		enable_arm_ints(ARMCM3_INT(ARMCM3_SHARED_INT));
+		OR_REG(osh, ARMREG(regs, isrmask), (1 << flag));
+	}
+
+	si_setcoreidx(sih, idx);
+}
+
+/*
+ * Return the ARM IRQ assignment of the current core. If necessary
+ * map cores sharing the ARM IRQ0 to virtual dedicated OS IRQs.
+ */
+uint
+BCMINITFN(si_irq)(si_t *sih)
+{
+	uint irq = si_getirq(sih);
+	if (irq == ARMCM3_SHARED_INT && 0 != shirq_map_base)
+		irq = si_flag(sih) + shirq_map_base;
+	return irq;
+}
+
+void
+hnd_cpu_wait(si_t *sih)
+{
+	__asm__ __volatile__("wfi");
+}
+#endif	/* __ARM_ARCH_7M__ */
+
+/*
+ * Initializes clocks and interrupts. SB and NVRAM access must be
+ * initialized prior to calling.
+ */
+void
+BCMATTACHFN(si_arm_init)(si_t *sih)
+{
+	sbsocramregs_t *sr;
+	osl_t *osh;
+
+#ifdef EXT_CBALL
+	return;
+#endif	/* !EXT_CBALL */
+
+	osh = si_osh(sih);
+
+	/* Enable/Disable SOCRAM memory standby */
+	sr = si_setcore(sih, SOCRAM_CORE_ID, 0);
+	if (sr != NULL) {
+		uint32 bank;
+		uint32 rev;
+		uint32 port_type;
+
+		bank = (R_REG(osh, &sr->coreinfo) & SRCI_SRNB_MASK) >> SRCI_SRNB_SHIFT;
+		port_type = (R_REG(osh, &sr->coreinfo) & SRCI_PT_MASK) >> SRCI_PT_SHIFT;
+		ASSERT(bank);
+
+		/* SOCRAM standby is disabled by default in corerev >= 4 so
+		 * enable it with a fixed standby timer value equivelant to
+		 * 1.2ms of backplane clocks at 80Mhz. Use nvram variable
+		 * "ramstbydis" with non-zero value to use hardware default.
+		 */
+		rev = si_corerev(sih);
+		if ((rev >= 5) || (rev == 4 && (port_type == SRCI_PT_CM3AHB_OCP))) {
+			if (getintvar(NULL, "ramstbydis") == 0) {
+				uint32 ctlval = ISSIM_ENAB(sih) ? 8 : 0x17fff;
+				uint32 binfo;
+				bool standby = FALSE;
+				while (bank--) {
+					W_REG(osh, &sr->bankidx, bank);
+					if ((rev < 8) || (rev == 12))
+						standby = TRUE;
+					else {
+						binfo = R_REG(osh, &sr->bankinfo);
+						if (binfo & SOCRAM_BANKINFO_STDBY_MASK) {
+							if (binfo & SOCRAM_BANKINFO_STDBY_TIMER)
+								standby = TRUE;
+						}
+					}
+					if (standby) {
+						ctlval |=  (1 << SRSC_SBYEN_SHIFT);
+						ctlval |=  (1 << SRSC_SBYOVRVAL_SHIFT);
+						W_REG(osh, &sr->standbyctrl, ctlval);
+					}
+				}
+				/* disable whole memory standby */
+				AND_REG(osh, &sr->pwrctl, ~(1 << SRPC_PMU_STBYDIS_SHIFT));
+			}
+		}
+#if BCMCHIPID == BCM4328_CHIP_ID || BCMCHIPID == BCM4325_CHIP_ID
+		else if (rev == 1 || rev == 2) {
+			while (bank--) {
+				W_REG(osh, &sr->bankidx, bank);
+				W_REG(osh, &sr->standbyctrl, (1 << SRSC_SBYOVR_SHIFT));
+			}
+		}
+#endif	/* BCMCHIPID == BCM4328_CHIP_ID || BCMCHIPID == BCM4325_CHIP_ID */
+		/* else {} */
+	}
+
+	/* Cache ARM core register base and core rev */
+	hndarm_armr = si_setcore(sih, ARM_CORE_ID, 0);
+	ASSERT(hndarm_armr);
+	hndarm_rev = si_corerev(sih);
+
+#if defined(__ARM_ARCH_7M__)
+
+	/* Make CM3 Not Sleeping clk req to be HT. 	*/
+	/* In simpler words: 				*/
+	/* CM3 does not request for HT by default 	*/
+	/* But the dongle code almost assume e.g., OSL_DELAY */
+	/* that we are running on HT clk		*/
+	/* and so we set the CM3 to request HT when it is not sleeping */
+
+
+	OR_REG(osh, ARMREG(hndarm_armr, corecontrol), (1 << ACC_NOTSLEEPINGCLKREQ_SHIFT));
+
+	/* don't reset on any serror but generate an interrupt */
+	OR_REG(osh, ARMREG(hndarm_armr, corecontrol), (1 << 1));
+
+#endif	/* __ARM_ARCH_7M__ */
+
+	/* Now that it's safe, allow ARM to request HT */
+	W_REG(osh, ARMREG(hndarm_armr, clk_ctl_st), 0);
+	SPINWAIT(((R_REG(osh, ARMREG(hndarm_armr, clk_ctl_st)) & CCS_HTAVAIL) == 0),
+	         PMU_MAX_TRANSITION_DLY);
+	/* Need to assert if HT is not available by now */
+	ASSERT(R_REG(osh, ARMREG(hndarm_armr, clk_ctl_st)) & CCS_HTAVAIL);
+
+	/* Initialize CPU sleep/wait mechanism */
+#if defined(__ARM_ARCH_4T__)
+	switch (hndarm_rev) {
+
+#if BCMCHIPID == BCM4328_CHIP_ID
+	case 0:
+		OR_REG(osh, ARMREG(hndarm_armr, clk_ctl_st), CCS_FORCEILP);
+#ifdef HNDRTE_TEST
+		arm7s_wait = arm7sr0_sleep;
+#else
+		/* arm7s_wait = NULL; */
+#endif
+		break;
+#endif	/* 4328 */
+#if BCMCHIPID == BCM4325_CHIP_ID
+	case 1:
+#ifdef HNDRTE_TEST
+		arm7s_wait = arm_wfi;
+#else
+		/* arm7s_wait = NULL; */
+#endif
+		break;
+#endif	/* 4325 */
+	default:
+		arm7s_wait = arm_wfi;
+		break;
+	}
+#elif defined(__ARM_ARCH_7M__)
+
+	/* No need to setup wait for this architecture */
+
+#endif	/* ARM */
+
+	/* Initliaze interrupts/IRQs */
+#if defined(__ARM_ARCH_4T__)
+	W_REG(osh, ARMREG(hndarm_armr, irqmask), 0xffffffff);
+	W_REG(osh, ARMREG(hndarm_armr, fiqmask), 0);
+
+#elif defined(__ARM_ARCH_7M__)
+	switch (CHIPID(sih->chip)) {
+	case BCM4329_CHIP_ID:
+		si_setirq(sih, ARMCM3_SHARED_INT, CC_CORE_ID, 0);
+		si_setirq(sih, ARMCM3_SHARED_INT, D11_CORE_ID, 0);
+		si_setirq(sih, ARMCM3_SHARED_INT, SDIOD_CORE_ID, 0);
+		break;
+	case BCM4319_CHIP_ID:
+		si_setirq(sih, ARMCM3_SHARED_INT, CC_CORE_ID, 0);
+		si_setirq(sih, ARMCM3_SHARED_INT, D11_CORE_ID, 0);
+		si_setirq(sih, ARMCM3_SHARED_INT, SDIOD_CORE_ID, 0);
+		si_setirq(sih, ARMCM3_SHARED_INT, USB20D_CORE_ID, 0);
+		break;
+	case BCM4322_CHIP_ID:	case BCM43221_CHIP_ID:	case BCM43231_CHIP_ID:
+	case BCM4342_CHIP_ID:
+	case BCM43235_CHIP_ID:	case BCM43236_CHIP_ID:	case BCM43238_CHIP_ID:
+	case BCM43234_CHIP_ID:
+		si_setirq(sih, ARMCM3_SHARED_INT, CC_CORE_ID, 0);
+		si_setirq(sih, ARMCM3_SHARED_INT, D11_CORE_ID, 0);
+		si_setirq(sih, ARMCM3_SHARED_INT, USB20D_CORE_ID, 0);
+		break;
+	case BCM4336_CHIP_ID:
+	case BCM43237_CHIP_ID:
+		si_setirq(sih, ARMCM3_SHARED_INT, CC_CORE_ID, 0);
+		si_setirq(sih, ARMCM3_SHARED_INT, D11_CORE_ID, 0);
+		si_setirq(sih, ARMCM3_SHARED_INT, SDIOD_CORE_ID, 0);
+		si_armcm3_serror_int(sih, TRUE);
+		break;
+	case BCM4330_CHIP_ID:
+		if (CST4330_CHIPMODE_SDIOD(sih->chipst))
+			si_setirq(sih, ARMCM3_SHARED_INT, SDIOD_CORE_ID, 0);
+		else
+			si_setirq(sih, ARMCM3_SHARED_INT, USB20D_CORE_ID, 0);
+		si_armcm3_serror_int(sih, TRUE);
+		break;
+	default:
+		/* fix interrupt for the new chips! */
+		ASSERT(0);
+		break;
+	}
+
+#endif	/* ARM */
+
+	/* Enable reset & error loggings */
+	OR_REG(osh, ARMREG(hndarm_armr, resetlog), (SBRESETLOG | SERRORLOG));
+}
+
+uint32
+BCMINITFN(si_cpu_clock)(si_t *sih)
+{
+	if (PMUCTL_ENAB(sih))
+		return si_pmu_cpu_clock(sih, si_osh(sih));
+
+	return si_clock(sih);
+}
+
+uint32
+BCMINITFN(si_mem_clock)(si_t *sih)
+{
+	if (PMUCTL_ENAB(sih))
+		return si_pmu_mem_clock(sih, si_osh(sih));
+
+	return si_clock(sih);
+}
+
+/* Start chipc watchdog timer and wait till reset */
+void
+hnd_cpu_reset(si_t *sih)
+{
+	si_watchdog(sih, 1);
+	while (1);
+}
+
+void
+hnd_cpu_jumpto(void *addr)
+{
+	arm_jumpto(addr);
+}

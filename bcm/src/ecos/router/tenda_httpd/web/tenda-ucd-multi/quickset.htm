@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" class="quickset-html">
+<head>
+	<meta charset="utf-8">
+	<title>Tenda</title>
+	<meta name="description" content="Tenda quickset">
+
+	<!-- Le styles -->
+	<link href="css/reasy-1.0.0.css" rel="stylesheet">
+	<link href="css/quickset.css" rel="stylesheet">
+	<script src="lang/b28n.js"></script>
+
+	<!-- Hack CSS for IE6. -->
+	<!--[if lt IE 7]>
+	<link href="css/ie6.css?v=1.0.0" rel="stylesheet">
+	<![endif]-->
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	<script src="js/libs/html5shiv.js"></script>
+	<![endif]-->
+
+	<!-- Fav and touch icons -->
+	<link rel="shortcut icon" href="favicon.ico">
+
+	<script src="js/libs/respond.min.js"></script>
+</head>
+
+<body class="quickset-body">
+	<header class="masthead">
+		<div class="container head-inner">
+			<a class="brand" href="#" title="Tenda"></a>
+			<div class="easy-logo"></div>
+		</div>
+	</header>
+	<div class="wrap">
+		<section class="container">
+			<div class="row" id="main">
+			<form name="quicksetForm">
+				<input type="hidden" name="wanType" value="" />
+				<input type="hidden" name="timeZone" value="" />
+				<section class="main-content">
+					<div class="quickset-schedule clearfix">
+						<div class="process-step active none" id="process-adsl-active">
+							<hr />
+							<span class="step-num">1</span>
+							<span>Internet Setup</span>
+						</div>
+						<div class="process-step active ok none" id="process-adsl-ok">
+							<hr />
+							<span class="step-num"></span>
+							<span>Internet Setup</span>
+						</div>
+						<div class="process-step none" id="process-wlpwd-inactive">
+							<hr />
+							<span class="step-num">2</span>
+							<span>Wireless Encryption</span>
+						</div>
+						<div class="process-step active none" id="process-wlpwd-active">
+							<hr />
+							<span class="step-num">2</span>
+							<span>Wireless Encryption</span>
+						</div>
+					</div>
+					<fieldset class="like-parent" id="main-field">
+						<div class="" id="quickset-detect">
+							<p class="quickset-title">Welcome...</p>
+							<div class="control-group">
+								<div class="quickset-animate" id="rolling1">......</div>
+							</div>
+							<div class="control-group text-em">
+								Detecting...
+							</div>
+						</div>
+						<div class="none" id="quickset-wan-notlinked">
+							<div id="notlinked-rock">
+								<div class="control-group text-em fieldset-title">NOTICE</div>
+								<div class="control-group text-em text-error">WAN port unplugged.</div>
+								<div class="control-group text-em text-error big-gap-bottom">
+									Please plug an Ethernet cable to the WAN port.
+								</div>
+							</div>
+							<div class="control-group control-btn-group">
+								<input type="button" value="Next" class="quickset-next quickset-next-double" id="notlinked-next" />
+								<a class="quickset-skip" id="notlinked-skip">Skip</a>
+							</div>
+						</div>
+						<div class="fieldset-inner none" id="quickset-adsl">
+							<p class="fieldset-title">Please enter the PPPoE username and password your ISP gave you.</p>
+							<div class="control-group">
+								<label class="input-label">ISP Username:</label>
+								<input type="text" id="adsl-user" name="adslusername" maxlength="128" class="text" />
+							</div>
+							<div class="control-group">
+								<label class="input-label">ISP Password:</label>
+								<input type="password" id="adsl-pwd" name="adslpwd" maxlength="128" class="text" />
+							</div>
+							<div class="control-group control-btn-group">
+								<input type="button" value="Next" class="quickset-next quickset-next-double" id="adsl-next" />
+								<a class="quickset-skip" id="adsl-skip">Skip</a>
+							</div>
+						</div>
+						<div class="fieldset-inner none" id="quickset-static">
+							<div class="tips-area">
+								Static IP as detected. Set up a static IP in Internet page later.
+							</div>
+							<div class="control-group control-btn-group">
+								<input type="button" value="Next" class="quickset-next" id="static-next" />
+							</div>
+						</div>
+						<div class="fieldset-inner none" id="quickset-dhcp">
+							<div class="tips-area">
+								DHCP as detected. Free to set Internet connection.
+							</div>
+							<div class="control-group control-btn-group">
+								<input type="button" value="Next" class="quickset-next" id="dhcp-next" />
+							</div>
+						</div>
+						<div class="fieldset-inner none" id="quickset-wifi">
+							<p class="fieldset-title">Configure your WiFi</p>
+							<div class="control-group">
+								<label class="input-label">WiFi Name:</label>
+								<input type="text" id="ssid" name="ssid" class="text" maxlength="32" />
+							</div>
+							<div class="control-group">
+								<label class="input-label">WiFi Password:</label>
+								<input type="password" class="text" id="ssid-pwd" maxlength="63" name="wlpwd" />
+							</div>
+							<div class="control-group control-btn-group">
+								<input type="button" value="Next" class="quickset-next quickset-next-double" id="wifi-next" />
+								<a class="quickset-skip " id="wifi-skip">Skip</a>
+							</div>
+						</div>
+						<div class="none" id="quickset-save">
+							<p class="fieldset-title"></p>
+							<div class="control-group">
+								<div class="quickset-animate" id="rolling2">......</div>
+							</div>
+							<div class="control-group text-em">
+								<span>Saving…please wait…</span>
+								(<span id="countDown">10</span>)
+							</div>
+						</div>
+						<div class="none" id="quickset-save-result">
+							<div class="control-group">
+								<img src="img/saveok.gif" />
+							</div>
+							<div class="control-group text-em" id="saved-success">
+								Congratulations! You can browse the Internet now!
+							</div>
+							<div class="control-group text-em" id="saved-ssid">
+								Please connect your WiFi: Tenda_AABBCC
+							</div>
+							<div class="control-group text-tip" id="saved-tip">
+								Personalize your Router in Bandwidth and Signal pages in greater detail.
+							</div>
+							<div class="control-group control-btn-group" id="jump-to-index">
+								<input type="button" value="More setup" class="quickset-next" id="surfIndex" />
+							</div>
+						</div>
+						<div class="popup-msg none" id="confirm-no-pwd">
+							<h2 class="msg-title"><span>Security Tips</span><span id="closewindow" class="msg-close">X</span></h2>
+							<p class="msg-content">No password for your WiFi.</p>
+							<p class="msg-content">Suggest setting a WiFi password for better security.</p>
+							<div class="control-group btn-group control-btn-group">
+								<input type="button" value="Set" class="quickset-next" id="setpwd" />
+								<input type="button" value="Not now" class="quickset-next not-suggest" id="notsetpwd" />
+							</div>
+						</div>
+					</fieldset>
+				</section>
+			</form>
+			</div>
+		</section>
+	</div>
+	<div id="gbx_overlay" class="none"></div>
+	<!-- /container -->
+
+	<!-- Le javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="js/libs/reasy-1.0.0.js"></script>
+	<script src="js/libs/reasy-ui-1.0.0.js"></script>
+	<script src="js/common.js?v=6.0.0"></script>
+	<script src="js/quickset.js?v=6.0.0"></script>
+	<script src=""></script>
+</body>
+</html>

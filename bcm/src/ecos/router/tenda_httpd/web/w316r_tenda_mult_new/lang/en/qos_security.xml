@@ -1,0 +1,86 @@
+<po>
+	<!--net_tc.asp-->
+	<message msgid="Add To List" msgstr="Add To List" />
+	<message msgid="Update To List" msgstr="Update To List" />
+	<message msgid="All services" msgstr="All services" />
+	<message msgid="WAN port bandwidth can not be empty!" msgstr="WAN port bandwidth can not be empty!" />
+	<message msgid="The value of bandwidth should not be 0! Please enter a valid bandwidth value." msgstr="The value of bandwidth should not be 0! Please enter a valid bandwidth value." />
+	<message msgid="No." msgstr="No." />
+	<message msgid="IP Range" msgstr="IP Range" />
+	<message msgid="Destination" msgstr="Destination" />
+	<message msgid="All ports" msgstr="All ports" />
+	<message msgid="Download" msgstr="Download" />
+	<message msgid="Upload" msgstr="Upload" />
+	<message msgid="Up to %s bandwidth control entries can be added." msgstr="Up to %s bandwidth control entries can be added." />
+	<message msgid="Please enter a valid IP address!" msgstr="Please enter a valid IP address!" />
+	<message msgid="Start IP" msgstr="Start IP" />  
+	<message msgid="End IP" msgstr="End IP" />  
+	<message msgid="Start IP should not be greater than End IP! Please enter valid IP information." msgstr="Start IP should not be greater than End IP! Please enter valid IP information." />
+	<message msgid="Please enter a valid bandwidth value!" msgstr="Please enter a valid bandwidth value!" />
+	<message msgid="The port is beyond the range of 0~65535!" msgstr="The port is beyond the range of 0~65535!" />
+	<message msgid="Starting bandwidth value should not be greater than ending bandwidth!" msgstr="Starting bandwidth value should not be greater than ending bandwidth!" />
+	<message msgid="The same IP address can't be contained in two Bandwidth control rules, please retry." msgstr="The same IP address can't be contained in two Bandwidth control rules, please retry." />
+	<message msgid="Enable Bandwidth Control" msgstr="Enable Bandwidth Control" />
+	<message msgid="Interface" msgstr="Interface" />
+	<message msgid="Download bandwidth" msgstr="Download bandwidth" />
+
+	<!--system_iptAccount.asp-->
+	<message msgid="Enable Traffic Statistics" msgstr="Enable Traffic Statistics" />
+	<message msgid="Uplink Rate" msgstr="Uplink Rate" />
+	<message msgid="Downlink Rate" msgstr="Downlink Rate" />
+	<message msgid="Sent Message" msgstr="Sent Message" />
+	<message msgid="Sent Bytes" msgstr="Sent Bytes" />
+	<message msgid="Received Message" msgstr="Received Message" />
+	<message msgid="Received Bytes" msgstr="Received Bytes" />
+	
+	<!--add-->
+	<message msgid="Giving up :(Cannot create an XMLHTTP instance!)" msgstr="Giving up :(Cannot create an XMLHTTP instance!)" />
+	<message msgid="There was a problem with the request." msgstr="There was a problem with the request." />
+	<message msgid="Information: the security setting is automatically set to WPS,but you can manually modify it." msgstr="Information: the security setting is automatically set to WPS, \n but you can manually modify it." />
+	<!--add-->
+	
+	<!--firewall_clientfilter--> 
+	<message msgid="Sun" msgstr="Sun" />  
+	<message msgid="Mon" msgstr="Mon" /> 
+	<message msgid="Tue" msgstr="Tue" />  
+	<message msgid="Wed" msgstr="Wed" />    
+	<message msgid="Thu" msgstr="Thu" />   
+	<message msgid="Fri" msgstr="Fri" />  
+	<message msgid="Sat" msgstr="Sat" />    
+	<message msgid="Forbid Only" msgstr="Forbid Only" />  
+	<message msgid="Permit Only" msgstr="Permit Only" />   
+	<message msgid="Start IP" msgstr="Start IP" />  
+	<message msgid="End IP" msgstr="End IP" />
+	<message msgid="start IP address" msgstr="start IP address" />  
+	<message msgid="end IP address" msgstr="end IP address" />   
+	<message msgid="Start Port" msgstr="Start Port" />   
+	<message msgid="End Port" msgstr="End Port" />  
+	<message msgid="start port number" msgstr="start port number" />   
+	<message msgid="end port number" msgstr="end port number" />
+	<message msgid="Start Time" msgstr="Start Time" />  
+	<message msgid="End Time" msgstr="End Time" />  
+	<message msgid="Start Week" msgstr="Start Week" />   
+	<message msgid="End Week" msgstr="End Week" />  
+	<message msgid="notag is not allowed to be set to be policy Name!" msgstr="notag is not allowed to be set to be policy Name!" />  
+	<message msgid="You must set at least one rule when you choose Permit Only!" msgstr="You must set at least one rule when you choose Permit Only!" />   
+	<message msgid="Filter Mode" msgstr="Filter Mode" />  
+	<message msgid="Access Policy" msgstr="Access Policy" />  
+	<message msgid="Policy Name(Optional)" msgstr="Policy Name(Optional)" />    
+	<message msgid="Type" msgstr="Type" />  
+	<message msgid="Both" msgstr="Both" />   
+	<message msgid="Time" msgstr="Time" />     
+	<message msgid="Clear this item" msgstr="Clear this item" />
+	<message msgid="Start IP should not be greater than end IP. Please enter a valid IP address." msgstr="Start IP should not be greater than end IP. Please enter a valid IP address." />
+
+	<!--firewall_mac-->  
+	<message msgid="Please specify a valid MAC address!" msgstr="Please specify a valid MAC address!" />    
+	<!--firewall_urlfilter-->		
+	<message msgid="URL Character String" msgstr="URL Character String" />
+	<message msgid="Please enter a valid keyword or domain name." msgstr="Please enter a valid keyword or domain name." />   
+	<message msgid="time note" msgstr="A rule cannot apply to a time period that crosses over midnight. Start time must be earlier than End time. Two policies may be necessary for your application.(e.g. 10:20 ~ 15:00)!" />
+	<message msgid="week note" msgstr="Specified days of the week must be in chronological order between Sunday and Saturday(e.g. Tue ~ Fri),please retry." />
+	<message msgid="port note" msgstr="Start Port should not be greater than end Port. Please enter a valid port range between 1~65535." />
+	<!--system_remote--> 
+	<message msgid="The Remote Management IP address should not be on the same IP net segment as the router's LAN IP,please enter a valid IP address." msgstr="The Remote Management IP address should not be on the same IP net segment as the router's LAN IP,please enter a valid IP address." /> 
+	<message msgid="WAN IP address" msgstr="WAN IP address" />
+</po>

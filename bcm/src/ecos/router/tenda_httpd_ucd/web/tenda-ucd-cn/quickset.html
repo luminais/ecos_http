@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+        <title>Tenda Wizard</title>
+        <link rel="shortcut icon" href="./favicon.ico">
+        <link rel="stylesheet" href="./css/reasyui.css?t=2016119153">
+        <link rel="stylesheet" href="./css/quickset.css?t=2016119153">
+        <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 HTML5SHIV需放在头部，RESPOND.JS需要服务器-->
+        <!--[if lt IE 9]>
+            <script src="./js/libs/respond.min.js">
+            </script>
+            <script src="./js/libs/html5shiv.js">
+            </script>
+        <![endif]-->
+    </head>
+    
+    <body>
+        <noscript>
+            <div id="testJs" class="test-tips">
+                <p>Error! The browser does not support JavaScript.</p>
+                <p>Please enable JavaScript or try another browser compatible with JavaScript to experience more features of the device.</p>
+            </div>
+        </noscript>
+        <div id="main_content">
+            <section class="container container-fluid">
+                <header class="center-block pull-none col-lg-7 logo-wrap">
+                    <div>
+                        <img src="img/logo.png" class="img-responsive" style="float:left;">
+                        <span class="logo-text">
+                            轻松一步完成此页设置，即可畅享互联网~
+                        </span>
+                    </div>
+                </header>
+                <article class="quickSet box-shadow center-block pull-none col-lg-7" style="padding:0px; margin-bottom:20px"
+                id="quickSetWrap">
+                    <form class="form-horizontal">
+                        <div class="quickContent text-center">
+                            <div class="text-center net-status">
+                                <img id="loading" class="img-loading" alt="Loading..." src="img/loading.gif">
+                                <span>正在检测您的联网方式，请稍候...</span>
+                            </div>
+                            <hr>
+                            <div class="network-wrapper">
+                                <div class="network-pic-wrapper">
+                                    <span class="icon-internet quickSet-net-icon">
+                                    </span>
+                                    <br>
+                                    <div style="padding:10px 0">
+                                        上网设置
+                                    </div>
+                                </div>
+                                <div class="network-config-wrapper">
+                                    <div class="form-group" style="margin-bottom: 4px">
+                                        <label class="control-label">
+                                            联网方式
+                                        </label>
+                                        <div>
+                                            <label class="radio-inline" for="adsl">
+                                                <input type="radio" id="adsl" name="wanType" value="pppoe">
+                                                宽带拨号
+                                            </label>
+                                            <label class="radio-inline" for="dhcp">
+                                                <input type="radio" id="dhcp" name="wanType" value="dhcp">
+                                                动态IP
+                                            </label>
+                                            <label class="radio-inline" for="static">
+                                                <input type="radio" id="static" name="wanType" value="static">
+                                                静态IP
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <section id="quickSetStaticWrap" class="none">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                            </label>
+                                            <div class="controls col-lg-9 quickset-connect-info">
+                                                适用于使用固定IP地址信息上网的用户
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                IP 地址
+                                            </label>
+                                            <div class="controls">
+                                                <input type="text" id="wizardWanIP" name="wizardWanIP" class="form-control validatebox"
+                                                maxlength="15" required="required" data-options="{&quot;type&quot;:&quot;ip&quot;}"
+                                                placeholder="IP 地址">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                子网掩码
+                                            </label>
+                                            <div class="controls">
+                                                <input type="text" id="wizardWanMask" name="wizardWanMask" class="form-control validatebox"
+                                                maxlength="15" required="required" data-options="{&quot;type&quot;:&quot;mask&quot;}"
+                                                placeholder="子网掩码">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                默认网关
+                                            </label>
+                                            <div class="controls">
+                                                <input type="text" id="wizardWanGateway" name="wizardWanGateway" class="form-control validatebox"
+                                                maxlength="15" required="required" data-options="{&quot;type&quot;:&quot;ip&quot;}"
+                                                placeholder="默认网关">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                首选 DNS
+                                            </label>
+                                            <div class="controls">
+                                                <input type="text" id="wizardWanDns1" name="wizardWanDns1" class="form-control validatebox"
+                                                maxlength="15" required="required" data-options="{&quot;type&quot;:&quot;ip&quot;}"
+                                                placeholder="首选 DNS 服务器">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                备选 DNS
+                                            </label>
+                                            <div class="controls">
+                                                <input type="text" id="wizardWanDns2" name="wizardWanDns2" class="form-control validatebox"
+                                                maxlength="15" data-options="{&quot;type&quot;:&quot;ip&quot;}" placeholder="备选 DNS 服务器">
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section id="quickSetDHCPWrap" class="none">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                            </label>
+                                            <div class="controls quickset-connect-info">
+                                                适用于不需要任何配置就可以上网的用户
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section id="quickSetPPPoEWrap">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                            </label>
+                                            <div class="controls quickset-connect-info">
+                                                适用于使用宽带帐号和宽带密码上网的用户
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                宽带帐号
+                                            </label>
+                                            <div class="controls">
+                                                <input type="text" id="wizardPPPoEUser" name="wizardPPPoEUser" class="form-control validatebox"
+                                                maxlength="128" required="required" data-options="{&quot;type&quot;: &quot;pppoe&quot;}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                宽带密码
+                                            </label>
+                                            <div class="controls">
+                                                <input type="password" id="wizardPPPoEPwd" name="wizardPPPoEPwd" class="form-control validatebox"
+                                                maxlength="128" required="required" data-options="{&quot;type&quot;: &quot;pppoe&quot;}">
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                            <div style="clear:both">
+                            </div>
+                            <hr>
+                            <div class="wireless-wrapper">
+                                <div class="wireless-pic-wrapper">
+                                    <span class="icon-wireless quickSet-wireless-icon">
+                                    </span>
+                                    <div>无线设置</div>
+                                </div>
+                                <div class="wireless-config" style="display:inline-block;width:400px">
+                                    <div class="form-group">
+                                        <label class="control-label" for="wifiSSID">
+                                            无线名称
+                                        </label>
+                                        <div class="controls">
+                                            <input type="text" name="wizardSSID" id="wizardSSID" class="form-control validatebox"
+                                            maxlength="32" required="required" data-options="{&quot;type&quot;:&quot;ssid&quot;}"
+                                            placeholder="WiFi Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="wifiPwd">
+                                            无线密码
+                                        </label>
+                                        <div class="controls">
+                                            <input type="text" name="wizardSSIDPwd" id="wizardSSIDPwd" class="form-control validatebox"
+                                            required maxlength="63" placeholder="WiFi Password" data-options="{&quot;type&quot;:&quot;ssidPasword&quot;,&quot;args&quot;:[8, 63]}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <br>
+                        </div>
+                    </form>
+                    <footer class="quickset-footer">
+                        <div class="form-group">
+                            <div class="controls">
+                                <input class="form-control save-btn" type="button" id="save" value="保存">
+                            </div>
+                        </div>
+                    </footer>
+                </article>
+                <article class="quickSet box-shadow text-center center-block pull-none none"
+                style="padding:0px; margin-bottom:20px" id="quicksetDoneWrap">
+                    <div id="savedWrap" style="margin-top:90px">
+                        <section class="content center-block" style="width:100px">
+                            <div id="status" class="icon-check-circled">
+                            </div>
+                            <div>保存成功!</div>
+                        </section>
+                        <div id="wireSuccess" class="none">
+                            <span id="dynamic-sec">5</span>秒后将自动跳转至管理页面
+                        </div>
+                        <div id="wirelessSuccess" class="none">
+                            <span>
+                                当前无线已断开，请连接信号：
+                            </span>
+                            <div class="text-warn">
+                                Tenda_AABBCC
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </div>
+        <script src="./js/libs/reasy-1.0.0.js?t=2016119153"></script>
+        <script src="./js/libs/reasy-ui-1.0.3.js?t=2016119153"></script>
+        <script src="./js/libs/common.js?t=2016119153"></script>
+        <script src="./js/quickset.js?t=2016119153"></script>
+        <script src="./js/libs/time-zone.js?t=2016119153"></script>
+    </body>
+
+</html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<po>
+	<message msgid="start port for item %s" msgstr="第%s条规则中的开始端口"/>
+	<message msgid="end port for item %s" msgstr="第%s条规则中的结束端口"/>
+	<message msgid="IP address for item %s" msgstr="第%s条规则中的IP地址"/>
+	<message msgid="Both" msgstr="全部"/>
+	<message msgid="NAT_Portseg_MSG" msgstr="端口转发有利于Web服务器，FTP服务器，电子邮件，网络游戏等特殊网络应用的数据传输。启用端口转发，来自互联网的访问会通过路由器的WAN口转发到指定的LAN口。"/>
+	<message msgid="NO." msgstr="序号"/>
+	<message msgid="LAN IP" msgstr="LAN口IP地址"/>
+	<message msgid="Protocol" msgstr="协议"/>
+	<message msgid="Well-known service ports:" msgstr="常用服务端口"/>
+	<message msgid="Please specify a valid start/end port value between 1-65535! Start port must be smaller than end port!" msgstr="请输入一个1~65535之间的有效开始/结束端口！&#xA;开始端口必须小于结束端口。"/>
+	<message msgid="The same rules cannot be set!" msgstr="不能设置相同的规则！"/>
+	<message msgid="Can not use the router's IP address!" msgstr="不能使用路由器登录IP地址！"/>
+	<message msgid="Please enter a valid IP address. DMZ Host IP address should be on the same IP net segment as the device's LAN IP and they should be different!" msgstr="请输入一个有效的IP地址。&#xA;DMZ主机IP必须是和路由器LAN口IP同一网段的不同IP。"/>
+	<message msgid="illegal IP!" msgstr="非法IP地址！"/>
+	<message msgid="DMZ_Note" msgstr="注意：设置DMZ主机之后，与该IP相关的防火墙设置将不起作用。"/>
+	<message msgid="Username" msgstr="用户名"/>
+	<message msgid="Please complete all fields with your correct DDNS account information!" msgstr="请输入完整的DDNS信息！"/>
+	<message msgid="Service Provider" msgstr="服务供应商"/>
+	<message msgid="Sign up" msgstr="注册去"/>
+	<message msgid="Domain Name" msgstr="域名"/>
+	<message msgid="Enable UPnP" msgstr="启用UPnP"/>
+	<message msgid="Up to %s static routing entries are supported!" msgstr="最多可支持%s条静态路由规则。"/>
+	<message msgid="The static routing entry already exists!" msgstr="此规则已存在！"/>
+	<message msgid="Destination Network IP Address" msgstr="目的网络IP"/>
+	<message msgid="Add" msgstr="添加"/>
+	<message msgid="destination network IP address" msgstr="目的网络IP"/>
+	<message msgid="subnet mask" msgstr="子网掩码"/>
+	<message msgid="gateway" msgstr="网关"/>
+	<message msgid="Destination IP" msgstr="目的网络IP"/>
+	<message msgid="Subnet Mask" msgstr="子网掩码"/>
+	<message msgid="Gateway" msgstr="网关"/>
+	<message msgid="Hops" msgstr="跳跃数"/>
+	<message msgid="Interface" msgstr="接口"/>
+</po>

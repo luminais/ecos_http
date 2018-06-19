@@ -1,0 +1,133 @@
+﻿<po>
+<!--wireless_basic.asp-->
+<message msgid="Wireless Basic Settings1" msgstr="Kablosuz bağlantı temel ayarlar 1" />
+<message msgid="Open scan" msgstr="Tarama aç" />
+<message msgid="Close scan" msgstr="Tarama kapat" />
+<message msgid="Are you sure to connect to this AP?" msgstr="Bu AP bağlanmaktan eminmisiniz?" />
+<message msgid="AP MAC full,clear unnecessary information" msgstr="AP MAC dolu, gereksiz bilgiyi sil!" />
+<message msgid="the address already exists" msgstr="adres mevcut!" />
+<!--add-->
+<message msgid="Auto select" msgstr="otomatik seçim" />
+<!--add-->
+<message msgid="SSID can only consist of numbers,letters,underline and colon." msgstr="SSID sadece sayılar, harfler, alt çizgi ve kolondan oluşabilir!" />
+<message msgid="Please enter a unicast MAC address" msgstr="Lütfen bireysel bir MAC adresi girin!" />
+<message msgid="No repeated MAC address!" msgstr="Tekrarlanmamış MAC adresi!" />
+<message msgid="Please enter the correct MAC address" msgstr="Lütfen doğru bir MAC adresi girin!" />
+<message msgid="AP MAC address is  empty" msgstr="AP MAC adresi boş!" />
+<message msgid="Enable wireless function" msgstr="Kablosuz fonksiyonunu etkinleştir" />
+<message msgid="Wireless Working Mode" msgstr="Kablosuz çalışma modu" />
+<message msgid="Wireless Access Point" msgstr="Kablosuz geçiş noktası" />
+<message msgid="Network Bridge(WDS)" msgstr="Ağ köprüsü (WDS)" />
+<message msgid="Network Mode" msgstr="Ağ modu" />
+<message msgid="11b/g mixed mode" msgstr="11b/g karışık mod" />
+<message msgid="11b mode" msgstr="11b modu" />
+<message msgid="11g mode" msgstr="11g modu" />
+<message msgid="11b/g/n mixed mode" msgstr="11b/g/n karışık modu" />
+<message msgid="Broadcast" msgstr="Yayın" />
+<message msgid="Disable" msgstr="Etkinliği kaldır" />
+<message msgid="Channel" msgstr="Kanal" />
+<message msgid="Enable" msgstr="Etkinleştir" />
+<message msgid="Channel Bandwidth" msgstr="Kanal genişliği" />
+<message msgid="Extension Channel" msgstr="Uzatma kanalı" />
+<message msgid="Working Mode :WDS(Repeater mode)" msgstr="Çalışma modu :WDS(Tekrarlayıcı modu)" />
+<message msgid="AP MAC address " msgstr="AP MAC adresi" />
+<message msgid="Select" msgstr="Seç" />
+<message msgid="Security" msgstr="Güvenlik" />
+<message msgid="Signal strength" msgstr="Sinyal kuvveti" />
+<message msgid="wireless_basic_helpinfo1" msgstr="Bu sayfada sadece kablosuz temel bilgisini kurmaya ihtiyacınız var, sadece SSID yi ve kanalı kurmanızı ve diğer öğeleri varsayılan olarak bırakmanızı öneririz." />
+<message msgid="wireless_basic_helpinfo2" msgstr="Kablosuz ağda tüm cihazlar tarafından paylaşılmış olan ağ adı." />
+<message msgid="wireless_basic_helpinfo3" msgstr="SSID yayını: Kablosuz kullanıcısı alanda bağlanmak için kablosuz ağlar aradığında, yönlendirici aracılığı ile SSID yayınını algılarlar, eğer seçilmiş ise, yönlendirici tüm kablosuz sunuculara SSID yayınlayacaktır!" />
+<message msgid="wireless_basic_helpinfo4" msgstr="Kanal: Oto seçim modu, veya 1-11 kanaldan herhangi birini seçebilirsiniz, etkileşimi önlemek için alanınızda daha az kullanılan kanalları seçiniz." />
+<message msgid="wireless_basic_helpinfo5" msgstr="Dahili kanal: 11n modunda ağın frekans oranını onaylamak için." />
+
+<!--wireless_mode.asp-->
+<message msgid="Wired WAN" msgstr="Wired WAN" />
+<message msgid="Wireless WAN" msgstr="Wireless WAN" />
+<message msgid="Default key" msgstr="Default key" />
+<message msgid="WAN medium type" msgstr="WAN medium type" />
+<message msgid="primary SSID" msgstr="primary SSID" />
+<message msgid="secondary SSID" msgstr="secondary SSID" />
+<message msgid="WMM Capable" msgstr="WMM Capable" />
+<message msgid="APSD Capable" msgstr="APSD Capable" />
+<message msgid="wireless_mode_helpinfo1" msgstr="Wired WAN mode: In this mode the router access to the Internet via the Wired WAN port." />
+<message msgid="wireless_mode_helpinfo2" msgstr="Wireless WAN mode: In this mode, the router wirelessly access to the Internet. This method requires you to set the SSID, Channel and security mode as that are provided by your ISP." />
+
+<!--wireless_security.asp-->
+<message msgid="Warning: Can not create XMLHTTP example" msgstr="Uyarı: XMLHTTP örneği oluşturamıyor !" />
+<message msgid="Please enter a key" msgstr="Lütfen bir anahtar girin!" />
+<message msgid="Key range:8~63 characters" msgstr="Anahtar oranı:8~63 karakter!" />
+<message msgid="Key" msgstr="Anahtar" />
+<message msgid="The key contains illegal characters" msgstr="Anahtar illegal karakter içeriyor!" />
+<message msgid="Please select a WPA algorithm" msgstr="Lütfen bir WPA algotirması seçin!" />
+<message msgid="Key renewal interval invalid" msgstr="Anahtar yenileme aralığı geçersiz!" />
+<message msgid="Warning:Key renewal interval is too short,range " msgstr="Uyarı: Anahtar yenileme aralığı çok kısa, oran" />
+<message msgid="Please enter a valid key renewal interval" msgstr="Lütfen geçerli bir anahtar yenileme aralığı girin!" />
+<message msgid="PIN value invalid,please enter 8 characters." msgstr="PIN değeri geçersiz, lütfen 8 karakter girin!" />
+<message msgid="This function can only be used after the wireless function is enabled" msgstr="Bu fonksiyon sadece kablosuz fonksiyonu etkinleştirdikten sonra kullanılabilir!" />
+<message msgid="Security Policy" msgstr="Güvenlik politikası" />
+<message msgid="Security Mode" msgstr="Gücenlik modu" />
+<message msgid="Default key" msgstr="Default key" />
+<message msgid="WPA Algorithms" msgstr="WPA algoritması" />
+<message msgid="Key Renewal Interval" msgstr="Anahtar yenileme aralığı" />
+<message msgid="Second" msgstr="İkinci" />
+<message msgid="WPS Settings" msgstr="WPS ayarlar" />
+<message msgid="WPS Mode" msgstr="WPS modu" />
+<message msgid="Reset OOB" msgstr="OOB sıfırla" />
+<message msgid="Note:" msgstr="Not:" />
+<message msgid="Wireless Security Settings" msgstr="Kablosuz güvenlik ayarları" />
+<message msgid="Wireless_secrity_note1" msgstr="802.11n standart sadece açık olanı tanımlar-Hiçbiri（Devre dışı bırak）,WPA personel-AES, ve WPA2 personel-AES şifreleme metodları. Diğer şifreleme metodları standart dışıdır ve farklı üreticiler arasında uyumluluk problemleri oluşabilir." />
+<message msgid="Wireless_secrity_note2" msgstr="Tenda optimize edilmiş kablosuz şifrelemesine sahiptir. WPA-AES seçin ve diğerlerinin ağınıza erişimini önlemiş olursunuz." />
+<message msgid="Wireless_secrity_helpinfo" msgstr="Kişisel veya karışık modu etkinleştirebilirsiniz, fakat kablosuz istemcinizin şifreleme metodunu desteklediğinde emin olunuz. Güvenlik modları ile aşina değil iseniz, WPA-kişisel i kullanmanızı tavsiye ederiz. Eğer bu güvenlik modlarını iyi biliyorsanız, kablosuz istemcinizin desteklediği kadar istediğiniz birini seçebilirsiniz." />
+
+<!--wireless_filter.asp-->
+<message msgid="Delete" msgstr="Sil" />
+<message msgid="rule" msgstr="Bir defa &quot;sadece izin ver&quot; seçildiğinde bir kural girmelisiniz!" />
+<message msgid="Are you sure to delete" msgstr="Silmekten eminmisiniz?" />
+<message msgid="Invalid MAC address" msgstr="Geçersiz MAC adresi!" />
+<message msgid="Please enter a unicast MAC address" msgstr="Lütfen evrensel bir MAC adresi girin!" />
+<message msgid="Max.16 MAC addresses" msgstr="Maks. 16 MAC adresi!" />
+<message msgid="The MAC address already exists" msgstr="MAC adresi mevcut" />
+<message msgid="MAC address filter" msgstr="MAC adresi filtrele" />
+<message msgid="Permit" msgstr="İzin ver" />
+<message msgid="Forbid" msgstr="Yasakla" />
+<message msgid="Configure MAC address" msgstr="MAC adresini konfgüre et" />
+<message msgid="MAC address" msgstr="MAC adresi" />
+<message msgid="Operate" msgstr="Çalıştır" />
+<message msgid="Add" msgstr="Ekle" />
+<message msgid="Wireless_filter_helpinfo" msgstr="Bu kablosuz erişim fonksiyonunu kullanarak, PC nin kablosuz adaptörüne nün MAC adresine göre bir yönlendirici ile iletişim kurmasını kontrol edebilir." />
+
+<!--wireless_state.asp-->
+<message msgid="Tenda Multi-functional Broadband SOHO Router" msgstr="Tenda çok fonksiyonlu geniş bağlantı SOHO yönlendirici " />
+<message msgid="This page displays the connection information of the wireless router" msgstr="Bu sayfa kablosuz yönlendiricinin bağlantı bilgisini gösterir." />
+<message msgid="The currently connected hosts list" msgstr="Güncel olarak bağlanılmış sunucular listesi:" />
+<message msgid="Refresh" msgstr="Yenile" />
+<message msgid="NO." msgstr="NO." />
+<message msgid="Bandwidth" msgstr="Bant genişliği" />
+<message msgid="Wireless_state_helpinfo1" msgstr="Bu sayfada, bağlanılmış kablosuz istemcilerin bilgisini görüntüleyebilirsiniz." />
+<message msgid="Wireless_state_helpinfo2" msgstr="MAC Adresi: güncel sunucunun kablosuz MAC bant genişliği: kanal frekansı genişliği." />
+
+<!--menu.js-->
+<message msgid="Ok" msgstr="Tamam" />
+<message msgid="Cancel" msgstr="İptal" />
+
+<!--gozila.js -->  
+  <message msgid="invalid" msgstr="geçersiz!" />   
+  <message msgid="contains illegal characters" msgstr="illegal karakterler içeriyor:" />  
+  <message msgid="not numbers " msgstr="sayılar değil!" />  
+  <message msgid="beyond the range" msgstr="oranın aşağısında !" /> 
+  <message msgid="contains invalid characters" msgstr="geçersiz karakterler içeriyor:" /> 
+  <message msgid="Are you sure to exit" msgstr="Çıkmaktan eminmisiniz?" />   
+  <message msgid="not defined" msgstr="tanımlanmamış!" />  
+  <message msgid="Password differs" msgstr="Şifre farklı!" />  
+  <message msgid="Change password" msgstr="Şifre değiştir?" /> 
+  <message msgid="the length is not within the range" msgstr="uzunluk kapsama alanında değil!" />    
+  <message msgid="permanent" msgstr="kalıcı" />   
+  <message msgid="Day" msgstr="Gün" />  
+  <message msgid="Don't enter Chinese characters" msgstr="Çince karakterler girmeyin!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="yönlendiriciin yeniden başlatılması düzenlenmiş ayarları etkin hale getirecektir, şimdi yeniden başlat?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Kablosuz modülün yeniden başlatılması düzenlenmiş ayarları etkin hale getirecektir, şimdi yeniden başlat?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Açıklamalar sadece sayıları, harfleri ve alt çizgileri içerebilir!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC adresi saklanmış adreslere aittir, lütfen yeniden girin!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC adresi çoklu yayın adreslere aittir, lütfen yeniden girin!" />  
+  <message msgid="Help information" msgstr="Yardım bilgisi" /> 
+</po>

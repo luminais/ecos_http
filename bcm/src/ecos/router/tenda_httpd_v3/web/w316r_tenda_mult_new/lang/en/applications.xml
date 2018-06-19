@@ -1,0 +1,47 @@
+<po>
+	<!--nat_virtualportseg--> 
+	<message msgid="start port for item %s" msgstr="start port for item %s" />  
+	<message msgid="end port for item %s" msgstr="end port for item %s" /> 
+	<message msgid="IP address for item %s" msgstr="IP address for item %s" />
+	<message msgid="Both" msgstr="Both" />    
+	<message msgid="NAT_Portseg_MSG" msgstr="Port range forwarding is useful for web servers, ftp servers, e-mail servers, gaming and other specialized Internet applications. When you enable the port range forwarding, the communication requests from the Internet to your router’s WAN port will be forwarded to the specified LAN IP address." />   
+	<message msgid="NO." msgstr="NO." />    
+	<message msgid="LAN IP" msgstr="LAN IP" />  
+	<message msgid="Protocol" msgstr="Protocol" />     
+	<message msgid="Well-known service ports:" msgstr="Well-known service ports:" />  
+	<!--add-->
+	<message msgid="Please specify a valid start/end port value between 1-65535! Start port must be smaller than end port!" msgstr="Please specify a valid start/end port value between 1-65535! Start port must be smaller than end port!" />
+	<!--add-->
+	
+	<!--nat_dmz-->  
+	<message msgid="Can not use the router's IP address!" msgstr="Can not use the router's IP address!" />     
+	<message msgid="Please enter a valid IP address. DMZ Host IP address should be on the same IP net segment as the device's LAN IP and they should be different!" msgstr="Please enter a valid IP address. DMZ Host IP address should be on the same IP net segment as the device's LAN IP and they should be different!" />   
+	<message msgid="illegal IP!" msgstr="illegal IP!" />  
+	<message msgid="DMZ_Note" msgstr="NOTE: When the DMZ host is enabled, the firewall settings of the DMZ host will not function." />  
+
+	<!--ddns_config--> 
+	<message msgid="Username" msgstr="Username" />   
+	<message msgid="Please complete all fields with your correct DDNS account information!" msgstr="Please complete all fields with your correct DDNS account information!" />   
+	<message msgid="Service Provider" msgstr="Service Provider" />
+	<message msgid="Sign up" msgstr="Sign up" />
+	<message msgid="Domain Name" msgstr="Domain Name" /> 
+	
+	<!--upnp_config-->		
+	<message msgid="Enable UPnP" msgstr="Enable UPnP" />
+	
+	<!--routing_static-->  
+	<message msgid="Up to %s static routing entries are supported!" msgstr="Up to %s static routing entries are supported!" />  
+	<message msgid="The static routing entry already exists!" msgstr="The static routing entry already exists!" /> 
+	<message msgid="Destination Network IP Address" msgstr="Destination Network IP Address" />     
+	<message msgid="Add" msgstr="Add" /> 
+	<message msgid="destination network IP address" msgstr="destination network IP address" />
+	<message msgid="subnet mask" msgstr="subnet mask" /> 
+	<message msgid="gateway" msgstr="gateway" />
+	
+	<!--routing_table--> 
+	<message msgid="Destination IP" msgstr="Destination IP" />  
+	<message msgid="Subnet Mask" msgstr="Subnet Mask" /> 
+	<message msgid="Gateway" msgstr="Gateway" />  
+	<message msgid="Hops" msgstr="Hops" />    
+	<message msgid="Interface" msgstr="Interface" />   
+</po>

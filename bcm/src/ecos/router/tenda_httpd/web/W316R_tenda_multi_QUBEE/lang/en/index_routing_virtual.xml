@@ -1,0 +1,113 @@
+<po>
+<!--notice.asp-->
+<message msgid="Successfully Configure!" msgstr="Successfully Configure!" />
+
+<!--index.asp-->
+<message msgid="Account and password can not be empty" msgstr="Account and password can not be empty!" />
+<message msgid="Account" msgstr="Account" />
+<message msgid="Password" msgstr="Password" />
+<message msgid="Wireless password can not be empty" msgstr="Wireless password can not be empty!" />
+<message msgid="the password can only be 8 characters in length" msgstr="the password can only be 8 characters in length!" />
+<message msgid="Wireless password" msgstr="Wireless password" />
+<message msgid="Advanced Settings" msgstr="Advanced Settings" />
+<message msgid="Access to the Internet" msgstr="Internet Access" />
+<message msgid="Access Method" msgstr="Access Method" />
+<message msgid="ADSL Dial-up" msgstr="ADSL Dial-up" />
+<message msgid="DHCP" msgstr="DHCP" />
+<message msgid="Access Account" msgstr="Access Account" />
+<message msgid="Access Password" msgstr="Access Password" />
+<message msgid="other access methods" msgstr="For other access methods ,click &quot;Advanced Settings&quot;" />
+<message msgid="Wireless encryption" msgstr="Wireless encryption" />
+<message msgid="can only enter 8 characters" msgstr="can only enter 8 characters" />
+<message msgid="Ok" msgstr="Ok" />
+<message msgid="Cancel" msgstr="Cancel" />
+
+<!--login-->
+<message msgid="Tenda 11N Wireless Router Login Screen" msgstr="Tenda 11N Wireless Router Login Screen" />
+<message msgid="No Ethernet cable connected to WAN port!" msgstr="No Ethernet cable connected to WAN port!" />
+<message msgid="No Internet access, please check your online settings!" msgstr="No Internet access, please check your online settings!" />
+<message msgid="Password can not be empty!" msgstr="Password can not be empty!" />
+<message msgid="Password can not exceed 12 characters in length!" msgstr="Password can not exceed 12 characters in length!" />
+<message msgid="Login" msgstr="Login" />
+<message msgid="Initial password" msgstr="Initial password" />
+<message msgid="No longer prompts " msgstr="No longer prompts " />
+
+<!--routing_table--> 
+  <message msgid="Destination IP" msgstr="Destination IP" />  
+  <message msgid="Subnet mask" msgstr="Subnet mask" /> 
+  <message msgid="Gateway" msgstr="Gateway" />  
+  <message msgid="Hops" msgstr="Hops" />    
+  <message msgid="Interface" msgstr="Interface" />   
+  <message msgid="Refresh" msgstr="Refresh" />  
+  <message msgid="routing_table_Help_Inf1" msgstr="Hops:interface metrics." /> 
+  <message msgid="routing_table_Help_Inf2" msgstr="Interface: three types of interfaces are provided:vlan2: WAN interface, ppp0:PPPoE interface, br0:LAN interface." />
+   
+<!--routing_static-->  
+  <message msgid="Delete" msgstr="Delete" />   
+  <message msgid="Max." msgstr="Max." />  
+  <message msgid="static routing" msgstr="static routing" />  
+  <message msgid="the specified static routing already exists" msgstr="the specified static routing already exists." /> 
+  <message msgid="Destination network IP address" msgstr="Destination network IP address" />  
+  <message msgid="Operate" msgstr="Operate" />    
+  <message msgid="add" msgstr="add" />     
+  <message msgid="routing_static_Help_Inf1" msgstr="Static Routing: When there are several routers in the network, you need to set static routing. It makes sure the data go through the router’s path. You can use this feature to allow different IP domain name users to access the Internet via this device. Please be cautious while setting." />  
+  <message msgid="routing_static_Help_Inf2" msgstr="In most cases, dynamic routing is recommended, because this feature allows the router to detect the physical changes of the network layout automatically. If you want to use static routing, make sure the router’s DHCP function is disabled. The settings will be effective after rebooting the router." />  
+  
+<!--nat_virtualportseg--> 
+  <message msgid="start port" msgstr="start port" />  
+  <message msgid="end port" msgstr="end port" /> 
+  <message msgid="private IP" msgstr="private IP" />  
+  <!--add-->
+  <message msgid="Starting Port large than Ending Port" msgstr="th Starting Port > Ending Port" />
+  <!--add-->
+  <message msgid="Both" msgstr="Both" />    
+  <message msgid="NAT_Portseg_MSG" msgstr="Port range forwarding sets up public services on your network, such as web servers, ftp servers, e-mail servers, and other specialized Internet applications. When you have set up one service, then the communication requests from the Internet to your router’s WAN port will be converted to the specified LAN IP address." />   
+  <message msgid="NO." msgstr="NO." />  
+  <message msgid="Start_port_End_port" msgstr="Start port-End port" />   
+  <message msgid="LAN IP" msgstr="LAN IP" />  
+  <message msgid="Protocol" msgstr="Protocol" />  
+  <message msgid="Enable" msgstr="Enable" />    
+  <message msgid="Well-known service ports" msgstr="Well-known service ports" />  
+  <message msgid="Add to" msgstr="Add to" />   
+  <message msgid="NAT_Portseg_Help_Inf1" msgstr="Start port- End port:WAN service port." />  
+  <message msgid="NAT_Portseg_Help_Inf2" msgstr="Enable:select to bring the settings into effect." />
+  <message msgid="NAT_Portseg_Help_Inf3" msgstr="Delete:It helps you to clear the settings,click Save to make it effective." />
+  <message msgid="NAT_Portseg_Help_Inf4" msgstr="Add to :It helps you to add the well-known service port to the start port field of the item you are setting." />
+    
+<!--nat_dmz-->  
+  <message msgid="Can not use the router IP address" msgstr="Can not use the router’s IP address!" />   
+  <message msgid="DMZ host IP address" msgstr="DMZ host IP address" />  
+  <message msgid="not in the same segment with LAN IP" msgstr="not in the same segment with LAN IP!" />   
+  <message msgid="illegal IP" msgstr="illegal IP!" />  
+  <message msgid="DMZ_Note" msgstr="NOTE: When the DMZ host is enabled, the firewall settings of the DMZ host will not function." />  
+  <message msgid="DMZ_Help_Inf" msgstr="Sometimes you need to completely expose one LAN computer to the Internet so that it can communicate with the computers on the Internet. Then you can set the computer as DMZ host.Enter the IP address of the DMZ host.When you enable DMZ, actually you close the device’s firewall protection against the DMZ host." />   
+   
+<!--upnp_config-->		
+  <message msgid="Enable UPnP" msgstr="Enable UPnP" />   
+  <message msgid="UPNP_Help_Inf" msgstr="(Universal Plug and Play) allows automatically detecting and setting the devices that are connected to the network. Currently UPnP is only supported by Windows ME and Windows XP or later systems." /> 
+  
+   <!--menu.js -->
+  <message msgid="Ok" msgstr="Ok" />
+  <message msgid="Cancel" msgstr="Cancel" /> 
+
+ <!--gozila.js -->  
+  <message msgid="invalid" msgstr="invalid!" />   
+  <message msgid="contains illegal characters" msgstr="contains illegal characters:" />  
+  <message msgid="not numbers " msgstr="not numbers!" />  
+  <message msgid="beyond the range" msgstr="beyond the range!" /> 
+  <message msgid="contains invalid characters" msgstr="contains invalid characters:" /> 
+  <message msgid="Are you sure to exit" msgstr="Are you sure to exit?" />   
+  <message msgid="not defined" msgstr="not defined!" />  
+  <message msgid="Password differs" msgstr="Password differs!" />  
+  <message msgid="Change password" msgstr="Change password?" /> 
+  <message msgid="the length is not within the range" msgstr="the length is not within the range!" />    
+  <message msgid="permanent" msgstr="permanent" />   
+  <message msgid="Day" msgstr="Day" />  
+  <message msgid="Don't enter Chinese characters" msgstr="Don't enter Chinese characters!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="Reboot the router to bring the settings into effect ,reboot now?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Reboot wireless module to bring the settings into effect ,reboot now?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="remarks can only consist of numbers ,letters and  underlines!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="The MAC address belongs to reserved addresses, please re-enter!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="The MAC address belongs to multicast addresses, please re-enter!" />  
+  <message msgid="Help information" msgstr="Help information" />
+</po>

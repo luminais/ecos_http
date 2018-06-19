@@ -1,0 +1,131 @@
+﻿<po>
+	<!--system_hostname--> 
+	<message msgid="Hostname" msgstr="Hostname" />  
+	<message msgid="Please enter valid time information!" msgstr="Please enter valid time information!" /> 
+	<message msgid="Please enter valid year between 1971-2037!" msgstr="Please enter valid year between 1971-2037!" /> 
+	<message msgid="Please enter valid year/month/day info!" msgstr="Please enter valid year/month/day info!" />    
+	<message msgid="Please enter a valid day!" msgstr="Please enter a valid day!" />   
+	<message msgid="Please enter valid time info!" msgstr="Please enter valid time info!" />  
+	<message msgid="Time Zone" msgstr="Time Zone" /> 
+	<message msgid="(GMT-12:00) West of International Date Line" msgstr="(GMT-12:00) West of International Date Line" />  
+	<message msgid="(GMT-11:00) Midway Island, Samoa" msgstr="(GMT-11:00) Midway Island, Samoa" /> 
+	<message msgid="(GMT-10:00) Hawaii, Honolulu" msgstr="(GMT-10:00) Hawaii, Honolulu" />  
+	<message msgid="(GMT-09:00) Alaska" msgstr="(GMT-09:00) Alaska" />    
+	<message msgid="(GMT-08:00) Pacific Time" msgstr="(GMT-08:00) Pacific Time (U.S. Canada)Tijuana" />   
+	<message msgid="(GMT-07:00) Mountain Time" msgstr="(GMT-07:00) Mountain Time (U.S. Canada)" />  
+	<message msgid="(GMT-07:00) Chihuahua, La Paz, Mazatlan" msgstr="(GMT-07:00) Chihuahua, La Paz, Mazatlan" /> 
+	<message msgid="(GMT-07:00) Arizona" msgstr="(GMT-07:00) Arizona" />  
+	<message msgid="(GMT-06:00) Central Time" msgstr="(GMT-06:00) Central Time (U.S. Canada)" /> 
+	<message msgid="(GMT-06:00) Guadalajara, Mexico City, Monterrey" msgstr="(GMT-06:00) Guadalajara, Mexico City, Monterrey" />  
+	<message msgid="(GMT-05:00) Eastern Time" msgstr="(GMT-05:00) Eastern Time (U.S. Canada)" />    
+	<message msgid="(GMT-05:00) India to Ann" msgstr="(GMT-05:00) India to Ann (East)" />   
+	<message msgid="(GMT-05:00) Bogota, Lima, Quito" msgstr="(GMT-05:00) Bogota, Lima, Quito" />  
+	<message msgid="(GMT-04:00) Atlantic Time" msgstr="(GMT-04:00) Atlantic Time (Canada)" /> 
+	<message msgid="(GMT-04:00) Manaus" msgstr="(GMT-04:00) Manaus" />   
+	<message msgid="(GMT-04:00) Caracas, La Paz" msgstr="(GMT-04:00) Caracas, La Paz" />  
+	<message msgid="(GMT-03:30) Newfoundland and Labrador" msgstr="(GMT-03:30) Newfoundland and Labrador" /> 
+	<message msgid="(GMT-03:00) Brasilia Asia" msgstr="(GMT-03:00) Brasilia Asia" />  
+	<message msgid="(GMT-03:00) Greenland" msgstr="(GMT-03:00) Greenland" /> 
+	<message msgid="(GMT-03:00) Buenos Aires, Georgetown" msgstr="(GMT-03:00) Buenos Aires, Georgetown" />  
+	<message msgid="(GMT-02:00) Atlantic" msgstr="(GMT-02:00) Atlantic" />    
+	<message msgid="(GMT-01:00) Azores" msgstr="(GMT-01:00) Azores" />   
+	<message msgid="(GMT-01:00) Cape Verde Islands" msgstr="(GMT-01:00) Cape Verde Islands" />  
+	<message msgid="(GMT) Greenwich Mean Time" msgstr="(GMT) Greenwich Mean Time: Dublin, Edinburgh, Lisbon, London" /> 
+	<message msgid="(GMT) Casablanca , Monrovia" msgstr="(GMT) Casablanca , Monrovia" />  
+	<message msgid="(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague" msgstr="(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague" /> 
+	<message msgid="(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb" msgstr="(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb" />  
+	<message msgid="(GMT+01:00) Brussels, Copenhagen, Madrid, Paris" msgstr="(GMT+01:00) Brussels, Copenhagen, Madrid, Paris" />    
+	<message msgid="(GMT+01:00) West Africa" msgstr="(GMT+01:00) West Africa" />   
+	<message msgid="(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" msgstr="(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" />  
+	<message msgid="(GMT+02:00) Athens, Bucharest, Istanbul" msgstr="(GMT+02:00) Athens, Bucharest, Istanbul" /> 
+	<message msgid="(GMT+02:00) Minsk" msgstr="(GMT+02:00) Minsk" />   
+	<message msgid="(GMT+02:00) Cairo" msgstr="(GMT+02:00) Cairo" />  
+	<message msgid="(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" msgstr="(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" />  
+	<message msgid="(GMT+02:00) Jerusalem" msgstr="(GMT+02:00) Jerusalem" /> 
+	<message msgid="(GMT+02:00) temperature 'll have" msgstr="(GMT+02:00) temperature 'll have" />  
+	<message msgid="(GMT+02:00) grams. Harare, Pretoria" msgstr="(GMT+02:00) grams. Harare, Pretoria" />    
+	<message msgid="(GMT+03:00) Moscow, St. Petersburg, Volgograd" msgstr="(GMT+03:00) Moscow, St. Petersburg, Volgograd" /> 
+	<message msgid="(GMT+03:00) Kuwait, Riyadh" msgstr="(GMT+03:00) Kuwait, Riyadh" />   
+	<message msgid="(GMT+03:00) Baghdad" msgstr="(GMT+03:00) Baghdad" />  
+	<message msgid="(GMT+03:00) Nairobi" msgstr="(GMT+03:00) Nairobi" />  
+	<message msgid="(GMT+03:30) Tehran" msgstr="(GMT+03:30) Tehran" /> 
+	<message msgid="(GMT+04:00) Abu Dhabi, Muscat" msgstr="(GMT+04：00) Abu Dhabi, Muscat" />  
+	<message msgid="(GMT+04:00) Baku" msgstr="(GMT+04：00) Baku" />    
+	<message msgid="(GMT+04:00) Yerevan" msgstr="(GMT+04：00) Yerevan" /> 
+	<message msgid="(GMT+04:00) Tbilisi" msgstr="(GMT+04：00) Tbilisi" />   
+	<message msgid="(GMT+04:30) Kabul" msgstr="(GMT+04：30) Kabul" />  
+	<message msgid="(GMT+05:00) Islamabad, Karachi, Tashkent" msgstr="(GMT+05：00) Islamabad, Karachi, Tashkent" />  
+	<message msgid="(GMT+05:00) Yekaterinburg" msgstr="(GMT+05：00) Yekaterinburg" /> 
+	<message msgid="(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi" msgstr="(GMT+05：30) Chennai, Kolkata, Mumbai, New Delhi" />  
+	<message msgid="(GMT+05:45) Kathmandu" msgstr="(GMT+05:45) Kathmandu" />    
+	<message msgid="(GMT+06:00) Astana, Dhaka" msgstr="(GMT+06:00) Astana, Dhaka" /> 
+	<message msgid="(GMT+06:00) Almaty, Novosibirsk" msgstr="(GMT+06:00) Almaty, Novosibirsk" />   
+	<message msgid="(GMT+06:00) Colombo" msgstr="(GMT+06:00) Colombo" />  
+	<message msgid="(GMT+06:30) Yangon" msgstr="(GMT+06:30) Yangon (Rangoon)" />  
+	<message msgid="(GMT+07:00) Krasnoyarsk" msgstr="(GMT+07:00) Krasnoyarsk" /> 
+	<message msgid="(GMT+07:00) Bangkok, Hanoi, Jakarta" msgstr="(GMT+07:00) Bangkok, Hanoi, Jakarta" />  
+	<message msgid="(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi" msgstr="(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi" />    
+	<message msgid="(GMT+08:00) Irkutsk grams, Ulaanbaatar" msgstr="(GMT+08:00) Irkutsk grams, Ulaanbaatar" /> 
+	<message msgid="(GMT+08:00) Kuala Lumpur, Singapore" msgstr="(GMT+08:00) Kuala Lumpur, Singapore" />   
+	<message msgid="(GMT+08:00) Perth" msgstr="(GMT+08:00) Perth" />  
+	<message msgid="(GMT+09:00) Yakutsk" msgstr="(GMT+09:00) Yakutsk" />  
+	<message msgid="(GMT+09:00) Osaka, Sapporo, Tokyo" msgstr="(GMT+09:00) Osaka, Sapporo, Tokyo" /> 
+	<message msgid="(GMT+09:00) Seoul" msgstr="(GMT+09:00) Seoul" />  
+	<message msgid="(GMT+09:30) Darwin" msgstr="(GMT+09:30) Darwin" />    
+	<message msgid="(GMT+09:30) Adelaide" msgstr="(GMT+09:30) Adelaide" /> 
+	<message msgid="(GMT+10:00) Brisbane" msgstr="(GMT+10:00) Brisbane" />   
+	<message msgid="(GMT+10:00) Canberra, Melbourne Sydney" msgstr="(GMT+10:00) Canberra, Melbourne Sydney" />  
+	<message msgid="(GMT+10:00) Guam, Port Moresby" msgstr="(GMT+10:00) Guam, Port Moresby" />  
+	<message msgid="(GMT+10:00) Vladivostok" msgstr="(GMT+10:00) Vladivostok" /> 
+	<message msgid="(GMT+10:00) Hobart" msgstr="(GMT+10:00) Hobart" />  
+	<message msgid="(GMT+11:00) Magadan, Solomon Islands, New Caledonia and more" msgstr="(GMT+11:00) Magadan, Solomon Islands, New Caledonia and more" />    
+	<message msgid="(GMT+12:00) Fiji Islands, Kamchatka Peninsula, the Marshall Islands" msgstr="(GMT+12:00) Fiji Islands, Kamchatka Peninsula, the Marshall Islands" /> 
+	<message msgid="(GMT+12:00) Auckland , Wellington" msgstr="(GMT+12:00) Auckland , Wellington" />
+	<message msgid="(GMT+12:00) Nuku'alofa" msgstr="(GMT+12:00) Nuku'alofa" />
+	<message msgid="hostname_Note" msgstr="Note: System time will not be accurate unless there is an access to the Internet or you select &quot;Customized Time&quot; below." />  
+	<message msgid="Customized Time" msgstr="Customized Time" />
+	<message msgid="Year" msgstr="Year" />
+	<message msgid="Month" msgstr="Month" /> 
+	<message msgid="Hour" msgstr="Hour" /> 
+	<message msgid="Minute" msgstr="Minute" />
+	<message msgid="Second" msgstr="Second" />
+	 
+	<!--system_backup-->  
+	<message msgid="Please select the configuration file before clicking on Restore." msgstr="Please select the configuration file before clicking on Restore." />   
+	<message msgid="To activate loaded settings, you must reboot the router." msgstr="To activate loaded settings, you must reboot the router." />  
+	<message msgid="Please select a path on your computer to save the configuration file." msgstr="Please select a path on your computer to save the configuration file." />  
+	<message msgid="backup note" msgstr="Here you can Backup your router's current configuration or restore your router with a saved configuration file." /> 
+	<message msgid="Click here to save a configuration file to your computer:" msgstr="Click here to save a configuration file to your computer:" />    
+
+	<!--system_restore-->  
+	<message msgid="restore_note" msgstr="The router will reboot automatically! IP Address: 192.168.0.1; Password: admin; After reboot, if the webpage doesn't update automatically, please renew your computer’s connection to the router and then use the new IP address to login." />   
+	<message msgid="Click this button to restore all settings to factory default." msgstr="Click this button to restore all settings to factory default." />  
+	
+	<!--system_upgrade-->  
+	<message msgid="Upgrading" msgstr="Upgrading" />   
+	<message msgid="Please select a firmware before you click on Upgrade!" msgstr="Please select a firmware before you click on Upgrade!" />  
+	<message msgid="Please click on OK to confirm to upgrade your router!" msgstr="Please click on OK to confirm to upgrade your router!" />  
+	<message msgid="By upgrading the router’software, you’ll get new features." msgstr="By upgrading the router’software, you’ll get new features." /> 
+	<message msgid="Select the firmware file" msgstr="Select the firmware file:" />      
+	<message msgid="Current System Version" msgstr="Current System Version" /> 
+	<message msgid="Publishing Date" msgstr="Publishing Date" /> 
+	<message msgid="upgrade_note" msgstr="Note: Do not power off the router during the upgrade and you can only use a computer that is plugged into one of the LAN ports of this router to complete the upgrade to avoid damaging the router. The router will reboot automatically after the upgrade." /> 
+
+	<!--system_reboot-->
+	<message msgid="Click on OK to continue. The reboot process will take about 10 seconds." msgstr="Click on OK to continue. The reboot process will take about 10 seconds." />   
+	<message msgid="Click the button to reboot the router:" msgstr="Click the button to reboot the router:" /> 
+	<message msgid="Reboot The Router" msgstr="Reboot The Router" />   
+
+	<!--direct_reboot.asp-->
+	<message msgid="Rebooting" msgstr="Rebooting..." />
+	<message msgid="Reboot the router to bring the settings into effect." msgstr="Reboot the router to bring the settings into effect." />      
+
+	<!--system_password-->  
+	<message msgid="Password must be alpha-numeric characters." msgstr="Password must be alpha-numeric characters." />   
+	<message msgid="Administrator Login Credentials" msgstr="Administrator Login Credentials" />  
+	<message msgid="Password must be alpha-numeric." msgstr="Password must be alpha-numeric." />      
+
+	<!--system_log-->  
+	<message msgid="Logs in page" msgstr="Logs in page" />     
+</po>
+ 

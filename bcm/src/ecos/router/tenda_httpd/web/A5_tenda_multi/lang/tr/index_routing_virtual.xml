@@ -1,0 +1,114 @@
+<po>
+<!--notice.asp-->
+<message msgid="Successfully Configure!" msgstr="Successfully Configure!" />
+
+<!--index.asp-->
+<message msgid="Account and password can not be empty" msgstr="Hesap ve şifre boş olamaz!" />
+<message msgid="Account" msgstr="Hesap" />
+<message msgid="Password" msgstr="Şifre" />
+<message msgid="Wireless password can not be empty" msgstr="Kablosuz şifresi boş olamaz!" />
+<message msgid="the password can only be 8 characters in length" msgstr="Şifre sadece 8 karakter uzunluğunda olabilir!" />
+<message msgid="Wireless password" msgstr="Kablosuz şifresi" />
+<message msgid="Advanced Settings" msgstr="Gelişmiş ayarlar" />
+<message msgid="Access to the Internet" msgstr="İnternete eriş" />
+<message msgid="Access Method" msgstr="Erişim metodu" />
+<message msgid="ADSL Dial-up" msgstr="ADSL Çevirmeli" />
+<message msgid="DHCP" msgstr="DHCP" />
+<message msgid="Access Account" msgstr="Erişim hesabı" />
+<message msgid="Access Password" msgstr="Erişim şifresi" />
+<message msgid="other access methods" msgstr="Erişim metodları için, a tıklayın" />
+<message msgid="Wireless encryption" msgstr="Kablosuz şifreleme" />
+<message msgid="Default password" msgstr="Default Security Key" />
+<message msgid="can only enter 8 characters" msgstr="sadece 8 karakter girilebilir" />
+<message msgid="Ok" msgstr="Tamam" />
+<message msgid="Cancel" msgstr="İptal" />
+
+<!--login-->
+<message msgid="Tenda 11N Wireless Router Login Screen" msgstr="Tenda 11N Kablosuz yönlendirici Oturum Ekranı" />
+<message msgid="No Ethernet cable connected to WAN port!" msgstr="WAN portuna bağlanmış eternet kablosu yok!" />
+<message msgid="No Internet access, please check your online settings!" msgstr="İnternet ziyareti yok, lütfen çevrimiçi ayarlarınızı kontrol edin!" />
+<message msgid="Password can not be empty!" msgstr="Şifre boş olamaz!" />
+<message msgid="Password can not exceed 12 characters in length!" msgstr="Şifre 12 karakter uzunluğunu aşamaz!" />
+<message msgid="Login" msgstr="Oturum aç" />
+<message msgid="Initial password" msgstr="Bireysel şifre" />
+<message msgid="No longer prompts " msgstr="Bildirimler yok" />
+
+<!--routing_table--> 
+  <message msgid="Destination IP" msgstr="Varış IP" />  
+  <message msgid="Subnet mask" msgstr="Alt ağ maskesi" /> 
+  <message msgid="Gateway" msgstr="Geçiş yolu" />  
+  <message msgid="Hops" msgstr="Duraklar" />    
+  <message msgid="Interface" msgstr="Arabirim" />   
+  <message msgid="Refresh" msgstr="Yenile" />  
+  <message msgid="routing_table_Help_Inf1" msgstr="Duraklar: arabirim metrikleri." /> 
+  <message msgid="routing_table_Help_Inf2" msgstr="Arabirim: üç tip arabirim sunulmuştur :vlan2:WAN arabirimi, ppp0:PPPoE arabirimi, br0:LAN arabirimi." />
+   
+<!--routing_static-->  
+  <message msgid="Delete" msgstr="Sil" />   
+  <message msgid="Max." msgstr="Maks." />  
+  <message msgid="static routing" msgstr="statik yönlendirme" />  
+  <message msgid="the specified static routing already exists" msgstr="belirlenmiş statik yönlendirme mevcut." /> 
+  <message msgid="Destination network IP address" msgstr="Varış yeri ağı IP adresi" />  
+  <message msgid="Operate" msgstr="Çalıştır" />    
+  <message msgid="add" msgstr="Ekle" />     
+  <message msgid="routing_static_Help_Inf1" msgstr="Statik yönlendirme:  Ağda bir kaç tane yönlendirici olduğunda, statik yönlendirme ayarlanmalıdır. Verinin yönlendirici yolu ile gitmesini temin eder. Farklı domain adı kullanıcılarına internete bu cihaz aracılığı ile erişimlerine izin vermek için bu özelliği kullanabilirisiniz. Lütfen ayarlama esnasında dikkatli olun." />  
+  <message msgid="routing_static_Help_Inf2" msgstr="Bir çoğu durumda, dinamik yönlendirme tavsiye olunmaktadır, çünkü bu özellik yönlendiriciin ağ yerleşiminin fiziksel değişimlerini otomatik olarak algılamasına izin verir. Eğer statik yönlendirme kullanmak istiyorsanız, yönlendiriciin DHCP fonksiyonunun devre dışı olduğundan emin olun. Ayarlar yönlendirici yeniden başlatıldıktan sonra etkili olacaktır." />
+  
+<!--nat_virtualportseg--> 
+  <message msgid="start port" msgstr="başlangıç portu" />  
+  <message msgid="end port" msgstr="bitiş portu" /> 
+  <message msgid="private IP" msgstr="özel IP" />  
+  <!--add-->
+  <message msgid="Starting Port large than Ending Port" msgstr=". başlangıç portu > bitiş portu" />
+  <!--add-->
+  <message msgid="Both" msgstr="Her ikisi" />    
+  <message msgid="NAT_Portseg_MSG" msgstr="Port kapsamı iletimi ağınızda umumi hizmetleri ayarlar, örneğin internet sunucuları, ftp sunucuları, e-mail sunucuları, ve diğer özelleştirilmiş internet uygulamaları. Bir hizmet kurduğunuzda, o zaman iletişim isteği internetten yönlendiriciinizin WAN portu belirli LAN IP adresine dönüştürülecektir." />   
+  <message msgid="NO." msgstr="NO." />  
+  <message msgid="Start_port_End_port" msgstr="Başlangıç portu- Bitiş portu" />   
+  <message msgid="LAN IP" msgstr="LAN IP" />  
+  <message msgid="Protocol" msgstr="Protokol" />  
+  <message msgid="Enable" msgstr="Etkinleştir" />    
+  <message msgid="Well-known service ports" msgstr="Bilinen hizmet portları" />  
+  <message msgid="Add to" msgstr="Ekle" />   
+  <message msgid="NAT_Portseg_Help_Inf1" msgstr="Başlangıç portu- Bitiş portu:WAN hizmeti portu." />  
+  <message msgid="NAT_Portseg_Help_Inf2" msgstr="Etkin: ayarları etkili kılmak için seçin." />
+  <message msgid="NAT_Portseg_Help_Inf3" msgstr="Sil: Ayarları silmenize yardımcı olur, etkili olması için &quot;Kaydet&quot; e tıklayın." />
+  <message msgid="NAT_Portseg_Help_Inf4" msgstr="Ekle :Ayarladığınız öğenin başlangıç portu alanına iyi bilinen hizmeti eklemek için yardımcı olur." />
+       
+<!--nat_dmz-->  
+  <message msgid="Can not use the router IP address" msgstr="yönlendiricinin IP adresini kullanamaz!" />   
+  <message msgid="DMZ host IP address" msgstr="DMZ sunucu IP adresi" />  
+  <message msgid="not in the same segment with LAN IP" msgstr="LAN IP ile aynı segmentte değil!" />   
+  <message msgid="illegal IP" msgstr="İllegal IP!" />  
+  <message msgid="DMZ_Note" msgstr="NOT: DMZ sunucu etkinleştirildiğinde, DMZ sunucusunun güvenlik duvarı ayarları fonksiyonel olmayacaktır." />  
+  <message msgid="DMZ_Help_Inf" msgstr="Bazı zamanlar bir LAN bilgisayarını tamamen internete açmanız gerekebilir böylece internetteki bilgisayarlar ile iletişim kurabilir. O zaman bilgisayarı DMZ sunucu olarak ayarlayabilirsiniz.DMZ sunucunun IP adresini gir.DMZ i etkinleştirdiğinizde, aslında DMZ sunucusuna karşı cihazın güvenlik duvarı korumasını kapatmış oluyorsunuz." />   
+   
+<!--upnp_config-->		
+  <message msgid="Enable UPnP" msgstr="UPnP etkinleştir" />   
+  <message msgid="UPNP_Help_Inf" msgstr="(Üniversal Tak ve Çalıştır) ağa bağlanmış cihazların otomatik olarka algılanmasına ve ayarlanmasına izin verir.  Güncel olarak UPnP sadece Windows ME ve Windows XP veya daha sonrası sistemler tarafından desteklenmektedir." />
+
+  <!--menu.js-->	  
+  <message msgid="Ok" msgstr="Tamam" />
+  <message msgid="Cancel" msgstr="İptal" />
+
+<!--gozila.js -->  
+  <message msgid="invalid" msgstr="geçersiz!" />   
+  <message msgid="contains illegal characters" msgstr="illegal karakterler içeriyor:" />  
+  <message msgid="not numbers " msgstr="sayılar değil!" />  
+  <message msgid="beyond the range" msgstr="oranın aşağısında !" /> 
+  <message msgid="contains invalid characters" msgstr="geçersiz karakterler içeriyor:" /> 
+  <message msgid="Are you sure to exit" msgstr="Çıkmaktan eminmisiniz?" />   
+  <message msgid="not defined" msgstr="tanımlanmamış!" />  
+  <message msgid="Password differs" msgstr="Şifre farklı!" />  
+  <message msgid="Change password" msgstr="Şifre değiştir?" /> 
+  <message msgid="the length is not within the range" msgstr="uzunluk kapsama alanında değil!" />    
+  <message msgid="permanent" msgstr="kalıcı" />   
+  <message msgid="Day" msgstr="Gün" />  
+  <message msgid="Don't enter Chinese characters" msgstr="Çince karakterler girmeyin!" />  
+  <message msgid="Reboot the router to bring the settings into effect ,reboot now" msgstr="yönlendiriciin yeniden başlatılması düzenlenmiş ayarları etkin hale getirecektir, şimdi yeniden başlat?" /> 
+  <message msgid="Reboot wireless module to bring the settings into effect ,reboot now" msgstr="Kablosuz modülün yeniden başlatılması düzenlenmiş ayarları etkin hale getirecektir, şimdi yeniden başlat?" /> 
+  <message msgid="remarks can only consist of numbers ,letters and  underlines" msgstr="Açıklamalar sadece sayıları, harfleri ve alt çizgileri içerebilir!" />   
+  <message msgid="The MAC address belongs to reserved addresses, please re-enter" msgstr="MAC adresi saklanmış adreslere aittir, lütfen yeniden girin!" />  
+  <message msgid="The MAC address belongs to multicast addresses, please re-enter" msgstr="MAC adresi çoklu yayın adreslere aittir, lütfen yeniden girin!" />  
+  <message msgid="Help information" msgstr="Yardım bilgisi" /> 
+</po>
