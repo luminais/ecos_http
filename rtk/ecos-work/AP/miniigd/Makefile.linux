@@ -1,0 +1,58 @@
+# $Id: Makefile.linux,v 1.1.1.1 2007-08-06 10:04:43 root Exp $
+# http://miniupnp.free.fr/
+# Author : Thomas Bernard
+# for use with GNU Make
+CFLAGS = -Wall -O -D_GNU_SOURCE -g
+#CFLAGS = -Wall -Os -D_GNU_SOURCE
+CC = mips-uclibc-gcc
+RM = rm -f
+INSTALL = install
+
+BASEOBJS = miniupnpd.o upnphttp.o upnpdescgen.o upnpsoap.o \
+           upnpreplyparse.o minixml.o \
+		   upnpredirect.o getifaddr.o daemonize.o upnpglobalvars.o
+
+LNXOBJS = linux/getifstats.o linux/iptcrdr.o
+
+LIBS = -liptc
+
+TESTUPNPDESCGENOBJS = testupnpdescgen.o upnpdescgen.o
+
+EXECUTABLES = miniupnpd testupnpdescgen
+
+.PHONY:	all clean install depend
+
+all:	$(EXECUTABLES)
+
+clean:
+	$(RM) $(BASEOBJS) $(LNXOBJS) $(EXECUTABLES) testupnpdescgen.o
+
+install:	miniupnpd
+	@echo no install for now...
+
+miniupnpd:	$(BASEOBJS) $(LNXOBJS) $(LIBS)
+
+testupnpdescgen:	$(TESTUPNPDESCGENOBJS)
+
+depend:
+	makedepend -f$(MAKEFILE_LIST) -Y \
+	$(BASEOBJS:.o=.c) $(LNXOBJS:.o=.c) $(TESTUPNPDESCGENOBJS:.o=.c) \
+	2>/dev/null
+
+# DO NOT DELETE
+
+miniupnpd.o: upnpglobalvars.h upnphttp.h upnpdescgen.h miniupnpdpath.h
+miniupnpd.o: getifaddr.h daemonize.h upnpsoap.h
+upnphttp.o: upnphttp.h upnpdescgen.h miniupnpdpath.h upnpsoap.h
+upnpdescgen.o: upnpdescgen.h miniupnpdpath.h upnpglobalvars.h
+upnpsoap.o: upnpglobalvars.h upnphttp.h upnpsoap.h upnpreplyparse.h
+upnpsoap.o: upnpredirect.h openbsd/getifstats.h
+upnpreplyparse.o: upnpreplyparse.h minixml.h
+minixml.o: minixml.h
+upnpredirect.o: upnpredirect.h upnpglobalvars.h openbsd/obsdrdr.h
+daemonize.o: daemonize.h
+upnpglobalvars.o: upnpglobalvars.h
+linux/getifstats.o: openbsd/getifstats.h
+linux/iptcrdr.o: linux/iptcrdr.h
+testupnpdescgen.o: upnpdescgen.h
+upnpdescgen.o: upnpdescgen.h miniupnpdpath.h upnpglobalvars.h

@@ -1,0 +1,3 @@
+cdl_option CYGPKG_NET_SNTP_CFLAGS_ADD {
+    user_value "-D_KERNEL -D__ECOS -mips16"
+};

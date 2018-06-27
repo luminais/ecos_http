@@ -1,0 +1,220 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src=<% getLangInfo("lang");%>></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>VLAN Settings</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+var interfaceNum=<%getIndex("vlanInterfaceNum")%>;
+var vlan_num=<%getIndex("vlanNum")%>;
+function vlan_init()
+{
+	var form=document.vlanAddForm;
+	var vlan_enable=<%getIndex("vlan_enable")%>;
+	var vlan_id=<%getIndex("vlan_currentId")%>;	
+	form.vlan_enable.checked=vlan_enable;
+	form.vlanId.value=vlan_id;
+	setAllFieldEnable(vlan_enable);
+	
+}
+
+function showBridgeVlanInfo()
+{
+	var brVlanEnable=<% getIndex("bridge_vlan_enable"); %>;
+	var wan_vlan=<% getIndex("vlan_iswan"); %>;
+	var fwdrule=<% getIndex("vlan_currentfwdrule"); %>;
+	if (brVlanEnable)
+	{
+		document.write('<tr>\
+		  <td>\
+		 <b>&nbsp;&nbsp;<script>dw(vlan_forwardrule)<\/script></b>\
+		 <select size="1" name="ForwardRule" >');
+	  	if (wan_vlan)
+	  	{
+	 		document.write('<option value="1"><script>dw(vlan_forwardrulenat)<\/script></option>');
+	 	}
+	 	else
+	 	{
+	 		document.write('<option value="1"><script>dw(vlan_forwardrulenat)<\/script></option>\
+	 				 	<option value="2"><script>dw(vlan_forwardrulebridge)<\/script></option>');
+	 	} 	
+	  	document.write('</select>\
+	  	</td>\
+	  	</tr>');
+	  	document.vlanAddForm.ForwardRule.value=fwdrule;
+	}
+}
+
+function setAllFieldEnable(checked)
+{
+	var form=document.vlanAddForm;
+	var i=0;
+	form.vlanId.disabled=!checked;
+	with(document.vlanAddForm)
+	{
+		for(i=0;i<interfaceNum;i++)
+		{
+			if(get_by_id("tagTblRadioId"+i+"_0"))
+				get_by_id("tagTblRadioId"+i+"_0").disabled=!checked;
+			if(get_by_id("tagTblRadioId"+i+"_1"))
+				get_by_id("tagTblRadioId"+i+"_1").disabled=!checked;
+			if(get_by_id("tagTblRadioId"+i+"_2"))
+				get_by_id("tagTblRadioId"+i+"_2").disabled=!checked;
+		}
+	}
+	with(document.vlanForm)
+	{
+		for(i=0;i<vlan_num;i++)
+		{
+			get_by_id("modifyVlanId"+i).disabled=!checked;
+			get_by_id("vlanBindItemChb"+i).disabled=!checked;
+		}
+		deleteSelVlanItem.disabled=!checked;
+		deleteAllVlanItem.disabled=!checked;
+		document.vlanForm.reset.disabled=!checked;
+	}
+	with(document.netIfForm)
+	{
+		for(i=0;i<interfaceNum;i++)
+		{
+			if(get_by_id("PvidId"+i))
+				get_by_id("PvidId"+i).disabled=!checked;
+			if(get_by_id("defPriId"+i))
+				get_by_id("defPriId"+i).disabled=!checked;
+			if(get_by_id("defCfiId"+i))
+				get_by_id("defCfiId"+i).disabled=!checked;
+		}
+		applyNetIf.disabled=!checked;
+		document.netIfForm.reset.disabled=!checked;
+	}
+}
+function resetVlanAdd()
+{
+	var form=document.vlanAddForm;
+	var vlan_enable=<%getIndex("vlan_enable")%>;
+	form.vlan_enable.checked=vlan_enable;
+	form.vlanId.value=0;
+	setAllFieldEnable(vlan_enable);
+	var i=0;
+	for(i=0;i<interfaceNum;i++)
+	{
+		if(get_by_id("tagTblRadioId"+i+"_2"))
+			get_by_id("tagTblRadioId"+i+"_2").checked=true;
+	}
+}
+function checkAddVlan()
+{
+	var form=document.vlanAddForm;
+	if(!form.vlanId.disabled&&form.vlanId.value!="0")
+	{
+		if(!checkIntSize(form.vlanId,1,4094,vlan_checkadd1)) return false;
+		with(document.vlanAddForm)
+		{
+			var i=0;
+			var noInterfaceBind=true;
+			for(i=0;i<interfaceNum;i++)
+			{
+				if(get_by_id("tagTblRadioId"+i+"_0")&&get_by_id("tagTblRadioId"+i+"_0").checked)
+					noInterfaceBind=false;
+				if(get_by_id("tagTblRadioId"+i+"_1")&&get_by_id("tagTblRadioId"+i+"_1").checked)
+					noInterfaceBind=false;				
+			}
+			if(noInterfaceBind)
+			{
+				alert(vlan_checkadd2);
+				return false;
+			}
+		}
+	} 
+	return true;
+}
+function deleteSelVlanClick()
+{
+	if( !confirm(vlan_deletesel) )
+		return false;
+	else return true;
+}
+function deleteAllSelVlanClick()
+{
+	if( !confirm(vlan_deleteall_conf) )
+		return false;
+	else return true;
+}
+</script>
+</head> 
+
+<body onload="vlan_init();">
+  <blockquote>
+  <form action=/formVlanAdd.htm method=POST name="vlanAddForm">
+  	<input type="hidden" value="/vlan.htm" name="submit-url">
+  <h2><font color="#0000FF"><script>dw(vlan_header)</script></font></h2>
+	<table border=0 width="550" cellspacing=4 cellpadding=0>
+	<tr><td><font size=2>
+<script>dw(vlan_header_explain)</script>
+	</font></td></tr>
+
+    <tr><td><hr size="1" align="top" noshade="noshade"></td></tr>
+  	<tr><td><font size=2><b>    
+			<input name="vlan_enable" type="checkbox" value="ON" onclick='setAllFieldEnable(this.checked);'>&nbsp;&nbsp;<script>dw(vlan_enable)</script></b><br>
+		</td>
+    </tr>
+    <tr></tr>    
+  </table>   
+  <table>
+  <tr><td>
+   		<b>&nbsp;&nbsp;<script>dw(vlan_id)</script></b> <input type="text" name="vlanId" size="5" maxlength="4">(1-4094)&nbsp;
+  	</td></tr>
+  <SCRIPT>
+  showBridgeVlanInfo();
+  </SCRIPT>
+  </table>
+<table border=0 width="500" id="tagTable">
+  <caption><script>dw(vlan_tagtbl)</script></caption>
+   <tr><td align=center width="25%" bgcolor="#808080"><font size="2"><b><script>dw(vlan_tagtbl_interface)</script></b></font></td>
+    <td align=center width="25%" bgcolor="#808080"><font size="2"><b><script>dw(vlan_tagtbl_taged)</script></b></font></td>
+    <td align=center width="25%" bgcolor="#808080"><font size="2"><b><script>dw(vlan_tagtbl_untaged)</script></b></font></td>
+    <td align=center width="25%" bgcolor="#808080"><font size="2"><b><script>dw(vlan_tagtbl_notin)</script></b></font></td>
+    </tr>
+    <%showVlanTagTbl()%>
+    </table>
+  <table>
+    <tr><td>
+    	<br/>
+    	<input type="submit" name="addVlanItem" onclick="return checkAddVlan()">&nbsp;&nbsp;
+    	<script>document.vlanAddForm.addVlanItem.value=vlan_apply;</script>
+        <input type="button" name="resetAddVlan" onclick="resetVlanAdd();">
+        <script>document.vlanAddForm.resetAddVlan.value=vlan_reset;</script>
+    </td></tr>
+  </table>  
+</form>
+ <br>
+ 	<form action=/formVlan.htm method=POST name="vlanForm">
+ 	<table border="0" width=500>
+	  <tr><font size=2><b><script>dw(vlan_settbl)</script></b></font></tr>	 
+	  <% vlanList(); %>
+	 </table>
+	 <br>
+	 <input type="submit" name="deleteSelVlanItem" onClick="return deleteSelVlanClick()">&nbsp;&nbsp;
+	 <script>document.vlanForm.deleteSelVlanItem.value=vlan_deletechick;</script>
+	  <input type="submit" name="deleteAllVlanItem" onClick="return deleteAllSelVlanClick()">&nbsp;&nbsp;&nbsp;
+	  <script>document.vlanForm.deleteAllVlanItem.value=vlan_deleteall;</script>
+	  <input type="reset" value="Reset" name="reset">
+	  <script>document.vlanForm.reset.value=vlan_reset;</script>
+	  <input type="hidden" value="/vlan.htm" name="submit-url">
+ 	</form>
+ 	<form action=/formNetIf.htm method=POST name="netIfForm">
+ 	<table border="0" width=500>
+	  <tr><font size=2><b><script>dw(vlan_nettbl)</script></b></font></tr>	 
+	  <% netIfList(); %>
+	 </table>
+	 <br>
+      <input type="submit" name="applyNetIf">&nbsp;&nbsp;
+      <script>document.netIfForm.applyNetIf.value=vlan_apply;</script>
+	  <input type="reset" name="reset">
+	  <script>document.netIfForm.reset.value=vlan_reset;</script>
+	  <input type="hidden" value="/vlan.htm" name="submit-url">
+ 	</form>
+	</blockquote>
+  </body></html>

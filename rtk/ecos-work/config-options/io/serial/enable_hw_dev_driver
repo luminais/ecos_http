@@ -1,0 +1,3 @@
+cdl_component CYGPKG_IO_SERIAL_DEVICES {
+    user_value 1
+};

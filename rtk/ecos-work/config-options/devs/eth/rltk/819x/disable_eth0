@@ -1,0 +1,3 @@
+cdl_component RTLPKG_DEVS_ETH_RLTK_819X_SWITCH_ETH0 {
+    user_value 0
+};

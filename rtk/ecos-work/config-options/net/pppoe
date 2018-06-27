@@ -1,0 +1,3 @@
+cdl_component CYGPKG_NET_FREEBSD_PPPOE {
+    user_value 1
+}

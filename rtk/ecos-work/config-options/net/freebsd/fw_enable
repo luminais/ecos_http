@@ -1,0 +1,3 @@
+cdl_component CYGPKG_NET_FIREWALL {
+    user_value 1
+};

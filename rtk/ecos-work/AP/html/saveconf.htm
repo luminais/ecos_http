@@ -1,0 +1,78 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>Save/Reload Setting</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+function fileCheck()
+{
+	var oFile = document.getElementById('binary'); 
+    	if(oFile.value == ""){ 
+		alert(saveconf_load_from_file_empty);
+		return false;
+	} 
+	return true;
+}
+
+function resetClick()
+{
+   document.saveConfigReset.reset.value="Reset";
+   if ( !confirm(saveconf_reset_to_default_confm) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function saveClick(url)
+{
+  if (verifyBrowser() == "ie4" ) {
+	window.location.href = url;
+	return false;
+  }
+  else
+  	return true;
+}
+
+</script>
+
+</head>
+<body>
+<blockquote>
+<h2><font color="#0000FF"><script>dw(saveconf_header)</script></font></h2>
+  <table border="0" cellspacing="4" width="500">
+  <tr><font size=2>
+<script>dw(saveconf_header_explain)</script>
+  </tr>
+  <tr><hr size=1 noshade align=top></tr>
+  <form action=/formSaveConfig.htm method=POST name="saveConfig">
+  <tr>
+    <td width="32%"><font size=2><b><script>dw(saveconf_save_to_file)</script></b></td>
+    <td width="30%"><font size=2>
+        <p><input type="submit" name="save" onclick="return saveClick('./config.dat')"></p>
+        <script>document.saveConfig.save.value=saveconf_save;</script>
+   </tr>
+  </form>
+  <form method="post" action=/formUploadConfig.htm enctype="multipart/form-data" name="uploadConfig">
+  	<input type="hidden" value="/saveconf.htm" name="submit-url">
+  <tr>
+    <td width="32%"><font size=2><b><script>dw(saveconf_load_from_file)</script></b></td>
+    <td width="30%"><font size=2><input type="file" name="binary" id="binary" size=24></td>
+    <td width="20%"><font size=2><input type="submit" name="load" onclick="return fileCheck()"></td>
+    <script>document.uploadConfig.load.value=saveconf_load;</script>
+  </tr>
+  </form>
+  <form action=/formSaveConfig.htm method=POST name="saveConfigReset">
+  <tr>
+    <td width="32%"><font size=2><b><script>dw(saveconf_reset_to_default)</script></b></td>
+    <td width="30%"><font size=2><input type="submit" name="reset" onclick="return resetClick()"></td>
+    <script>document.saveConfigReset.reset.value=saveconf_reset;</script>
+  </tr>
+  </form>
+</table>
+</blockquote>
+</body>
+</html>

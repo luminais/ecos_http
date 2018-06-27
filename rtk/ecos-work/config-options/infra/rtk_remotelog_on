@@ -1,0 +1,3 @@
+cdl_option CYGPKG_INFRA_RTK_REMOTELOG {
+    user_value 1
+};

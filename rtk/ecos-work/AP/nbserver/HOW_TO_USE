@@ -1,0 +1,31 @@
+
+HOW TO USE
+==========
+When sysytem is on,use following command to make smbserver:
+for eth0(lan interface)
+		nmbserver -i [eth0/lan] -n [netbios-name1] -n [netbios-name2] .......-D
+  For example,when bind netbios-name "myApLan1" and "myApLan2" for lan
+  		nmbserver -i lan -n myApLan1 -n myApLan2 -D      
+  	or   	nmbserver -i eth0 -n myApLan1 -n myApLan2 -D
+		
+		
+for eth1(wan interface)
+		nmbserver -i [eth1/wan] -n [netbios-name1] -n [netbios-name2] .......-D
+		ipfw add [number] allow udp from any ro any 137 
+	For example,when bind netbios-name "myApWan1" and"myApWan2" for wan,and wan interface is eth1
+	  	nmbserver -i eth1 -n myApWan1 -n myApWan2 -D
+	or 	nmbserver -i wan -n myApWan -n myApWan2 -D
+	 	ipfw add 50 allow udp from any to any 137
+	  
+Note:
+=====
+1.When open the server,the option "-D" for daemon is required, and when interface and netbios name not set,default is "eth0" and linux system hostname("rlx-ecos" for AP)
+When type 	
+		"nmbserver -D"
+It means
+	 	"nmbserver -i eth0 -n [rlx-ecos] -D"
+2.When binding to WAN interface, it need configure the firewall
+3.The nmbserver use the udp port 137
+
+
+

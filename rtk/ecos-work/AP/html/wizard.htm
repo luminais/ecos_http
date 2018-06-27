@@ -1,0 +1,2660 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src='<% getLangInfo("lang");%>'></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>Setup Wizard</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<style>
+.on {display:on}
+.off {display:none}
+</style>
+<script>
+var wlan_num=<% getIndex("wlan_num"); %> ;
+var wlan_support_92D = <% getIndex("wlan_support_92D"); %> ;
+var wlan_support_92C_92D =  <% getIndex("wlan_support_92D_concurrent"); %> ;
+var WLAN_92C=0;
+var WLAN_92D=1;
+var WLAN_92C_92D=2;
+var WLAN_DUAL_BAND=<%getIndex("wlan_dual_band")%>;
+var wlan_support_8812e =<%getIndex("wlan_support_8812e")%>;
+//0:92c 1:92d 2:92c+92d
+var wlanBand2G5GSelect = <% getIndex("wlanBand2G5GSelect"); %>;
+/******************************************************************
+** wlan_support_92C_92D: support 92c/92d/92c+92d 
+** wlanBand2G5GSelect: current use 2.4G/5G/2.4G+5G 
+** 2.4G/5G show wlan1_div0/wlan2_div0
+** 2.4G+5G also show wlan1_div1/wlan2_div1
+******************************************************************/
+var BAND2G5GSELECT_BANDMODE2G=0;
+var BAND2G5GSELECT_BANDMODE5G=1;
+var BAND2G5GSELECT_BANDMODEBOTH=2;
+var BAND2G5GSELECT_BANDMODESINGLE=3;
+
+var wispWanId = <% getIndex("wispWanId"); %> ;
+var is_cmj = <% getInfo("is_cmj"); %>;
+var is_xdg=<% getInfo("is_xdg"); %>; 
+var ui_mode = <% getInfo("ui_mode"); %>;
+var gpio_2g5g = <% getInfo("gpio_2g5g"); %>;
+var cmj_wizard = is_cmj & ui_mode;
+var cmj_upgradekit = <% getInfo("cmj_upgradekit"); %>;
+var wan_detect= <% getInfo("wan_detect"); %>;
+var is_etherlink = <% getInfo("is_etherlink"); %>;
+
+var defPskLen=new Array();
+var defPskFormat=new Array();
+
+var opModeVal=<% getIndex("opMode"); %>;
+var isAP = <% getIndex("isPureAP"); %>;
+
+var startChanIdx=new Array();
+startChanIdx[0] = 0;
+var defaultChan=new Array();
+defaultChan[0] = <% getIndex("channel","0"); %>;
+var regDomain=new Array();
+regDomain[0]= <% getIndex("regDomain"); %>;
+
+if(wlan_support_92D)
+{
+if(wlan_support_92C_92D==WLAN_92C)
+	wlanBand2G5GSelect=BAND2G5GSELECT_BANDMODE2G;
+else if(wlan_support_92C_92D==WLAN_92C_92D)
+	wlanBand2G5GSelect=BAND2G5GSELECT_BANDMODEBOTH;
+if(wlanBand2G5GSelect<BAND2G5GSELECT_BANDMODE2G ||wlanBand2G5GSelect>BAND2G5GSELECT_BANDMODEBOTH ||WLAN_DUAL_BAND)
+	wlanBand2G5GSelect=BAND2G5GSELECT_BANDMODEBOTH;
+}
+
+if (is_cmj) {
+	if (gpio_2g5g==2)
+		wlanBand2G5GSelect = BAND2G5GSELECT_BANDMODE2G;
+	if (gpio_2g5g==5)
+		wlanBand2G5GSelect = BAND2G5GSELECT_BANDMODE5G;
+}
+
+function showNetSniperWanTypeInfo()
+{
+	var nsWantypeEnable=<% getIndex("net_sniper_wantype_enable"); %>;
+	if (nsWantypeEnable)
+	{
+	  	<!--<option value="pppoenanchang"><script>dw(tcpip_wan_type_pppoe_nanchang)<\/script></option>\-->
+		document.write('<option value="pppoehenan"><script>dw(tcpip_wan_type_pppoe_henan)<\/script></option>\
+		  <option value="pppoeother1"><script>dw(tcpip_wan_type_pppoe_other1)<\/script></option>\
+		  <option value="pppoeother2"><script>dw(tcpip_wan_type_pppoe_other2)<\/script></option>\
+		  <option value="dhcpplus"><script>dw(tcpip_wan_type_dhcp_plus)<\/script></option>');
+	}
+}
+
+function updateModeChangeSecurity(wlan_id)
+{
+	form =  document.wizard;
+	if(form.elements["mode"+wlan_id].selectedIndex == 1){
+		form.elements["method"+wlan_id].options[2].text = "WPA(TKIP)";
+		form.elements["method"+wlan_id].options[2].value = 2;
+		form.elements["method"+wlan_id].options[3].text = "WPA2(AES)";
+		form.elements["method"+wlan_id].options[3].value = 4;
+	}
+	else{
+		form.elements["method"+wlan_id].options[2].text = "WPA2(AES)";
+		form.elements["method"+wlan_id].options[2].value = 4;
+		form.elements["method"+wlan_id].options[3].text = "WPA Mixed";
+		form.elements["method"+wlan_id].options[3].value = 6;
+	}
+}
+
+function wan_pptp_use_dynamic_carrier_selector(index, mode){
+	var dF=document.wizard;
+
+	if(mode == "dynamicIP") {
+		dF.wan_pptp_use_dynamic_carrier_radio[index].checked = true;
+		dF.pptpIpAddr.disabled = true;
+		dF.pptpSubnetMask.disabled = true;
+		dF.pptpDefGw.disabled = true;
+		//dynamicWanIP = 1;	
+		
+	} else {
+		dF.wan_pptp_use_dynamic_carrier_radio[index].checked = true;
+		dF.pptpIpAddr.disabled = false;
+		dF.pptpSubnetMask.disabled = false;
+		dF.pptpDefGw.disabled = false;
+		//dynamicWanIP = 0;		
+	}
+}
+
+function wan_l2tp_use_dynamic_carrier_selector(index, mode){
+	var dF=document.wizard;
+
+	if(mode == "dynamicIP") {
+		dF.wan_l2tp_use_dynamic_carrier_radio[index].checked = true;
+		dF.l2tpIpAddr.disabled = true;
+		dF.l2tpSubnetMask.disabled = true;
+		dF.l2tpDefGw.disabled = true;
+		//dynamicWanIP = 1;			
+	} else {
+		dF.wan_l2tp_use_dynamic_carrier_radio[index].checked = true;
+		dF.l2tpIpAddr.disabled = false;
+		dF.l2tpSubnetMask.disabled = false;
+		dF.l2tpDefGw.disabled = false;
+		//dynamicWanIP = 0;		
+	}
+}
+
+function Load_Setting()
+{
+	var form = document.wizard;	
+	
+//opmode
+	init_opmode(form);
+//ntp_div
+	init_ntp(form);	
+//wan_div
+	init_wan(form);	
+//bandMode
+	init_bandMode(form);	
+//wlan1_div0
+	init_wlan1_div0(form);
+//wlan2_div0
+	init_wlan2_div0(form);	
+	
+	if(wlanBand2G5GSelect==BAND2G5GSELECT_BANDMODEBOTH)
+	{
+	//wlan1_div1
+		init_wlan1_div1();
+	//wlan2_div1
+		init_wlan2_div1();
+	}
+
+	if (cmj_wizard)
+		init_CMJ();
+	var isWispDisplay =  <% getIndex("isWispDisplay"); %> ;
+	if(isWispDisplay == 0)
+	{
+		document.getElementById("opmode_wisp").style.display = "none";
+	}
+	showWizard_div("top_div");
+}
+
+function init_opmode(form)
+{
+	var op_mode = opModeVal;
+	if(opModeVal!=0&&opModeVal!=1&&opModeVal!=2)
+	{
+		alert(wizard_opmode_invalid+opModeVal);
+		op_mode=0;
+	}
+	if (cmj_wizard) {
+		if (opModeVal == 1)
+			op_mode = 4;
+		else
+			op_mode = 3;
+	}
+	form.opMode[op_mode].defaultChecked= true;
+	form.opMode[op_mode].checked= true;
+	if(wlan_num > 1){
+		form.wispWanId.defaultSelected= wispWanId;
+		form.wispWanId.selectedIndex= wispWanId;
+	}
+	updateWISPWan();
+}
+function init_ntp(form)
+{
+	if ( <% getIndex("ntpEnabled"); %> )
+		form.enabled.checked = true;
+	else
+		form.enabled.checked = false;
+
+	if ( <% getIndex("DaylightSave"); %> )
+		form.dlenabled.checked = true;
+	else
+		form.dlenabled.checked = false;
+
+	setTimeZone(form.timeZone, "<% getInfo("ntpTimeZone"); %>");
+	setNtpServer(form.ntpServerIp1, "<% getInfo("ntpServerIp1"); %>");
+	updateState_ntp(form);
+}
+function init_wan(form)
+{
+	var dF=document.wizard;
+	var wanDhcp_ = <% getIndex("wanDhcp"); %>;
+	var wanDhcp_selValue = 0;
+	if ( wanDhcp_ == 0 )//DHCP_DISABLED
+		wanDhcp_selValue = "fixedIp";
+	else if ( wanDhcp_ == 1 )//DHCP_CLIENT
+		wanDhcp_selValue = "autoIp";
+	else if ( wanDhcp_ == 3 )//PPPOE
+		wanDhcp_selValue = "ppp";
+	else if ( wanDhcp_ == 4 )//pptp
+		wanDhcp_selValue = "pptp";
+	else if ( wanDhcp_ == 6 )//l2tp
+		wanDhcp_selValue = "l2tp";		
+    	else if ( wanDhcp_ == 20 )//pppoehenan
+		wanDhcp_selValue = "pppoehenan";
+	else if ( wanDhcp_ == 21 )//pppoenanchang
+		wanDhcp_selValue = "pppoenanchang";		
+	else if ( wanDhcp_ == 22 )//pppoeother1
+		wanDhcp_selValue = "pppoeother1";
+	else if ( wanDhcp_ == 23 )//pppoeother2
+		wanDhcp_selValue = "pppoeother2";
+	else if ( wanDhcp_ == 24 )//dhcpplus
+		wanDhcp_selValue = "dhcpplus";
+	else
+		wanDhcp_selValue = "autoIp";
+
+
+	if(<% getIndex("pptp_wan_ip_mode"); %>)
+	{//static ip
+		dF.wan_pptp_use_dynamic_carrier_radio[1].checked = true;
+		dF.pptpIpAddr.disabled = false;
+		dF.pptpSubnetMask.disabled = false;
+		dF.pptpDefGw.disabled = false;		
+	}
+	else
+	{
+		dF.wan_pptp_use_dynamic_carrier_radio[0].checked = true;
+		dF.pptpIpAddr.disabled = true;
+		dF.pptpSubnetMask.disabled = true;
+		dF.pptpDefGw.disabled = true;		
+	}
+	
+	if(<% getIndex("l2tp_wan_ip_mode"); %>)
+	{//static ip
+		dF.wan_l2tp_use_dynamic_carrier_radio[1].checked = true;
+		dF.l2tpIpAddr.disabled = false;
+		dF.l2tpSubnetMask.disabled = false;
+		dF.l2tpDefGw.disabled = false;		
+	}
+	else
+	{
+		dF.wan_l2tp_use_dynamic_carrier_radio[0].checked = true;
+		dF.l2tpIpAddr.disabled = true;
+		dF.l2tpSubnetMask.disabled = true;
+		dF.l2tpDefGw.disabled = true;
+	}
+
+	
+	document.wizard.wanType.value=wanDhcp_selValue;
+	wanTypeSelection(document.wizard.wanType);
+}
+function is_band_2g_wizard()
+{
+	var band_value=<%getIndex("band","0")%> -1;
+	if(band_value==0
+		||band_value==1
+		||band_value==2
+		||(band_value==7 && <%getIndex("Band2G5GSupport");%>==1)
+		||band_value==8
+		||band_value==9
+		||band_value==10
+		||band_value ==74
+		)
+			return true;
+		else
+			return false;
+			
+}
+function init_bandMode(form)
+{
+	clean_option(form.wlBandModeSel); 
+
+	if(is_cmj)
+	{
+		if(wlanBand2G5GSelect == BAND2G5GSELECT_BANDMODE2G)		
+			add_option_item(form.wlBandModeSel,"2.4G", 0);
+		else
+			if(wlanBand2G5GSelect == BAND2G5GSELECT_BANDMODE5G)
+			add_option_item(form.wlBandModeSel,"5G", 1);
+		return;
+	}
+	if(wlanBand2G5GSelect==BAND2G5GSELECT_BANDMODESINGLE)
+	{
+		add_option_item(form.wlBandModeSel,"2.4G", 0);
+		add_option_item(form.wlBandModeSel,"5G", 1);
+		if(is_band_2g_wizard())
+			form.wlBandModeSel.value=0;
+		else
+			form.wlBandModeSel.value=1;
+		wlanBand2G5GSelect=form.wlBandModeSel.value;
+		return;
+	}
+	if(WLAN_DUAL_BAND)
+	{
+		add_option_item(form.wlBandModeSel,"2.4G+5G  Concurrent", 0);
+		return;
+	}
+	
+	if(wlan_support_92C_92D==WLAN_92C)
+	{
+		add_option_item(form.wlBandModeSel,"2.4G", 0);
+	}
+	else if(wlan_support_92C_92D==WLAN_92D)
+	{
+		add_option_item(form.wlBandModeSel,"2.4G", 0);
+		add_option_item(form.wlBandModeSel,"5G", 1);
+		add_option_item(form.wlBandModeSel,"2.4G+5G  Concurrent", 2);		
+		form.wlBandModeSel.value=wlanBand2G5GSelect;		
+	}
+	else if(wlan_support_92C_92D==WLAN_92C_92D)
+	{
+		add_option_item(form.wlBandModeSel,"2.4G+5G  Concurrent", 0);
+	}
+}
+function init_wlan1_div0(form)
+{
+	var wizardForm=document.wizard;
+	
+	update_mode(wizardForm.mode0,<%getIndex("wlanMode","0")%>);
+	update_band(wizardForm.band0,<%getIndex("band","0")%>,0);
+	
+	wizardForm.type0.value=<%getIndex("wlanNetWorkType","0")%>;
+	wizardForm.channelbound0.value=<%getIndex("ChannelBonding","0")%>;
+	wizardForm.controlsideband0.value=<%getIndex("ControlSideBand","0")%>;		
+	wizardForm.wlanMacClone0.checked=<%getIndex("wlanMacClone","0")%>;	
+
+	bandModeSel0(wizardForm.band0);
+	wlanModeSel0(wizardForm.mode0);
+	networkTypeSel0(wizardForm.type0);
+	channelWidthSel0(wizardForm.channelbound0);
+	upadte_wlan2_div();
+	updateModeChangeSecurity(0);
+	//wizardForm.chan0.value=<%getIndex("channel","0")%>;
+	if(wlanBand2G5GSelect==BAND2G5GSELECT_BANDMODEBOTH)
+	{
+		wizardForm.controlsideband0.disabled = true;
+	}
+	if(is_cmj||is_xdg || (wizardForm.wlBandModeSel[wizardForm.wlBandModeSel.selectedIndex].text=="2.4G")){
+		if(wizardForm.wlBandModeSel.value == 0){
+		wizardForm.chan0.value=<%getIndex("channel","0")%>;
+		wizardForm.controlsideband0.disabled=false;
+		clean_option(wizardForm.controlsideband0);
+		add_option_item(wizardForm.controlsideband0,wlbasic_ctlsideuppermode,0);
+		add_option_item(wizardForm.controlsideband0,wlbasic_ctlsidelowermode,1);
+		wizardForm.controlsideband0.value=<%getIndex("ControlSideBand","0")%>;
+		}
+	}
+}
+function update_mode(field,value)
+{
+	var wizardForm=document.wizard;
+	clean_option(field); 
+	add_option_item(field,"AP", 0);
+	add_option_item(field,wizard_client, 1);
+	
+	if(<% getIndex("isWDSDefined")%>)
+	{
+		add_option_item(field,"WDS", 2);
+		add_option_item(field,"AP+WDS", 3);		
+	}
+	if ( <% getIndex("isMeshDefined"); %> )
+	{
+		if( <% getIndex("isNewMeshUI"); %>  )
+		{
+			add_option_item(field,"AP+MESH", 4);
+			add_option_item(field,"MESH", 5);			
+		}else
+		{
+			add_option_item(field,"AP+MPP", 4);
+			add_option_item(field,"MPP", 5);
+			add_option_item(field,"MAP", 6);
+			add_option_item(field,"MP", 7);
+		}		
+	}
+	field.value=value;
+}
+function update_band(field,band_value,id)
+{
+	if(band_value>0)
+			band_value=band_value-1;
+	if(wlanBand2G5GSelect==BAND2G5GSELECT_BANDMODE2G || id==1)
+	{
+		if(band_value!=0&&band_value!=1&&band_value!=2&&band_value!=7&&band_value!=9&&band_value!=10&&band_value!=74)
+			band_value=10;
+		clean_option(field); 
+		add_option_item(field,"2.4 GHz (B)", 0);
+		add_option_item(field,"2.4 GHz (G)", 1);
+		add_option_item(field,"2.4 GHz (N)", 7);
+		add_option_item(field,"2.4 GHz (B+G)", 2);
+		add_option_item(field,"2.4 GHz (G+N)", 9);
+		add_option_item(field,"2.4 GHz (B+G+N)", 10);
+		if(<% getIndex("wlan_support_ac2g"); %>)
+			add_option_item(field,"2.4 GHz (B+G+N+AC)", 74);
+	}else
+	{
+		if(band_value!=3&&band_value!=7&&band_value!=11&&band_value!=63&&band_value!=67&&band_value!=75&&band_value!=71)
+			band_value=75;
+		clean_option(field);
+		add_option_item(field,"5 GHz (A)", 3);
+		add_option_item(field,"5 GHz (N)", 7);
+		add_option_item(field,"5 GHz (A+N)", 11);
+		if(wlan_support_8812e)
+		{
+			add_option_item(field,"5 GHz (AC)", 63);
+			add_option_item(field,"5 GHz (N+AC)", 71);
+			add_option_item(field,"5 GHz (A+N+AC)", 75);
+		}
+	}
+	field.value=band_value;
+}
+function upadte_wlan2_div()
+{
+	var wizardForm=document.wizard;
+	
+	if(wlanBand2G5GSelect!=BAND2G5GSELECT_BANDMODEBOTH) {	
+		if (document.getElementById("opmode_wisp_checked").checked == true)
+			wizardForm.click_wlan2_next0.value="Next>>";
+		else
+			wizardForm.click_wlan2_next0.value=wizard_finish_btn;
+	}
+	else
+		wizardForm.click_wlan2_next0.value=wizard_next_btn;
+
+	if(wlanBand2G5GSelect==BAND2G5GSELECT_BANDMODE2G)
+	{
+		get_by_id("wizard_div0_basic").innerHTML=wizard_2G_basic;
+		get_by_id("wizard_div0_sec").innerHTML=wizard_2G_sec;		
+	}
+	else
+	{
+		get_by_id("wizard_div0_basic").innerHTML=wizard_5G_basic;
+		get_by_id("wizard_div0_sec").innerHTML=wizard_5G_sec;		
+	}
+
+	if (cmj_wizard) {
+		get_by_id("wizard_div0_basic").innerHTML=wizard_cmj_content2;
+		get_by_id("wizard_div0_sitesurvey").innerHTML=wizard_sitesurvey_content;
+		get_by_id("wizard_div0_wisp_ap_ssid").innerHTML=wizard_cmj_content2;
+	}
+	
+}
+function init_wlan2_div0(form)
+{
+	form.method0.value=<%getIndex("encrypt","0")%>;
+	form.length0.value=<%getIndex("wep","0")%>;
+	form.format0.value=<%getIndex("keyType","0")%> +1;//to fit wlsecurity_all.htm
+	form.pskFormat0.value=<%getIndex("pskFormat","0")%>;
+	form.pskValue0.value="<%getInfo("pskValue","0")%>";
+	encryTypeSel(form.method0,0);
+}
+function init_wlan1_div1()
+{
+	var wizardForm=document.wizard;
+	
+	update_mode(wizardForm.mode1,<%getIndex("wlanMode","1")%>);
+	update_band(wizardForm.band1,<%getIndex("band","1")%>,1);
+	
+	wizardForm.type1.value=<%getIndex("wlanNetWorkType","1")%>;
+	wizardForm.channelbound1.value=<%getIndex("ChannelBonding","1")%>;
+	wizardForm.controlsideband1.value=<%getIndex("ControlSideBand","1")%>;	
+	wizardForm.wlanMacClone1.checked=<%getIndex("wlanMacClone","1")%>;
+	
+	
+	bandModeSel1(wizardForm.band1);
+	wlanModeSel1(wizardForm.mode1);
+	networkTypeSel1(wizardForm.type1);
+	channelWidthSel1(wizardForm.channelbound1);
+	updateModeChangeSecurity(1);	
+	wizardForm.chan1.value=<%getIndex("channel","1")%>;
+
+}
+function init_wlan2_div1()
+{
+	var form=document.wizard;
+	form.method1.value=<%getIndex("encrypt","1")%>;
+	form.length1.value=<%getIndex("wep","1")%>;
+	form.format1.value=<%getIndex("keyType","1")%> +1;//to fit wlsecurity_all.htm
+	form.pskFormat1.value=<%getIndex("pskFormat","1")%>;
+	form.pskValue1.value="<%getInfo("pskValue","1")%>";
+	encryTypeSel(form.method1,1);
+}
+function wlan2_div_hideAll(id)
+{
+	show_div(false, "wep_div"+id);
+	show_div(false, "wpa_div"+id);
+	show_div(false, "wapi_div"+id);
+}
+function encryTypeSel(field,id)
+{
+	var form=document.wizard;
+	wlan2_div_hideAll(id);
+	if(field.value=="0") return;
+	else if(field.value=="1") //wep
+	{
+		show_div(true,"wep_div"+id);
+		if(id==0)
+			wepLengthSel0(form.length0);
+		else
+			wepLengthSel1(form.length1);
+	}
+	else if(field.value=="2"||field.value=="4"||field.value=="6") //wpa
+	{
+		show_div(true,"wpa_div"+id);
+	}
+	else if(field.value=="7")//wapi
+	{
+		show_div(true,"wapi_div"+id);
+	}
+	return;
+}
+function bandModeSel0(field)
+{
+	var form=document.wizard;
+	var channelBounding0 = document.getElementById("channel_bounding0");
+	var controlSideband0 = document.getElementById("control_sideband0");
+	if(band_11N_enable(field.value))//enable n
+	{
+		channelBounding0.style.display = "";
+		controlSideband0.style.display = "";		
+	}else
+	{
+		channelBounding0.style.display = "none";
+		controlSideband0.style.display = "none";
+	}
+	updateChannel0();
+	updateChannelbound0();
+}
+function bandModeSel1(field)
+{
+	var form=document.wizard;
+	var channelBounding1 = document.getElementById("channel_bounding1");
+	var controlSideband1 = document.getElementById("control_sideband1");
+	if(field.value>6)//enable n
+	{
+		channelBounding1.style.display = "";
+		controlSideband1.style.display = "";		
+	}else
+	{
+		channelBounding1.style.display = "none";
+		controlSideband1.style.display = "none";
+	}
+	updateChannel1();
+	updateChannelbound1();
+}
+function wlanModeSel0(field)
+{
+	var form=document.wizard;
+	if(field.value=="0")
+	{
+		form.type0.disabled=true;
+		form.ssid0.disabled=false;
+		form.wlanMacClone0.disabled=true;
+	}
+	else if(field.value=="1")
+	{
+		form.type0.disabled=false;
+		form.ssid0.disabled=false;
+		form.wlanMacClone0.disabled=false;
+	}
+	else if(field.value=="2")
+	{
+		form.type0.disabled=true;
+		form.ssid0.disabled=true;
+		form.wlanMacClone0.disabled=true;
+	}
+	else if(field.value=="3")
+	{
+		form.type0.disabled=true;
+		form.ssid0.disabled=false;
+		form.wlanMacClone0.disabled=true;
+	}
+	updateChannelbound0();
+	updateChannel0();
+}
+function wlanModeSel1(field)
+{
+	var form=document.wizard;
+	if(field.value=="0")
+	{
+		form.type1.disabled=true;
+		form.ssid1.disabled=false;
+		form.wlanMacClone1.disabled=true;
+	}
+	else if(field.value=="1")
+	{
+		form.type1.disabled=false;
+		form.ssid1.disabled=false;
+		form.wlanMacClone1.disabled=false;
+	}
+	else if(field.value=="2")
+	{
+		form.type1.disabled=true;
+		form.ssid1.disabled=true;
+		form.wlanMacClone1.disabled=true;
+	}
+	else if(field.value=="3")
+	{
+		form.type1.disabled=true;
+		form.ssid1.disabled=false;
+		form.wlanMacClone1.disabled=true;
+	}
+	updateChannelbound1();
+	updateChannel1();
+}
+function updateChannelbound0()
+{
+	var form=document.wizard;
+	if(form.mode0.value==1&&form.type0.value==0)//mode:client,type:Infrastructure
+		form.channelbound0.disabled=true;
+	else
+		form.channelbound0.disabled=false;
+
+	var band0_value= form.band0.value;
+	if(band0_value==63 || band0_value==71 || band0_value==75){
+		if(form.channelbound0.options.length<3 )
+			form.channelbound0.options.add(new Option("80MHz","2"));
+	}
+	else if(form.channelbound0.options.length >= 3)	
+		form.channelbound0.options.remove(2);		
+}
+function updateChannelbound1()
+{
+	var form=document.wizard;
+	if(form.mode1.value==1&&form.type1.value==0)//mode:client,type:Infrastructure
+		form.channelbound1.disabled=true;
+	else
+		form.channelbound1.disabled=false;
+
+	var band1_value= form.band1.value;
+	if (0)//(band1_value==74)
+	{
+		if(form.channelbound1.options.length<3 )
+			form.channelbound1.options.add(new Option("80MHz","2"));
+	}
+	else if(form.channelbound1.options.length >= 3)	
+		form.channelbound1.options.remove(2);		
+}
+function updateChannel0()
+{
+	var form=document.wizard;
+	if(is_cmj||is_xdg || (form.wlBandModeSel[form.wlBandModeSel.selectedIndex].text=="2.4G")){
+		if(form.wlBandModeSel.value == 0){
+		
+		if(band_11N_enable(form.band0.value))
+		{
+			if(form.channelbound0.value!=0)
+			{
+				if(form.controlsideband0.value!=0)
+				{
+					setChannel(form.chan0,1,9);
+				}else
+				{
+					setChannel(form.chan0,5,11);
+				}
+			}else
+			{			
+				setChannel(form.chan0,1,11);			
+			}
+		}else
+		{
+			setChannel(form.chan0,1,11);
+		}
+			
+			if(form.type0.disabled==0 && form.type0.value==0)
+				form.chan0.disabled=true;
+			else
+				form.chan0.disabled=false;
+		}
+		else
+			showChannel5G(document.wizard, 0);
+	}
+		
+}
+function updateChannel1()
+{
+	var form=document.wizard;
+	if(band_11N_enable(form.band1.value))
+	{
+		if(form.channelbound1.value!=0)
+		{
+			if(form.controlsideband1.value!=0)
+			{
+				setChannel(form.chan1,1,9);
+			}else
+			{
+				setChannel(form.chan1,5,11);
+			}
+		}else
+		{			
+			setChannel(form.chan1,1,11);			
+		}
+	}else
+	{
+		setChannel(form.chan1,1,11);
+	}
+	
+	if(form.type1.disabled==0 && form.type1.value==0)
+		form.chan1.disabled=true;
+	else
+		form.chan1.disabled=false;		
+}
+function setChannel(field,regStart,regEnd)
+{
+	if(!field||!field.options)
+	{
+		alert(wizard_chanset_wrong);
+		return;
+	}
+	var selValue=0
+	if(field.options[0]
+	&&field.options[0].value==regStart
+	&& field.options[regStart-regEnd].value==regEnd
+	&& field.options[regStart-regEnd+1].value==NULL)//neednot change
+		return;
+	if(field.options.selectedIndex>=0 && field.options.length > 0)
+		selValue=field.options[field.options.selectedIndex].value;		
+	
+//clean
+	clean_option(field);
+	
+//add auto	
+	add_option_item(field,wizard_chan_auto,0);
+//add others
+	var i=0;
+	for(i=regStart;i<=regEnd;i++)
+		add_option_item(field,i,i);
+	field.options.selectedIndex=0;
+	if(selValue<=regEnd && selValue>=regStart)
+		for(i=0;i<field.options.length;i++)
+			if(field.options[i].value==selValue)
+			{
+				field.options.selectedIndex=i;
+				break;
+			}
+}
+
+function networkTypeSel0(field)
+{
+	var form=document.wizard;
+	if(!field||field.disabled) return;
+	if(field.value==0)
+		form.channelbound0.disabled=true;
+	else
+		form.channelbound0.disabled=false;
+	updateChannel0();
+}
+function networkTypeSel1(field)
+{
+	var form=document.wizard;
+	if(!field||field.disabled) return;
+	if(field.value==0)
+		form.channelbound1.disabled=true;
+	else
+		form.channelbound1.disabled=false;
+	updateChannel1();
+}
+function channelWidthSel0(field)
+{
+	var form=document.wizard;
+	if(!field||field.disabled) return;
+	form.controlsideband0.disabled=true;
+	if((cmj_wizard || is_xdg) && (form.wlBandModeSel[form.wlBandModeSel.selectedIndex].text=="2.4G"))
+	{
+		if(field.value==0)
+			form.controlsideband0.disabled=true;
+		else
+			form.controlsideband0.disabled=false;
+	}
+	updateChannel0();
+}
+function channelWidthSel1(field)
+{
+	var form=document.wizard;
+	if(!field||field.disabled) return;
+	if(field.value==0 || field.value==2)
+		form.controlsideband1.disabled=true;
+	else
+		form.controlsideband1.disabled=false;
+	updateChannel1();
+}
+function wepLengthSel0(field)
+{
+	var form=document.wizard;
+	if(!field||field.disabled) return;
+	if(field.value=="")
+		field.value=1;
+	if(field.value=="1")//64bit
+	{
+		form.format0.options[0].text="ASCII (5 characters)";
+		form.format0.options[1].text="Hex (10 characters)";
+	}
+	else if(field.value=="2")//128bit
+	{
+		form.format0.options[0].text="ASCII (13 characters)";
+		form.format0.options[1].text="Hex (26 characters)";
+	}
+	else
+		alert(wizard_weplen_error);
+	updateWepKey0();
+}
+function wepLengthSel1(field)
+{
+	var form=document.wizard;
+	if(!field||field.disabled) return;
+	if(field.value=="")
+		field.value=1;
+	if(field.value=="1")//64bit
+	{
+		form.format1.options[0].text="ASCII (5 characters)";
+		form.format1.options[1].text="Hex (10 characters)";
+	}
+	else if(field.value=="2")//128bit
+	{
+		form.format1.options[0].text="ASCII (13 characters)";
+		form.format1.options[1].text="Hex (26 characters)";
+	}
+	else
+		alert(wizard_weplen_error);
+	updateWepKey1();
+}
+function updateWepKey0()
+{
+	var form=document.wizard;
+	var key064IsNULL=<%getIndex("wep64IsNull","0")%>;
+	var key0128IsNULL=<%getIndex("wep128IsNull","0")%>;
+	if(form.length0.value==1)//64bit
+	{
+		if(form.format0.value==1)
+		{
+			form.key0.maxLength=5;
+			if(!key064IsNULL)
+				form.key0.value="*****";
+		}
+		else
+		{
+			form.key0.maxLength=10;
+			if(!key064IsNULL)
+				form.key0.value="**********";
+		}
+		if(key064IsNULL) form.key0.value="";
+	}else
+	{//128bit
+		if(form.format0.value==1)
+		{
+			form.key0.maxLength=13;
+			if(!key0128IsNULL)
+				form.key0.value="*************";
+		}
+		else
+		{
+			form.key0.maxLength=26;
+			if(!key0128IsNULL)
+				form.key0.value="**************************";
+		}
+		if(key0128IsNULL) form.key0.value="";
+	}
+}
+function updateWepKey1()
+{
+	var form=document.wizard;
+	var key064IsNULL=<%getIndex("wep64IsNull","1")%>;
+	var key0128IsNULL=<%getIndex("wep128IsNull","1")%>;
+	if(form.length1.value==1)//64bit
+	{
+		if(form.format1.value==1)
+		{
+			form.key1.maxLength=5;
+			if(!key064IsNULL)
+				form.key1.value="*****";
+		}
+		else
+		{
+			form.key1.maxLength=10;
+			if(!key064IsNULL)
+				form.key1.value="**********";
+		}
+		if(key064IsNULL) form.key1.value="";
+	}else
+	{//128bit
+		if(form.format1.value==1)
+		{
+			form.key1.maxLength=13;
+			if(!key0128IsNULL)
+				form.key1.value="*************";
+		}
+		else
+		{
+			form.key1.maxLength=26;
+			if(!key0128IsNULL)
+				form.key1.value="**************************";
+		}
+		if(key0128IsNULL) form.key1.value="";
+	}
+}
+function updatePskformat(wlan_id)
+{
+	var form = document.wizard;
+	defPskFormat[wlan_id] = form.elements["pskFormat"+wlan_id].value;
+	if(defPskFormat[wlan_id] == 1)
+		defPskLen[wlan_id] = 64;
+}
+function wizardHideDiv()
+{
+	show_div(false, "top_div");
+	show_div(false, "opmode_div");
+	show_div(false, "ntp_div");
+	show_div(false, "lan_div");
+	show_div(false, "wan_div");
+	show_div(false, "wlan_band_mode_div");
+	show_div(false, "wlan1_div0");
+	show_div(false, "wlan2_div0");	
+	show_div(false, "wlan1_div1");
+	show_div(false, "wlan2_div1");
+	
+	show_div(false, "sitesurvey_div0");
+	show_div(false, "wisp_ap_ssid_div0");
+	show_div(false, "wait_div");
+}
+function showWizard_div(divName)
+{
+	wizardHideDiv();
+	show_div(true, divName);
+}
+function cancelClick()
+{	
+	window.location="wizard.htm" ;
+}
+
+
+function opModeClick(mode)
+{
+	if (cmj_wizard) {
+		if (mode == 3 && opModeVal == 1) {
+			if (is_etherlink == 0)
+				alert('The ethernet port is not link, please click "Next>>" to setup WISP mode.');
+			else
+				alert('The ethernet port is link now, please click "Next>>" to setup Router mode.');
+			return;
+		}
+	}
+	updateWISPWan();	
+}
+function updateWISPWan()
+{
+	var form=document.wizard;
+
+	if (cmj_wizard) {
+		if (document.getElementById("opmode_wisp_checked").checked == true) {		
+			document.getElementById("SSIDSiteSurvey_bar").style.display = "inline";
+			document.getElementById("SSIDSiteSurvey_button").style.display = "inline";
+			document.getElementById("SSIDSiteSurvey").style.display = "inline";
+		}
+		else {
+			document.getElementById("SSIDSiteSurvey_bar").style.display = "none";
+			document.getElementById("SSIDSiteSurvey_button").style.display = "none";
+			document.getElementById("SSIDSiteSurvey").style.display = "none";
+		}
+		upadte_wlan2_div();
+	}	
+
+	if(wlan_num > 1){
+		if(form.opMode[2].checked)
+			enableTextField(form.wispWanId);
+		else
+			disableTextField(form.wispWanId);
+	}
+}
+
+function saveChanges_lan(form)
+{
+  if ( checkIpAddr(form.lan_ip, 'Invalid IP address value! ') == false )
+	    return false;
+  if (checkIPMask(form.lan_mask) == false)
+  		return false ;
+  		
+	var tarIp = ipv4_to_unsigned_integer(form.lan_ip.value);	
+	if (((tarIp & 0xFF000000) == 0x00000000))
+	{
+		alert(tcpip_check_ip_msg);
+		form.lan_ip.focus();
+		return false;
+	}
+	
+   return true;
+}
+function saveClick_lan(next)
+{
+	if(next)
+	{
+//check lan
+		var form =  document.wizard;
+		if(saveChanges_lan(form) ==false)
+		{
+			return false ;
+		}
+		if(isAP ==1)
+			showWizard_div("wlan_band_mode_div");
+		else
+			showWizard_div("wan_div");
+	}else{
+		if(isAP ==1)
+			showWizard_div("top_div");
+		else
+			showWizard_div("ntp_div");
+	}
+	return true;
+}
+
+function wanTypeSelection(field)
+{
+  if(!document.getElementById){
+  	alert(wizard_wantypeselect);
+  	return;
+  }
+  if(field.value == "fixedIp"){	//static ip
+  	wanShowDiv(0 ,1, 0, 0, 1, 0); //pptp, dns, dnsMode, pppoe, static (div), l2tp
+  	show_div(0,"dhcpplus_div");
+	document.getElementById("wan_btn").style.top = "320px";
+  }
+  else if(field.value == "autoIp" || field.value == "dhcpplus"){//Dhcp
+    if (field.value == "dhcpplus")
+  	{
+  		show_div(1,"dhcpplus_div");
+  	}
+  	else if (field.value == "autoIp")
+  	{
+  		show_div(0,"dhcpplus_div");
+  	} 
+  	wanShowDiv(0 ,0, 0, 0, 0, 0); 
+	document.getElementById("wan_btn").style.top = "260px";
+  }
+  else if(field.value == "ppp" || field.value == "pppoehenan" || field.value == "pppoenanchang" || field.value == "pppoeother1" || field.value == "pppoeother2"){ //pppoe
+  	wanShowDiv(0 ,0, 0, 1, 0, 0); 
+  	show_div(0,"dhcpplus_div");
+	document.getElementById("wan_btn").style.top = "260px";
+  }
+  else if(field.value == "pptp"){ //pptp
+        wanShowDiv(1 ,0, 0, 0, 0, 0, 0);
+        show_div(0,"dhcpplus_div");
+        document.getElementById("wan_btn").style.top = "420px";
+  }
+  else if(field.value== "l2tp"){ //l2tp /*-- keith: add l2tp support. 20080515  */
+        wanShowDiv(0 ,0, 0, 0, 0, 1, 0);
+        show_div(0,"dhcpplus_div");
+        document.getElementById("wan_btn").style.top = "420px";
+  }
+}
+function saveClick_wan(next)
+{
+	var form =  document.wizard;
+	
+	if(next)
+	{
+		if(saveChanges_wan(form) ==false)
+			return false ;
+		
+		if(wlan_num !=0)
+		{
+			showWizard_div( "wlan_band_mode_div");			
+		}
+	}else
+		showWizard_div( "lan_div");
+	return true;
+}
+function wizardCheck_staticIp(form)
+{
+	var tarIp = ipv4_to_unsigned_integer(form.wan_ip.value);	
+
+	if(!checkIpAddr(form.wan_ip, 'Invalid IP address'))    return false;
+	if (((tarIp & 0xFF000000) == 0x00000000))
+	{
+		alert(tcpip_check_ip_msg);
+		form.wan_ip.focus();
+		return false;
+	}
+	
+	if(!checkIPMask(form.wan_mask))	return false ;
+	if(!checkGateway(form.wan_gateway,form.wan_ip,form.wan_mask)) return false;
+	tarIp = ipv4_to_unsigned_integer(form.wan_gateway.value);	
+	if (((tarIp & 0xFF000000) == 0x00000000))
+	{
+		alert(tcpip_check_ip_msg);
+		form.wan_gateway.focus();
+		return false;
+	}
+	if(!checkIpAddr(form.dns1, 'Invalid DNS address'))	return false;
+	tarIp = ipv4_to_unsigned_integer(form.dns1.value);	
+	if (((tarIp & 0xFF000000) == 0x00000000))
+	{
+		alert(tcpip_check_ip_msg);
+		form.dns1.focus();
+		return false;
+	}
+
+
+	
+	return true;
+}
+
+function wizardCheck_l2tp(form)
+{
+	var tarIp = ipv4_to_unsigned_integer(form.l2tpIpAddr.value);	
+
+	if(!checkIpAddr(form.l2tpIpAddr, 'Invalid IP address'))    return false;
+	if (((tarIp & 0xFF000000) == 0x00000000))
+	{
+		alert(tcpip_check_ip_msg);
+		form.l2tpIpAddr.focus();
+		return false;
+	}
+
+	if(!checkIPMask(form.l2tpSubnetMask))	return false ;
+	if(!checkIpAddr(form.l2tpServerIpAddr, 'Invalid IP address'))	return false;
+	tarIp = ipv4_to_unsigned_integer(form.l2tpServerIpAddr.value);	
+	if (((tarIp & 0xFF000000) == 0x00000000))
+	{
+		alert(tcpip_check_ip_msg);
+		form.l2tpServerIpAddr.focus();
+		return false;
+	}
+
+	if(!checkStrNoNULL(form.l2tpUserName,"L2TP " + tcpip_check_user_name_msg)) return false;
+	if(!checkStrNoNULL(form.l2tpPassword,"L2TP " + tcpip_check_password_msg)) return false;
+	
+	return true;
+}
+
+function wizardCheck_pptp(form)
+{
+	var tarIp = ipv4_to_unsigned_integer(form.pptpIpAddr.value);	
+
+	if(!checkIpAddr(form.pptpIpAddr, 'Invalid IP address'))    return false;
+	if (((tarIp & 0xFF000000) == 0x00000000))
+	{
+		alert(tcpip_check_ip_msg);
+		form.pptpIpAddr.focus();
+		return false;
+	}
+
+	if(!checkIPMask(form.pptpSubnetMask))	return false ;
+	if(!checkIpAddr(form.pptpServerIpAddr, 'Invalid IP address'))	return false;
+	tarIp = ipv4_to_unsigned_integer(form.pptpServerIpAddr.value);	
+	if (((tarIp & 0xFF000000) == 0x00000000))
+	{
+		alert(tcpip_check_ip_msg);
+		form.pptpServerIpAddr.focus();
+		return false;
+	}
+
+	if(!checkStrNoNULL(form.pptpUserName,"PPTP " + tcpip_check_user_name_msg)) return false;
+	if(!checkStrNoNULL(form.pptpPassword,"PPTP " + tcpip_check_password_msg)) return false;
+	
+	return true;
+}
+function wizardCheck_pppoe(form)
+{
+	if(!checkStrNoNULL(form.pppUserName,"PPP user name cannot be empty!")) return false;
+	if(!checkStrNoNULL(form.pppPassword,"PPP password cannot be empty!")) return false;
+	return true;
+}
+function saveChanges_wan(form)
+{
+	var wanType=form.wanType;
+	if(form.wanType.value=="fixedIp" && !wizardCheck_staticIp(form)) return false;
+	else if(wanType.value=="autoIp") return true;
+	else if(wanType.value=="ppp" && !wizardCheck_pppoe(form)) return false;
+	else if(wanType.value=="l2tp" && !wizardCheck_l2tp(form)) return false;
+	else if(wanType.value=="pptp" && !wizardCheck_pptp(form)) return false;
+	return true;	
+}
+function wlanBandModeSelection(selValue)
+{
+	wlanBand2G5GSelect=selValue;	
+	init_wlan1_div0();
+	if(wlanBand2G5GSelect==BAND2G5GSELECT_BANDMODEBOTH)
+	{
+	//wlan1_div1
+		init_wlan1_div1();
+	//wlan2_div1
+		init_wlan2_div1();
+	}
+}
+
+function saveClick_bandMode(next)
+{
+	if(next)
+	{
+		showWizard_div( ("wlan1_div0"));
+	}
+	else
+	{
+		if(isAP == 1)
+			showWizard_div( "lan_div");
+		else
+			showWizard_div( "wan_div");
+	}	
+}
+
+function saveClick_wlan1_div0(next)
+{
+	if(next) {
+		if (cmj_wizard) {
+			if (document.getElementById("opmode_wisp_checked").checked == true) {
+				if (document.getElementById("select").value == -1) {
+					alert("No selected AP");
+					return;
+				}
+			}
+			encryTypeSel(document.getElementById("sel_wlsurvey_encryption0"), 0);
+		}
+		showWizard_div("wlan2_div0");
+	}
+	else {
+		if (cmj_wizard) {
+			if (opModeVal != 1)
+				document.getElementById("opmode_auto_checked").checked = true;
+			showWizard_div("opmode_div");
+		}
+		else
+			showWizard_div("wlan_band_mode_div");
+	}
+	return true;
+}
+function check_wlan2_div(field_method,wanIdx)
+{
+	var form = document.wizard;
+	if(field_method.value==1)
+	{
+		if(!saveChanges_wep(form,wanIdx)) return false;
+	}	
+	else if(field_method.value==2||field_method.value==4||field_method.value==6)
+	{
+		if(!check_wpa_psk(form,wanIdx)) return false;
+	}
+	return true;
+}
+
+function debug_update_wlan_setting(mode)
+{
+	if (mode==0) {
+		alert("chan is "+ document.getElementById("sel_wlbasic_chnnelnum0").value);		
+		//alert("Band2G5GSupport is "+ document.getElementById("Band2G5GSupport_id").value);
+		alert("channelbound is "+ document.wizard.channelbound0.value);
+		alert("band0 is "+ document.wizard.band0.value);
+	}
+	if (mode==2) {
+		alert("chan is "+ document.getElementById("sel_wlbasic_chnnelnum0").value);		
+		//alert("Band2G5GSupport is "+ document.getElementById("Band2G5GSupport_id").value);
+		alert("channelbound is "+ document.wizard.channelbound0.value);
+		alert("band0 is "+ document.wizard.band0.value);
+	}
+}
+
+function update_wlan_setting_when_router_mode()
+{
+	//alert("update_wlan_setting for router mdoe wizard");
+	if (wlanBand2G5GSelect==1) {
+		//set 5G
+		document.getElementById("sel_wlbasic_chnnelnum0").value = 0;	//auto channel
+		//document.getElementById("Band2G5GSupport_id").value=1; 			//BANDMODE2G=0, BANDMODE5G=1
+		document.wizard.channelbound0.value = 2;
+		document.wizard.band0.value = 75;
+	}
+	else if (wlanBand2G5GSelect==0) {
+		//set 2G
+		document.getElementById("sel_wlbasic_chnnelnum0").value = 0;	//auto channel
+		//document.getElementById("Band2G5GSupport_id").value=0; 			//BANDMODE2G=0, BANDMODE5G=1
+		document.wizard.channelbound0.value = 1;
+		document.wizard.band0.value = 10;
+	}
+	else {
+		alert("update_wlan_setting_when_router_mode: not handle!");	
+	}
+	
+	//debug_update_wlan_setting(0);	
+}
+
+function update_wlan_setting(mode)
+{
+	if (mode == 0) //router
+	{
+		update_wlan_setting_when_router_mode();
+	}
+	else if (mode == 2) //wisp
+	{
+		document.getElementById("wlbasic_ssid0").value = document.getElementById("wisp_ap_ssid").value;
+	}
+	else
+	{
+		alert("not handle!!");
+	}
+}
+
+function saveClick_wlan2_div0(next)
+{
+	if(next)
+	{
+		
+		if(!check_wlan2_div(document.wizard.method0,0)) return false;
+		if(wlanBand2G5GSelect==BAND2G5GSELECT_BANDMODEBOTH)
+			showWizard_div("wlan1_div1");
+		else
+		{
+			if (cmj_wizard) {
+				if (document.getElementById("opmode_wisp_checked").checked == true)
+					showWizard_div("wisp_ap_ssid_div0");
+				else {
+					update_wlan_setting(0);
+					document.wizard.submit();
+				}
+			}
+			else
+				document.wizard.submit();
+		}
+	}
+	else {
+		if (cmj_wizard) {
+			if (document.getElementById("opmode_wisp_checked").checked == true)
+				showWizard_div("sitesurvey_div0");
+			else	
+				showWizard_div("wlan1_div0");
+		}
+		else
+			showWizard_div("wlan1_div0");
+	}
+	return true;
+}
+
+function saveClick_wlan1_div1(next)
+{
+	if(next)
+		showWizard_div("wlan2_div1");
+	else
+	{
+		if(wlanBand2G5GSelect==BAND2G5GSELECT_BANDMODEBOTH)
+			showWizard_div("wlan2_div0");
+		else
+			showWizard_div("wlan_band_mode_div");
+	}
+	return true;
+}
+function saveClick_wlan2_div1(next)
+{
+	if(next)
+	{
+		if(!check_wlan2_div(document.wizard.method1,1)) return false;
+		document.wizard.submit();
+	}
+	else
+		showWizard_div("wlan1_div1");
+	return true;
+}
+
+function init_CMJ()
+{
+	document.getElementById("opmode_br").style.display = "none";
+	document.getElementById("opmode_gw").style.display = "none";
+	document.getElementById("opmode_wisp").style.display = "none";
+
+	document.getElementById("opmode_auto").style.display = "";
+	document.getElementById("opmode_upgradekit").style.display = "";
+
+	//if (ui_mode)
+	{
+		document.getElementById("wlbasic_band0").style.display = "none";
+		document.getElementById("wlbasic_mode0").style.display = "none";
+		document.getElementById("wlbasic_network_type0").style.display = "none";		
+		document.getElementById("channel_bounding0").style.display = "none";
+		document.getElementById("control_sideband0").style.display = "none";
+		document.getElementById("wlbasic_chnnelnum0").style.display = "none";
+		document.getElementById("wlbasic_mac_clone0").style.display = "none";
+
+		document.getElementById("gpio_2g5g").value = gpio_2g5g;	
+	}
+}
+function wizardTopClick()
+{
+	if(isAP == 1)
+		showWizard_div("lan_div");
+	else
+		showWizard_div("opmode_div");
+}
+function saveClick_wizard_top()
+{
+	if (cmj_wizard) {
+		if (document.getElementById("opmode_auto_checked").checked == true && opModeVal == 1) {
+			if (is_etherlink == 0) {
+				document.getElementById("opmode_wisp_checked").checked = true;
+				opModeVal = 2;
+			}
+			else
+				opModeVal = 0;
+			document.getElementById("opmode_auto_checked").value = opModeVal;
+			updateWISPWan();
+		}
+		else {
+			if (opModeVal == 2 && document.getElementById("opmode_auto_checked").checked == true)
+				document.getElementById("opmode_wisp_checked").checked = true;
+			document.getElementById("opmode_auto_checked").value = opModeVal;
+			updateWISPWan();
+		}
+
+		if (document.getElementById("opmode_wisp_checked").checked == true)
+			showWizard_div("sitesurvey_div0");
+		else
+			showWizard_div("wlan1_div0");
+	}
+	else
+		showWizard_div("ntp_div");	
+	return true;
+}
+
+function saveClick_wisp_ap_ssid(next)
+{
+	if(next == 2) {
+		alert("use site survey AP security!")
+		return;
+	}
+
+	if(next) {
+		update_wlan_setting(2);
+		saveClickSecurity(1);
+		//document.wizard.submit();
+	}
+	else
+		showWizard_div("sitesurvey_div0")
+	return true;
+}
+
+function saveClickSecurity(next)
+{
+//alert("saveClickSecurity");
+	
+	if(next)
+	{
+		show_div(false, "wlan2_div0");
+		show_div(false, "wisp_ap_ssid_div0");
+		show_div(true, "wait_div");
+
+		document.wizard.submit();
+	}
+	else
+	{
+		alert("saveClickSecurity: next is "+next);
+	}
+}
+
+
+</script>
+</head>
+<body onload="Load_Setting();">
+<blockquote>
+
+<form action=/formWizard.htm method=POST name="wizard">
+<!--<INPUT id="Band2G5GSupport_id" type=hidden name=Band2G5GSupport value=<% getIndex("Band2G5GSupport"); %>>-->
+<INPUT type=hidden name=dsf_enable value=<% getIndex("dsf_enable"); %>>
+<INPUT type=hidden name=wlBandMode value=<% getIndex("wlanBand2G5GSelect"); %>>
+<INPUT type=hidden name=wlan1_phyband value="<% getIndex("wlan1_phyband"); %>">
+<INPUT type=hidden name=wlan2_phyband value="<% getIndex("wlan2_phyband"); %>">
+<INPUT type=hidden name=wlan_support_8812e value=<% getIndex("wlan_support_8812e"); %>>
+<input type=hidden value="" name="site_survey_ssid" id="site_survey_ssid">
+<input type=hidden value="-1" name="select" id="select">
+<input type=hidden value="" name="gpio_2g5g" id="gpio_2g5g">
+<input type=hidden value="" name="cmj_channel" id="cmj_channel">
+<input type="hidden" value="/wizard.htm" name="submit-url">
+<!-- 8881A_SELECTIVE : beg-->
+<INPUT type=hidden name=cur_band value=<% getIndex("band"); %>>
+<INPUT type=hidden name=need_swap value=0>
+
+<INPUT type=hidden name=channel_1 value=<% getIndex("channel"); %>>
+<INPUT type=hidden name=ChannelBonding_1 value=<% getIndex("ChannelBonding"); %>>
+<INPUT type=hidden name=ControlSideBand_1 value=<% getIndex("ControlSideBand"); %>>
+<INPUT type=hidden name=operRate_1 value=<% getIndex("operRate"); %>>
+<INPUT type=hidden name=basicRate_1 value=<% getIndex("basicRate"); %>>
+<INPUT type=hidden name=coexist_1 value=<% getIndex("coexist"); %>>
+
+<INPUT type=hidden name=channel_2 value=<% getIndex("channel_2"); %>>
+<INPUT type=hidden name=ChannelBonding_2 value=<% getIndex("ChannelBonding_2"); %>>
+<INPUT type=hidden name=ControlSideBand_2 value=<% getIndex("ControlSideBand_2"); %>>
+<INPUT type=hidden name=operRate_2 value=<% getIndex("operRate_2"); %>>
+<INPUT type=hidden name=basicRate_2 value=<% getIndex("basicRate_2"); %>>
+<INPUT type=hidden name=coexist_2 value=<% getIndex("coexist_2"); %>>
+<INPUT type=hidden name=support_8881a_selective value=0>
+<!-- 8881A_SELECTIVE : end-->
+<!-- topdiv page -->
+<span id = "top_div" class = "off" >
+<table  border=0 width="500" cellspacing=4 cellpadding=0>
+<tr><td><h2><b><font color="#0000FF"><script>dw(wizard_header)</script></font></b></h2></td> </tr>
+<tr><td><font size=2>
+<script>dw(wizard_header_explain)</script>
+</font>
+</td></tr>
+<tr><td><hr size=1 noshade align=top></td></tr>
+
+<tr ><td colspan="2"> 
+<font size=2> <b>
+<script>dw(wizard_welcome)</script><br> 
+<br><script>dw(wizard_content_explain)</script>
+</b></font>
+</td></tr> 
+<tr ><td> <font size=2>
+	<ol>
+<script>
+
+	if (cmj_wizard) {
+		document.write('<li>' + wizard_cmj_content1 + '</li>');
+	}
+	else if(isAP == 1){
+		document.write('<li>' + wizard_content3 + '</li>');
+	}
+	else {
+		document.write('<li>' + wizard_content1 + '</li>');		
+		document.write('<li>' + wizard_content2 + '</li>');
+		document.write('<li>' + wizard_content3 + '</li>');
+		document.write('<li>' + wizard_content4 + '</li>');
+	}
+	if(<% getIndex("wlan_num"); %> !=0)
+	{	
+		if (cmj_wizard) {
+			document.write('<li>' + wizard_cmj_content2 + '</li>');
+			document.write('<li>' + wizard_cmj_content3 + '</li>');
+		}
+		else {
+			document.write('<li>' + wizard_content5 + '</li>');			
+			document.write('<li>' + wizard_content6 + '</li>');
+			document.write('<li>' + wizard_content7 + '</li>');
+		}
+	}
+</script>
+	</ol>
+	</font></td> 
+</tr>
+</table>
+
+<div>  
+<table border=0 width="350" cellspacing=4 cellpadding=0 >
+<tr>
+  <td colspan="2" align=right> 
+
+	<input type="button" name="next_wizard" onClick='wizardTopClick()'>
+	<script>document.wizard.next_wizard.value=wizard_next_btn;</script>
+  </td>
+</tr> 
+</table>
+</div>
+</span>
+
+<!-- opmode page -->
+<span id = "opmode_div" class = "off" >
+<table border=0 width="500" cellspacing=0 cellpadding=0>
+<tr><td><h2><b><font color="#0000FF"><script>dw(opmode_header)</script></font></b></h2></td> </tr>
+
+  <tr><td><font size=2>
+  <script>dw(opmode_explain)</script>
+  </td>
+  </tr>
+  <tr><td><hr size=1 noshade align=top></td></tr>
+</table>
+<table border="0" width=500>
+	<tr id="opmode_gw"  style="display">
+		<td width ="23%" valign="top">
+		<input id="opmode_gw_checked" type="radio" value="0" name="opMode" onClick="opModeClick(0)" ></input>
+		<font size=2> <b><script>dw(opmode_radio_gw)</script></b> </font>
+		</td>
+		<td width ="77%">
+			<font size=2>
+			<script>
+				if (cmj_wizard)
+					dw(opmode_radio_gw_explain_cmj)
+				else
+					dw(opmode_radio_gw_explain)
+			</script></font>
+		</td>
+		<td colspan="2" height="10">
+	</tr>
+
+	<tr id="opmode_br" style="display">
+		<td width ="23%" valign="top">
+		<input type="radio" value="1" name="opMode" onClick="opModeClick(1)"></input>
+		<font size=2> <b><script>dw(opmode_radio_br)</script></b> </font>
+		</td>
+		<td width ="77%">
+			<font size=2><script>dw(opmode_radio_br_explain)</script></font>
+		</td>
+		<td colspan="2" height="10">
+	</tr>
+
+	<tr id="opmode_wisp" style="display">
+		<td width ="23%" valign="top">
+		<input id="opmode_wisp_checked" type="radio" value="2" name="opMode" onClick="opModeClick(2)"></input>
+		<font size=2> <b><script>dw(opmode_radio_wisp)</script></b> </font>
+		</td>
+		<td width ="77%">
+			<font size=2>
+			<script>
+				if (cmj_wizard)
+					dw(opmode_radio_wisp_explain_cmj)
+				else
+					dw(opmode_radio_wisp_explain)
+			</script></font>
+		</td>
+	</tr>
+
+	<tr id="opmode_auto" style="display:none">
+		<td width ="23%" valign="top">
+		<input id="opmode_auto_checked" type="radio" value="3" name="opMode" onClick="opModeClick(3)"></input>
+		<font size=2> <b>
+			<script>
+				dw("Auto Select:")
+			</script></b> </font>
+		</td>
+		<td width ="77%">
+			<font size=2 color="#0000FF"><b>
+			<script>
+				if (opModeVal == 0)
+					dw("Gateway")
+				else if (opModeVal == 2)
+					dw("WISP Repeater")
+				else
+					dw("Disable Detect")
+			</script></b></font>
+			<font size=2><br>
+			<script>
+				if (opModeVal == 0)
+					dw(opmode_radio_gw_explain_cmj)
+				else if (opModeVal == 2)
+					dw(opmode_radio_wisp_explain_cmj)
+				else
+					dw(opmode_radio_auto_explain_cmj)
+			</script></font>
+		</td>
+		<td colspan="2" height="10">
+	</tr>
+
+	<tr id="opmode_upgradekit" style="display:none">
+		<td width ="23%" valign="top">
+		<input type="radio" value="1" name="opMode" onClick="opModeClick(1)"></input>
+		<font size=2> <b><script>dw(opmode_radio_upgradekit)</script></b> </font>
+		</td>
+		<td width ="77%">
+			<font size=2><script>dw(opmode_radio_upgradekit_explain)</script></font>
+		</td>
+		<td colspan="2" height="10">
+	</tr>
+
+	<tr>
+		<td width ="23%" valign="top"> </td>
+		<td width ="77%">
+			<script>
+			if(wlan_num > 1){
+				document.write('<font size=2><b>' + opmode_radio_wisp_wanif + '</b>');
+				document.write('<select size="1" name="wispWanId" onClick="opModeClick(2)">');
+				for(i=0 ; i < wlan_num ; i++)
+					document.write('<option value="'+i+'">wlan'+(i+1)+'</option>');
+				document.write('</select>');
+			}
+			</script>
+		</td>
+	</tr>
+</table>
+
+<div>  
+<table border=0 width="500" cellspacing=4 cellpadding=0>  
+	<tr></tr>
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_opmode" onClick='cancelClick();'>
+		  <script>document.wizard.cancel_opmode.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_opmode" onClick='showWizard_div("top_div");' >
+		  <script>document.wizard.back_opmode.value=wizard_back_btn;</script>
+		  <input type="button" name="next_opmode" onClick='saveClick_wizard_top();'>
+		  <script>document.wizard.next_opmode.value=wizard_next_btn;</script>
+  	</td> </tr>
+</table>
+</div>
+</span>
+
+<!-- ntp page -->
+<span id = "ntp_div" class = "off" >
+<table  border=0 width="500" cellspacing=4 cellpadding=0>
+  <tr><td colspan="2"><h2><font color="#0000FF"><script>dw(ntp_header)</script></font></h2></td></tr>
+  <tr><td colspan="2"><font size=2>
+
+  <script>dw(ntp_header_explain)</script>
+  </tr>
+  </td>
+  <tr><td colspan="2"><hr size=1 noshade align=top></td></tr>
+</table>
+<span id = "ntp_enable_div" class = "on" >  
+<table  border="0" width=500 cellspacing=0 cellpadding=0>
+
+	<tr><td colspan="2"><font size=2><b>
+		<input type="checkbox" name="enabled" 
+		value="ON" 
+		ONCLICK=updateState_ntp(document.wizard)>&nbsp;&nbsp;<script>dw(ntp_enable_clientup)</script></b><br>
+	    </td>
+	</tr>
+</table>
+</span>
+
+<span id = "dl_enable_div" class = "on" >  
+<table  border="0" width=500 cellspacing=0 cellpadding=0>
+
+	<tr><td colspan="2"><font size=2><b>
+		<input type="checkbox" name="dlenabled" 
+		value="ON" 
+		ONCLICK=updateState_ntp(document.wizard)>&nbsp;&nbsp;<script>dw(ntp_adjust_daylight)</script></b><br>
+	    </td>
+	</tr>
+</table>
+</span>
+
+<table  border="0" width=500 cellspacing=4 cellpadding=0>
+	<tr ><td height=10> </td> </tr>
+
+	<tr><td width="25%"><font size=2> <b><script>dw(ntp_time_zone)</script></b> </font></td>
+	    <td width="75%">
+            <select name="timeZone">
+            	<script language="javascript">
+            	var i;
+            	for(i=0;i<ntp_zone_array.length;i++){
+						document.write('<option value="',ntp_zone_array[i].value,'">',ntp_zone_array[i].name,'</option>');
+            	}
+		        </script>
+            </select>
+	    </td>
+	</tr>
+	<tr>
+	<td width ="20%">
+	<font size=2> <b><script>dw(ntp_server)</script></b> </font>
+	</td>
+	<td width ="85%">
+		<select name="ntpServerIp1">
+		<script>
+			var i=0;
+			for(i=0;i<ntp_server_array.length;i++)
+				document.write('<option value="',ntp_server_array[i].value,'">',ntp_server_array[i].name,'</option>');
+		</script>
+
+			</select>
+		</td>
+	</tr>
+	<tr><td height="120"></td></tr>
+</table>
+
+     <input type="hidden" value="0" name="ntpServerId">
+<div>  
+<table border=0 width="500" cellspacing=4 cellpadding=0>  
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_ntp" onClick='cancelClick();'>
+		  <script>document.wizard.cancel_ntp.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_ntp" onClick='showWizard_div("opmode_div")'>
+		  <script>document.wizard.back_ntp.value=wizard_back_btn;</script>
+		  <input type="button" name="next_ntp" onClick='showWizard_div("lan_div")'>
+		  <script>document.wizard.next_ntp.value=wizard_next_btn;</script>
+  	</td> </tr>
+</table>
+</div>
+</span>
+
+<!-- lan page -->
+<span id = "lan_div" class = "off" >
+<table  border=0 width="500" cellspacing=4 cellpadding=0>
+  <tr><td colspan="2"><h2><font color="#0000FF"><script>dw(tcpip_lan_header)</script></font></h2></td></tr>
+  <tr><td colspan="2"><font size=2>
+    <script>dw(tcpip_lan_explain)</script>
+    </td>
+  </tr>
+  <tr><td  colspan="2"><hr size=1 noshade align=top></td></tr>
+
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_lan_ip)</script></b></td>
+      <td width="70%"><input type="text" name="lan_ip" size="15" maxlength="15" value=<% getInfo("ip-rom"); %>></td>
+  </tr>
+
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_lan_mask)</script></b></td>
+      <td width="70%"><input type="text" name="lan_mask" size="15" maxlength="15" value="<% getInfo("mask-rom"); %>"></td>
+  </tr>
+  <tr><td colspan="2" height="135"></td></tr>
+  </table>
+<div>  
+   <table border=0 width="500" >  
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_lan" onClick='cancelClick();'>
+		  <script>document.wizard.cancel_lan.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_lan" onClick='return saveClick_lan(0)' >
+		  <script>document.wizard.back_lan.value=wizard_back_btn;</script>
+		  <input type="button" name="next_lan"  onClick='return saveClick_lan(1)'>
+		  <script>document.wizard.next_lan.value=wizard_next_btn;</script>
+  	</td> </tr>
+  </table>
+</div>
+</span>  
+
+<!-- wan page -->
+<span id = "wan_div" class = "off" >
+<table  border=0 width="500" cellspacing=4 cellpadding=0>
+  <tr><td colspan="2"><h2><font color="#0000FF"><script>dw(tcpip_wan_header)</script></font></h2></td></tr>
+  <tr><td colspan="2"><font size=2>
+    <script>dw(tcpip_wan_explain)</script>
+    </td>
+  </tr>
+  <tr><td colspan="2"><hr size=1 noshade align=top></td></tr>
+  <tr>
+</table>
+ <input type="hidden" value="pptp" name="ipMode">
+ <input type="hidden" value="pppoeNumber" name="pppoeNumber">
+
+  <table border="0" width=500>
+    <tr>
+       <td width="30%" ><font size=2><b><script>dw(tcpip_wan_access_type)</script></b></td>
+       <td width="70%"><font size=2><select size="1" name="wanType" onChange="wanTypeSelection(this)">
+		<option value="fixedIp"><script>dw(tcpip_wan_type_static_ip)</script></option>
+		<option value="autoIp"><script>dw(tcpip_wan_type_client)</script></option>	
+		<option value="ppp">PPPoE</option>
+<% getIndex("pptp_comment_start");%>
+		<option value="pptp">PPTP</option>
+<% getIndex("pptp_comment_end");%>
+<% getIndex("l2tp_comment_start");%>
+		<option value="l2tp">L2TP</option>
+<% getIndex("l2tp_comment_end");%>
+		<SCRIPT>
+		showNetSniperWanTypeInfo();
+		</SCRIPT> 
+	</select></td>
+    <tr>
+  </table>
+  <span id = "static_div" class = "off" >  
+  <table border="0" width=500>
+    <tr>
+       <td width="30%"><font size=2><b><script>dw(tcpip_wan_ip)</script></b></td>
+       <td width="70%"><font size=2>
+        <input type="text" name="wan_ip" size="18" maxlength="15" value="<% getInfo("wan-ip-rom"); %>">
+      </td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_wan_mask)</script></b></td>
+      <td width="70%"><font size=2><input type="text" name="wan_mask" size="18" maxlength="15" value="<% getInfo("wan-mask-rom"); %>"></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_wan_default_gateway)</script></b></td>
+      <td width="70%"><font size=2><input type="text" name="wan_gateway" size="18" maxlength="15" value="<% getInfo("wan-gateway-rom"); %>"></td>
+    </tr>
+    <tr>
+       <td width="30%"><font size=2><b>DNS :</b></td>
+       <td width="70%"><font size=2><input type="text" name="dns1" size="18" maxlength="15" value=<% getInfo("wan-dns1"); %>></td>
+    </tr>
+  </table>  
+  </span>
+  
+  <span id = "dhcpplus_div" class = "off" >  
+  <table border="0" width=480>
+    <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_wan_user)</script></b></td>
+      <td width="70%"><font size=2><input type="text" name="dhcpPlusUserName" size="18" maxlength="32" value="<% getInfo("dhcpPlusUserName"); %>"></td>
+    </tr>  
+    <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_wan_password)</script></b></td>
+      <td width="70%"><font size=2><input type="password" name="dhcpPlusPassword" size="18" maxlength="32" value="<% getInfo("dhcpPlusPassword"); %>"></td>
+    </tr>
+  </table>  
+  </span>
+  
+  <span id = "dhcp_div" class = "off" >  
+  </span>
+  <span id = "pppoe_div" class = "off" >  
+  <table border="0" width=500>
+     <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_wan_user)</script></b></td>
+      <td width="70%"><font size=2><input type="text" name="pppUserName" size="18" maxlength="128" value="<% getInfo("pppUserName"); %>"></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_wan_password)</script></b></td>
+      <td width="70%"><font size=2><input type="password" name="pppPassword" size="18" maxlength="128" value="<% getInfo("pppPassword"); %>"></td>
+    </tr>
+      </table>
+  </span> 
+  <span id = "pptp_div" class = "off" >  
+  <table border="0" width=500>
+    <tr>
+      <td width="100%" colspan="2"><font size=2>
+        <b><input type="radio" value="dynamicIP" name="wan_pptp_use_dynamic_carrier_radio"  onClick="wan_pptp_use_dynamic_carrier_selector(0, this.value);">Dynamic IP (DHCP)</b>
+      </td>
+    </tr>
+    <tr>
+      <td width="100%" colspan="2"><font size=2>
+        <b><input type="radio" value="staticIP" name="wan_pptp_use_dynamic_carrier_radio"  onClick="wan_pptp_use_dynamic_carrier_selector(1, this.value);">Static IP</b>
+      </td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>IP Address:</b></td>
+      <td width="70%"><font size=2><input type="text" name="pptpIpAddr" size="18" maxlength="30" value="<% getInfo("pptpIp"); %>" <% if (getIndex("pptp_wan_ip_mode")==0) write("disabled"); %>></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>Subnet Mask:</b></td>
+      <td width="70%"><font size=2><input type="text" name="pptpSubnetMask" size="18" maxlength="30" value="<% getInfo("pptpSubnet"); %>" <% if (getIndex("pptp_wan_ip_mode")==0) write("disabled"); %>></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>Default Gateway:</b></td>
+      <td width="70%"><font size=2><input type="text" name="pptpDefGw" size="18" maxlength="30" value="<% getInfo("pptpDefGw"); %>" <% if (getIndex("pptp_wan_ip_mode")==0) write("disabled"); %>></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>Server IP Address:</b></td>
+      <td width="70%"><font size=2><input type="text" name="pptpServerIpAddr" size="18" maxlength="30" value="<% getInfo("pptpServerIp"); %>"></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>User Name:</b></td>
+      <td width="70%"><font size=2><input type="text" name="pptpUserName" size="18" maxlength="128" value="<% getInfo("pptpUserName"); %>"></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>Password:</b></td>
+      <td width="70%"><font size=2><input type="password" name="pptpPassword" size="18" maxlength="128" value="<% getInfo("pptpPassword"); %>"></td>
+    </tr>
+        </table>
+    </span>
+    
+<!-- keith: add l2tp support. 20080515  -->
+    <span id = "l2tp_div" class = "off" >  
+    <table border="0" width=500>
+    <tr>
+      <td width="100%" colspan="2"><font size=2>
+        <b><input type="radio" value="dynamicIP" name="wan_l2tp_use_dynamic_carrier_radio"  onClick="wan_l2tp_use_dynamic_carrier_selector(0, this.value);">Dynamic IP (DHCP)</b>
+      </td>
+    </tr>
+    <tr>
+      <td width="100%" colspan="2"><font size=2>
+        <b><input type="radio" value="staticIP" name="wan_l2tp_use_dynamic_carrier_radio"  onClick="wan_l2tp_use_dynamic_carrier_selector(1, this.value);">Static IP</b>
+      </td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>IP Address:</b></td>
+      <td width="70%"><font size=2><input type="text" name="l2tpIpAddr" size="18" maxlength="30" value="<% getInfo("l2tpIp"); %>" <% if (getIndex("l2tp_wan_ip_mode")==0) write("disabled"); %>></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>Subnet Mask:</b></td>
+      <td width="70%"><font size=2><input type="text" name="l2tpSubnetMask" size="18" maxlength="30" value="<% getInfo("l2tpSubnet"); %>" <% if (getIndex("l2tp_wan_ip_mode")==0) write("disabled"); %>></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>Default Gateway:</b></td>
+      <td width="70%"><font size=2><input type="text" name="l2tpDefGw" size="18" maxlength="30" value="<% getInfo("l2tpDefGw"); %>" <% if (getIndex("l2tp_wan_ip_mode")==0) write("disabled"); %>></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>Server IP Address:</b></td>
+      <td width="70%"><font size=2><input type="text" name="l2tpServerIpAddr" size="18" maxlength="30" value="<% getInfo("l2tpServerIp"); %>"></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>User Name:</b></td>
+      <td width="70%"><font size=2><input type="text" name="l2tpUserName" size="18" maxlength="128" value="<% getInfo("l2tpUserName"); %>"></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size=2><b>Password:</b></td>
+      <td width="70%"><font size=2><input type="password" name="l2tpPassword" size="18" maxlength="128" value="<% getInfo("l2tpPassword"); %>"></td>
+    </tr>
+        </table>
+    </span>
+	<div id="wan_btn">  
+    <table border="0" width=500>
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_wan" onClick='cancelClick();'>
+		  <script>document.wizard.cancel_wan.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_wan" onClick='return saveClick_wan(0)' >
+		  <script>document.wizard.back_wan.value=wizard_back_btn;</script>
+	<script>	 
+	if(wlan_num==0){
+		document.write('<input type="submit"  name="next_wan">');
+		document.write('<script>document.wizard.next_wan.value=wizard_finish_btn<\/script>');
+		}
+	else{
+		document.write('<input type="button" name="next_wan" onClick="return saveClick_wan(1)">');
+		document.write('<script>document.wizard.next_wan.value=wizard_next_btn<\/script>');
+		}
+	</script>	  
+		  
+  	</td> </tr>
+    </table>
+	</div>  
+</span>
+
+<!-- wireless band mode -->
+<span id = "wlan_band_mode_div" class = "off" >
+<table border=0 width="500" cellspacing=0 cellpadding=0>
+<tr><td><h2><b><font color="#0000FF"><script>dw(wizard_content5)</script></font></b></h2></td> </tr>
+
+  <tr>
+  	<td><font size=2><script>dw(wizard_content5_explain)</script></td>
+  </tr>
+  <tr><td><hr size=1 noshade align=top></td></tr>
+</table>
+<br>
+
+<table border="0" width=500>
+    <tr>
+       <td width="30%" ><font size=2><b><script>dw(wizard_wire_band)</script></b></td>
+       <td width="70%"><font size=2>
+   	<select size="1" name="wlBandModeSel" onChange="wlanBandModeSelection(this.value)">
+	</select>
+	</td>
+    <tr>
+ </table>
+<br>
+<table border=0 width="500" cellspacing=4 cellpadding=0>  
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_wireband" onClick='cancelClick();'>
+		  <script>document.wizard.cancel_wireband.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_wireband" onClick='saveClick_bandMode(0)' >
+		  <script>document.wizard.back_wireband.value=wizard_back_btn;</script>
+		  <input type="button" name="next_wireband" onClick='saveClick_bandMode(1)'>
+		  <script>document.wizard.next_wireband.value=wizard_next_btn;</script>
+  </td> </tr>
+</table>
+</span>
+
+<!--    sitesurvey_div0  -->
+<span id = "sitesurvey_div0" class = "off">
+<table width="500" cellspacing="4" cellpadding="0" border="0">
+	<tr><td><h2><b><font color="#0000FF"><SPAN id=wizard_div0_sitesurvey></SPAN>	
+	</font></b></h2></td> </tr>
+	<tr><td colspan="2">
+		<font size="2">
+			<script>
+				dw(wizard_sitesurvey_content_explain)
+			</script>
+		</font></td></tr>
+</table>
+<table  border=0 width="500" cellspacing=4  cellpadding=0>
+	<script>
+		if (cmj_wizard) {
+			//must be WISP
+			var pass_arg = '0, 2';
+				
+			dw('<tr><td id="SSIDSiteSurvey_bar" colspan="2"><hr size=1 noshade align=top></td></tr>');
+			dw('<tr><td id="SSIDSiteSurvey_button"><input type="button" value="Site Survey" name="refresh" onclick="SSIDSiteSurvey.window.siteSurvey('+pass_arg+');"></td></tr>');
+		}		
+	</script>   
+</table>
+
+<script>
+	if (cmj_wizard) 
+	{
+		document.write('<iframe id="SSIDSiteSurvey" name="SSIDSiteSurvey" onload="javascript:{dyniframesize();}" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" src="pocket_sitesurvey.htm" width=800 height=0></iframe>');
+		
+		if(wpaCipher[0]*1 == 1)
+			document.wizardPocketGW.elements["ciphersuite0"].value = "tkip";
+		else if(wpaCipher[0]*1 == 2)
+			document.wizardPocketGW.elements["ciphersuite0"].value = "aes";
+		else
+			document.wizardPocketGW.elements["ciphersuite0"].value = "aes/tkip";
+			
+		if(wpa2Cipher[0]*1 == 1)
+			document.wizardPocketGW.elements["wpa2ciphersuite0"].value = "tkip";
+		else if(wpa2Cipher[0]*1 == 2)
+			document.wizardPocketGW.elements["wpa2ciphersuite0"].value = "aes";
+		else
+			document.wizardPocketGW.elements["wpa2ciphersuite0"].value = "aes/tkip";
+			
+		if(wlan_num == 2)
+		{
+			if(wpaCipher[1]*1 == 1)
+				document.wizardPocketGW.elements["ciphersuite1"].value = "tkip";
+			else if(wpaCipher[1]*1 == 2)
+				document.wizardPocketGW.elements["ciphersuite1"].value = "aes";
+			else
+				document.wizardPocketGW.elements["ciphersuite1"].value = "aes/tkip";
+				
+			if(wpa2Cipher[1] == 1)
+				document.wizardPocketGW.elements["wpa2ciphersuite1"].value = "tkip";
+			else if(wpa2Cipher[1] == 2)
+				document.wizardPocketGW.elements["wpa2ciphersuite1"].value = "aes";
+			else
+				document.wizardPocketGW.elements["wpa2ciphersuite1"].value = "aes/tkip";
+		}
+	}	
+</script>
+<br>
+<div>  
+  <table border=0 width="500" > 
+
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_sitesurvey_div0" onClick="cancelClick();">
+		  <script>document.wizard.cancel_sitesurvey_div0.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_sitesurvey_div0" onClick="return saveClick_wlan1_div0(0)" >
+		  <script>document.wizard.back_sitesurvey_div0.value=wizard_back_btn;</script>
+		  <input type="button" name="next_sitesurvey_div0"  onClick="return saveClick_wlan1_div0(1)">
+		  <script>document.wizard.next_sitesurvey_div0.value=wizard_next_btn;</script>
+  	</td> </tr>
+
+   </table>
+</div> 
+</span>
+
+<!--  wisp_ap_ssid_div0  -->
+<span id = "wisp_ap_ssid_div0" class = "off">
+<table width="500" cellspacing="4" cellpadding="0" border="0">
+	<tr><td><h2><b><font color="#0000FF"><SPAN id=wizard_div0_wisp_ap_ssid></SPAN>	
+	</font></b></h2></td> </tr>
+	<tr><td colspan="2">
+		<font size="2">
+			<script>
+				if (cmj_wizard) dw(wizard_cmj_content2_explain)
+				else dw(wizard_basic_header_explain)
+			</script>
+		</font></td></tr>
+	<tr><td colspan="2"><hr size="1" noshade="" align="top"></td></tr>
+</table>
+<table  border=0 width="500" cellspacing=4  cellpadding=0>
+  	<tr>
+  		<script>
+  			if (cmj_wizard) dw('<td width="60%">')
+			else dw('<td width="26%">')
+		</script>
+      <font size=2><b>
+			<script>
+				if(cmj_wizard) dw(wizard_cmj_content2_explain2)
+				else dw(wlbasic_ssid)
+			</script></b></td>
+			<script>
+				if(is_cmj) {
+					dw('<td width="74%"><font size=2><input id="wisp_ap_ssid" type="text" name="wisp_ap_ssid0" size="30" maxlength="32" value="<% getInfo("ssid","0")%>">');
+				}
+				else {
+					dw('<td width="74%"><font size=2><input id="wisp_ap_ssid" type="text" name="wisp_ap_ssid0" size="33" maxlength="32" value="<% getInfo("ssid","0")%>">');
+				}
+			</script>
+      </td>
+  </tr>
+  </table>
+  <br>
+<div>  
+  <table border=0 width="500" > 
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_wisp_ap_ssid_div0" onClick="cancelClick();">
+		  <script>document.wizard.cancel_wisp_ap_ssid_div0.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_wisp_ap_ssid_div0" onClick="return saveClick_wisp_ap_ssid(0)" >
+		  <script>document.wizard.back_wisp_ap_ssid_div0.value=wizard_back_btn;</script>
+		  <input type="button" name="next_wisp_ap_ssid_div0"  onClick="return saveClick_wisp_ap_ssid(1)">
+		  <script>document.wizard.next_wisp_ap_ssid_div0.value=wlsurvey_conn_button;</script>
+  	</td> </tr>
+   </table>
+</div> 
+</span>
+
+<span id = "wait_div" class = "off" >
+<script>dw(wlsurvey_wait_explain)</script>
+</span>
+
+<!--    wlan1_div0   2.4G or 5G  -->
+<span id = "wlan1_div0" class = "off">
+<table width="500" cellspacing="4" cellpadding="0" border="0">
+	<tr><td><h2><b><font color="#0000FF"><SPAN id=wizard_div0_basic></SPAN>	
+	</font></b></h2></td> </tr>
+	<tr><td colspan="2">
+		<font size="2">
+			<script>
+				if (cmj_wizard) dw(wizard_cmj_content2_explain)
+				else dw(wizard_basic_header_explain)
+			</script>
+		</font></td></tr>
+	<tr><td colspan="2"><hr size="1" noshade="" align="top"></td></tr>
+</table>
+<table  border=0 width="500" cellspacing=4  cellpadding=0>
+  <tr id="wlbasic_band0">
+      <td width="26%"><font size=2><b><script>dw(wlbasic_band)</script></b></td>
+      <td width="74%"><font size=2>
+      	<select id="sel_wlbasic_band0" size="1" name="band0" onChange="bandModeSel0(this)">
+      </select> 
+      </td>
+  </tr>
+  <tr id="wlbasic_mode0"> 
+      <td width="26%"><font size=2><b><script>dw(wizard_wlan1_div0_mode)</script></b></td>
+      <td width="74%"><font size=2>
+	      <select id="sel_wlbasic_mode0" size="1" name="mode0" onChange="updateModeChangeSecurity(0);wlanModeSel0(this)"></select>
+      </td>
+  </tr>
+  <tr id="wlbasic_network_type0">
+      <td width="26%"><font size=2><b><script>dw(wlbasic_network_type)</script></b></td>
+      <td width="74%"><font size=2>
+      	<select size="1" name="type0" onChange="networkTypeSel0(this)">
+      		<option value="0"><script>dw(wlbasic_infrastructure)</script></option>
+      		<option value="1"><script>dw(wlbasic_adhoc)</script></option>
+		</select>
+      </td>
+  	</tr>
+  	<tr>
+  		<script>
+  			if (cmj_wizard) dw('<td width="60%">')
+			else dw('<td width="26%">')
+		</script>
+      <font size=2><b>
+			<script>
+				if(cmj_wizard) dw(wizard_cmj_content2_explain2)
+				else dw(wlbasic_ssid)
+			</script></b></td>
+			<script>
+				if(is_cmj) {
+				  dw('<td width="74%"><font size=2><input id="wlbasic_ssid0" type="text" name="ssid0" size="30" maxlength="32" value="<% getInfo("ssid","0")%>">');
+				}
+				else {
+				  dw('<td width="74%"><font size=2><input id="wlbasic_ssid0" type="text" name="ssid0" size="33" maxlength="32" value="<% getInfo("ssid","0")%>">');
+				}
+			</script>
+      </td>
+  </tr>
+  <tr id="channel_bounding0" style="display:">
+   <td width="26%"><font size=2><b><script>dw(wlbasic_channelwidth)</script></b></td>
+ <td width="74%"><font size=2>
+ 	<select size="1" name="channelbound0" onChange="channelWidthSel0(this)">
+ 		<option value="0">20MHz</option>
+	 	<option value="1">40MHz</option>
+	 	<SCRIPT>
+	 	    var band0_value= <%getIndex("band","0")%>;
+			use_40m = <% getIndex("ChannelBonding","0"); %>;
+			band0_value = band0_value-1;
+			if(band0_value==63 || band0_value==71 || band0_value==75)
+				document.write('<option value="' + 2 + '">' + "80MHz" + '\n');
+			document.wizard.elements["channelbound" + <% getIndex("wlan_idx"); %>].selectedIndex=use_40m;
+		</SCRIPT>
+	</select>
+	 </td>
+	 </tr>
+	 <tr id="control_sideband0" style="display:">
+      <td width="26%"><font size=2><b><script>dw(wlbasic_ctlsideband)</script></b></td>
+      <td width="74%"><font size=2>
+      <select size="1" name="controlsideband0" onChange="updateChannel0()">
+     	<option value="0"><script>dw(wlbasic_ctlsideautomode)</script></option>
+		<option value="1"><script>dw(wlbasic_ctlsideautomode)</script></option>
+	  </select>
+      </td>
+  </tr>
+  <tr id="wlbasic_chnnelnum0">
+      <td width="26%"><font size=2><b><script>dw(wlbasic_chnnelnum)</script></b></td>
+      <td width="74%"><font size=2>
+      <select id="sel_wlbasic_chnnelnum0" size="1" name="chan0" >
+      <SCRIPT>
+     	showChannel5G(document.wizard, 0)
+      </SCRIPT>
+      </select></td>
+  </tr>
+  <tr id="wlbasic_mac_clone0">
+      <td width="100%" colspan=2><font size=2><b>
+   	<input type="checkbox" name="wlanMacClone0" value="ON"
+   	>&nbsp;&nbsp;<script>dw(wlbasic_enable_mac_clone)</script></b>
+      </td>
+  </tr>
+  </table>
+  <br>
+<div>  
+  <table border=0 width="500" > 
+     <input type="hidden" value="/wlbasic.htm" name="wlan-url">
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_wlan1_div0" onClick="cancelClick();">
+		  <script>document.wizard.cancel_wlan1_div0.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_wlan1_div0" onClick="return saveClick_wlan1_div0(0)" >
+		  <script>document.wizard.back_wlan1_div0.value=wizard_back_btn;</script>
+		  <input type="button" name="next_wlan1_div0"  onClick="return saveClick_wlan1_div0(1)">
+		  <script>document.wizard.next_wlan1_div0.value=wizard_next_btn;</script>
+  	</td> </tr>
+	<input type="hidden" value="/wizard-wan.htm" name="back_url">
+	<input type="hidden" value="/wizard-wlan2.htm" name="next_url">
+     <input type="hidden" name="basicrates0" value=0>
+     <input type="hidden" name="operrates0" value=0>	
+   </table>
+</div> 
+</span>
+
+<!--    wlan2_div0 Encryption     -->
+<span id = "wlan2_div0" class = "off" >
+<input type="hidden" value="ON" name="wepEnabled0">
+<table  border=0 width="500" cellspacing=4 cellpadding=0>
+    <tr><td  colspan="2"> <h2><font color="#0000FF"><SPAN id=wizard_div0_sec>
+    </font></h2> </td></tr>
+    <tr><td  colspan="2"><font size=2>
+    <script>dw(wlsec_explain)</script>
+    </td>
+    </tr>
+  <tr><td  colspan="2"><hr size=1 noshade align=top></td></tr>
+</table>
+<table border=0 width="500" cellspacing=4 cellpadding=0>
+   <td width="35%"><font size="2"><b><script>dw(wlsurvey_encryption)</script>&nbsp;</b>
+        <select id="sel_wlsurvey_encryption0" size="1" name="method0" onChange="encryTypeSel(this,0)">
+	        <option value="0"><script>dw(wlsurvey_encryption_no)</script></option>
+	        <option value="1"><script>dw(wlsurvey_encryption_wep)</script></option>
+		<SCRIPT>
+			if (document.wizard.mode0.value == 1)
+		  	 	document.write('<option value=\"2\">WPA(TKIP)</option>');  
+			document.write('<option value=\"4\">WPA2(AES)</option>');
+       		if (document.wizard.mode0.value != 1)
+            	document.write('<option value=\"6\">WPA Mixed</option>');
+		  document.write('<% getInfo("wapiOption");%>');
+		</SCRIPT>
+ 	  	</select></font></td>
+</table>
+<span id = "wep_div0" class = "off" >  
+<table border=0 width="500" cellspacing=4  cellpadding=0>
+  <tr>
+      <td width="15%"><font size=2><b><script>dw(wlsec_key_length)</script></b></td>
+      <td width="60%"><font size=2>
+      <select id="sel_wlsec_key_length" size="1" name="length0" ONCHANGE="wepLengthSel0(this)">
+      			<option value=1 ><script>dw(wlsurvey_keylen_64)</script></option>
+				<option value=2 ><script>dw(wlsurvey_keylen_128)</script></option>
+      </select></td>
+  </tr>
+  <tr>
+      <td width="15%"><font size=2><b><script>dw(wlsurvey_keyfmt)</script></b></td>
+      <td width="40%"><font size=2>
+     	<select id="sel_wlsurvey_keyfmt" size="1" name="format0" ONCHANGE="updateWepKey0()">
+     		<option value=1><script>dw(wlsurvey_keyfmt_ascii)</script></option>
+			<option value=2><script>dw(wlsurvey_keyfmt_hex)</script></option>
+       	</select></td>
+  </tr>
+  <tr>
+     <td width="15%"><font size=2><b><script>dw(wlsurvey_keyset)</script></b></td>
+     <td width="40%"><font size=2>
+     	<input type="text" name="key0" size="26" maxlength="26">
+     </td>
+  </tr>
+</table>
+</span>
+<span id = "wpa_div0" class = "off" >  
+   <table border=0 width="500" cellspacing=4 cellpadding=0>
+    <tr>
+      <td width="30%"><font size="2"><b><script>dw(wlsurvey_preshared_keyfmt)</script></b></font> </td>
+      <td width="70%"><font size="2">
+      <select size="1" name="pskFormat0" onChange= "updatePskformat(0)">
+
+          <option value="0" ><script>dw(wlsurvey_preshared_keyfmt_passphrase)</script></option>
+          <option value="1" ><script>dw(wlsurvey_preshared_keyfmt_hex)</script></option>
+       </select></font></td>
+    </tr>
+    <tr>
+      <td width="30%"><font size="2"><b><script>dw(wlsurvey_preshared_key)</script></b></font> </td>
+		<script>
+    		if(cmj_wizard)
+    			dw('<td width="70%"><font size="2"><input name="pskValue0" size="32" maxlength="64"></font></td>');
+			else
+				dw('<td width="70%"><font size="2"><input type="password" name="pskValue0" size="32" maxlength="64"></font></td>');
+    	</script>
+    </tr>
+     <tr></tr><tr></tr><tr></tr>
+  </table>
+</span>
+<span id = "wapi_div0" class = "off" >
+   <table border=0 width="500" cellspacing=4 cellpadding=0>
+    <tr>
+      <td width="30%" class="bgblue"><font size="2"><b><script>dw(wlsurvey_authmode)</script></b></font></td>
+      <td width="70%" class="bggrey"><font size="2">
+      	<input  name="wapiAuth0" type="radio" value="eap" onClick="show_wizard_wapi_settings(0,1)" <% getInfo("wapiCertSupport")%>><script>dw(wlsurvey_authmode_enter_server)</script>
+      	<input name="wapiAuth0" type="radio" value="psk" onClick="show_wizard_wapi_settings(0, 2)"><script>dw(wlsurvey_authmode_personal)</script>
+      	</font>
+      </td>
+   </tr>
+    <tr id="wapi_psk0">
+     <td width="30%" class="bgblue"><font size="2"><b><script>dw(wlsurvey_preshared_keyfmt)</script></b></font></td>
+      <td width="70%" class="bggrey">
+         <select name="wapiPskFormat0" onChange="">
+             <option value="0"><script>dw(wlsurvey_preshared_keyfmt_passphrase)</script></option>
+             <option value="1"><script>dw(wlsurvey_preshared_keyfmt_hex)</script></option>
+         </select>
+     </td></tr>
+    <tr id="wapi_psk_0">
+    <td width="30%" class="bgblue"><font size="2"><b><script>dw(wlsurvey_preshared_key)</script></b></font></td>
+    <td width="70%" class="bggrey"><input type="password" name="wapiPskValue0" size="32" maxlength="64" value="">
+    </td>
+   </tr>
+    <tr id="wapi_as0">
+   <td width="30%"  class="bgblue"><font size="2"><b><script>dw(wlsurvey_as_ser_ipaddr)</script></b></font></td>
+   <td width="70%"  class="bggrey"><input name="wapiASIP0" size="16" maxlength="15" value="0.0.0.0"></td>
+   </tr>
+	<tr id="wapi_as_0">
+		 <td width="30%" class="bgblue"><font size="2"><b><script>dw(wlsec_select_wapi_ca)</script></b></font></td>
+	  	<td width="70%" class="bggrey"><font size="2">
+		 <select size="1"  id="wapi_cert_sel0" name="wapiCertSel0">
+			<option value="0"><script>dw(wizard_use_cert_from_remote_as0)</script></option>
+			<option value="1"><script>dw(wizard_use_cert_from_remote_as1)</script></option>
+			
+		</select> </font></td>
+	</tr>
+  </table>
+</span>
+<div id="wep_btn0">
+	<table border=0 width="500" >
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_wlan2_div0" onClick="cancelClick();">
+		  <script>document.wizard.cancel_wlan2_div0.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_wlan2_div0" onClick="return saveClick_wlan2_div0(0)" >
+		  <script>document.wizard.back_wlan2_div0.value=wizard_back_btn;</script>
+		  <input type="button" value="" name="click_wlan2_next0" onClick="return saveClick_wlan2_div0(1)">
+		  <!--<script>document.wizard.next_wlan1_div0.value=wizard_next_btn;</script>-->
+  	</td> </tr>
+	<input type="hidden" value="" name="ciphersuite0">
+</table> 
+</div>
+</span>
+	<input type="hidden" value="ON" name="wepEnabled0">
+	<input type="hidden" value="OFF" name="use1x0">
+	<input type="hidden" value="psk" name="wpaAuth0">
+	<input type="hidden" value="1812" name="radiusPort0">
+	<input type="hidden" value="" name="radiusIP0">
+	<input type="hidden" value="" name="radiusPass0">
+
+<!--    wlan1_div1   2.4G , only 2.4G+5G show -->
+<span id = "wlan1_div1" class = "off">
+<table width="500" cellspacing="4" cellpadding="0" border="0">
+	<tr><td><h2><b><font color="#0000FF"><script>dw(wizard_2G_basic)</script></font></b></h2></td> </tr>
+	<tr><td colspan="2"><font size="2"><script>dw(wizard_basic_header_explain)</script></font></td></tr>
+	<tr><td colspan="2"><hr size="1" noshade="" align="top"></td></tr>
+</table>
+<table  border=0 width="500" cellspacing=4  cellpadding=0>
+  <tr>
+      <td width="26%"><font size=2><b><script>dw(wlbasic_band)</script></b></td>
+      <td width="74%"><font size=2>
+      	<select size="1" name="band1" onChange="bandModeSel1(this)">
+      </select> 
+      </td>
+  </tr>
+  <tr> 
+      <td width="26%"><font size=2><b><script>dw(wizard_wlan1_div0_mode)</script></b></td>
+      <td width="74%"><font size=2>
+      <select size="1" name="mode1" onChange="updateModeChangeSecurity(1);wlanModeSel1(this)">
+
+	 </select>
+      </td>
+  </tr>
+  <tr>
+      <td width="26%"><font size=2><b><script>dw(wlbasic_network_type)</script></b></td>
+      <td width="74%"><font size=2>
+      <select size="1" name="type1" onChange="networkTypeSel1(this)">
+      		<option value="0"><script>dw(wlbasic_infrastructure)</script></option>
+      		<option value="1"><script>dw(wlbasic_adhoc)</script></option>
+		</select>
+      </td>
+  	</tr>
+  	<tr>
+      <td width="26%"><font size=2><b><script>dw(wlbasic_ssid)</script></b></td>
+      <td width="74%"><font size=2><input type="text" name="ssid1" size="33" maxlength="32" value="<% getInfo("ssid","1")%>">
+      </td>
+  </tr>
+  <tr id="channel_bounding1" style="display:">
+   <td width="26%"><font size=2><b><script>dw(wlbasic_channelwidth)</script></b></td>
+ <td width="74%"><font size=2><select size="1" name="channelbound1" onChange="channelWidthSel1(this)">
+ 	<option value="0">20MHz</option>
+	 <option value="1">40MHz</option>
+	 	<SCRIPT>
+	 	    var band1_value= <%getIndex("band","1")%>;
+			use_40m = <% getIndex("ChannelBonding","1"); %>;
+			band1_value = band1_value-1;
+			//if(band1_value==74)
+				//document.write('<option value="' + 2 + '">' + "80MHz" + '\n');
+			document.wizard.elements["channelbound" + <% getIndex("wlan_idx"); %>].selectedIndex=use_40m;
+		</SCRIPT>
+	 </select>
+	 </td>
+	 </tr>
+	 <tr id="control_sideband1" style="display:">
+      <td width="26%"><font size=2><b><script>dw(wlbasic_ctlsideband)</script></b></td>
+      <td width="74%"><font size=2>
+      <select size="1" name="controlsideband1" onChange="updateChannel1()">
+     	<option value="0"><script>dw(wlbasic_ctlsideuppermode)</script></option>
+		<option value="1"><script>dw(wlbasic_ctlsidelowermode)</script></option>
+	 </select>
+      </td>
+  </tr>
+  <tr>
+      <td width="26%"><font size=2><b><script>dw(wlbasic_chnnelnum)</script></b></td>
+      <td width="74%"><font size=2><select size="1" name="chan1" >
+      <!--onchange ="updateChan_selectedIndex(document.wizard, '+i+');"> -->
+      </select></td>
+  </tr>
+  <tr>
+      <td width="100%" colspan=2><font size=2><b>
+   	<input type="checkbox" name="wlanMacClone1" value="ON"
+   	>&nbsp;&nbsp;<script>dw(wlbasic_enable_mac_clone)</script></b>
+      </td>
+  </tr>
+  </table>
+  <br>
+<div>  
+  <table border=0 width="500" > 
+     <input type="hidden" value="/wlbasic.htm" name="wlan-url">
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_wlan1_div1" onClick="cancelClick();">
+		  <script>document.wizard.cancel_wlan1_div1.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_wlan1_div1" onClick="return saveClick_wlan1_div1(0)" >
+		  <script>document.wizard.back_wlan1_div1.value=wizard_back_btn;</script>
+		  <input type="button" name="next_wlan1_div1"  onClick="return saveClick_wlan1_div1(1)">
+		  <script>document.wizard.next_wlan1_div1.value=wizard_next_btn;</script>
+  	</td> </tr>
+	<input type="hidden" value="/wizard-wan.htm" name="back_url">
+	<input type="hidden" value="/wizard-wlan2.htm" name="next_url">
+     <input type="hidden" name="basicrates1" value=0>
+     <input type="hidden" name="operrates1" value=0>	
+   </table>
+</div> 
+</span>
+
+<!--    wlan2_div1 Encryption     -->
+<span id = "wlan2_div1" class = "off" >
+<table  border=0 width="500" cellspacing=4 cellpadding=0>
+    <tr><td  colspan="2"> <h2><font color="#0000FF"><script>dw(wizard_2G_sec)</script></font></h2> </td></tr>
+    <tr><td  colspan="2"><font size=2>
+    <script>dw(wlsec_explain)</script>
+    </td>
+    </tr>
+  <tr><td  colspan="2"><hr size=1 noshade align=top></td></tr>
+</table>
+<table border=0 width="500" cellspacing=4 cellpadding=0>
+   <td width="35%"><font size="2"><b><script>dw(wlsurvey_encryption)</script>&nbsp;</b>
+        <select size="1" name="method1" onChange="encryTypeSel(this,1)">
+	        <option  value="0"><script>dw(wlsurvey_encryption_no)</script></option>
+	        <option value="1"><script>dw(wlsurvey_encryption_wep)</script></option>
+	   	<SCRIPT>
+		  	if (document.wizard.mode1.value == 1)
+		  	 	document.write('<option value=\"2\">WPA(TKIP)</option>');  
+			document.write('<option value=\"4\">WPA2(AES)</option>');
+       		if (document.wizard.mode1.value != 1)
+            	document.write('<option value=\"6\">WPA Mixed</option>');
+		</SCRIPT>
+ 	  	</select></font></td>
+</table>
+<span id = "wep_div1" class = "off" >  
+<table border=0 width="500" cellspacing=4  cellpadding=0>
+  <tr>
+      <td width="15%"><font size=2><b><script>dw(wlsec_key_length)</script></b></td>
+      <td width="60%"><font size=2>
+      <select size="1" name="length1" ONCHANGE="wepLengthSel1(this)">
+      			<option value=1 ><script>dw(wlsurvey_keylen_64)</script></option>
+				<option value=2 ><script>dw(wlsurvey_keylen_128)</script></option>
+      </select></td>
+  </tr>
+  <tr>
+      <td width="15%"><font size=2><b><script>dw(wlsurvey_keyfmt)</script></b></td>
+      <td width="40%"><font size=2>
+     	<select size="1" name="format1" ONCHANGE="updateWepKey0()">
+     		<option value=1><script>dw(wlsurvey_keyfmt_ascii)</script></option>
+			<option value=2><script>dw(wlsurvey_keyfmt_hex)</script></option>
+       	</select></td>
+  </tr>
+  <tr>
+     <td width="15%"><font size=2><b><script>dw(wlsurvey_keyset)</script></b></td>
+     <td width="40%"><font size=2>
+     	<input type="text" name="key1" size="26" maxlength="26">
+     </td>
+  </tr>
+</table>
+</span>
+<span id = "wpa_div1" class = "off" >  
+   <table border=0 width="500" cellspacing=4 cellpadding=0>
+    <tr>
+      <td width="35%"><font size="2"><b><script>dw(wlsurvey_preshared_keyfmt)</script></b></font> </td>
+      <td width="65%"><font size="2">
+      <select size="1" name="pskFormat1" onChange= "updatePskformat(1)">
+          <option value="0" ><script>dw(wlsurvey_preshared_keyfmt_passphrase)</script></option>
+          <option value="1" ><script>dw(wlsurvey_preshared_keyfmt_hex)</script></option>
+       </select></font></td>
+    </tr>
+    <tr>
+      <td width="35%"><font size="2"><b><script>dw(wlsurvey_preshared_key)</script></b></font> </td>
+      <td width="65%"><font size="2"><input type="password" name="pskValue1" size="32" maxlength="64"></font></td>
+    </tr>
+     <tr></tr><tr></tr><tr></tr>
+  </table>
+</span>
+<span id = "wapi_div1" class = "on" >
+   <table border=0 width="500" cellspacing=4 cellpadding=0>
+    <tr>
+      <td width="30%" class="bgblue"><font size="2"><b><script>dw(wlsurvey_authmode)</script></b></font></td>
+      <td width="70%" class="bggrey"><font size="2">
+      	<input  name="wapiAuth1" type="radio" value="eap" onClick="show_wizard_wapi_settings(1,1)" <% getInfo("wapiCertSupport")%>><script>dw(wlsurvey_authmode_enter_server)</script>
+      	<input name="wapiAuth1" type="radio" value="psk" onClick="show_wizard_wapi_settings(1, 2)"><script>dw(wlsurvey_authmode_personal)</script>
+      	</font>
+      </td>
+   </tr>
+    <tr id="wapi_psk1">
+     <td width="30%" class="bgblue"><font size="2"><b><script>dw(wlsurvey_preshared_keyfmt)</script></b></font></td>
+      <td width="70%" class="bggrey">
+         <select name="wapiPskFormat1" onChange="">
+             <option value="0"><script>dw(wlsurvey_preshared_keyfmt_passphrase)</script></option>
+             <option value="1"><script>dw(wlsurvey_preshared_keyfmt_hex)</script></option>
+         </select>
+     </td></tr>
+    <tr id="wapi_psk_1">
+    <td width="30%" class="bgblue"><font size="2"><b><script>dw(wlsurvey_preshared_key)</script></b></font></td>
+    <td width="70%" class="bggrey"><input type="password" name="wapiPskValue1" size="32" maxlength="64" value="">
+    </td>
+   </tr>
+    <tr id="wapi_as0">
+   <td width="30%"  class="bgblue"><font size="2"><b><script>dw(wlsurvey_as_ser_ipaddr)</script></b></font></td>
+   <td width="70%"  class="bggrey"><input name="wapiASIP1" size="16" maxlength="15" value="0.0.0.0"></td>
+   </tr>
+	<tr id="wapi_as_1">
+		 <td width="30%" class="bgblue"><font size="2"><b><script>dw(wlsec_select_wapi_ca)</script></b></font></td>
+	  	<td width="70%" class="bggrey"><font size="2">
+		 <select size="1"  id="wapi_cert_sel1" name="wapiCertSel1">
+			<option value="0"><script>dw(wizard_use_cert_from_remote_as0)</script></option>
+			<option value="1"><script>dw(wizard_use_cert_from_remote_as1)</script></option>
+			
+		</select> </font></td>
+	</tr>
+  </table>
+</span>
+<div id="wep_btn1">
+	<table border=0 width="500" >
+	<tr> <td colspan="2" align=right>
+		  <input type="button" name="cancel_wlan2_div1" onClick="cancelClick();">
+		  <script>document.wizard.cancel_wlan2_div1.value=wizard_cancel_btn;</script>
+		  <input type="button" name="back_wlan2_div1" onClick="return saveClick_wlan2_div1(0)" >
+		  <script>document.wizard.back_wlan2_div1.value=wizard_back_btn;</script>
+		  <input type="button" name="click_wlan2_next1" onClick="return saveClick_wlan2_div1(1)">
+		  <script>document.wizard.click_wlan2_next1.value=wizard_finish_btn;</script>
+  	</td> </tr>
+	<input type="hidden" value="" name="ciphersuite1">
+</table> 
+</div>
+</span>
+	<input type="hidden" value="ON" name="wepEnabled1">
+	<input type="hidden" value="OFF" name="use1x1">
+	<input type="hidden" value="psk" name="wpaAuth1">
+	<input type="hidden" value="1812" name="radiusPort1">
+	<input type="hidden" value="" name="radiusIP1">
+	<input type="hidden" value="" name="radiusPass1">
+
+
+
+<span id = "wpa_auth" class = "off" >
+	<table>
+	<input type="checkbox" name="ciphersuite<% getIndex("wlan_idx"); %>" value="tkip"><script>dw(wlsurvey_wpacip_tkip)</script>
+	<input type="checkbox" name="ciphersuite<% getIndex("wlan_idx"); %>" value="aes" ><script>dw(wlsurvey_wpacip_aes)</script>
+	<input type="checkbox" name="wpa2ciphersuite<% getIndex("wlan_idx"); %>" value="tkip"><script>dw(wlsurvey_wpacip_tkip)</script>
+	<input type="checkbox" name="wpa2ciphersuite<% getIndex("wlan_idx"); %>" value="aes" ><script>dw(wlsurvey_wpacip_aes)</script>
+	</table>
+</span>
+</form>
+</blockquote>
+</body>
+</html>

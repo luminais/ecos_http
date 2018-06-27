@@ -1,0 +1,445 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>QoS</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script type="text/javascript" src="util_qos.js"> </script>
+
+<script>
+
+function checkClientRange(start,end)
+{
+  var start_d, end_d;
+  start_d = getDigit(start,4);
+  start_d += getDigit(start,3)*256;
+  start_d += getDigit(start,2)*256;
+  start_d += getDigit(start,1)*256;
+
+  end_d = getDigit(end,4);
+  end_d += getDigit(end,3)*256;
+  end_d += getDigit(end,2)*256;
+  end_d += getDigit(end,1)*256;
+
+  if ( start_d <= end_d )
+	return true;
+
+  return false;
+}
+
+function addRuleClick()
+{
+  if (!document.formQosAdd.enabled.checked)
+  	return true;
+
+  if (document.formQosAdd.ipStart.value=="" && document.formQosAdd.mac.value=="" &&
+	document.formQosAdd.bandwidth.value=="" && document.formQosAdd.bandwidth_downlink.value==""
+	&& document.formQosAdd.portStart.value=="")
+	return true;
+
+  if (document.formQosAdd.addressType[0].checked==true) {
+  
+    if (document.formQosAdd.ipStart.value != ""){
+    
+	if ( checkIpAddr(document.formQosAdd.ipStart, ip_qos_ip_invalid) == false )
+	    return false;
+	   	
+
+	var LAN_IP = ipv4_to_unsigned_integer("<% getInfo("ip"); %>");
+	var LAN_MASK = ipv4_to_unsigned_integer("<% getInfo("mask"); %>");			
+
+	var tarIp = ipv4_to_unsigned_integer(document.formQosAdd.ipStart.value);
+
+	if ((tarIp & LAN_MASK) != (LAN_IP & LAN_MASK))
+	{
+		alert(ip_qos_startip_invalid);
+		return false;
+	}
+	if (tarIp == LAN_IP)
+	{
+		alert(ip_should_be_different_from_lanip);
+		return false;
+	}
+	} 
+	if(document.formQosAdd.portStart.value>65535){
+		alert(ip_qos_portrange_invalid);
+		document.formQosAdd.portStart.focus();
+		return false;
+	}	
+	
+	if(document.formQosAdd.portEnd.value>65535){
+		alert(ip_qos_portrange_invalid);
+		document.formQosAdd.portStart.focus();
+		return false;
+	}	
+  }
+  else if (document.formQosAdd.addressType[1].checked==true) {
+	  var str = document.formQosAdd.mac.value;
+	  if ( str.length < 12) {
+		alert(ip_qos_macaddr_notcomplete);
+		document.formQosAdd.mac.focus();
+		return false;
+	  }
+	  
+	  var cnt0=0;
+	 
+	  if(!check_macAddr(document.formQosAdd.mac)) 
+	  	return false;
+	  	
+	  for (var i=0; i<str.length; i++) {
+	  
+	  	if(str.charAt(i) == '0')
+		{
+			cnt0++;
+		}
+		else if (str.charAt(i) == 'f'||str.charAt(i) == 'F')
+		{
+			cntf++;
+		}
+	    if (( (str.charAt(i) >= '0' && str.charAt(i) <= '9') ||
+			(str.charAt(i) >= 'a' && str.charAt(i) <= 'f') ||
+			(str.charAt(i) >= 'A' && str.charAt(i) <= 'F') )
+			&&(cnt0 < str.length))
+
+			continue;
+			
+			
+		alert(ip_qos_macaddr_invalid);
+		document.formQosAdd.mac.focus();
+		return false;
+	  }
+  }
+
+  if(document.formQosAdd.qosType[0].checked==true){
+  		
+	  if ( (document.formQosAdd.bandwidth.value == "" || document.formQosAdd.bandwidth.value == 0)
+	   	&& (document.formQosAdd.bandwidth_downlink.value == "" || document.formQosAdd.bandwidth_downlink.value == 0) ) {
+		alert(ip_qos_band_empty);
+		document.formQosAdd.bandwidth.focus();
+		return false;
+	  }
+	  
+	  if (document.formQosAdd.bandwidth.value!="") {
+	  	if ( validateKey( document.formQosAdd.bandwidth.value ) == 0 ) {
+			alert(ip_qos_band_invalid);
+			document.formQosAdd.bandwidth.focus();
+			return false;
+	  	}
+
+	  	if ( is_Float( document.formQosAdd.bandwidth )) {
+			alert(ip_qos_band_notint);
+			document.formQosAdd.bandwidth.focus();
+			return false;
+	  	}
+	  	
+	   }
+	   
+	   if (document.formQosAdd.bandwidth_downlink.value!="") {
+	  	if ( validateKey( document.formQosAdd.bandwidth_downlink.value ) == 0 ) {
+			alert(ip_qos_band_invalid);
+			document.formQosAdd.bandwidth_downlink.focus();
+			return false;
+	  	}
+	  	if ( is_Float( document.formQosAdd.bandwidth_downlink )) {
+			alert(ip_qos_band_notint);
+			document.formQosAdd.bandwidth_downlink.focus();
+			return false;
+	  	}
+
+	   }
+
+		
+	}
+	else if(document.formQosAdd.qosType[1].checked==true)
+	{
+		if(document.formQosAdd.qos_weight.value == "" )
+		{
+			alert(ip_qos_weight_empty);
+			document.formQosAdd.bandwidth.focus();
+			return false;
+		} 
+		
+		if ( intvalidateKey(document.formQosAdd.qos_weight.value) == 0 ) 
+		{
+			alert(ip_qos_weight_invalid);
+			document.formQosAdd.qos_weight.focus();
+			return false;
+		}
+		
+		if(!checkIntSize(document.formQosAdd.qos_weight,1,20,ip_qos_weight_invalid))
+			return false;
+
+		
+		
+		
+	}
+   	return true;
+}
+
+function deleteClick()
+{
+  if ( !confirm(ip_qos_delete_select) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function deleteAllClick()
+{
+   if ( !confirm(ip_qos_delete_all) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function disableQosDelButton()
+{
+	disableButton(document.formQosDel.deleteSel);
+	disableButton(document.formQosDel.deleteAll);
+}
+
+function ipAddrClicked()
+{
+ 	enableTextField(document.formQosAdd.ipStart);
+	enableTextField(document.formQosAdd.portStart);
+	enableTextField(document.formQosAdd.portEnd);
+	enableTextField(document.formQosAdd.protocol);
+	disableTextField(document.formQosAdd.mac);
+}
+
+function macAddrClicked()
+{
+ 	disableTextField(document.formQosAdd.ipStart);
+	disableTextField(document.formQosAdd.portStart);
+	disableTextField(document.formQosAdd.portEnd);
+	disableTextField(document.formQosAdd.protocol);
+	enableTextField(document.formQosAdd.mac);
+}
+	
+function anyAddrClicked()
+{
+	disableTextField(document.formQosAdd.ipStart);
+	disableTextField(document.formQosAdd.mac);
+	disableTextField(document.formQosAdd.portStart);
+	disableTextField(document.formQosAdd.portEnd);
+	disableTextField(document.formQosAdd.protocol);
+}
+
+function qosBandClicked()
+{
+	disableTextField(document.formQosAdd.manualUplinkSpeed);
+ 	disableTextField(document.formQosAdd.manualDownlinkSpeed);
+ 	disableTextField(document.formQosAdd.qos_weight);
+ 	enableTextField(document.formQosAdd.mode);
+ 	enableTextField(document.formQosAdd.bandwidth);
+	enableTextField(document.formQosAdd.bandwidth_downlink);
+}
+
+function qosSchClicked()
+{
+	enableTextField(document.formQosAdd.manualUplinkSpeed);
+ 	enableTextField(document.formQosAdd.manualDownlinkSpeed);
+ 	enableTextField(document.formQosAdd.qos_weight);
+ 	disableTextField(document.formQosAdd.bandwidth);
+	disableTextField(document.formQosAdd.bandwidth_downlink);
+	disableTextField(document.formQosAdd.mode);
+}
+
+function updateQosState()
+{
+  if (document.formQosAdd.enabled.checked) {
+  	enableTextField(document.formQosAdd.qosType[0]);
+ 	enableTextField(document.formQosAdd.qosType[1]);
+	if ( <% getIndex("qosMode"); %> )
+	{		
+		document.formQosAdd.qosType[1].checked = true;
+		document.formQosAdd.qosType[0].checked = false;
+		qosSchClicked();
+	}
+	else{
+		document.formQosAdd.qosType[0].checked = true;	
+		document.formQosAdd.qosType[1].checked = false;
+		qosBandClicked();
+	}	
+ 	enableTextField(document.formQosAdd.addressType[0]);
+ 	enableTextField(document.formQosAdd.addressType[1]);
+			
+	if (document.formQosAdd.addressType[0].checked==true)
+		ipAddrClicked();
+	else
+		macAddrClicked();
+  }
+  else {
+  	disableTextField(document.formQosAdd.qosType[0]);
+ 	disableTextField(document.formQosAdd.qosType[1]);
+ 	disableTextField(document.formQosAdd.manualUplinkSpeed);
+ 	disableTextField(document.formQosAdd.manualDownlinkSpeed);
+ 	disableTextField(document.formQosAdd.addressType[0]);
+ 	disableTextField(document.formQosAdd.addressType[1]);
+  	disableTextField(document.formQosAdd.ipStart);
+	disableTextField(document.formQosAdd.portStart);
+	disableTextField(document.formQosAdd.portEnd);
+	disableTextField(document.formQosAdd.protocol);
+	disableTextField(document.formQosAdd.mac);
+	disableTextField(document.formQosAdd.mode);
+	disableTextField(document.formQosAdd.bandwidth);
+	disableTextField(document.formQosAdd.qos_weight);
+	disableTextField(document.formQosAdd.bandwidth_downlink);
+  }
+}
+
+function Load_Setting()
+{
+	if ( <% getIndex("qosEnabled"); %> )
+		document.formQosAdd.enabled.checked = true;	
+	updateQosState();
+
+}
+</script>
+</head>
+
+<body onload="Load_Setting();">
+<blockquote>
+<h2><font color="#0000FF"><script>dw(ip_qos_header)</script></font></h2>
+
+<table border=0 width="550" cellspacing=4 cellpadding=0>
+<tr><td><font size=2>
+<script>dw(ip_qos_header_explain)</script>
+</font></td></tr>
+
+
+<table border=0 width=500>
+  <tr><td><hr size=1 noshade align=top></td></tr>
+
+<form action=/formIpQoS.htm method=POST name="formQosAdd">
+<input type="hidden" value="/ip_qos.htm" name="submit-url">
+<tr><td><font size=2><b>
+	<input type="checkbox" name="enabled" value="ON" ONCLICK=updateQosState()>&nbsp;&nbsp;<script>dw(ip_qos_enable)</script></b><br>
+ </td></tr>
+ 	<tr>
+		<td width="10%"><font size=2><b><script>dw(ip_qos_mode)</script></b></font></td>
+		<td>
+      		<input type="radio" name="qosType" value="band" checked ONCLICK=qosBandClicked()><font size=2><b><script>dw(ip_qos_bandwidth)</script></b></font>
+      		<input type="radio" name="qosType" value="wfq" ONCLICK=qosSchClicked()><font size=2><b><script>dw(ip_qos_schedule)</script></b></font>
+      	</td>
+	</tr>
+	<tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_manu_upspeed)</script></b></font></td>
+		<td><input type="text" name="manualUplinkSpeed" size="8" maxlength="8" value="<% getIndex("qosManualUplinkSpeed"); %>">
+		</td>
+	</tr>
+	<tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_manu_downspeed)</script></b></font></td>
+		<td><input type="text" name="manualDownlinkSpeed" size="8" maxlength="8" value="<% getIndex("qosManualDownlinkSpeed"); %>">
+		</td>
+	</tr>
+</table>
+
+<table border=0 width=600>
+
+	<tr>
+      <td width="45%"><font size=2><font color="#0000FF"><b><script>dw(ip_qos_rule_set)</script></b></font></font></td>
+      <td>&nbsp;</td>
+  </tr>	
+	<tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_addrtype)</script></b></font></td>
+		<td>
+      <input type="radio" name="addressType" value="0" checked ONCLICK=ipAddrClicked()><script>dw(ip_qos_addrtype_ip)</script>&nbsp;&nbsp;
+      <input type="radio" name="addressType" value="1" ONCLICK=macAddrClicked()><script>dw(ip_qos_addrtype_mac)</script>&nbsp;&nbsp;
+      <!--<input type="radio" name="addressType" value="2" ONCLICK=anyAddrClicked()>ANY -->
+		</td>
+	</tr>
+
+	<tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_local_ipaddr)</script></b></font></td>
+		<td>
+			<input type="text" name="ipStart" size="12" maxlength="15" value="">
+    	</td>    	
+  	</tr>  	
+    <tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_proto)</script></b></font></td>
+		<td>
+			<select size="1" name="protocol">
+      		<option value="1"><script>dw(ip_qos_proto_udp)</script></option>
+      		<option value="2"><script>dw(ip_qos_proto_tcp)</script></option>
+      		<option value="3"><script>dw(ip_qos_proto_both)</script></option>
+      		</select>
+    	</td>
+  	</tr>
+  	<tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_local_port)</script></b></font></td>
+		<td>
+			<input type="text" name="portStart" size="5" maxlength="5" value="">-</b>
+				<input type="text" name="portEnd" size="5" maxlength="5" value="">
+    	</td>
+    </tr>
+  	<tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_macaddr)</script></b></font></td>
+		<td><input type="text" name="mac" size="12" maxlength="12"></td>
+	</tr>
+	<tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_weight)</script></b></font></td>
+		<td><input type="text" name="qos_weight" size="12" maxlength="12" value=""></td>
+	</tr> 
+	<tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_mode)</script></b></font></td>
+		<td>
+			<select size="1" name="mode">
+      		<option value="2"><script>dw(ip_qos_restrict_maxband)</script></option>
+      </select>
+    </td>
+  </tr>
+  
+  <tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_upband)</script></b></font></td>
+		<td><input type="text" name="bandwidth" size="8"></td>
+	</tr>
+	
+	<tr>
+		<td width="45%"><font size=2><b><script>dw(ip_qos_downband)</script></b></font></td>
+		<td><input type="text" name="bandwidth_downlink" size="8"></td>
+	</tr>	
+</table>
+
+<table border=0 width=100>
+	<tr>
+		<td><input type="submit" name="addQos" onClick="return addRuleClick()"></td>
+		<script>document.formQosAdd.addQos.value=ip_qos_apply;</script>
+    <td><input type="reset" name="reset"></td>
+    <script>document.formQosAdd.reset.value=ip_qos_reset;</script>
+  </tr>
+
+  <script> updateQosState(); </script>
+</form>
+</table>
+
+
+<br>
+<form action=/formIpQoS.htm method=POST name="formQosDel">
+<table border=0 width=730>
+  <tr><font size=2><b><script>dw(ip_qos_curr_qos)</script></b></font></tr>
+  <% ipQosList(); %>
+</table>
+
+ <br><input type="submit" name="deleteSel" onClick="return deleteClick()">&nbsp;&nbsp;
+ <script>document.formQosDel.deleteSel.value=ip_qos_delete_select_btn;</script>
+     <input type="submit" name="deleteAll" onClick="return deleteAllClick()">&nbsp;&nbsp;&nbsp;
+     <script>document.formQosDel.deleteAll.value=ip_qos_delete_all_btn;</script>
+     <input type="reset" name="reset">
+     <script>document.formQosDel.reset.value=ip_qos_reset;</script>
+ <script>
+	if ( <% getIndex("qosRuleNum"); %> == 0 )
+		disableQosDelButton();
+ </script>
+     <input type="hidden" value="/ip_qos.htm" name="submit-url">
+</form>
+
+
+</blockquote>
+</body>
+</html>
+

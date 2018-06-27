@@ -1,0 +1,192 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>Port Forwarding</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+
+function addClick()
+{
+  if (!document.formPortFwAdd.enabled.checked)
+  	return true;
+	
+  if (document.formPortFwAdd.ip.value=="" && document.formPortFwAdd.fromPort.value=="" &&
+	document.formPortFwAdd.toPort.value=="" && document.formPortFwAdd.comment.value=="" )
+	return true;
+  if ( checkIpAddr(document.formPortFwAdd.ip, 'Invalid IP address') == false )
+	    return false;
+
+
+  if (document.formPortFwAdd.fromPort.value=="") {
+	alert(portfw_apply_port_empty);
+	document.formPortFwAdd.fromPort.focus();
+	return false;
+  }
+  if ( validateKey( document.formPortFwAdd.fromPort.value ) == 0 ) {
+	alert(firewall_port_notdecimal);
+	document.formPortFwAdd.fromPort.focus();
+	return false;
+  }
+  d1 = getDigit(document.formPortFwAdd.fromPort.value, 1);
+  if (d1 > 65535 || d1 < 1) {
+	alert(firewall_port_toobig);
+	document.formPortFwAdd.fromPort.focus();
+	return false;
+  }
+  if (document.formPortFwAdd.toPort.value!="") {
+  	if ( validateKey( document.formPortFwAdd.toPort.value ) == 0 ) {
+		alert(firewall_port_notdecimal);
+		document.formPortFwAdd.toPort.focus();
+		return false;
+  	}
+	d2 = getDigit(document.formPortFwAdd.toPort.value, 1);
+ 	if (d2 > 65535 || d2 < 1) {
+		alert(firewall_port_toobig);
+		document.formPortFwAdd.toPort.focus();
+		return false;
+  	}
+	if (d1 > d2 ) {
+		alert(firewall_port_rangeinvalid);
+		document.formPortFwAdd.fromPort.focus();
+		return false;
+
+	}
+   }
+
+   	var LAN_IP = ipv4_to_unsigned_integer("<% getInfo("ip"); %>");
+	var LAN_MASK = ipv4_to_unsigned_integer("<% getInfo("mask"); %>");			
+
+	var tarIp = ipv4_to_unsigned_integer(document.formPortFwAdd.ip.value);
+
+	if ((tarIp & LAN_MASK) != (LAN_IP & LAN_MASK))
+	{
+		alert(ip_should_in_current_subnet);
+		return false;
+	}
+	if (tarIp == LAN_IP)
+	{
+		alert(ip_should_be_different_from_lanip);
+		return false;
+	}
+   return true;
+}
+
+
+function deleteClick()
+{
+  if ( !confirm(firewall_delete_selectconfm) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function deleteAllClick()
+{
+   if ( !confirm(firewall_delete_allconfm) ) {
+	return false;
+  }
+  else
+	return true;
+}
+function disableDelButton()
+{
+	disableButton(document.formPortFwDel.deleteSelPortFw);
+	disableButton(document.formPortFwDel.deleteAllPortFw);
+}
+
+function updateState()
+{
+  if (document.formPortFwAdd.enabled.checked) {
+ 	enableTextField(document.formPortFwAdd.ip);
+	enableTextField(document.formPortFwAdd.protocol);
+	enableTextField(document.formPortFwAdd.fromPort);
+	enableTextField(document.formPortFwAdd.toPort);
+	enableTextField(document.formPortFwAdd.comment);
+  }
+  else {
+ 	disableTextField(document.formPortFwAdd.ip);
+	disableTextField(document.formPortFwAdd.protocol);
+	disableTextField(document.formPortFwAdd.fromPort);
+	disableTextField(document.formPortFwAdd.toPort);
+	disableTextField(document.formPortFwAdd.comment);
+  }
+}
+
+function Load_Setting()
+{
+	if ( <% getIndex("portFwEnabled"); %> )
+		document.formPortFwAdd.enabled.checked = true;
+	updateState();
+}
+</script>
+</head>
+
+<body onload="Load_Setting();">
+<blockquote>
+<h2><font color="#0000FF"><script>dw(portfw_header)</script></font></h2>
+
+<table border=0 width="550" cellspacing=4 cellpadding=0>
+<tr><td><font size=2>
+<script>dw(portfw_header_explain)</script>
+</font></td></tr>
+
+<tr><td><hr size=1 noshade align=top></td></tr>
+
+<form action=/formPortFw.htm method=POST name="formPortFwAdd">
+
+<tr><td><font size=2><b>
+	<input type="checkbox" name="enabled" value="ON" ONCLICK=updateState()>&nbsp;&nbsp;<script>dw(portfw_enable)</script></b><br>
+    </td>
+</tr>
+
+<tr><td>
+  <p><font size=2><b><script>dw(portfw_ipaddr)</script></b> <input type="text" name="ip" size="10" maxlength="15">&nbsp;
+  <b><script>dw(firewall_proto)</script></b> <select name="protocol">
+    <option select value="0"><script>dw(firewall_proto_both)</script></option>
+    <option value="1"><script>dw(firewall_proto_tcp)</script></option>
+    <option value="2"><script>dw(firewall_proto_udp)</script></option>
+  </select>&nbsp;<b><script>dw(firewall_port_range)</script></b> <input type="text" name="fromPort" size="3"><b>-</b>
+      <input type="text" name="toPort" size="3">
+    <b><script>dw(firewall_comm)</script></b> <input type="text" name="comment" size="6" maxlength="20"></font>
+
+  <p><input type="submit" name="addPortFw" onClick="return addClick()">&nbsp;&nbsp;
+  	 <script>document.formPortFwAdd.addPortFw.value=firewall_apply;</script>
+     <input type="reset" name="reset"></p>
+     <script>document.formPortFwAdd.reset.value=firewall_reset;</script>
+  <input type="hidden" value="/portfw.htm" name="submit-url">
+</td></tr>
+  <script> updateState(); </script>
+</form>
+</table>
+
+
+<br>
+<form action=/formPortFw.htm method=POST name="formPortFwDel">
+<table border=0 width=500>
+  <tr><font size=2><b><script>dw(portfw_tbl)</script></b></font></tr>
+  <% portFwList(); %>
+</table>
+
+ <br><input type="submit" name="deleteSelPortFw" onClick="return deleteClick()">&nbsp;&nbsp;
+	 <script>document.formPortFwDel.deleteSelPortFw.value=firewall_delete_select;</script>
+     <input type="submit" name="deleteAllPortFw" onClick="return deleteAllClick()">&nbsp;&nbsp;&nbsp;
+	 <script>document.formPortFwDel.deleteAllPortFw.value=firewall_delete_all;</script>
+     <input type="reset" value="Reset" name="reset">
+     <script>document.formPortFwDel.reset.value=firewall_reset;</script>
+ <script>
+	if ( <% getIndex("portFwNum"); %> == 0 )
+		disableDelButton();
+ </script>
+     <input type="hidden" value="/portfw.htm" name="submit-url">
+</form>
+
+</td></tr></table>
+
+</blockquote>
+</body>
+</html>
+

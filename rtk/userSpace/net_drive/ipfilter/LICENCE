@@ -1,0 +1,3 @@
+The NAT/firewall functions are developed based on Darren Reed's IP Filter
+software, version 3.4.35. For more information, please visit:
+http://coombs.anu.edu.au/~avalon

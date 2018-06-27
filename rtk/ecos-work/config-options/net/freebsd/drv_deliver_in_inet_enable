@@ -1,0 +1,3 @@
+cdl_option CYGPKG_RTL_DRV_DELIVER_INET { 
+    user_value 1
+};

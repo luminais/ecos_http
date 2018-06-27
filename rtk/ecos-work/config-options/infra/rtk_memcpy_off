@@ -1,0 +1,3 @@
+cdl_option CYGIMP_INFRA_RTK_MEMCPY_MEMMOVE_MEMSET {
+    user_value 0
+};

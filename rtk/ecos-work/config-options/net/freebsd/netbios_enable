@@ -1,0 +1,3 @@
+cdl_component CYGPKG_NET_NETBIOS {
+    user_value 1
+};

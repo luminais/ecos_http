@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Tenda Wireless Router</title>
+<link rel="shortcut icon" href="./favicon.ico">
+<link rel="stylesheet" href="./css/reasyui.css?t=20171226151">
+<link rel="stylesheet" href="./css/index.css?t=20171226151">
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 
+HTML5SHIV需放在头部，RESPOND.JS需要服务器--> 
+<!--[if lt IE 9]>
+<script src="./js/libs/respond.min.js"></script>
+<script src="./js/libs/html5shiv.min.js"></script>
+<![endif]--> 
+<script src="./lang/b28n.js?t=20171226151"></script>
+</head>
+<body class=index-body>
+<noscript>
+	<div id="testJs" class="test-tips">
+		<p>Error! The browser does not support JavaScript. </p>
+		<p>Please enable JavaScript or try another browser compatible with JavaScript to 
+			experience more features of the device.
+		</p>
+	</div>
+</noscript>
+<div id="main_content" class="none">
+	<header class="masthead hidden-xs">
+  <div class="container">
+    <div class="navbar-login row"> <a class="brand" href="http://tenda.com.cn/" target="_blank" title="Tenda"><img src="img/logo-inverse.png" alt="Tenda LOGO"></a> 
+    	<div class="nav-lang">
+    		<span style="float:left;" id="appManage">Tenda App</span>
+	    	<div id="selectLang">
+        </div>
+        <div class="loginout">
+          <span id="loginout">Logout </span>
+        </div>
+	    </div>
+    </div>
+  </div>
+</header>
+	<section class="container">
+	  <div class="row main-container">
+<div class="navbar navbar-default col-sm-3 col-lg-2" id="nav"> 
+  <!--TODO:如果需要固定navbar-fixed-top头部，则需要修改#nav > *不需要-->
+  <div class="navbar-header" style="background: #ed7020;"> 
+  	<img src="img/logo-inverse.png" alt="Tenda LOGO"
+        class="visible-xs-inline" style="float:left;margin: 5px 0 0 3px">
+    <button type="button" id="navbar-button" class="navbar-toggle collapsed" data-toggle="collapse"
+    data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+	<nav class="navbar-collapse" id="nav-menu">
+      <ul class="nav nav-content" id="sub-menu">
+  <li>
+    <a id="status" href="javascript:void(0)" class="active">
+        <span class="menu picture pic-status active" name="pic-status">&nbsp;</span>
+        <span class="nav-des">Status</span>
+    </a> 
+  </li>
+  <li>
+    <a id="network" href="javascript:void(0)" >
+        <span class="menu picture pic-network" name="pic-status">&nbsp;</span>
+        <span class="nav-des">Internet Settings</span>
+    </a> 
+  </li>
+  <li> 
+    <a id="wireless" href="javascript:void(0)" >
+        <span class="menu picture pic-wifi" name="pic-status">&nbsp;</span>
+        <span class="nav-des">Wireless Settings</span>
+    </a> 
+  </li>
+  <li id="userManageWrap"> 
+    <a id="userManage" href="javascript:void(0)">
+        <span class="menu picture pic-user" name="pic-user">&nbsp;</span>
+        <span class="nav-des">User Management</span>
+    </a> 
+  </li>
+  <li id="netCtrNavWrap">
+    <a id="net-control" href="javascript:void(0)">
+        <span class="menu picture pic-netCtrl" name="pic-netCtrl">&nbsp;</span>
+        <span class="nav-des">Bandwidth Control</span></a> 
+  </li>
+<!--   <li> 
+  <a id="wireless-repeaters" href="javascript:void(0)" >
+      <span class="menu icon-repeater">&nbsp;</span>
+      Wireless Repeating
+  </a> 
+</li> -->
+  <li id="parentalCtrNavWrap">
+  <a id="parental-controls" href="javascript:void(0)" >
+      <span class="menu picture pic-parental-control" >&nbsp;</span>
+      <span class="nav-des">Parental Controls</span>
+  </a> 
+</li>
+  <li>
+    <a id="power-save" href="javascript:void(0)" >
+        <span class="menu picture pic-power-save" name="pic-power-save" >&nbsp;</span>
+       <span class="nav-des">Sleeping Mode</span>
+    </a> 
+  </li> 
+  <li>
+    <a id="advanced" href="javascript:void(0)" >
+        <span class="menu picture pic-adv" name="pic-adv">&nbsp;</span>
+        <span class="nav-des">Advanced</span>
+    </a> 
+  </li>
+ <!-- <li> 
+   <a id="ipv6" href="javascript:void(0)" >
+       <span class="menu icon-IPv6">&nbsp;</span>
+       IPv6
+   </a> 
+ </li> -->
+  <li> 
+    <a id="system" href="javascript:void(0)" >
+        <span class="menu picture pic-sys" name="pic-sys">&nbsp;</span>
+        <span class="nav-des">Administration</span>
+    </a> 
+  </li>
+</ul>
+	</nav>
+</div>
+	    <article class="col-sm-9 col-lg-10 main-content" id="main-content">
+	      <div id="iframe"></div>
+	    </article>
+	  </div>
+	</section>
+	<footer class="container navbar-fixed-bottom">
+<div class="row">
+  <div class="col-sm-3 col-lg-2 hidden-xs nav-footer-icon" id="nav-footer-icon">
+    <!--for china-->
+    <div id="nav-footer-icon-cn" class="none">
+    	<div class="nav-href-wrap">
+    		<a class="nav-href" target="_blank" href="http://www.tenda.com.cn/">Website</a>
+    	</div>
+    	<div class="nav-href-wrap">
+    		<a class="nav-href" target="_blank" href="http://weibo.com/100tenda">Sina Microblog</a>
+    	</div>
+    	<div  class="nav-href-wrap">
+    		<a class="nav-href" target="_blank" href='/wechat.html'>WeChat</a>
+    	</div>
+    </div>
+    <!--for multi-->
+    <div id="nav-footer-icon-multi">
+      <div class="nav-href-wrap">
+        <a class="nav-href icon-facebook" target="_blank" href="https://www.facebook.com/tendatechnology"></a>
+      </div>
+      <div class="nav-href-wrap">
+        <a class="nav-href icon-twitter" target="_blank" href="https://twitter.com/tendasz1999"></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-9 col-lg-10 main-footer">
+    <button class="btn btn-frist btn-primary none" id="submit">OK</button>
+    <button class="btn none" id="cancel" style="min-width: 70px;">Cancel</button>
+  </div>
+</div>
+</footer>
+	<div id="form-massage" class="col-sm-8 col-md-6 col-lg-4 none"></div>
+<section id="progressDianoseWrapper" class="dialog col-xs-10 col-sm-6 col-lg-4 col-xs-offset-1 col-lg-offset-4 col-sm-offset-3 none" style="z-index:3100">
+  <div class="dialog-header">
+    <div class="dialog-title">
+      <span>Firmware Upgrade</span>
+    </div>
+  </div>
+  <div class="dialog-container" style="padding:72px 46px;">
+      <div class="upgrade-body" style="height:150px;">
+        <div>
+          <div style="height:auto; display:inline-block; width:100%;">
+            <p class="text-center help-block progress-tip">Upgrading...</p>
+          </div>
+          <div class="progress" style="padding:0px;">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+	<div id="progress-overlay" class="modal fade"></div>
+  	<!-- <section id="upgradeDianoseWrapper" class="dialog col-xs-10 col-sm-8 col-lg-6 col-xs-offset-1 col-lg-offset-3 col-sm-offset-2 none">
+	<div class="dialog-header">
+		<div class="dialog-title">
+			<span>Firmware Upgrade</span>
+			<span class="dialog-close">×</span>
+		</div>
+	</div>
+	<div class="dialog-container" style="padding:14px 24px; overflow-y: auto;"> -->
+	<!--当前已经是最新版本时-->
+		<!-- <div id="curNewVersionMsg" style="margin-top:65px;" class="none">
+			<div class="center-block" style="width:70px;"><p class="pic-success"></p></div>
+			<p class="text-center">Detection complete</p>
+			<p class="text-center help-block">No later version</p> 
+		</div>-->
+	<!--升级配置过程-->
+		<!-- <div id="upgradeConfig" class="none">
+			<div class="upgrade-header" >
+				<div class="center-block" style="width:67px; margin-bottom:10px"><div class="picture pic-upgrade" ></div></div>
+				<div id="upgradeRemind">
+				</div>
+			</div>
+			<div class="upgrade-body">
+				<div class="col-lg-8 col-lg-offset-2 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-2 none" id="newVersionContent"></div>
+				<div class="col-lg-8 col-lg-offset-2 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-2 none" id="waitDownload" style="margin-top:40px;">
+					<p class="text-center">Waiting for download...</p>
+				</div>
+				<div id="progress" style="margin-top:77px;">
+					<div style="height:auto; display:inline-block; width:100%;">
+						<p class="text-center help-block " id="progress-msg">Upgrading...</p>
+					</div>
+					<div class="progress" style="padding:0px;">
+						<div class="progress-bar"></div>
+					</div>
+				</div>
+			</div>
+			<div class="upgrade-footer">
+				<div class="btn-group none" id="upgradeBtnGroup">
+					<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 text-center text-danger" style="margin-bottom:10px;" id="upgradeErrorMsg"></div>
+	                <input type="button" value="Upgrade" class="btn btn-primary col-xs-10 col-lg-3 col-sm-4 col-sm-offset-3 col-lg-offset-3 col-xs-offset-1 col-md-3 col-md-offset-2 upgradeBtnImmediatelyBtn" id="upgradeBtnImmediatelyBtn">
+	                <input type="button" value="Not Now" class="btn btn-first col-xs-10 col-lg-3 col-sm-4 col-md-3 col-xs-offset-1 notUpgradeBtn" id="notUpgradeBtn">
+	            </div>
+	            <div class="footer-msg text-center none" id="upgradeWarn">
+	            	<p class="text-primary">Do not power off the router during the upgrade.</p>
+	            	<p class="help-block">If you power off the router, it may not work properly.</p>
+	            </div>
+			</div> 
+		</div>
+    </div>
+</section>
+ -->
+<div id="upgradeDianoseWrapperTitle" class="none">Firmware Upgrade</div>
+ <section id="upgradeDianoseWrapper" class="none">
+	<div class="dialog-container" style="padding:14px 24px;">
+	<!--当前已经是最新版本时-->
+		<div id="curNewVersionMsg" style="margin-top:65px;" class="none">
+			<div class="center-block" style="width:70px;"><p class="pic-success"></p></div>
+			<p class="text-center">Detection complete</p>
+			<p class="text-center help-block">No later version</p>
+		</div>
+	<!--升级配置过程-->
+		<div id="upgradeConfig" class="none">
+			<div class="upgrade-header" >
+				<div class="center-block" style="width:67px; margin-bottom:10px"><div class="picture pic-upgrade" ></div></div>
+				<div id="upgradeRemind">
+				</div>
+			</div>
+			<div class="upgrade-body clearfix">
+				<div class="col-lg-10 col-lg-offset-1 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 none" id="newVersionContent"></div>
+				<div class="col-lg-10 col-lg-offset-1 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 none" id="waitDownload" style="margin-top:40px;">
+					<p class="text-center">Waiting for download...</p>
+				</div>
+				<div id="progress" style="margin-top:77px;">
+					<div style="height:auto; display:inline-block; width:100%;">
+						<p class="text-center help-block " id="progress-msg">Upgrading...</p>
+					</div>
+					<div class="progress" style="padding:0px;">
+						<div class="progress-bar"></div>
+					</div>
+				</div>
+			</div>
+			<div class="upgrade-footer">
+				<div class="btn-group none" id="upgradeBtnGroup">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center text-danger" style="margin-bottom:10px;" id="upgradeErrorMsg"></div>
+					<div style="text-align: center; width: 50%; float:left;">
+	                <input type="button" value="Upgrade" class="btn btn-primary upgradeBtnImmediatelyBtn" id="upgradeBtnImmediatelyBtn"/>
+	                </div>
+	                <div style="text-align: center;">
+	                <input type="button" value="Not Now" class="btn btn-first notUpgradeBtn" id="notUpgradeBtn"/>
+	                </div>
+	            </div>
+	            <div class="footer-msg text-center none" id="upgradeWarn">
+	            	<p class="text-primary">Do not power off the router during the upgrade.</p>
+	            	<p class="help-block">If you power off the router, it may not work properly.</p>
+	            </div>
+			</div> 
+		</div>
+    </div>
+</section>
+  	<!-- <section id="appDianoseWrapper" class="dialog col-xs-10 col-sm-8 col-md-5 col-lg-4 col-xs-offset-1 col-lg-offset-4 col-sm-offset-2 col-md-offset-3 none">
+	<div class="dialog-header">
+		<div class="dialog-title">
+			<span>Remote Management with Tenda App</span>
+			<span class="dialog-close">×</span>
+		</div>
+	</div>
+	<div class="dialog-container" style="padding:14px 22px;">
+		<div class="col-sm-5 col-sm-offset-1" >
+			<img src="img/app.png" />
+			<p class="help-block" style="margin-left:35px;">Scan QR Code</p>
+		</div>
+		<div class="col-sm-6 hidden-xs" style="margin-top:20px;">
+			<span style="margin-left:23px; font-weight:bold">Tenda App</span>
+			<ul>
+				<li>Remotely control the router.</li>
+				<li>Get connection notification.</li>
+				<li>Tap to accelerate WiFi.</li>
+				<li>Tap to blacklist unknown users.</li>
+			</ul>
+		</div>
+    </div>
+</section> -->
+<!-- <section id="appDianoseWrapper" class="dialog dialog-auto-wrap none">
+	<div class="dialog-auto">
+		<div class="dialog-auto-content">
+			<div class="dialog-header">
+				<div class="dialog-title">
+					<span>Remote Management with Tenda App</span>
+					<span class="dialog-close">×</span>
+				</div>
+			</div>
+			<div class="dialog-container clearfix">
+				<div class="dialog-con-float">
+					<img src="img/app.png" />
+					<p class="help-block" style="margin-left:35px;">Scan QR Code</p>
+				</div>
+				<div class="dialog-con-float" style="margin-top:20px;">
+					<span style="margin-left:23px; font-weight:bold">Tenda App</span>
+					<ul>
+						<li>Remotely control the router.</li>
+						<li>Get connection notification.</li>
+						<li>Tap to accelerate WiFi.</li>
+						<li>Tap to blacklist unknown users.</li>
+					</ul>
+				</div>
+			</div>
+	    </div>
+    </div>
+</section> -->
+<div id="appDianoseWrapperTitle" class="none">Remote Management with Tenda App</div>/
+<div id="appDianoseWrapper" class="dialog-container none">
+	<div class="dialog-con-float">
+		<img src="img/app.png" />
+		<p class="help-block">Scan QR Code</p>
+	</div>
+	<div class="dialog-con-float">
+		<span style="margin-left:23px; font-weight:bold">Tenda App</span>
+		<ul>
+			<li>Remotely control the router.</li>
+			<li>Get connection notification.</li>
+			<li>Tap to accelerate WiFi.</li>
+			<li>Tap to blacklist unknown users.</li>
+		</ul>
+	</div>
+</div>
+  	<section id="changeModeInfo" class="none dialog col-xs-10 col-sm-8 col-lg-4 col-xs-offset-1 col-lg-offset-4 col-sm-offset-2">
+	<div class="dialog-header">
+		<div class="dialog-title">
+			<span>Reboot</span>
+			<span class="dialog-close">×</span>
+		</div>
+	</div>
+	<div class="dialog-container">
+	    <div class="col-lg-10 col-sm-10 col-xs-10 col-lg-offset-1 col-sm-offset-1 col-xs-offset-1" style="text-align:center; margin-top:20px;">
+            <div id="modeMsg"></div>
+            <div class="ap-btn-group" style="margin-top:48px;">
+                <input type="button" value="OK" class="btn btn-primary btn-ok col-xs-10 col-lg-4 col-sm-4 col-sm-offset-2 col-lg-offset-1 col-xs-offset-1" id="ok" />
+                <input type="button" value="Cancel" class="btn btn-frist btn-quit col-xs-10 col-xs-offset-1 col-lg-4 dialog-close col-sm-4" />
+            </div>   
+        </div>
+    </div>
+</section>
+	<section id="setRelayWrapper" class="none">
+  <div class="dialog-container" style="padding:10px 50px 20px;max-width: 400px;">
+      <div id="hasRelayPwd" class="">
+        <div style="text-align:center;white-space: pre-wrap;word-wrap: break-word;" id="wifiRelaySSID"><p class="form-control-static" data-title="windy">Enter the password of "windy".</p></div>
+        <div class="form-group" id="wifiRelayPwdWrap">
+              <input type="password" name="wifiRelayPwd" id="wifiRelayPwd" maxlength="64" class="form-control validatebox" data-options='{"type": "ascii"}'>
+        </div>
+        <div class="form-group">
+              <input class="form-control btn-primay" type="button" id="connectRelay" value="Connect">
+        </div>
+        <div class="form-group help-block">When you click Connect, the router reboots to make the settings effective. Use<span style="color:#ed7020; padding: 0 5px;">tendawifi.com</span>to log in to the web UI.</div>
+      </div>
+      <div id="noRelayPwd" class="none" style="margin-top: 30px;text-align: center;">
+        <p>The select WiFi network requires no password. Do you want to connect?</p>
+          <p class="help-block">When you click OK, the router reboots to make the settings effective. Use<span style="color:#ed7020; padding: 0 5px;"> tendawifi.com</span>to log in to the web UI.</p>
+        <div class="btn-wrap clearfix">
+          <input type="button" value="OK" style="position: static;" class="btn btn-first btn-primary col-xs-10 col-xs-offset-1 col-lg-4 col-lg-offset-1 col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-2 " id="sure">
+          <input type="button" value="Cancel" style="position: static;" class="btn btn-first btn-quit  col-xs-10 col-lg-4 col-lg-offset-2 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-2 col-xs-offset-1" id="cancel-model">
+        </div>
+      </div>
+    </div>
+</section>
+</div>
+<script src="./js/libs/j.js?t=20171226151"></script> 
+<script src="./js/libs/reasy-ui-1.0.3.js?t=20171226151"></script> 
+<script src="./js/libs/common.js?t=20171226151"></script>
+<script src="./js/libs/ajaxupload.js"></script>
+<script src="./js/libs/sea.js"></script>
+<script src="./js/index.js?t=20171226151"></script>
+</body>
+</html>

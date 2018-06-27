@@ -1,0 +1,3 @@
+cdl_option CYGPKG_NET_THREAD_PRIORITY {
+	user_value 4
+};

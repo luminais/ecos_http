@@ -1,0 +1,3 @@
+cdl_option CYGPKG_FAST_PATH_PPPOE {
+    user_value 1
+};

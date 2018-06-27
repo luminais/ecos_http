@@ -1,0 +1,3 @@
+cdl_option CYGPKG_COMPRESS_ZLIB_CFLAGS_ADD {
+    user_value "-D__ECOS__ -DNO_ERRNO_H -mips16"
+};

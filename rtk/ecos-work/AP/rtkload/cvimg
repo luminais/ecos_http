@@ -1,0 +1,18 @@
+#!/bin/sh
+
+OS_NAME=`uname | grep Linux`
+LINUX_VERSION=`uname -r | grep 2.4`
+
+echo "$LINUX_VERSION"
+
+if [ "$OS_NAME" = "" ]; then
+./cvimg-cyg.exe $1 $2 $3 $4 $5 $6
+elif [ "$OS_NAME" != "" ]; then
+if [ "$LINUX_VERSION" = "" ]; then
+./cvimg-26 $1 $2 $3 $4 $5 $6
+elif [ "$LINUX_VERSION" != "" ]; then
+./cvimg-24 $1 $2 $3 $4 $5 $6
+else
+echo "can not find cvimg"
+fi
+fi

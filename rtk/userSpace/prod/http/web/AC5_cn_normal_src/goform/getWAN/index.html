@@ -1,0 +1,68 @@
+{
+	"wanBasicCfg": {
+		"wanType": "static",
+		"wanPPPoEUser": "windy",
+		"wanPPPoEPwd": "123456",  
+		"wanIP": "192.168.2.1",
+		"wanMask":"255.255.255.0",
+		"wanGateway": "192.168.2.3",
+		"wanDns1": "2.2.2.2",
+		"wanDns2": "3.3.3.3"
+	},
+	"lanCfg": {
+		"lanIP": "192.168.0.1",
+		"lanMask": "255.255.255.0",
+		"dhcpEn": "true",
+		"lanDhcpLeaseTime": "12",
+		"lanDhcpStartIP": "192.168.0.100",
+		"lanDhcpEndIP": "192.168.0.200",
+		"lanDns1": "192.168.0.1",
+		"lanDns2": "8.8.8.8"
+	},
+	"wanAdvCfg": {
+		"wanType": "pppoe",
+		"wanMTU": "1488",
+		"wanMTUCurrent": "1490",
+		"wanSpeed": "100",
+		"wanSpeedCurrent": "-100",
+		"macClone": "clone",
+		"macCurrentWan": "C8:3A:35:11:22:33",
+		"macRouter": "C8:3A:35:11:22:44",
+		"macHost": "24:7E:14:12:DF:AA"
+	},
+	"internetStatus": {
+		"wanConnectStatus": "13102013",
+		"newLanIP": "192.168.1.1",
+		"lanWanIPConflict": "false"
+	},
+	"wifiBasicCfg": {
+		"wifiEn": "true",
+		"wifiEn_5g": "true"
+	},
+	"wifiRelay": {
+		"wifiRelayType": "disabled",
+		"wifiRelaySSID": "Tenda_48EE60",
+		"wifiRelayChannel": "0",
+		"wifiRelaySecurityMode": "none",
+		"wifiRelayPwd": "12345678",
+		"wifiRelayMAC": "44:33:6e:3b:88:22",
+		"wifiRelayConnectStatus":"bridgeSuccess"
+	},
+	"wifiScan": [{
+		"wifiScanSSID": "!@#%^&*():\"<>?;'[],./",
+		"wifiScanMAC": "00:B0:C6:41:75:30",
+		"wifiScanChannel": "1",
+		"wifiScanSecurityMode": "none",
+		"wifiScanSignalStrength": "-46"
+	},{
+		"wifiScanSSID": "windy11",
+		"wifiScanMAC": "00:B0:C6:41:75:30",
+		"wifiScanChannel": "1",
+		"wifiScanSecurityMode": "wpa",
+		"wifiScanSignalStrength": "-20" 
+	}],
+	"wifiEn": {
+		"wifiEn": "true"
+	}
+
+}

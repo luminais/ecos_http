@@ -1,0 +1,3 @@
+cdl_component CYGSEM_HAL_819X_CPU_SLEEP {
+    user_value 1
+};

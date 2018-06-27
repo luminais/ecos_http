@@ -1,0 +1,377 @@
+<section class="container-fluid">
+  <form class="form-horizontal" id="loginPwd">
+  <h2 class="legend">Login Password</h2>
+  <fieldset>
+    <div class="form-group none" id="oldPwdWrap">
+      <label class="col-sm-4 col-md-3 control-label" for="oldPwd">Old Password</label>
+      <div class="col-sm-6 col-md-5 col-lg-4">
+        <input type="password" id="oldPwd" name="oldPwd" 
+          	class="form-control" maxlength="32"
+            data-options='{"type": "pwd", "args":[5,32]}'>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="newPwd">New Password</label>
+      <div class="col-sm-6 col-md-5 col-lg-4">
+        <input type="password" id="newPwd" name="newPwd" 
+          	class="form-control validatebox" maxlength="32"
+            data-options='{"type": "pwd", "args":[5,32]}'>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="cfmPwd">Confirm Password</label>
+      <div class="col-sm-6 col-md-5 col-lg-4">
+        <input type="password" id="cfmPwd" name="cfmPwd"
+          class="form-control validatebox" maxlength="32"
+          data-options='{"type": "pwd", "args":[5,32]}'>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<!--End Login Password-->
+  <form class="form-horizontal" id="wanParam">
+  <h2 class="legend">WAN Parameters</h2>
+  <fieldset>
+    <div id="serverNameWrap" class="none">
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="wanServer">Server Name</label>
+        <div class="col-sm-4">
+	        <select id="wanServer" name="wanServer" class="form-control" style="margin-bottom:10px;">
+	          <option value="default">Default</option>
+	          <option value="manual">Manual</option>
+	        </select>
+	    </div>
+		<div class="col-sm-4">
+			<p id="wanServerInfoWrap" class="help-block none">Do not change if unnecessary.</p>
+			<input type="text" class="validatebox form-control none" id="wanServerName" required="required" maxlength="64" data-options='{"type":"ascii"}'>
+		</div>
+      </div>      
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="wanServiceName">Service Name</label>
+        <div class="col-sm-4">
+	        <select id="wanService" name="wanService" class="form-control" style="margin-bottom:10px;">
+	          <option value="default">Default</option>
+	          <option value="manual">Manual</option>
+	        </select>
+	    </div>
+		<div class="col-sm-4">
+			<p id="wanServiceInfoWrap" class="help-block none">Do not change if unnecessary.</p>
+			<input type="text" class="validatebox form-control none" id="wanServiceName" required="required" maxlength="64" data-options='{"type":"ascii"}'>
+		</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="wanMTU">MTU</label>
+      <div class="col-sm-4">
+        <span id="wanMTU" class="dropdown validatebox" required="required" data-options='{"type":"num", "args":[576, 1500]}'>
+        </span>
+      </div>
+      <div class="col-sm-4 col-md-5 help-block"><span>Do not change if unnecessary.</span></div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="macClone">Clone MAC Address</label>
+      <div class="col-sm-4">
+        <select id="macClone" name="macClone" class="form-control" style="margin-bottom:10px;">
+          <option value="default">Restore Default MAC</option>
+          <option value="clone">Clone Local Host MAC</option>
+          <option value="manual">Manual</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <p id="macCurrenWrap" class="help-block none">Local Host MAC Address: C8:C8:C8:C8:C8:C8</p>
+        <input type="text" class="validatebox form-control none" id="macCurrentWan" required="required" maxlength="17" data-options='{"type":"mac"}'>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="wanSpeed">WAN Speed</label>
+      <div class="col-sm-4">
+        <select id="wanSpeed" name="wanSpeed" class="form-control">
+          <option value="Auto">Auto-negotiation</option>
+          <option value="100">100 Mbps full duplex</option>
+          <option value="-100">100 Mbps half duplex</option>
+          <option value="10">10 Mbps full duplex</option>
+          <option value="-10">10 Mbps half duplex</option>
+        </select>
+      </div>
+      <div class="col-sm-4 col-md-5 help-block">Current speed:<span id="wanSpeedCurrent">100 Mbps full duplex</span> </div>
+    </div>
+  </fieldset>
+</form>
+<!--End WAN Parameters-->
+  <form class="form-horizontal" id="lanParame">
+ <h2 class="legend">LAN Parameters</h2>
+  <fieldset>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="lanIP">LAN IP Address</label>
+      <div class="col-sm-4">
+      <input type="text" id="lanIP" name="lanIP" class="form-control validatebox"
+          maxlength="15" required="required" data-options='{"type":"ip"}'>
+      </div>
+    </div>
+     <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="lanMask">Subnet Mask</label>
+      <div class="col-sm-4">
+      <input type="text" id="lanMask" name="lanMask" class="form-control validatebox"
+          maxlength="15" required="required" data-options='{"type":"lanMaskExt"}'>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="dhcpEn">DHCP Server</label>
+      <div class="col-sm-8 col-md-9">
+       <label class="checkbox-inline" for="dhcpEn" style="float: left;">
+        <input type="checkbox" id="dhcpEn" name="dhcpEn" value="true">Enable
+       </label>
+       <span class="help-block help-out">If this function is disabled, the router stops assigning IP addresses to clients.</span>
+      </div>
+    </div>
+    <div id="dnsWrap" class="none">
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="lanDhcpStartIP">Start IP Address</label>
+        <div class="col-sm-4">
+          <span class="ipNet">192.168.0.</span><input type="text" id="lanDhcpStartIP" name="lanDhcpStartIP" class="form-control validatebox input-mini"
+            maxlength="15" required="required" data-options='{"type":"num", "args":[1,254]}'>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="lanDhcpEndIP">End IP Address</label>
+        <div class="col-sm-4">
+        <span class="ipNet">192.168.0.</span><input type="text" id="lanDhcpEndIP" name="lanDhcpEndIP" class="form-control validatebox input-mini"
+            maxlength="15" required="required" data-options='{"type":"num", "args":[1,254]}'>
+        </div>
+      </div>
+      <!-- <div class="form-group none">
+        <label class="col-sm-4 col-md-3 control-label">Lease Time</label>
+        <div class="col-sm-4">
+          <select id="lanDhcpLeaseTime" name="lanDhcpLeaseTime" class="form-control">
+            <option value="1">1 Hour</option>
+            <option value="6">6 Hours</option>
+            <option value="12">12 Hours</option>
+            <option value="24">1 Day</option>
+            <option value="168">7 Days</option>
+          </select>
+        </div>
+      </div> -->
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="lanDns1">Preferred DNS Server</label>
+        <div class="col-sm-4">
+          <input type="text" id="lanDns1" name="lanDns1" class="form-control validatebox"
+            maxlength="15" required="required" data-options='{"type":"ip"}'>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="lanDns2">Alternate DNS Server</label>
+        <div class="col-sm-4">
+      <input type="text" id="lanDns2" name="lanDns2" class="form-control validatebox"
+            maxlength="15" data-options='{"type":"ip"}'>
+        </div>
+      </div>
+    </div>             
+  </fieldset>
+</form>
+  <form class="form-horizontal" id="remoteWeb">
+    <h2 class="legend">Remote Web-based Management</h2>
+    <fieldset>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="remoteWebEn">Remote Web-based Management</label>
+        <div class="col-sm-8 col-md-9">
+          <label class="checkbox-inline" for="remoteWebEn" style="float: left;">
+            <input type="checkbox" id="remoteWebEn" name="remoteWebEn" value="true">Enable</label>
+            <span class="help-block help-out">If this function is enabled, you can manage the router through the internet.</span>
+        </div>
+      </div>
+      <div id="remoteWrap" class="none">
+        <div class="form-group">
+          <label class="col-sm-4 col-md-3 control-label" for="remoteWebType">Management IP Address</label>
+          <div class="col-sm-4">
+            <select class="form-control" id="remoteWebType" name="remoteWebType">
+              <option value="any">All</option>
+              <option value="specified">Specific</option>
+            </select>
+          </div>
+          <div class="col-sm-4 control-gap">
+            <input type="text" name="remoteWebIP" id="remoteWebIP"
+              class="form-control validatebox" maxLength="15" required="required" data-options='{"type":"ip"}'>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-4 col-md-3 control-label" for="remoteWebPort">Port</label>
+          <div class="col-xs-4 col-sm-3 col-md-2">
+            <input type="text" id="remoteWebPort" name="remoteWebPort"
+             class="form-control validatebox" maxLength="5"
+              required data-options='{"type":"num","args":[1024,65534]}'>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  <!--End Remote Web Management-->
+  	<form class="form-horizontal" id="timeSet">
+  <h2 class="legend">Date & Time</h2>
+  <fieldset>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="sysTimeZone">Time Zone</label>
+      <div class="col-sm-7 col-md-6">
+        <select id="sysTimeZone" name="sysTimeZone" class="form-control" >
+          <option value="0">(GMT-12:00)West of International Date Line</option>
+          <option value="1">(GMT-11:00)Midway Island, Samoa</option>
+          <option value="2">(GMT-10:00)Hawaii, Honolulu</option>
+          <option value="3">(GMT-09:00)Alaska</option>
+          <option value="4">(GMT-08:00)Pacific Time</option>
+          <option value="5">(GMT-07:00)Mountain Time</option>
+          <option value="6">(GMT-07:00)Chihuahua, La Paz, Mazatlan</option>
+          <option value="7">(GMT-07:00)Arizona</option>
+          <option value="8">(GMT-06:00)Central Time</option>
+          <option value="9">(GMT-06:00)Guadalajara, Mexico City, Monterrey</option>
+          <option value="10">(GMT-05:00)Eastern Time</option>
+          <option value="11">(GMT-05:00)Indiana</option>
+          <option value="12">(GMT-05:00)Bogota, Lima, Quito</option>
+          <option value="13">(GMT-04:30)Caracas, La Paz</option>
+          <option value="14">(GMT-04:00)Atlantic Time</option>
+          <option value="15">(GMT-04:00)Manaus</option>
+          <option value="16">(GMT-03:30)Newfoundland and Labrador</option>
+          <option value="17">(GMT-03:00)Brasilia Asia</option>
+          <option value="18">(GMT-03:00)Greenland</option>
+          <option value="19">(GMT-03:00)Buenos Aires, Georgetown</option>
+          <option value="20">(GMT-02:00)Atlantic</option>
+          <option value="21">(GMT-01:00)Azores</option>
+          <option value="22">(GMT-01:00)Cape Verde Islands</option>
+          <option value="23">(GMT)Greenwich Mean Time</option>
+          <option value="24">(GMT)Casablanca , Monrovia</option>
+          <option value="25">(GMT+01:00)Belgrade, Bratislava, Budapest, Ljubljana, Prague</option>
+          <option value="26">(GMT+01:00)Sarajevo, Skopje, Warsaw, Zagreb</option>
+          <option value="27">(GMT+01:00)Brussels, Copenhagen, Madrid, Paris</option>
+          <option value="28">(GMT+01:00)West Africa</option>
+          <option value="29">(GMT+01:00)Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna</option>
+          <option value="30">(GMT+02:00)Athens, Bucharest, Istanbul</option>
+          <option value="31">(GMT+02:00)Minsk</option>
+          <option value="32">(GMT+02:00)Cairo</option>
+          <option value="33">(GMT+02:00)Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</option>
+          <option value="34">(GMT+02:00)Jerusalem</option>
+          <option value="35">(GMT+02:00)Windhoek</option>
+          <option value="36">(GMT+02:00)Harare, Pretoria</option>
+          <option value="37">(GMT+03:00)Moscow, St. Petersburg, Volgograd</option>
+          <option value="38">(GMT+03:00)Kuwait, Riyadh</option>
+          <option value="39">(GMT+03:00)Baghdad</option>
+          <option value="40">(GMT+03:00)Nairobi</option>
+          <option value="41">(GMT+03:30)Tehran</option>
+          <option value="42">(GMT+04:00)Abu Dhabi, Muscat</option>
+          <option value="43">(GMT+04:00)Baku</option>
+          <option value="44">(GMT+04:00)Yerevan</option>
+          <option value="45">(GMT+04:00)Tbilisi</option>
+          <option value="46">(GMT+04:30)Kabul</option>
+          <option value="47">(GMT+05:00)Islamabad, Karachi, Tashkent</option>
+          <option value="48">(GMT+05:00)Yekaterinburg</option>
+          <option value="49">(GMT+05:30)Chennai, Kolkata, Mumbai, New Delhi</option>
+          <option value="50">(GMT+05:45)Kathmandu</option>
+          <option value="51">(GMT+06:00)Astana, Dhaka</option>
+          <option value="52">(GMT+06:00)Almaty, Novosibirsk</option>
+          <option value="53">(GMT+06:00)Colombo</option>
+          <option value="54">(GMT+06:30)Yangon</option>
+          <option value="55">(GMT+07:00)Krasnoyarsk</option>
+          <option value="56">(GMT+07:00)Bangkok, Hanoi, Jakarta</option>
+          <option value="57">(GMT+08:00)Beijing, Chongqing, Hong Kong, Urumqi</option>
+          <option value="58">(GMT+08:00)Irkutsk grams, Ulaanbaatar</option>
+          <option value="59">(GMT+08:00)Kuala Lumpur, Singapore</option>
+          <option value="60">(GMT+08:00)Perth</option>
+          <option value="61">(GMT+09:00)Yakutsk</option>
+          <option value="62">(GMT+09:00)Osaka, Sapporo, Tokyo</option>
+          <option value="63">(GMT+09:00)Seoul</option>
+          <option value="64">(GMT+09:30)Darwin</option>
+          <option value="65">(GMT+09:30)Adelaide</option>
+          <option value="66">(GMT+10:00)Brisbane</option>
+          <option value="67">(GMT+10:00)Canberra, Melbourne Sydney</option>
+          <option value="68">(GMT+10:00)Guam, Port Moresby</option>
+          <option value="69">(GMT+10:00)Vladivostok</option>
+          <option value="70">(GMT+10:00)Hobart</option>
+          <option value="71">(GMT+11:00)Magadan, Solomon Islands, New Caledonia and more</option>
+          <option value="72">(GMT+12:00)Fiji Islands, Kamchatka Peninsula, the Marshall Islands</option>
+          <option value="73">(GMT+12:00)Auckland , Wellington</option>
+          <option value="74">(GMT+13:00)Nuku'alofa</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="sysTimecurrentTime">Current Time</label>
+      <div class="col-sm-4 col-md-3">
+        <p id="sysTimecurrentTime" class="form-control-static">2015-3-9  19:43:25</p>
+      </div>
+      <div class="col-sm-4 col-md-5 help-block" id="internetTips">The current date and time have been synchronized with those of the internet.</div>
+    </div>
+  </fieldset>
+</form>
+<!--End Date & Time-->
+  <div class="form-horizontal" id="deviceManage">
+  <h2 class="legend">Device Management</h2>
+  <div class="fieldset">
+    <form name="rebootfrm" method="post" action="/goform/sysReboot">
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="reboot">Reboot Router</label>
+        <div class="col-sm-4 col-md-3">
+          <button type="button" name="reboot" id="reboot" class="btn btn-block">Reboot</button>
+        </div>
+      </div>
+    </form>
+    <form name="restorefrm" method="post" action="/goform/sysRestore">
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="restore">Restore Factory Settings</label>
+        <div class="col-sm-4 col-md-3">
+          <button type="button" name="reboot" id="restore"  class="btn  btn-block">Reset</button>
+        </div>
+      </div>
+    </form>
+    <form name="exportCfgfrm" method="post" action="/goform/exportConfig">
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="exportConfig">Backup/Restore Configuration</label>
+        <div class="col-sm-4 col-md-3">
+          <button type="button" name="exportConfig" id="exportConfig" class="btn btn-block">Backup</button>
+        </div>
+        <div class="col-sm-4 col-md-3 file">
+          <button type="button" name="inport" id="inport" class="btn btn-block">Restore</button>
+        </div>
+      </div>
+    </form> 
+    <!-- <form name="inportfrm" id="inportfrm" method="post" action="cgi-bin/inport" enctype="multipart/form-data">
+         <div class="form-group">
+           <label class="col-sm-4 col-md-3 control-label" for="inport">Restore a Configuration File</label>
+           <div class="col-sm-4 col-md-3 file">
+             <button type="button" name="inport" id="inport" class="btn btn-block">Restore</button>
+           </div>
+         </div>
+       </form>  -->   
+    <form name="restorefrm" method="post" action="/goform/exportSysLog">
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="export">Export System Log</label>
+        <div class="col-sm-4 col-md-3">
+          <button type="button" name="export" id="export" class="btn btn-block">Export</button>
+        </div>
+      </div>
+    </form>
+    <form name="upgradefrm" id="upgradefrm" method="post" action="cgi-bin/upgrade" enctype="multipart/form-data">
+      <div class="form-group" style="margin-bottom:0px;">
+        <label class="col-sm-4 col-md-3 control-label" for="upgrade">Upgrade Firmware</label>
+        <div class="col-sm-4 col-md-3 file">
+          <button type="button" name="upgrade" id="upgrade" class="btn btn-block">Local Upgrade</button>
+        </div>
+        <div class="col-sm-4 col-md-3 file">
+          <button type="button" name="onlineUpgradeBtn" id="onlineUpgradeBtn" class="btn btn-block">Online Upgrade</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label"></label>
+        <div class="col-sm-8 col-md-8 help-block">Current Firmware Version:<span id="firmwareVision"></span> </div>
+      </div>
+    </form>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="autoMaintenanceEn">Automatic Maintenance</label>
+      <div class="col-sm-8 col-md-8">
+        <label class="checkbox-inline" for="autoMaintenanceEn" style="float: left;">
+          <input type="checkbox" name="autoMaintenanceEn"
+              id="autoMaintenanceEn" value="true">
+              Enable</label>
+              <span class="help-block help-out" id="reminder"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Device Management--> 
+</section>

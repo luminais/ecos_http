@@ -1,0 +1,3 @@
+cdl_option CYGNUM_IO_FLASH_MEM_CHAIN_UPGRADE {
+	user_value 1
+}

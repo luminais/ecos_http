@@ -1,0 +1,11 @@
+choice
+prompt "Selected Board Configuration"
+
+config MODEL_rtl8197f-8812br-16M
+	bool "rtl8197f-8812br-16M"
+
+config MODEL_rtl8197f-8812br-mp
+	bool "rtl8197f-8812br-mp"
+
+
+endchoice

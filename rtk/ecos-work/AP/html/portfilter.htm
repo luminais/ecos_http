@@ -1,0 +1,170 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>Port Filtering</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+function addClick()
+{
+  if (!document.formFilterAdd.enabled.checked)
+  	return true;
+
+  if (document.formFilterAdd.fromPort.value=="" && document.formFilterAdd.toPort.value==""
+  		&& document.formFilterAdd.comment.value=="" )
+	return true;
+
+  if (document.formFilterAdd.fromPort.value=="") {
+  	alert(portfilter_noport);
+	document.formFilterAdd.fromPort.focus();
+	return false;
+  }
+  if ( validateKey( document.formFilterAdd.fromPort.value ) == 0 ) {
+	alert(firewall_port_notdecimal);
+	document.formFilterAdd.fromPort.focus();
+	return false;
+  }
+  d1 = getDigit(document.formFilterAdd.fromPort.value, 1);
+  if (d1 > 65535 || d1 < 1) {
+	alert(firewall_port_toobig);
+	document.formFilterAdd.fromPort.focus();
+	return false;
+  }
+  if (document.formFilterAdd.toPort.value!="") {
+  	if ( validateKey( document.formFilterAdd.toPort.value ) == 0 ) {
+		alert(firewall_port_notdecimal);
+		document.formFilterAdd.toPort.focus();
+		return false;
+  	}
+	d2 = getDigit(document.formFilterAdd.toPort.value, 1);
+ 	if (d2 > 65535 || d2 < 1) {
+		alert(firewall_port_toobig);
+		document.formFilterAdd.toPort.focus();
+		return false;
+  	}
+	if (d1 > d2 ) {
+		alert(firewall_port_rangeinvalid);
+		document.formFilterAdd.fromPort.focus();
+		return false;
+
+	}
+   }
+   return true;
+}
+
+
+function deleteClick()
+{
+  if ( !confirm(firewall_delete_selectconfm) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function deleteAllClick()
+{
+   if ( !confirm(firewall_delete_allconfm) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function disableDelButton()
+{
+	disableButton(document.formFilterDel.deleteSelFilterPort);
+	disableButton(document.formFilterDel.deleteAllFilterPort);
+}
+
+function updateState()
+{
+  if (document.formFilterAdd.enabled.checked) {
+ 	enableTextField(document.formFilterAdd.fromPort);
+ 	enableTextField(document.formFilterAdd.toPort);
+	enableTextField(document.formFilterAdd.protocol);
+ 	enableTextField(document.formFilterAdd.comment);
+  }
+  else {
+ 	disableTextField(document.formFilterAdd.fromPort);
+ 	disableTextField(document.formFilterAdd.toPort);
+ 	disableTextField(document.formFilterAdd.protocol);
+	disableTextField(document.formFilterAdd.comment);
+  }
+}
+
+function Load_Setting()
+{
+	if ( <% getIndex("portFilterEnabled"); %> )
+		document.formFilterAdd.enabled.checked = true;
+	else
+		document.formFilterAdd.enabled.checked = false;
+	updateState();
+}
+</script>
+</head>
+
+<body onload="Load_Setting();">
+<blockquote>
+<h2><font color="#0000FF"><script>dw(portfilter_header)</script></font></h2>
+
+<table border=0 width="500" cellspacing=4 cellpadding=0>
+<tr><td><font size=2>
+<script>dw(portfilter_header_explain)</script>
+</font></td></tr>
+
+<tr><td><hr size=1 noshade align=top></td></tr>
+
+<form action=/formFilter.htm method=POST name="formFilterAdd">
+<tr><td><font size=2><b>
+	<input type="checkbox" name="enabled" value="ON" ONCLICK=updateState()>&nbsp;&nbsp;<script>dw(portfiletr_enable)</script></b><br>
+    </td>
+</tr>
+
+<tr><td>
+     <p><b><font size=2><script>dw(firewall_port_range)</script></b></font>
+  		<input type="text" name="fromPort" size="4"><b>-</b>
+      		<input type="text" name="toPort" size="4"></font>&nbsp;&nbsp;
+  	<b><font size=2><script>dw(firewall_proto)</script></b> <select name="protocol">
+    		<option select value="0"><script>dw(firewall_proto_both)</script></option>
+    		<option value="1"><script>dw(firewall_proto_tcp)</script></option>
+    		<option value="2"><script>dw(firewall_proto_udp)</script></option>
+    		</select></font>&nbsp;&nbsp
+  	<b><font size=2><script>dw(firewall_comm)</script></b> <input type="text" name="comment" size="16" maxlength="20"></font>
+     </p>
+     <p><input type="submit" name="addFilterPort" onClick="return addClick()">&nbsp;&nbsp;
+     	<script>document.formFilterAdd.addFilterPort.value=firewall_apply;</script>
+        <input type="reset" value="Reset" name="reset">
+        <script>document.formFilterAdd.reset.value=firewall_reset;</script>
+        <input type="hidden" value="/portfilter.htm" name="submit-url">
+     </p>
+<script> updateState(); </script>
+</td><tr>
+</form>
+</table>
+
+<br>
+<form action=/formFilter.htm method=POST name="formFilterDel">
+  <table border="0" width=500>
+  <tr><font size=2><b><script>dw(firewall_filtertbl)</script></b></font></tr>
+  <% portFilterList(); %>
+  </table>
+  <br>
+  <input type="submit" name="deleteSelFilterPort" onClick="return deleteClick()">&nbsp;&nbsp;
+  <script>document.formFilterDel.deleteSelFilterPort.value=firewall_delete_select;</script>
+  <input type="submit" name="deleteAllFilterPort" onClick="return deleteAllClick()">&nbsp;&nbsp;&nbsp;
+  <script>document.formFilterDel.deleteAllFilterPort.value=firewall_delete_all;</script>
+  <input type="reset" name="reset">
+  <script>document.formFilterDel.reset.value=firewall_reset;</script>
+  <input type="hidden" value="/portfilter.htm" name="submit-url">
+ <script>
+	if ( <% getIndex("portFilterNum"); %> == 0 )
+		disableDelButton();
+ </script>
+</form>
+
+</blockquote>
+</body>
+</html>

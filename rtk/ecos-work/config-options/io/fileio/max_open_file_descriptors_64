@@ -1,0 +1,3 @@
+cdl_option CYGNUM_FILEIO_NFD {
+    user_value 64
+};

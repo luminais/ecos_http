@@ -1,0 +1,133 @@
+<section class="container-fluid">
+  <form class="form-horizontal" id="statusInternet">
+<h2 class="legend">Internet Connection Status</h2>
+<fieldset>
+  <div class="col-xs-8 col-sm-5 pic-wan" id="internetPicWrapper">
+    <div class="col-xs-6 col-sm-6 text-center">
+      <i id="internetPic" class="picture" style="height:84px;"></i>
+      <p class="help-block text-center" id="superDeviceDesc"></p>
+      <p class="text-center" id="wifiRelaySSID"></p>
+    </div>
+    <div class="col-xs-4 col-sm-4 col-sm-offset-1 col-xs-offset-1 col-lg-offset-0" style="padding:0;margin-top: 35px;">
+          <span class="hidden-xs hidden-sm text-center text-primary" id="connectStatus"></span>
+          <div class="connect-ui"></div>
+    </div>
+  </div>
+  <!--DUT-->
+  <div class="col-xs-5 col-sm-2 row text-center" style="padding:0; max-width: 108px">
+    <i class="pic picture pic-router"></i>
+    <p class="help-block text-center">My Router</p>
+    <p class="text-center" id="wifiSSID"></p>
+  </div>
+  <div class="hidden-xs col-sm-5 pic-lan" id="devicePicWrapper">
+    <div class="col-sm-4 col-xs-offset-1" style="padding:0; margin-top:54px;">
+      <div class="line bottom-line">&nbsp;</div>
+    </div>
+    <div class="col-sm-6 text-center">
+      <i class="pic picture pic-device"></i>
+      <p class="help-block text-center">Devices</p>
+      <p class="text-center" id="devices"></p>
+    </div>
+  </div>
+  <!--路由状态下wan口信息-->
+  <p class="col-xs-12 col-sm-10" >
+    <span class="text-danger" id="wan-connect-status"></span>
+  </p>
+</fieldset>
+</form>
+  <form class="form-horizontal none"  id="statistic">
+  <h2 class="legend">Online Devices and Real-Time Speed</h2>
+  <fieldset class="text-center">
+    <div class="col-xs-4">
+    <h1><span id="statusOnlineNumber" class="text-info"></span><small class="hide-foreign">台</small></h1>
+      <p><span class="ico icon-device"></span>
+         <span class="ico-text">Online Devices</span></p>
+    </div>
+    <div class="col-xs-4">
+      <h1><span id="statusDownSpeed" style="color: #58BF14"></span><small>KB/s</small></h1>
+      <p><span class="ico icon-download"></span>
+      <span class="ico-text">Download Speed</span></p>
+    </div>
+    <div class="col-xs-4">
+      <h1><span id="statusUpSpeed" class="text-primary"></span><small>KB/s</small></h1>
+      <p><span class="ico icon-upload"></span>
+      <span class="ico-text">Upload Speed</span></p>
+    </div>
+  </fieldset>
+</form>
+  <form id="statusWAN" class="form-horizontal none">
+  <h2 class="legend">System Information</h2>
+  <fieldset>
+    <div class="col-xs-12 col-md-4 mgr100" >
+      <div class="form-group" id="conType">
+        <label class="col-xs-6 col-sm-5 control-label">Connection Type</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="wanType" class="form-control-static"></p>
+        </div>
+      </div>
+      <div class="form-group none" id="wanConnectTime-wrapper">
+        <label class="col-xs-6 col-sm-5 control-label">Connection Duration</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="wanConnectTime" class="form-control-static"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">WAN MAC Address</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanMAC" class="form-control-static"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">LAN IP Address</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="lanIP" class="form-control-static"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Firmware Version</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="softVersion" class="form-control-static"></p>
+        </div>
+      </div>
+      <div class="form-group none" id="sysTimecurrentTime-wrapper">
+        <label class="col-xs-6 col-sm-5 control-label">System Time</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="sysTimecurrentTime" class="form-control-static"></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-4" id="wanBasic">
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">WAN IP Address</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanIP" class="form-control-static"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Subnet Mask</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanMask" class="form-control-static"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Default Gateway</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanGaterway" class="form-control-static"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Preferred DNS Server</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanDns1" class="form-control-static"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-6 col-sm-5 control-label">Alternate DNS Server</label>
+        <div class="col-xs-6 col-sm-7">
+          <p id="statusWanDns2" class="form-control-static"></p>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</form>
+</section>

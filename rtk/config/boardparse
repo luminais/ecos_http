@@ -1,0 +1,33 @@
+#!/bin/bash
+ 
+datapath=$1
+ 
+# define tmpfile you use to save filenames
+infile=tmp.txt
+
+# scan the datafiles and print their names into tmpfile
+find $datapath -name "*" -print | sed -e '/^\.\/\.svn.*/d' -e '/^\.\/tmp.*/d' -e "s,$datapath,,g" | sort >$infile
+
+echo "choice"
+echo "prompt \"Selected Board Configuration\""
+echo 
+
+while read -r line
+do
+	if [[ $line == "defconfig-"* ]]; then
+		SUB_CFG=${line#"defconfig-"}
+		SUB_CFG2=${SUB_CFG#*$line"-"}
+		#SUB_CFG=${SUB_CFG//"-"/"_"}
+		SUB_CFG="config MODEL_"$SUB_CFG
+		echo "$SUB_CFG" 
+		#CFG2=${CFG2//"-"/"+"}
+		echo -e "\tbool \"$SUB_CFG2\""
+		echo
+	fi		
+done < $infile
+
+echo 
+echo "endchoice"
+
+# delete the tmpfile
+rm $infile

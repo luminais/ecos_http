@@ -1,0 +1,159 @@
+#! /bin/sh
+unset LD_LIBRARY_PATH
+
+if [ ! -f netinet/done ] ; then
+	echo "Do NOT run this script directly, do 'make solaris'!"
+	exit 1
+fi
+# $Id: buildsunos,v 1.1.1.1 2010-04-30 02:12:04 Exp $
+:
+rev=`uname -r | sed -e 's/^\([^\.]*\)\..*/\1/'`
+if [ -d /usr/ccs/bin ] ; then
+	PATH=/usr/ccs/bin:${PATH}
+	export PATH
+fi
+
+if [ $rev = 5 ] ; then
+	#
+	# /usr/ucb/cc will not work
+	#
+	PATH=`echo $PATH | sed -e s:/usr/ucb::g -e s/::/:/g`
+	export PATH
+
+	cpu=`uname -p`
+	cpudir=${cpu}-`uname -r`
+	solrev=`uname -r | sh -c 'IFS=. read j n x; echo $n'`
+	if [ ! -d SunOS5/${cpudir} -a ! -h  SunOS5/${cpudir} ] ; then
+		mkdir -p SunOS5/${cpudir}
+	fi
+	/bin/rm -f SunOS5/${cpudir}/Makefile
+	/bin/rm -f SunOS5/${cpudir}/Makefile.ipsend
+	ln -s `pwd`/SunOS5/Makefile SunOS5/${cpudir}/Makefile
+	ln -s `pwd`/SunOS5/Makefile.ipsend SunOS5/${cpudir}/Makefile.ipsend
+
+	#
+	# Default C compiler is "cc", override on make commandline
+	#
+	: ${CC:=cc}
+	v=`echo '__GNUC__' | 2>&1 ${CC} -E - | 2>&1 sed -ne '/^[0-9]* *$/p'`
+	if [ x$v != x ] ; then
+		CC=gcc
+	else
+		CC=cc
+	fi
+
+	if [ $solrev -ge 7 ] && /bin/optisa sparcv8plus > /dev/null
+	then
+		# We run Solaris 7+ on 64 bit capable hardware.
+		BUILDBOTH=true
+		if [ -f /opt/SUNWspro/bin/cc ] ; then
+			CC=/opt/SUNWspro/bin/cc
+		fi
+	else
+		BUILDBOTH=false
+		OBJ32=.
+	fi
+
+	case "$CC" in
+	*gcc*)	# gcc
+		case `uname -p` in
+		sparc)
+			gcc -m32 -E /dev/null >/dev/null 2>&1
+			if [ $? -eq 0 ] ; then
+				XARCH32="-m32"
+			fi
+			;;
+		*)
+			XARCH32=""
+			;;
+		esac
+		XARCH64="-m64 -mcmodel=medlow"
+		;;
+	*)	# Sun C
+		XARCH32="-Xa -xildoff"
+		XARCH64="$XARCH32 -xchip=ultra -dalign -xcode=abs32 -xarch=v9"
+		;;
+	esac
+
+	export CC
+
+	ISABITS=32
+
+	OBJ32=sparcv7
+	ARCHINC32=
+	OBJ64=sparcv9
+	ARCHINC64="-I/usr/include/v9"
+
+	if $BUILDBOTH
+	then
+		echo Testing compiler $CC for 64 bit object file generation.
+		t=conftest$$.c
+		trap 'rm -f $t 32.out 64.out; exit 1' 0 1 2 3 15
+		cat > $t <<-EOF
+		#include <stdio.h>
+		int main(void)
+		{
+			printf("%ld\n", (long) sizeof(long));
+			exit(0);
+		}
+		EOF
+
+		# Is it perhaps a 64 bit only compiler?
+		if $CC $XARCH32 $t -o 32.out >/dev/null 2>&1 &&
+		    [ "`./32.out`" = 4 ]
+		then :; else
+			echo $CC $XARCH32 cannot create 32 bit executables. 1>&2
+			exit 1
+		fi
+		if $CC $XARCH64 $t -o 64.out >/dev/null 2>&1 &&
+		    { out64=`./64.out 2>/dev/null` ;
+		    [ "$out64" = 8 -o "`isainfo -b`" = 32 -a "$out64" = "" ]
+		    }
+		then
+			echo "found 32/64 bit compiler" 1>&2
+			CC64=true
+		else
+			CC64=false
+		fi
+		rm -f $t 32.out 64.out
+		trap 0 1 2 3 15
+	fi
+
+	# If we're running 64 bit, we *must* build 64 bit.
+	if ([ "`isainfo -b`" = 64 ]) 2>/dev/null ; then
+		if $CC64 ; then :; else
+			echo "No 64 bit capable compiler was found" 1>&2
+			exit 1
+		fi
+		ISABITS="32 64"
+	elif $BUILDBOTH && $CC64
+	then
+		ISABITS="32 64"
+	else
+		OBJ32=.
+	fi
+else
+	cpu=`uname -m`
+	cpudir=${cpu}-`uname -r`
+fi
+
+# Default $MAKE to make
+: ${MAKE:=make}
+
+if [ $cpu = i386 ] ; then
+	$MAKE $MAKEFLAGS ${1+"$@"} sunos5x86 SOLARIS2="-DSOLARIS2=$solrev" CPU= CPUDIR=${cpudir} CC="$CC $XARCH32" XARCH="$XARCH32" ARCHINC="$ARCHINC32" BITS=32 OBJ=.
+	exit $?
+fi
+if [ x$solrev = x ] ; then
+	make ${1+"$@"} sunos$rev "TOP=.." "ARCH=`uname -m`"
+	exit $?
+fi
+for b in $ISABITS
+do
+    echo build $b bit binaries.
+    for v in OBJ ARCHINC XARCH
+    do
+	eval $v=\"\$$v$b\"
+    done
+    $MAKE $MAKEFLAGS ${1+"$@"} sunos$rev SOLARIS2="-DSOLARIS2=$solrev" CPU= CPUDIR=${cpudir} CC="$CC $XARCH" XARCH="$XARCH" ARCHINC="$ARCHINC" BITS=$b OBJ=$OBJ || exit $?
+done

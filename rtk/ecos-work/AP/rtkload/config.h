@@ -1,0 +1,2 @@
+
+#define CONFIG_RTL_819X 1

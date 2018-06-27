@@ -1,0 +1,34 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<% getIndex("no-cache"); %>
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<script type="text/javascript" src="util_gw.js"> </script>
+<title>Routing Table</title>
+</head>
+
+<body>
+<blockquote>
+<h2><font color="#0000FF"><script>dw(routetbl_header)</script> </font></h2>
+
+
+<table border=0 width="500" cellspacing=0 cellpadding=0>
+  <tr><font size=2>
+ <script>dw(routetbl_header_explain)</script>
+  </tr>
+  <tr><hr size=1 noshade align=top></tr>
+</table>
+<table border='1' width="500">
+<% kernelRouteList(); %>
+</table>
+
+<input type="hidden" value="/routetbl.htm" name="submit-url">
+  <p><input type="button" value="Refresh" id="refresh" onClick="javascript: window.location.reload()">&nbsp;&nbsp;
+<script>document.getElementById("refresh").value=routetbl_refresh;</script>
+  <input type="button" value=" Close " id="close" onClick="javascript: window.close();"></p>
+<script>document.getElementById("close").value=routetbl_close;</script>
+</blockquote>
+</body>
+
+</html>

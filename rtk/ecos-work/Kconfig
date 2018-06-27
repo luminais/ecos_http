@@ -1,0 +1,976 @@
+##
+source ../target/config.in
+config SOFT_WATCHDOG
+	depends on WATCHDOG
+	bool "Enable Soft Watchdog"
+	default y
+
+config RTL_CPU_POWER_SAVING
+	bool "Enable CPU Power Saving"
+	default n
+
+config SYSTEM_REINIT
+	bool "Enable System Reinit"
+	default n
+
+menu "Networking options"
+
+config NET_STACK_FREEBSD
+	bool 
+	default y
+
+config BRIDGE
+	bool "Bridge Support"
+
+menuconfig IPV6_ENABLE
+	bool "IPV6 Enable Support"
+if IPV6_ENABLE 
+config READYLOGO_CORE_PATCH
+	bool "Readylogo core patch Support"
+
+config PING6
+	bool "PING6 Support"
+
+config IPV6_NDP
+	bool "IPV6 NDP Support"
+
+config IPV6_ROUTE6
+	bool "IPV6 Route Support"
+
+config MCASE_TOOLS
+	bool "Mcase Tools Support"
+
+config MLD_PROXY
+	bool "Mld Proxy"
+
+config RADVD
+	bool "RADVD Support"
+
+config RADVD_RDNSS
+	depends on RADVD
+	bool "RADVD RDNSS Support"
+
+config RADVD_DNSSL
+	depends on RADVD
+	bool "RADVD DNSSL Support"
+
+config RADVD_SHELL
+	depends on RADVD
+	bool "RADVD Shell Support"
+
+config RADVD_WAN
+	depends on RADVD
+        bool "RADVD wan support"
+
+config FORWARD_IPV6_FRAG_SUPPORT
+	bool "Forward ipv6 fragment support"
+
+config RTL_DNSMASQ
+	bool "DNSMASQ Support"
+endif
+
+config DOMAIN_NAME_QUERY_SUPPORT
+	bool "DOMAIN_NAME_QUERY_SUPPORT Support"
+
+endmenu
+
+menu "Ethernet options"
+config NOETH
+	bool "No Ether Support"
+
+config RTL_IGMP_SNOOPING
+	bool "IGMP Snooping Support"
+        default y
+
+config RTL_HARDWARE_MULTICAST
+	depends on RTL_IGMP_SNOOPING
+	bool "Hardware Muiltcast Support"
+
+config RTL_MLD_SNOOPING
+	bool "MLD Snooping Support"
+
+
+config RTL_CUSTOM_PASSTHRU
+	bool "Custom Passthru Support"
+
+config RTL_PHY_POWER_CTRL
+	bool "RTL phy power on/off control"
+
+config RTL_EXCHANGE_PORTMASK
+	bool "RTL exchange portmask"
+
+if RTL_8881A || RTL_8197F
+config RTL_8367R
+	bool "enable RTL8367RB Support"
+
+config RTL_8211E_SUPPORT
+	bool "Enable 8211E Support"
+
+config RTL_8211F_SUPPORT
+	bool "Enable 8211F Support"
+endif
+endmenu
+
+menu "Wireless LAN Options"
+
+config NOWIFI
+	bool "No Wireless Support"
+
+config USE_PCIE_SLOT_0
+	bool
+config USE_PCIE_SLOT_1
+	bool
+config RTL_88E_SUPPORT
+        depends on SLOT_0_88E || SLOT_1_88E
+	bool
+	default y
+config RTL_92E_SUPPORT
+        depends on SLOT_0_8192EE || SLOT_1_8192EE
+	bool
+	default y
+config RTL_8812_SUPPORT
+        depends on SLOT_0_8812 || SLOT_1_8812
+	bool
+	default y
+config RTL_92C_SUPPORT
+        depends on SLOT_0_92C || SLOT_1_92C
+	bool
+	default y
+
+if RTL_8196E #|| RTL_8196D
+choice
+	prompt "Wifi Chip Select"
+		config RTL_88E_SUPPORT
+			bool "88e Support"
+			select USE_PCIE_SLOT_0
+if RTL_8196E
+		config RTL_92E_SUPPORT
+		bool "92E Support"
+		select USE_PCIE_SLOT_0
+endif
+endchoice
+endif
+
+if RTL_8196C || RTL_8196CS
+config RTL_92C_SUPPORT
+	bool "92C Support"
+endif
+
+if RTL_8197D || RTL_8197DL || RTL_8881A || RTL_8196E || RTL_8196D || RTL_8197F
+choice
+	prompt "Slot0 Select"
+        config SLOT_0_8192EE
+        bool "8192E"
+		select USE_PCIE_SLOT_0
+if RTL_8196E
+		config SLOT_0_88E
+			bool "8188E"
+			select USE_PCIE_SLOT_0
+endif
+
+if RTL_8197D || RTL_8197DL
+	config SLOT_0_8812
+		bool "8812"
+		select USE_PCIE_SLOT_0
+	config SLOT_0_8812AR_VN
+		bool "8812AR_VN"
+		select USE_PCIE_SLOT_0
+endif
+if RTL_8881A
+	config SLOT_0_88E
+		bool "8188E"
+		select USE_PCIE_SLOT_0
+	config SLOT_0_NONE
+		bool "no wifi chip"
+endif
+if RTL_8197F
+	config SLOT_0_8822BE
+		bool "8822BE"
+		select USE_PCIE_SLOT_0
+	config SLOT_0_NONE
+		bool "no wifi chip"
+endif
+if RTL_8196D
+	config SLOT_0_8194AE
+	bool "8194"
+	select USE_PCIE_SLOT_0
+endif
+endchoice
+
+if RTL_8197D || RTL_8197DL
+choice
+	prompt "Slot1 Select"
+        config SLOT_1_8192EE
+                bool "8192E"
+		select USE_PCIE_SLOT_1
+	config SLOT_1_8812
+		bool "8812"
+		select USE_PCIE_SLOT_1
+	config SLOT_1_8812AR_VN
+		bool "8812AR_VN"
+		select USE_PCIE_SLOT_1
+endchoice
+endif
+endif
+
+if RTL_8196C || RTL_8196CS
+choice
+	prompt "Slot0 Select"
+		config SLOT_0_92C
+			bool "8192C"
+			select USE_PCIE_SLOT_0
+endchoice
+endif
+
+#slot 0
+
+config WLAN_HAL
+	bool
+        default y if (WLAN_HAL_8192EE || WLAN_HAL_8881A || WLAN_HAL_8814AE || WLAN_HAL_8197F ||  WLAN_HAL_8822BE)
+
+config WLAN_HAL_88XX
+	bool
+		default y if (WLAN_HAL_8192EE || WLAN_HAL_8881A || WLAN_HAL_8814AE || WLAN_HAL_8197F || WLAN_HAL_8822BE)
+
+config WLAN_HAL_8814AE
+	bool
+		default y if (SLOT_0_8194AE || SLOT_1_8194AE)
+
+config WLAN_HAL_8822BE
+	bool
+		default y if (SLOT_0_8822BE || SLOT_1_8822BE)
+
+config WLAN_MACHAL_API
+	bool
+		default y if (WLAN_HAL_8822BE)
+choice 
+	prompt "RFE Type"
+	depends on USE_PCIE_SLOT_0 && (SLOT_0_8814AE || SLOT_0_8194AE || SLOT_0_8822BE)
+	default SLOT_0_RFE_TYPE_2
+
+	config SLOT_0_RFE_TYPE_0
+	bool "Type 0: internel PA/LNA"
+
+	config SLOT_0_RFE_TYPE_2
+	depends on (SLOT_0_8814AE || SLOT_0_8194AE)
+        bool "Type 2: externel PA/LNA (2G SKY85300, 5G LX5586A)"
+	select SLOT_0_EXT_PA
+	select SLOT_0_EXT_LNA
+
+	config SLOT_0_RFE_TYPE_1
+	depends on SLOT_0_8822BE
+	bool "Type 1: external PA/LNA (SKY85728)"
+	select SLOT_0_EXT_PA
+	select SLOT_0_EXT_LNA
+
+	config SLOT_0_RFE_TYPE_3
+	depends on (SLOT_0_8814AE || SLOT_0_8194AE)
+        bool "Type 3: externel PA/LNA (2G SE2623L/SKY85201-11, 5G SKY85405/SKY85605-11)"
+        select SLOT_0_EXT_PA
+        select SLOT_0_EXT_LNA
+
+	config SLOT_0_RFE_TYPE_4
+	depends on (SLOT_0_8814AE || SLOT_0_8194AE)
+        bool "Type 4: externel PA/LNA (2G SKY85303, 5G SKY85717)"
+        select SLOT_0_EXT_PA
+        select SLOT_0_EXT_LNA
+
+	config SLOT_0_RFE_TYPE_5
+	depends on (SLOT_0_8814AE || SLOT_0_8194AE)
+        bool "Type 5: externel PA/LNA (2G SE2623L/SKY85201-11, 5G SKY85405/SKY85605-11)"
+        select SLOT_0_EXT_PA
+        select SLOT_0_EXT_LNA
+	
+	config SLOT_0_RFE_TYPE_6
+	depends on SLOT_0_8822BE
+	bool "Type 6: external PA/LNA NORMAL 2-LAYER(SKY85742)"
+	select SLOT_0_EXT_PA
+	select SLOT_0_EXT_LNA
+
+	config SLOT_0_RFE_TYPE_7
+	depends on SLOT_0_8822BE
+	bool "Type 7: external PA/LNA NORMAL 4-LAYER(SKY85742/85734/85712)"
+	select SLOT_0_EXT_PA
+	select SLOT_0_EXT_LNA
+
+	config SLOT_0_RFE_TYPE_8
+	depends on SLOT_0_8822BE
+	bool "Type 8: internal PA/LNA TFPGA"
+
+	config SLOT_0_RFE_TYPE_9
+	depends on SLOT_0_8822BE
+	bool "Type 9: external LNA NORMAL 4-LAYER(SKY85608)"
+	select SLOT_0_EXT_LNA
+
+	config SLOT_0_RFE_TYPE_10
+	depends on SLOT_0_8822BE
+	bool "Type 10: internal PA/LNA with TRSW"
+
+endchoice
+
+config SLOT_0_EXT_PA
+        bool "PCIe slot 0 Enable external high power PA"
+        depends on USE_PCIE_SLOT_0 && (!SLOT_0_RFE_TYPE_0)
+        default n
+
+config SLOT_0_EXT_LNA
+        bool "PCIe slot 0 Enable external LNA"
+        depends on USE_PCIE_SLOT_0 && (SLOT_0_92C || SLOT_0_8812 || SLOT_0_8812AR_VN || SLOT_0_8192EE || SLOT_0_8194AE || SLOT_0_8814AE || SLOT_0_8822BE) && (!SLOT_0_RFE_TYPE_0) 
+        default n
+        
+config SLOT_0_PA_RTC5634
+	bool "PCIe slot 0 Support 8812 RTC5634 PA Type"
+	depends on USE_PCIE_SLOT_0 && SLOT_0_8812 && !SLOT_0_EXT_PA
+	default n
+        
+config SLOT_0_TX_BEAMFORMING
+        bool "PCIe slot 0 Enable Tx Beamforming"
+        depends on USE_PCIE_SLOT_0  && (SLOT_0_8192EE || SLOT_0_8812 || SLOT_0_8194AE)
+        default y
+
+config SLOT_0_ANT_SWITCH
+        bool "PCIe slot 0 Enable Antenna Diversity"
+        depends on USE_PCIE_SLOT_0  && (SLOT_0_8192EE || SLOT_0_88E) && !( SLOT_0_92C || SLOT_0_92D)
+        default n
+
+choice
+        prompt "Choose Antenna Diversity Type"
+        depends on SLOT_0_ANT_SWITCH
+        default NO_2G_DIVERSITY
+config  NO_2G_DIVERSITY
+        bool "Not Support Antenna Diversity"
+config  2G_CGCS_RX_DIVERSITY
+        bool "Enable RX Antenna Diversity"
+config  2G_CG_TRX_DIVERSITY
+        bool "Enable TRX Antenna Diversity"
+endchoice
+
+#SLot 1
+config SLOT_1_EXT_PA
+        bool "PCIe slot 1 Enable external high power PA"
+        depends on USE_PCIE_SLOT_1
+        default n
+
+config SLOT_1_EXT_LNA
+        bool "PCIe slot 1 Enable external LNA"
+        depends on USE_PCIE_SLOT_1 && (SLOT_1_92C || SLOT_1_8812 || SLOT_1_8812AR_VN)
+        default n
+        
+config SLOT_1_PA_RTC5634
+		bool "PCIe slot 1 Support 8812 RTC5634 PA Type"
+		depends on USE_PCIE_SLOT_1 && SLOT_1_8812 && !SLOT_1_EXT_PA
+		default n
+
+config SLOT_1_TX_BEAMFORMING
+        bool "PCIe slot 1 Enable Tx Beamforming"
+        depends on USE_PCIE_SLOT_1  && (SLOT_1_8192EE || SLOT_1_8812)
+        default y
+
+config SLOT_1_ANT_SWITCH
+        bool "PCIe slot 1 Enable Antenna Diversity"
+        depends on USE_PCIE_SLOT_1  && SLOT_1_8812
+        default n
+choice
+        prompt "Choose Antenna Diversity Type"
+        depends on SLOT_1_ANT_SWITCH && SLOT_1_8812
+        default NO_5G_DIVERSITY
+config  NO_5G_DIVERSITY
+        bool "Not Support Antenna Diversity"
+config  5G_CGCS_RX_DIVERSITY
+        bool "Enable RX Antenna Diversity"
+config  5G_CG_TRX_DIVERSITY
+        bool "Enable TRX Antenna Diversity"
+endchoice
+
+# 8812 External PA
+choice
+        prompt "8812 external PA type"
+        depends on ((SLOT_0_8812 && SLOT_0_EXT_PA) || (SLOT_1_8812 && SLOT_1_EXT_PA))
+        default PA_SKYWORKS_5022
+
+        config PA_SKYWORKS_5022
+        bool "Skyworks-5022"
+
+        config PA_RFMD_4501
+        bool "RFDM-4501 / Skywork-85703"
+
+        config PA_SKYWORKS_5023
+        bool "Skyworks-5023"
+endchoice
+
+
+config RTL_CLIENT_MODE_SUPPORT
+	bool "Client Mode Support"
+
+config RTL_SUPPORT_MULTI_PROFILE
+	bool "Mulit Profile Support"
+	depends on RTL_CLIENT_MODE_SUPPORT
+	default n
+
+config RTL_REPEATER_MODE_SUPPORT
+	bool "Repeater Mode Support"
+
+#multi-repeater  now only 92e support it 
+config RTL_MULTI_REPEATER_MODE_SUPPORT
+	bool "multiple Repeater Mode support"
+	depends on RTL_REPEATER_MODE_SUPPORT && (SLOT_0_8192EE ||SLOT_1_8192EE)
+	default n
+#not support multi-repeater also can use multi-clone,
+#but now only 92E support per-entery set differenct CAM search,bo depend on 92E
+config RTL_MULTI_CLONE_SUPPORT
+	bool "multiple clone support"
+	depends on RTL_CLIENT_MODE_SUPPORT && (SLOT_0_8192EE ||SLOT_1_8192EE)
+	default n
+	
+config RTL_SIMPLE_CONFIG
+	bool "RTL simple config support"
+	depends on RTL_CLIENT_MODE_SUPPORT
+	default n
+	
+config RTL_SIMPLE_CONFIG_USE_WPS_BUTTON
+	bool "Realtek Simple Config use the same HW PBC with WPS"
+	depends on RTL_SIMPLE_CONFIG 
+	default n
+
+if RTL_8197F
+choice
+        prompt "RFE type"
+        depends on RTL_8197F
+        default SOC_RFE_TYPE_1
+
+        config SOC_RFE_TYPE_0
+        bool "Type 0: internal PA/LNA"
+
+        config SOC_RFE_TYPE_1
+        bool "Type 1: external PA/LNA (SKY85309)"
+	
+	config SOC_RFE_TYPE_2
+	bool "Type 2: internal PA/LNA 2-LAYER"
+
+	config SOC_RFE_TYPE_3
+	bool "Type 3: internal PA/LNA with TRSW"
+
+	config SOC_RFE_TYPE_4
+	bool "Type 4: internal PA + external LNA(BFU725F/N1) "
+	select SOC_EXT_LNA
+
+	config SOC_RFE_TYPE_5
+	bool "Type 5: external PA/LNA (SKY85325)"
+	select SOC_EXT_PA
+	select SOC_EXT_LNA
+
+	config SOC_RFE_TYPE_6
+	bool "Type 6: internal PA + external LNA(BFU725F/N1) 2-LAYER "
+	select SOC_EXT_LNA
+        
+endchoice
+endif
+
+if RTL_8881A
+config RTL_8881A_SELECTIVE_MODE_SUPPORT 
+       bool
+choice
+        prompt "8881A PA TYPE"
+        depends on RTL_8881A
+        default 8881A_EXT_PA
+
+        config 8881A_EXT_PA
+        bool "External PA (skyworks 85703)"
+        
+	config 8881A_INT_PA
+        bool "Internal PA"
+
+endchoice
+
+choice 
+        prompt "8881A INT PA TYPE"
+        depends on 8881A_INT_PA
+        default 8881A_INT_PA_SE5008
+
+        config 8881A_INT_PA_SE5008
+        bool "Internal PA (skyworks SE5008)"
+
+	config 8881A_INT_PA_RTC5634
+	bool "Internal PA (RTC 5634)"
+
+endchoice
+
+config RTL_8881A_SELECTIVE
+        bool "Realtek 8881A selective support "
+	select RTL_8881A_SELECTIVE_MODE_SUPPORT
+	depends on RTL_8881A && !(SLOT_0_8192EE || SLOT_0_88E) && !(CUTE_MAHJONG_RTK_UI)
+        default y
+
+config RTL_AC2G_256QAM
+	bool "Support 256QAM (11AC mode) for Band 2.4G"
+	depends on RTL_8881A && !(SLOT_0_8192EE || SLOT_0_88E)
+	default n
+
+config RTL_8881A_ANT_SWITCH
+        bool "Realtek 8881A Enable Antenna Diversity"
+        depends on RTL_8881A && !RTL_8881A_SELECTIVE
+        default n
+choice
+        prompt "Choose Antenna Diversity Type"
+        depends on RTL_8881A_ANT_SWITCH
+        default NO_5G_DIVERSITY_8881A
+config  NO_5G_DIVERSITY_8881A
+        bool "Not Support Antenna Diversity"
+config  5G_CGCS_RX_DIVERSITY_8881A
+        bool "Enable RX Antenna Diversity"
+config  5G_CG_TRX_DIVERSITY_8881A
+        bool "Enable TRX Antenna Diversity"
+endchoice
+
+endif
+
+config RTL_WDS_SUPPORT
+	bool "WDS Support"
+
+config RTL_MESH_SUPPORT
+	bool "RTL MESH Support"
+
+config RTL_MESH_CROSSBAND
+	bool "Support Cross-Band Access"
+	depends on  RTL_MESH_SUPPORT && ((USE_PCIE_SLOT_0 && USE_PCIE_SLOT_1) || (RTL_8881A && USE_PCIE_SLOT_0))
+
+config PACP_SUPPORT
+	bool "Monitor mode support"
+
+config RTL_VAP_SUPPORT
+	bool "VAP Support"
+
+config RTL_DFS_SUPPORT
+	bool "DFS Support"
+
+config ANT_SWITCH
+	bool "Enable Antenna Diversity"
+
+config WPS
+	bool "WPS Support"
+	depends on !NOWIFI
+
+config WLAN_SCHEDULE
+	bool "Wlan Schedule Support"
+	depends on !NOWIFI
+
+config TENDA_WLAN_STEER
+	bool "Tenda Wlan STEER Support"
+	depends on !NOWIFI
+	
+config TENDA_WLAN_DBG
+	bool "Tenda Wlan DBG Support"
+	depends on !NOWIFI
+	
+config IWCONTROL
+	bool "IWControl Support"
+
+config RTL_11W_SUPPORT
+	bool "IEEE 802.11W Support"
+    
+config AUTH
+	bool "Auth Support"
+	depends on IWCONTROL
+config IAPP
+	bool "IEEE 802.11f (IAPP) Support"
+	depends on IWCONTROL
+config RTL_HS2_SUPPORT
+	bool "HotSpot 2.0 Support"
+	depends on IWCONTROL&&AUTH
+
+choice
+        prompt "Select WiFi Band on Wlan0"
+        depends on WLAN_HAL
+        default BAND_5G_ON_WLAN0
+
+config BAND_2G_ON_WLAN0
+        bool "Select 2.4g band on wlan0"
+
+config BAND_5G_ON_WLAN0
+        bool "Select 5g band on wlan0"
+endchoice
+
+endmenu
+
+menu "Application options"
+config APMIB
+	bool "APMIB Support"
+
+config DHCPD
+	bool "DHCPD Support"
+
+config DHCPC
+	bool "DHCPC Support"
+
+config ULINK_DHCP_AUTO
+	bool "ulink dhcp auto Support"
+	depends on RTL_ULINKER && DHCPD && DHCPC
+config BRIDGE_REPEATER_DHCPAUTO
+	bool "bridge repeater mode dhcp auto support"
+	depends on DHCPD && DHCPC && !CUTE_MAHJONG_RTK_UI
+
+config TWINKLE_RSSI
+        bool "led blink according to the RSSI support"
+        depends on  DHCPD && DHCPC && BRIDGE_REPEATER_DHCPAUTO
+
+config DNSPROXY
+	bool "DNSProxy Support"
+
+config RTL_DNS_TRAP
+	bool "DNSTrap Support"
+        select DNSPROXY
+        select DNS
+        select DOMAIN_NAME_QUERY_SUPPORT 
+
+config NBSERVER
+	bool "NetBIOS Services Support"
+
+config MINIIGD
+	bool "Miniigd Support"
+	depends on NAPT && FIREWALL
+
+config PATHSEL
+	bool "Pathsel Support"
+	depends on RTL_MESH_SUPPORT
+	default y
+
+config ROUTED
+	bool "Routed Support"
+
+config ROUTE6D
+	depends on IPV6_ENABLE && ROUTED
+	bool "Route6d Support"
+
+config RTLDD
+	bool "RTLDD Support"
+	depends on HOME_GATEWAY 
+
+config NTP
+	bool "NTP Support"
+
+config HTTPD
+	bool "Httpd Support"
+
+config HTTPD_IPV6_SUPPORT
+	depends on HTTPD && IPV6_ENABLE
+	bool "Httpd IPv6 Support"
+config HTTP_FILE_SERVER_SUPPORT
+	bool "Httpd File Server Support"
+	depends on HTTPD
+	default n
+
+config MEM_CHAIN_UPGRADE
+	bool "Memory chain Upgrade Firmware Support"
+	depends on HTTPD && MEM_CHAIN_API
+	default n
+
+config IRES_WEB_ADVANCED_SUPPORT
+	bool "Internal Resources WEB advanced support"
+	depends on HTTPD
+	default y
+
+config WEB_COMP_TWICE
+	bool "Keep Compressed webpage in RAM"
+	depends on HTTPD && IRES_WEB_ADVANCED_SUPPORT
+	default n
+
+config WEB_CSRF_SECURITY_SUPPORT
+	bool "Web Csrf Security Support"
+	depends on HTTPD
+
+config HTTPD_WITH_SSL
+	bool "Https Support"
+	depends on HTTPD && SSL
+
+#config OPENSSL
+config SSL
+	bool "OpenSSL 0.9.8o Support"
+
+menu "TR069 Options"
+
+config TR069
+	bool "TR-069(CWMP) Support"
+    select MEM_CHAIN_API
+
+choice
+prompt "TR-069 root data model"
+depends on TR069
+default USER_CWMP_WITH_TR098
+config USER_CWMP_WITH_TR181
+	bool "TR-181"
+
+config USER_CWMP_WITH_TR098
+	bool "TR-098"
+endchoice
+
+menu "TR-069 options"
+depends on TR069
+config USER_CWMP_WITH_TR143
+    bool "support TR-143 in TR-069"
+
+config CUSTOMIZE_MIDDLE_EAST
+    depends on TR069
+	select RTL_DHCP_PPPOE
+    bool "Etisalat Customization"
+config RTL_DHCP_PPPOE
+   depends on TR069 
+	bool
+
+choice
+prompt "select SSL type"
+default CWMP_WITH_NO_SSL
+config CWMP_WITH_NO_SSL
+		bool "NO SSL Support"
+config CWMP_WITH_MATRIXSSL
+		bool "MatrixSSL"
+config CWMP_WITH_OPENSSL
+        select SSL
+        bool "OpenSSL"
+endchoice
+
+endmenu
+endmenu
+
+config TELNETD
+	bool "Telnetd Support"
+
+config TELNET_USERNAME_PASSWORD
+	bool "Telnet Username Password Support"
+	depends on TELNETD
+
+config DHCP6S 
+	bool "dhcp6s Support"
+
+config MULTI_LANGUAGE
+	bool "Mutil language Support"
+
+config DAYLIGHT_SAVING_TIME
+	bool "Daylight Saving Time"
+
+config APP_SIMPLE_CONFIG
+	bool "RTL Simple Config App Support"
+	depends on RTL_SIMPLE_CONFIG
+
+config SIMPLE_CONFIG_PBC_SUPPORT
+	bool "RTL Simple Config App PBC Support"
+	depends on APP_SIMPLE_CONFIG
+
+endmenu
+
+menu "Kernel options"
+
+config NAPT
+	bool "NAPT Support"
+	depends on HOME_GATEWAY
+
+config HW_NAT
+    bool "HW NAT Support"
+    depends on NAPT
+
+config DOUBLE_NAPT
+	bool "Two alias address Support"
+	depends on NAPT && (L2TP || PPTP)
+	default y
+
+config NAPT_NO_DYN
+	bool "Do not using dynamic rule"
+	depends on NAPT
+
+config ALG
+	bool "ALG Support"
+	depends on NAPT
+
+config FASTPATH
+	bool "Fastpath Support"
+	depends on NAPT
+
+config RTL_WANIP_SAME_WITH_GWIP_SUPPORT
+	bool "static_dhcp_ip_same_with_gw_support"
+	default n
+
+config RTL_ROUTE_MODE
+	bool "route mode support(disable nat)"
+	default n
+
+config FIREWALL
+	bool "Firewall Support"
+	depends on NAPT
+
+config IPV6FIREWALL
+	bool "IPV6 Firewall Support"
+	depends on IPV6_ENABLE
+config QOS
+	bool "Qos Support"
+	depends on NAPT && FIREWALL
+
+config BRIDGE_VLAN
+	bool "Bridge VLAN Support"
+	depends on VLAN
+
+config DNS
+	bool "DNS Support"
+
+config DOS
+	bool "Dos Support"
+	depends on HOME_GATEWAY
+
+config NET_MBUF_SHRINK
+	bool "Net Mbuf Shrink Support"
+
+config IGMPPROXY_USERMODE
+	bool "IGMPProxy Usermode Support"
+	depends on HOME_GATEWAY
+
+config L2TP
+	bool "L2TP Support"
+	depends on HOME_GATEWAY
+
+config PPTP
+    bool "PPTP Support"
+	default n
+	depends on HOME_GATEWAY
+
+config HOME_GATEWAY
+	bool "Home Gateway Support"
+
+config PPPOE
+	bool "PPPOE Support"
+	depends on HOME_GATEWAY
+
+config PPP_RESERVED_CLUSTER
+    bool "PPP reserved cluster Support"
+    default n
+
+config RTL_TIMER_ADJUSTMENT
+	bool "RTL Timer Adjustment Support"
+
+config REMOTELOG
+	bool "Remote Log Support"
+	
+config SPI_FIREWALL
+	bool "SPI(stateful packet inspection) Firewall Support"
+
+
+config RTL_NAT_LOOPBACK
+	bool "nat loopback support"
+
+config SYSLOG
+	bool "Syslog Support"
+
+config STATIC_ROUTE
+	bool "Static Route Support"
+
+config SAME_LAN_MAC
+	bool "Same Lan MAC Support"
+
+config VLAN
+	bool "VLAN Support"
+
+config BOOTP_COMPAT
+        bool "Accept unicast packets on INADDR_ANY interfaces"
+	default n
+config RTK_PWM
+	bool "PWM Driver Support"
+
+endmenu
+
+menu "Usb Options"
+config USB
+	bool "USB Support"
+
+if  USB
+config USB_OHCI_HCD
+	bool "UHCI Host Controller Support"
+
+config USB_EHCI_HCD
+	bool "EHCI Host Controller Support"
+
+config USB_OTG_HCD
+	bool "OTG Host Controller Support"
+
+endif
+
+config HTTP_FILE_SERVER_SUPPORT
+	bool "Httpd File Server Support"
+        depends on HTTPD
+	default n
+endmenu
+
+menu "Debug Options"
+config DEBUG
+        bool "Debug Support"
+ 
+config DEBUG_THREAD
+        bool "Debug Thread Support"
+
+config DBG_STAT
+        bool "DBG Stat Support"
+
+config RTL_REPORT_LINK_STATUS
+	bool 
+	default y
+
+config NOGPIO
+	bool "No GPIO Support"
+
+endmenu
+
+
+menu "MP Options"
+config RTL_NFJROM_MP
+	bool "Mp Nfjrom Support"
+endmenu
+
+menu "API Options"
+config MEM_CHAIN_API
+	bool "memory chain API Function  Support"
+
+config CERT_MNG
+	bool "Certificate Management System"
+	depends on OPENSSL || AUTH
+	default n
+
+config CERT_COMPRESS
+	bool "Compress Certificates"
+	depends on CERT_MNG
+	default n
+
+config CERT_MNG_SIZE
+	hex "Size of Flash for Certificate Management System"
+	depends on CERT_MNG
+	default "0x2000"
+endmenu
+
+config FLASH_MAPPING_SUPPORT
+	bool "Flash Mapping Support"
+
+config FLASH_SIZE
+	hex "Size of Flash"
+        depends on FLASH_MAPPING_SUPPORT
+        default "0x200000"
+
+config HW_SETTING_OFFSET
+	hex "Offset of HW Setting"
+	depends on FLASH_MAPPING_SUPPORT
+	default "0x6000"
+
+config DEFAULT_SETTING_OFFSET
+	hex "Offset of Default Setting"
+	depends on FLASH_MAPPING_SUPPORT
+	default "0x8000"
+
+config CURRENT_SETTING_OFFSET
+	hex "Offset of Current Setting"
+	depends on FLASH_MAPPING_SUPPORT
+	default "0xC000"
+
+config WEB_PAGES_OFFSET
+	hex "Offset of Webpage"
+	depends on FLASH_MAPPING_SUPPORT
+	default "0x10000"
+	
+
+config ECOS_IMAGE_OFFSET
+	hex "Offset of Ecos image"
+	depends on FLASH_MAPPING_SUPPORT
+	default "0x50000"

@@ -1,0 +1,263 @@
+.TH DHCPDB.POOL 5 "April 23, 1997"
+.SH NAME
+.B dhcpdb.pool
+\- Database of DHCP address pool
+.SH DESCRIPTION
+.B dhcpdb.pool
+is a database which includes parameters managed by DHCP (Dynamic Host
+Configuration Protocol) server such as IP address and subnet mask and
+so on.  When the server receives request for a new address assignment,
+it searches this database to select an IP address.  If you use manual
+(static) allocation, you have to specify the Client-id in the address
+entry.
+.LP
+The server also maintains another database
+.B dhcpdb.bind
+which manages bindings.  It is used to keep the combination of a
+Client-id and an entry of address pool database.
+.LP
+There is an only one entry per line in
+.BR dhcpdb.pool .
+But putting backslash(\\) means that the entry continues to the next
+line.  And each entry is the set of fields seperated by colon(:).
+.LP
+The first field of the line is an index string, and it appears in
+the last field of
+.BR dhcpdb.bind .
+Meanings of other fields are describe in the next
+.BR CAPABILITIES .
+.SH CAPABILITIES
+.SS Types of Capabilities
+There are following types:
+.TP 12
+.I bool
+These take "true" or "false".  If you specify other value, it means
+false.  (ex. ipfd=true)
+.TP
+.I str
+These take string as a value.  If string includes a character like
+colon, it should be put in double quatation marks.
+(ex. hstn="clapton")
+.TP
+.I octet
+Integer (8 bit).  (cf. 8, -1, 070, 0xff)
+.TP
+.I short
+Integer (16 bit).
+.TP
+.I long
+Integer (32 bit).
+.TP
+.I ip
+These take an IP address as its value.  Format should be one of
+a.b.c.d, a.b.c or a.b.  (ex. ipad=10.0.0.1)
+.TP
+.I iplist
+These take list of IP addresses.  Each IP address are separated by
+space.  (ex. rout=133.4.31.1 133.4.31.2 133.4.31.3)
+.TP
+.I ippairs
+These take list of pairs of IP addresses.  Each IP address are
+separated by space and handled in pairs.  (ex. strt=133.4.27.0 133.4.31.1
+133.4.36.0 133.4.31.1)
+.TP
+.I mtpt
+These take list of integers (16 bit).  Each integer are separated by
+space.  (ex. mtpt=1 2 3 4 6 8)
+.TP
+.I clid
+These take a client identifier as a value.  They have a format like
+"type:data".  "type" is an integer from 0 to 255, which is defined by
+IANA.  "data" is a list of a hexadecimal of 2 figures.  Usually, it is
+MAC address.
+(ex. clid="1:0x08004600e5d5")
+.LP
+.SS Codes
+Codes are option numbers defined in RFC2132.  Refer to RFC2132.  If
+the code '-' means that its field is not option defined in RFC2132.
+.SS Quotation from Other Entry
+The rule of quotation from previous entry are following:
+.TP 3
+\(bu
+If a value is not defined yet, it becomes value of the referred
+entry.  If a value is already defined, it is not overwritten.
+.TP
+\(bu
+Also a value quoted from other entry is not overwritten.  It implies
+that multiple quotation is permitted.  But we recommend not to use
+same value in multiple quotations to avoid confusion.
+.TP
+\(bu
+It is possible to disable quoted value by using "@" mark.  Also it
+seems better not to use many "@" marks to avoid confusion. (ex. snmk@)
+.LP
+.if t .ig IG
+.RS
+.TS
+cfI cfI cfI lfI
+cfR cfR lfR lfR .
+Name	Code	Type	Description
+.sp .6v
+tblc	-	str	Quotation from another entry.
+snam	-	str	Sname field of DHCP messages. The
+			name of DHCP server can be written.
+file	-	str	File field of DHCP messages. The
+			name of boot image can be written.
+siad	-	ip	Address of tftp server which offers
+			boot image.
+albp	-	bool	If true, it means that this entry can
+			be allocated to a BOOTP client.  If this
+			entry is for static allocation, this
+			value becomes true by default and maxl
+			becomes infinit.
+ipad	-	ip	IP address to be allocated.
+maxl	-	long	Maximum lease duration in seconds.  The
+			default value is 3600 secs which is
+			defined in database.h.
+dfll	-	long	Default lease duration in seconds.  If a
+			client does not specify lease, the server
+			uses this value as lease. The default
+			value is 3600, defined in database.h.
+clid	-	clid	This specifies client identifier in
+			static allocation.  The WIDE version
+			client uses a MAC address as client
+			identifier, so it is appropriate to
+			specify a MAC address for WIDE version
+			client.
+snmk	1	ip	Subnet mask of the IP address to be
+			allocated.  The default is a natural mask
+			corresponding with ipad (IP address).
+tmof	2	long	Time offset from UTC in seconds.
+rout	3	iplist	A list of routers which are on the same
+			subnet with the client.
+tmsv	4	iplist	A list of time servers (RFC 868).
+nmsv	5	iplist	A list of name servers (IEN 116).
+dnsv	6	iplist	A list of DNS servers (RFC 1035).
+lgsv	7	iplist	A list of MIT-LCS UDP log servers.
+cksv	8	iplist	A list of Cookie servers (RFC 865).
+lpsv	9	iplist	A list of LPR servers (RFC 1179).
+imsv	10	iplist	A list of Imagen Impress servers.
+rlsv	11	iplist	A list of Resource Location servers
+			(RFC 887).
+hstn	12	str	Hostname of the client.
+btsz	13	short	Size of boot image.
+mdmp	14	str	Path name to which client dumps core.
+dnsd	15	str	Domain name for DNS.
+swsv	16	ip	IP address of swap server.
+rpth	17	str	Path name of root disk of the client.
+epth	18	str	Extensions Path (See RFC2132).
+ipfd	19	bool	If true, the client performs IP
+			forwarding.
+nlsr	20	bool	If true, the client can perform non-local
+			source routing.
+plcy	21	ippairs	Policy filter for non-local source
+			routing. A list of pairs of
+			(Destination IP, Subnet mask).
+mdgs	22	short	Maximum size of IP datagram that the
+			client should prepare to reassemble.
+ditl	23	octet	Default IP TTL.
+mtat	24	long	Aging timeout (in seconds) to be used
+			with Path MTU discovery which is defined
+			in RFC 1191.
+mtpt	25	mtpt	A table of MTU sizes to be used with
+			Path MTU Discovery.
+ifmt	26	short	MTU to be used on an interface.
+asnl	27	bool	If true, the client assumes that all
+			subnets to which the client is connected
+			use the same MTU.
+brda	28	ip	Broadcast address in use on the client's
+			subnet.  The default is calculated from
+			the subnet mask and the IP address.
+mskd	29	bool	If true, the client should perform subnet
+			mask discovery using ICMP.
+msks	30	bool	If true, the client should respond to
+			subnet mask requests using ICMP.
+rtrd	31	bool	If true, the client should solicit
+			routers using Router Discovery defined
+			in RFC 1256.
+rtsl	32	ip	Destination IP address to which the
+			client sends router solicitation
+			requests.
+strt	33	ippairs	A table of static routes for the client, 
+			which are pairs of (Destination, Router).
+			It is illegal to specify default route
+			as a destination.
+trlr	34	bool	If true, the client should negotiate
+			the use of trailers with ARP (RFC 893).
+arpt	35	long	Timeout in seconds for ARP cache.
+encp	36	bool	If false (= 0), the client uses RFC 894
+			encapsulation.  If true (= 1), it uses
+			RFC 1042 (IEEE 802.3) encapsulation.
+dttl	37	octet	Default TTL of TCP.
+kain	38	long	Interval of the client's TCP keepalive
+			in seconds.
+kagb	39	bool	If true, the client should send TCP
+			keepalive messages with a octet of
+			garbage for compatibility.
+nisd	40	str	Domain name for NIS.
+nisv	41	iplist	A list of NIS servers.
+ntsv	42	iplist	A list of NTP servers.
+nnsv	44	iplist	A list of NetBIOS name server.
+			(RFC 1001, 1002)
+ndsv	45	iplist	A list of NetBIOS datagram distribution
+			servers (RFC 1001, 1002).
+nbnt	46	octet	NetBIOS node type (RFC 1001, 1002).
+nbsc	47	str	NetBIOS scope (RFC 1001, 1002).
+xfsv	48	iplist	A list of font servers of X Window system.
+xdmn	49	iplist	A list of display managers of X Window
+			system.
+dht1	58	short	This value specifies when the client should
+			start RENEWING.  Default is 500 that means
+			the client starts RENEWING after 50% of
+			lease duration passes.
+dht1	59	short	This value specifies when the client should
+			start REBINDING.  Default is 875 that means
+			the client starts REBINDING after 87.5% of
+			lease duration passes.
+.TE
+.RE
+.IG
+.SH FILES
+.PD 0
+.TP 25
+.B /etc/dhcpdb.bind
+Database about bindings (/var/db/dhcpdb.bind for BSD/OS)
+.TP
+.B /etc/dhcpdb.pool
+Address Pool database
+.TP
+.B /etc/dhcpdb.relay
+Database which lists relay agents
+.TP
+.B /tmp/addrpool_dump
+Dump of the address pool database
+.TP
+.B /var/run/dhcps.pid
+File which includes process ID (/var/tmp/dhcps.pid for NEWSOS)
+.PD
+.SH SEE ALSO
+.BR dhcps (8)
+.LP
+.BR dhcpdb.relay (5)
+.LP
+R. Droms,
+.I Dynamic Host Configuration
+.IR Protocol ,
+RFC2131.
+.LP
+W. Wimer,
+.I Clarifications and Extensions for the Bootstrap
+.IR Protocol ,
+RFC1542.
+.LP
+S. Alexander, R. Droms,
+.I DHCP Options and BOOTP Vendor
+.IR Extensions ,
+RFC2132.
+.LP
+R. Droms,
+.I Interoperation Between DHCP and
+.IR BOOTP ,
+RFC1534.
+.SH AUTHOR
+Akihiro Tominaga <tomy@sfc.wide.ad.jp>

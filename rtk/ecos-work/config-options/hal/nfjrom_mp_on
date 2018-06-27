@@ -1,0 +1,3 @@
+cdl_component CYGSEM_HAL_819X_NFJROM_MP {
+    user_value 1
+};

@@ -1,0 +1,3 @@
+cdl_component CYGPKG_SAME_LAN_MAC {
+    user_value 1
+};

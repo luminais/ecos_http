@@ -1,0 +1,3 @@
+cdl_component CYGPKG_IO_FLASH_BLOCK_DEVICE {
+    user_value 1
+};

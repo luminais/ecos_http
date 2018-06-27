@@ -1,0 +1,3 @@
+cdl_component CYGSEM_HAL_8196CS_SUPPORT {
+    user_value 1
+};

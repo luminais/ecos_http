@@ -1,0 +1,3 @@
+cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_PA_RTC5634 {
+    user_value 1
+};

@@ -1,0 +1,155 @@
+---------
+eCosShell
+---------
+
+A lot of people had been asking for this, so we unglued this piece of
+code from a larger project and packed up it into an exportable
+version.
+
+This code provides a pretty basic shell without any scripting support,
+etc. but enough for helping to test and debug an embedded system
+
+There's some basic Emacs style command line editing and basic history
+support.
+
+--------
+Building
+--------
+
+For an ARM target, you should basically just be able to set one
+varable and type 'make'.
+
+export ECOS_TARGET_DIR=wherever your eCos installation lives
+
+Please note, this is your build directory, not the source dir.
+
+eg.  /home/whoever/ecos/install
+
+You should end up with two images:
+
+shelltask (ELF image)
+shelltask.bin (flattened binary image)
+
+If you don't know what to do with these, this piece of code is
+probably not for you.
+
+-------
+Startup
+-------
+
+Inside of init.c, there are a few calls to pay attention to:
+
+cyg_user_start() is the normal entry point for an eCos application.
+Inside of there, we print a few messages announcing the fact that
+we're running and then start setting up any subsystems that need to be
+created outside of the driver init framework.
+
+We then proceed to create a cleanup thread.  This thread serves
+roughly the same function as 'init' does on a normal *nix machine.  It
+reaps threads upon exit and cleans up their resources.
+
+We then create the thread that runs the actual shell itself, and then
+let the main thread kill itself off.
+
+At this point, you should see:
+
+eCosShell> 
+
+At this point, the shell is hooked to /dev/ser0 and waiting for input.
+I guess it could probably be made to work via some other interfaces,
+but we didn't need them so we didn't bother.
+
+There are a few builtin commands and either "?" or "help" for a list
+of commands that the shell supports.
+
+They are pretty self explanatory, so I won't bother detailng them
+here.  Type "?" if you're curious.
+
+-------
+Threads
+-------
+
+We have a wrapped around the eCos threads that provide a facility for
+threads to clean themselves up at the end of their runtime.
+
+These threads must be created via shell_create_thread():
+
+unsigned int shell_create_thread(shell_thread_t **nt,
+				unsigned int priority,
+				void (*func)(cyg_addrword_t arg),
+				cyg_addrword_t arg,
+				const char *name,
+				void *stack,
+				unsigned int stack_size,
+				void (*cleanup_func)(void *arg));
+
+If you don't care about having a handle to the created thread, you can
+leave the first argument as NULL.
+
+The second argument is the scheduler priority you want the given
+thread to run at.
+
+The third argument is a function pointer to the entry point of the
+function.
+
+The fourth argument is the data passed to the function
+
+The fifth argument is the name that you want to appear in the process
+list for the thread
+
+The sixth argument is for stack space for the thread if you have some
+carved out already.  Leaving this as NULL will have
+shell_thread_create() allocate the stack space.
+
+The seventh argument allows you to specify a requested stack size, or
+tell shell_create_thread() how large of a space you've passed in
+
+The eighth argument allows you to specify you own custom cleanup
+handler if this thread has special teardown requirements.
+
+An example of usage:
+
+void
+my_thread(cyg_addrword_t data)
+{
+    shell_thread_t *nt = (shell_thread_t *)data;
+
+    /* Do something whatever here */
+    printf("Running inside of a thread");
+
+    /* Done running, so clean myself up */
+    nt->cleanup(nt);
+}
+
+    [...]
+
+    if(neti_create_thread(NULL,
+			  10,
+			  my_thread,
+			  0,
+			  "My Thread",
+			  0,
+			  0,
+			  NULL) != SHELL_OK) {	
+	SHELL_DEBUG_PRINT("Failed to create thread\n");
+	return(SHELL_THREAD_CREATE_FAIL);
+    }
+
+When you run 'ps' you'll see the name of all threads created this way
+in the "process list" for the platform.
+
+----------------
+Adding functions
+----------------
+
+By using CYG_HAL_TABLE_TYPE from Redboot, you can add new commands per file:
+
+builtin_commands.c provides a simple template that shows how to easily
+add commands Adding new commands is as simple as creating a new .c
+file and specifying some shell_cmd() definitions.  One of the nice
+things about doing this is that you can have commands either appear or
+not appear in your system via conditional compile.  If you have a
+bunch of debugging commands that you don't want in your release image,
+it's as simple as not compiling in those files.  Adding them again
+will cause them commands to appear with no changes needed to anything
+else.

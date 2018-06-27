@@ -1,0 +1,3 @@
+cdl_component CYGPKG_NET_QOS {
+    user_value 1
+};

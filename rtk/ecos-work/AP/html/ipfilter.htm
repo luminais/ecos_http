@@ -1,0 +1,191 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>IP Filtering</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+function checkIpRange(start,end)
+{
+  var start_d = getDigit(start,4);
+  start_d += getDigit(start,3)*256;
+  start_d += getDigit(start,2)*256;
+  start_d += getDigit(start,1)*256;
+
+  var end_d = getDigit(end,4);
+  end_d += getDigit(end,3)*256;
+  end_d += getDigit(end,2)*256;
+  end_d += getDigit(end,1)*256;
+
+  if ( start_d <= end_d )
+	return true;
+
+  return false;
+}
+
+function addClick()
+{
+  if (!document.formFilterAdd.enabled.checked)
+  	return true;
+
+  if (document.formFilterAdd.ip.value=="" && document.formFilterAdd.comment.value=="" && document.formFilterAdd.ipendaddr.value=="")
+	return true;
+
+  if ( checkIpAddr(document.formFilterAdd.ip, firewall_ipaddr_invalid) == false )
+	    return false;
+	    
+  if ( document.formFilterAdd.ipendaddr.value!="" && checkIpAddr(document.formFilterAdd.ipendaddr, firewall_ipaddr_invalid) == false )
+	    return false;
+
+	if ( document.formFilterAdd.ipendaddr.value!="" && !checkIpRange(document.formFilterAdd.ip.value,document.formFilterAdd.ipendaddr.value) ) 
+	{
+		alert(firewall_ip_invalid_range);
+		document.formFilterAdd.ip.focus();
+		return false;
+	}
+
+	var LAN_IP = ipv4_to_unsigned_integer("<% getInfo("ip"); %>");
+	var LAN_MASK = ipv4_to_unsigned_integer("<% getInfo("mask"); %>");			
+
+	var tarIp = ipv4_to_unsigned_integer(document.formFilterAdd.ip.value);
+	var tarIp2 = ipv4_to_unsigned_integer(document.formFilterAdd.ipendaddr.value);
+
+	if (((tarIp & LAN_MASK) != (LAN_IP & LAN_MASK)) || (document.formFilterAdd.ipendaddr.value != "" && ((tarIp2 & LAN_MASK) != (LAN_IP & LAN_MASK))))
+	{
+		alert(ip_should_in_current_subnet);
+		return false;
+	}
+	if ((tarIp == LAN_IP) || (document.formFilterAdd.ipendaddr.value != "" && (tarIp2 == LAN_IP)))
+	{
+		alert(ip_should_be_different_from_lanip);
+		return false;
+	}
+	
+  return true;
+}
+
+
+function deleteClick()
+{
+  if ( !confirm(firewall_delete_selectconfm) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function deleteAllClick()
+{
+   if ( !confirm(firewall_delete_allconfm) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+
+function disableDelButton()
+{
+	disableButton(document.formFilterDel.deleteSelFilterIp);
+	disableButton(document.formFilterDel.deleteAllFilterIp);
+}
+
+function updateState()
+{
+  if (document.formFilterAdd.enabled.checked) {
+ 	enableTextField(document.formFilterAdd.ip);
+ 	enableTextField(document.formFilterAdd.ipendaddr);
+	enableTextField(document.formFilterAdd.protocol);
+	enableTextField(document.formFilterAdd.comment);
+  }
+  else {
+ 	disableTextField(document.formFilterAdd.ip);
+ 	disableTextField(document.formFilterAdd.ipendaddr);
+  	disableTextField(document.formFilterAdd.protocol);
+	disableTextField(document.formFilterAdd.comment);
+  }
+}
+
+function Load_Setting()
+{
+	if ( <% getIndex("ipFilterEnabled"); %> )
+		document.formFilterAdd.enabled.checked = true;
+	else
+		document.formFilterAdd.enabled.checked = false;
+	updateState();
+}
+
+function showEndIpAddr()
+{
+	var ipRangeEnable=<% getIndex("ipfilter_range_enable"); %>;
+
+	if (ipRangeEnable)
+	{
+		document.write('-<input type="text" name="ipendaddr" size="10" maxlength="15">');
+	}
+}
+</script>
+</head>
+
+<body onload="Load_Setting();">
+<blockquote>
+<h2><font color="#0000FF"><script>dw(ipfilter_header)</script></font></h2>
+
+<table border=0 width="500" cellspacing=4 cellpadding=0>
+<tr><td><font size=2>
+<script>dw(ipfilter_header_explain)</script>
+</font></td></tr>
+
+<tr><td><hr size=1 noshade align=top></td></tr>
+
+<form action=/formFilter.htm method=POST name="formFilterAdd">
+<tr><td><font size=2><b>
+   	<input type="checkbox" name="enabled" value="ON" ONCLICK=updateState()>&nbsp;&nbsp;<script>dw(ipfilter_enable)</script></b><br>
+    </td>
+</tr>
+
+<tr><td>
+     <p><font size=2><b><script>dw(firewall_local_ipaddr)</script></b> <input type="text" name="ip" size="10" maxlength="15"><script>showEndIpAddr();</script>&nbsp;&nbsp;
+  	<b><font size=2><script>dw(firewall_proto)</script></b> <select name="protocol">
+    		<option select value="0"><script>dw(firewall_proto_both)</script></option>
+    		<option value="1"><script>dw(firewall_proto_tcp)</script></option>
+    		<option value="2"><script>dw(firewall_proto_udp)</script></option>
+    		</select></font>&nbsp;&nbsp
+  	<b><font size=2><script>dw(firewall_comm)</script></b> <input type="text" name="comment" size="12" maxlength="20"></font>
+     </p>
+     <p><input type="submit" name="addFilterIp" onClick="return addClick()">&nbsp;&nbsp;
+     	<script>document.formFilterAdd.addFilterIp.value=firewall_apply;</script>
+        <input type="reset" name="reset">
+        <script>document.formFilterAdd.reset.value=firewall_reset;</script>
+        <input type="hidden" value="/ipfilter.htm" name="submit-url">
+     </p>
+   </td></tr>
+  <script> updateState(); </script>
+</form>
+</table>
+
+<br>
+<form action=/formFilter.htm method=POST name="formFilterDel">
+  <table border="0" width=500>
+  <tr><font size=2><b><script>dw(firewall_filtertbl)</script></b></font></tr>
+  <% ipFilterList(); %>
+  </table>
+  <br>
+  <input type="submit" name="deleteSelFilterIp" onClick="return deleteClick()">&nbsp;&nbsp;
+  <script>document.formFilterDel.deleteSelFilterIp.value=firewall_delete_select;</script>
+  <input type="submit" name="deleteAllFilterIp" onClick="return deleteAllClick()">&nbsp;&nbsp;&nbsp;
+  <script>document.formFilterDel.deleteAllFilterIp.value=firewall_delete_all;</script>
+  <input type="reset" name="reset">
+  <script>document.formFilterDel.reset.value=firewall_reset;</script>
+  <input type="hidden" value="/ipfilter.htm" name="submit-url">
+ <script>
+	if ( <% getIndex("ipFilterNum"); %> == 0 )
+		disableDelButton();
+ </script>
+</form>
+
+</blockquote>
+</body>
+</html>

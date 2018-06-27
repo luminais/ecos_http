@@ -1,0 +1,55 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html"; charset=<% getLangInfo("charset");%>>
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>Active Wireless Client Table</title>
+</head>
+
+<body>
+<blockquote>
+<h2><font color="#0000FF">
+<script type="text/javascript">
+var wlan_num =  <% getIndex("wlan_num"); %>;
+if (wlan_num > 1) {
+	var wlan_idx_ = <% getIndex("wlan_idx"); %> + 1;
+	dw(wlstatbl_tbl_name + "-wlan" + wlan_idx_ + "</p>");
+}
+else
+	dw(wlstatbl_tbl_name + "</p>");
+</script>
+</font></h2>
+
+
+<table border=0 width="800" cellspacing=0 cellpadding=0>
+  <tr><font size=2>
+  <script>dw(wlstatbl_explain);</script>
+  </tr>
+  <tr><hr size=1 noshade align=top></tr>
+</table>
+<form action=/formWirelessTbl.htm method=POST name="formWirelessTbl">
+<table border='1' width="580">
+<tr bgcolor=#7f7f7f><td width="80"><font size=2><b><script>dw(wlstatbl_mac)</script></b></td>
+<!--
+<td width="250"><font size=2><b>SSID</b></td>
+-->
+<td width="60"><font size=2><b><script>dw(wlstatbl_mode)</script></b></td>
+<td width="60"><font size=2><b><script>dw(wlstatbl_tx)</script></b></td>
+<td width="60"><font size=2><b><script>dw(wlstatbl_rx)</script></b></td>
+<td width="60"><font size=2><b><script>dw(wlstatbl_tx_rate)</script></b></td>
+<td width="60"><font size=2><b><script>dw(wlstatbl_ps)</script></b></td>
+<td width="60"><font size=2><b><script>dw(wlstatbl_expired_time)</script></b></td></tr>
+<% wirelessClientList(); %>
+</table>
+
+<input type="hidden" value="/wlstatbl.htm" name="submit-url">
+  <p><input type="submit"  name="refresh">&nbsp;&nbsp;
+  <script>document.formWirelessTbl.refresh.value=wlstatbl_refresh;</script>
+  <input type="button"  name="close" onClick="javascript: window.close();"></p>
+  <script>document.formWirelessTbl.close.value=wlstatbl_close;</script>
+</form>
+</blockquote>
+</body>
+
+</html>

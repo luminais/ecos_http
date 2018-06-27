@@ -1,0 +1,7 @@
+cdl_component RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 {
+    user_value 1
+};
+
+cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC {
+    user_value 8192C
+};

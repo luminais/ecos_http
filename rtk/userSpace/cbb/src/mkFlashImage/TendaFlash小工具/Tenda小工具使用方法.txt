@@ -1,0 +1,11 @@
+在linux下运行命令：
+./TendaFlash.exe optiont(envram or nvram) flashpath flashsize
+optiont:操作类型
+	envram:提取envram配置参数
+	nvram:提取nvram配置参数
+flashpath:
+	烧录镜像的文件路径
+flashsize:烧录镜像的大小
+	1 ：1M
+	2：2M
+	

@@ -1,0 +1,17 @@
+include $(ECOS_WORK_DIR)/.config
+
+GLOBAL_CFLAGS =
+GLOBAL_CXXFLAGS =
+GLOBAL_LDFLAGS =
+
+ifeq ($(CONFIG_MIPS16),y)
+GLOBAL_CFLAGS += -mips16 -DCONFIG_MIPS16
+GLOBAL_CXXFLAGS += -mips16 -DCONFIG_MIPS16
+endif
+
+ifeq ($(CONFIG_RTL_8197F),y)
+GLOBAL_LDFLAGS += -EL
+endif
+
+TARGET = built-in.o
+PREFIX?=$(notdir $(shell pwd))_

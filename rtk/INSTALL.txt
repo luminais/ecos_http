@@ -1,0 +1,153 @@
+0. Introduction
+   This file will show you how to build the RTL8196E/RTL8881A/RTL8197DL/RTL8197D/RTL8196EU ecos system. Besides, It will guide you how to download the built image to Realtek EV (Evaluation) board for testing. PLEASE NOTE, the download image will overwrite the original image existed in the flash memory of EV board.
+
+1. Build Environment
+   Fedora 9
+   Ubuntu 8.10/9.10
+
+2. Quick start
+   - tar zxvf rtl819x_eCos.tar.gz
+   - cd rtl819x_eCos/
+   - config
+	--for 8196E+88E
+		make menuconfig
+                        Selected Target (rtl8196e)
+                        Selected toolchain (rsdk-1.5.7)
+                        Selected Board Configuration (rtl8196e-88e) 
+                        [*] Load default settings
+	--for 8196E+92E
+		make menuconfig
+			Selected Target (rtl8196e)
+			Selected toolchain (rsdk-1.5.7)
+			Selected Board Configuration (rtl8196e-92e)
+			[*] Load default settings
+	--for 8196E+92E+IPV6
+		make menuconfig
+			Selected Target (rtl8196e)
+			Selected toolchain (rsdk-1.5.7)
+			Selected Board Configuration (rtl8196e-92e-ipv6)
+			[*] Load default settings
+	--for 8196EU+88E
+		make menuconfig
+			Selected Target (rtl8196eu)
+			Selected toolchain (rsdk-1.5.7)
+			Selected Board Configuration (rtl8196eu-88e)
+			[*] Load default settings
+	--for 8881AM_CMJ
+		make menuconfig
+			Selected Target (rtl8881a)  
+			Selected toolchain (rsdk-1.5.7)  
+			Selected Board Configuration (rtl8881a-CMJ)
+			[*] Load default settings 
+	--for 8881AQ_88E
+		make menuconfig
+			Selected Target (rtl8881a)
+                        Selected toolchain (rsdk-1.5.7)
+                        Selected Board Configuration (rtl8881a-88e)
+                        [*] Load default settings
+	--for 8881Q_92E
+		make menuconfig
+                        Selected Target (rtl8881a)
+                        Selected toolchain (rsdk-1.5.7)
+                        Selected Board Configuration(rtl8881a-92e)
+                        [*] Load default settings
+        --for 8881AB_8367R_92E
+                make menuconfig
+                        Selected Target (rtl8881a)
+                        Selected toolchain (rsdk-1.5.7)
+                        Selected Board Configuration (rtl8881ab-8367rb-92e)
+                        [*] Load default settings
+        --for 8881AM_XDG
+                make menuconfig
+                        Selected Target (rtl8881a)
+                        Selected toolchain (rsdk-1.5.7)
+                        Selected Board Configuration (rtl8881a-XDG)
+                        [*] Load default settings
+	--for 8881A_92E_IPV6
+                make menuconfig
+                        Selected Target (rtl8881a)
+                        Selected toolchain (rsdk-1.5.7)
+                        Selected Board Configuration (rtl8881a-92e-ipv6)
+                        [*] Load default settings
+	--for 97DL_92E_8812
+		make menuconfig
+                        Selected Target (rtl8197dl)
+                        Selected toolchain (rsdk-1.5.7)
+                        Selected Board Configuration (rtl8197dl-92e-8812)
+                        [*] Load default settings
+	--for 97D_8367R_92E_8812
+		make menuconfig
+                        Selected Target (rtl8197d)
+                        Selected toolchain (rsdk-1.5.7)
+                        Selected Board Configuration (rtl8197d-8367r-92e-8812)
+                        [*] Load default settings
+   - make
+
+3. make image
+   there are three steps for making image:
+   - make ecos
+     build the kernel files
+   - make app
+     build the users applications
+   - make image
+     compress the root.bin and linux.bin
+
+4. build bootloader
+   - ensure the source code of sdk is existent, do command "tar zxvf rtl819x_ecos.tar.gz" first, it include the toolchain.
+   - add environment variable(assume you source code directory is /rtl819x_ecos):
+	--for 8196E(use bootcode_rtl8196d)
+		"export PATH=/toolchain/rsdk-1.3.6-5281-EB-2.6.30-0.9.30.3-110714/bin:$PATH"
+	--for 8196EU(use bootcode_rtl8196d)
+		"export PATH=/toolchain/rsdk-1.3.6-5281-EB-2.6.30-0.9.30.3-110714/bin:$PATH"
+	--for 8197DL(use bootcode_rtl8196d)
+		"export PATH=/toolchain/rsdk-1.5.5-5281-EB-2.6.30-0.9.30.3-110714/bin:$PATH"
+	--for 8197D+8367R(use bootcode_rtl8197d_8367r)
+		"export PATH=/toolchain/rsdk-1.5.5-5281-EB-2.6.30-0.9.30.3-110714/bin:$PATH"
+	--for 8881A_CMJ(use bootcode_rtl8881A)
+		"export PATH=/toolchain/rsdk-1.5.5-5281-EB-2.6.30-0.9.30.3-110714/bin:$PATH"
+   - cd bootcode_rtl8196d
+   - make menuconfig:
+	--for 8196E
+		select 'RTL8196E' for 8196E demo board
+		select 'SPI_FLASH' for SPI flash demo board, select 'NOR_FLASH' for NOR flash demo board
+		select 'BOOT_SIO_8198_8196C'
+		select 'NORMAL' for SDRAM demo board, select 'DDR2' for DDR memory demo board
+		select 'Dram8M_8Mx1_16bit' for HW Setting
+		(10000) LINUX image flash offset start
+		(60000) LINUX image flash offset end
+		(1000) lINUX image check step
+		(E0000) ROOT image flash offset start
+		(130000) ROOT image flash offset end
+		(1000) ROOT image check step  
+		enable LZMA '[*] LZMA Enable(Default GZip) '
+		enable [*] Boot Code Debug Command Enable
+     	    you can do command "cp def-rtl8196e-config .config" before 'make menuconfig', and it will do the default setting for rtl8196e bootcode.
+
+   - make 
+   - ==> you will find boot.bin in ./btcode
+   - ==> 'boot.bin' is the bootloader image
+
+5. binary file list
+   - bootcode_ecos/btcode/boot.bin : bootloader image
+   - rtl819x_eCos/image/fw.bin: the image include
+    	  
+6. Download image files to Realtek EV (evaluation) board for testing
+   - Use a RS232 cable to connect COM port between a LINUX PC and EV board.
+   - Connect LINUX PC Ethernet port to the LAN port of EV board. Set PC IP
+     address to 192.168.1.x (e.g., type 'ifconfig eth0 192.168.1.1').
+   - Start a COM port console (e.g., minicom), and set COM port setting to
+     38400, 8N1 and no flow control.
+   - Power on EV board, and press 'ESC' key in COM port console to escape the
+     booting process. If ok, you may see "<RealTek>" prompt in the console.
+   - Start a TFTP client in LINUX PC, and connect to 192.168.1.6. Set file
+     type to binary mode to TFTP server of EV board, put root.bin if gw 
+     platform to TFTP server, and put root image file(rtl819x/image/root.bin) to TFTP server,
+     then put the webpages image file and  linux image files to TFTP server.
+     After linux.bin file upload had finished, boot code will auto booting.
+   - NOTE:you can do the same thing on Windos PC.
+
+
+NOTE:
+     - If you don't use the default setting to make bootcode, make sure the size of boot.bin is less than 24K.
+
+02/05/2015

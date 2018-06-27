@@ -1,0 +1,11 @@
+cdl_component CYGHWR_NET_DRIVER_ETH0_MANUAL {
+    user_value 1
+};
+
+cdl_component CYGHWR_NET_DRIVER_ETH0_BOOTP {
+    user_value 0
+};
+
+cdl_component CYGHWR_NET_DRIVER_ETH0_ADDRS {
+    user_value 0
+};

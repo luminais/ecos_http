@@ -1,0 +1,3 @@
+cdl_option CYGNUM_NET_FAST_THREAD_TICKLE_DEVS_DELAY {
+    user_value 5
+};

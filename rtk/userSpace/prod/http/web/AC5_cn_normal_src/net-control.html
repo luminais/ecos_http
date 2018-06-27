@@ -1,0 +1,64 @@
+<section class="container-fluid">
+  <form class="form-horizontal" id="attachedDevices">
+  <h2 class="legend">Online Devices<span id="qosDeviceCount"></span></h2>
+  <fieldset>
+    <div class="table-responsive form-group">
+      <table class="table" style="table-layout: fixed;">
+        <thead>
+          <tr>
+            <th class="col-xs-3">Device Name</th>
+            <th class="col-xs-2 hidden-max-sm">Download Speed</th>
+            <th class="col-xs-2 hidden-max-md">Upload Speed</th>
+            <th class="col-xs-2 hidden-max-xs">Download Limit</th>
+            <th class="col-xs-2 hidden-max-md">Upload Limit</th>
+            <th id="accessCtrl" class="col-sm-2 col-xs-2" style="text-align: center;">Internet Access</th>
+          </tr>
+        </thead>
+        <tbody id="qosList"></tbody>
+      </table>
+    </div>
+  </fieldset>
+</form>
+<!--End Attached Devices-->
+  <div id="guestListWrap" class="none">
+      <form class="form-horizontal">
+  <h2 class="legend">Guest Devices<span id="guestDeviceCount"></span></h2>
+  <fieldset>
+    <div class="table-responsive form-group">
+      <table class="table" style="table-layout: fixed;">
+        <thead>
+          <tr>
+            <th class="col-xs-3">Device Name</th>
+            <th class="col-xs-2">IP Address</th>
+            <th class="col-xs-2 hidden-max-sm">Download Speed</th>
+            <th class="col-xs-2 hidden-max-sm">Upload Speed</th>
+          </tr>
+        </thead>
+        <tbody id="guestList"></tbody>
+      </table>
+    </div>
+  </fieldset>
+</form>
+<!--End Guest Devices-->
+  </div>
+<form class="form-horizontal" id="blockedDevices">
+  <h2 class="legend">Blacklisted Devices<!--  <span id="blockedDeviceCount">(2)</span> --></h2>
+  <fieldset>
+    <div class="table-responsive form-group">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="col-xs-4">Device Name</th>
+            <th class="col-xs-4 hidden-max-xs">MAC Address</th>
+            <th class="col-xs-4">Unlimit</th>
+          </tr>
+        </thead>
+        <tbody id="qosListAccess">
+        </tbody>
+      </table>
+    </div>
+  </fieldset>
+</form>
+  <section class="icon-manufacturer" style="visibility:hidden">&nbsp;
+</section>
+</section>

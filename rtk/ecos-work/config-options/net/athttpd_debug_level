@@ -1,0 +1,3 @@
+cdl_option CYGOPT_NET_ATHTTPD_DEBUG_LEVEL { 
+          user_value 2 
+      }

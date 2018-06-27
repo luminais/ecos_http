@@ -1,0 +1,3 @@
+cdl_option CYGPKG_NET_READYLOGO_CORE_PATCH {
+    user_value 1
+};

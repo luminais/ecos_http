@@ -1,0 +1,187 @@
+<html>
+<head>
+<script>
+function loadMajong()
+{
+	
+}
+function resetAllMenu()
+{
+	var imgElement=document.getElementById("menuWizardId");
+	var txtElement=document.getElementById("menuWizardTxtId");
+	imgElement.src="CM_gray.png";
+	txtElement.className="menuTxt";
+	imgElement=document.getElementById("menuUploadId");
+	txtElement=document.getElementById("menuUploadTxtId");
+	imgElement.src="CM_gray.png";
+	txtElement.className="menuTxt";
+	imgElement=document.getElementById("menuStatusId");
+	txtElement=document.getElementById("menuStatusTxtId");
+	imgElement.src="CM_gray.png";
+	txtElement.className="menuTxt";
+}
+var menuBak;
+var menuTxtBak;
+function clickMenu(id)
+{
+	resetAllMenu();
+	if(id=="layerMenuWizard")
+	{
+		document.getElementById("menuWizardId").src="CM_green.png";
+		menuBak=document.getElementById("menuWizardId").src;
+		document.getElementById("menuWizardTxtId").className="menuTxtSel";
+		menuTxtBak=document.getElementById("menuWizardTxtId").className;
+	}else
+	if(id=="layerMenuUpload")
+	{
+		document.getElementById("menuUploadId").src="CM_green.png";
+		menuBak=document.getElementById("menuUploadId").src;
+		document.getElementById("menuUploadTxtId").className="menuTxtSel";
+		menuTxtBak=document.getElementById("menuUploadTxtId").className;
+	}else
+	if(id=="layerMenuStatus")
+	{
+		document.getElementById("menuStatusId").src="CM_green.png";
+		menuBak=document.getElementById("menuStatusId").src;
+		document.getElementById("menuStatusTxtId").className="menuTxtSel";
+		menuTxtBak=document.getElementById("menuStatusTxtId").className;
+	}
+}
+
+function mouseOverMenu(id)
+{
+	if(id=="layerMenuWizard")
+	{		
+		menuBak=document.getElementById("menuWizardId").src;
+		menuTxtBak=document.getElementById("menuWizardTxtId").className;
+		document.getElementById("menuWizardId").src="CM_blue.png";
+		document.getElementById("menuWizardTxtId").className="menuTxtOver";
+	}else
+	if(id=="layerMenuUpload")
+	{
+		menuBak=document.getElementById("menuUploadId").src;
+		menuTxtBak=document.getElementById("menuUploadTxtId").className;
+		document.getElementById("menuUploadId").src="CM_blue.png";
+		document.getElementById("menuUploadTxtId").className="menuTxtOver";
+	}else
+	if(id=="layerMenuStatus")
+	{
+		menuBak=document.getElementById("menuStatusId").src;
+		menuTxtBak=document.getElementById("menuStatusTxtId").className;
+		document.getElementById("menuStatusId").src="CM_blue.png";
+		document.getElementById("menuStatusTxtId").className="menuTxtOver";
+	}
+}
+function mouseOutMenu(id)
+{
+	if(id=="layerMenuWizard")
+	{
+		document.getElementById("menuWizardId").src=menuBak;
+		document.getElementById("menuWizardTxtId").className=menuTxtBak;
+	}else
+	if(id=="layerMenuUpload")
+	{
+		document.getElementById("menuUploadId").src=menuBak;
+		document.getElementById("menuUploadTxtId").className=menuTxtBak;
+	}else
+	if(id=="layerMenuStatus")
+	{
+		document.getElementById("menuStatusId").src=menuBak;
+		document.getElementById("menuStatusTxtId").className=menuTxtBak;
+	}
+}
+</script>
+</head>
+<style type="text/css">
+.menuTxt {font-weight:bold;font-size:15px; color:#333333; text-align:center;font-family:Microsoft YaHei,calibri,verdana;}
+.menuTxtSel {font-weight:bold;font-size:15px;color:rgb(79,90,4); text-align:center;font-family:Microsoft YaHei,calibri,verdana;}
+.menuTxtOver {font-weight:bold; font-size:15px; color:rgb(0,127,204); text-align:center;font-family:Microsoft YaHei,calibri,verdana;}
+a img{ border:0;}
+a:link { text-decoration: none;}
+a:visited { text-decoration: none;}
+a:hover { text-decoration: none;}
+a:active { text-decoration: none;outline:none;}
+a:focus {
+     outline:none;
+     -moz-outline:none;
+}
+<!--
+#LayerBackground { position:absolute; background-color:rgb(230,234,247);  left:0px; top:0px; width:1024px; height:730px; z-index:1;}
+#LayerHeadPic { position:absolute; left:0px; top:0px; width:1024; height:124; z-index:2;}
+#layerMenuWizard{ position:absolute; left:40px; top:180; width:110px; height:100px; z-index:2;}
+#layerMenuWizardTxt {
+	position:absolute;
+	left:-21px;
+	top:85px; 
+	height:25px;
+	z-index:3;
+	width: 136px;
+}
+#layerMenuUpload{ position:absolute; left:40px; top:330; width:110px; height:100px; z-index:2;}
+#layerMenuUploadTxt {
+	position:absolute;
+	left:-34px;
+	top:85px;
+	height:25px;
+	z-index:3;
+	width: 158px;
+}
+#layerMenuStatus{ position:absolute; left:40px; top:480; width:110px; height:100px; z-index:2;}
+#layerMenuStatusTxt {
+	position:absolute;
+	left:-32px;
+	top:85px;
+	height:20px;
+	z-index:3;
+	width: 144px;
+}
+#layerContentBackGroud{ position:absolute; left:220px; top:170; width:700px; height:550px; z-index:2;}
+#layerContent{	position:absolute;	left:245px;	top:190;	width:700px;	height:500px;	z-index:3;
+	border: none;
+}
+
+#LayerBottomLine { position:absolute; background-color:rgb(0,127,204); left:0px; top:715px; width:1024; height:15; z-index:2;}
+-->
+</style>
+<body onLoad="loadMajong();">
+
+<div id="LayerBackground"></div>
+<div id="LayerHeadPic">
+	<img id="headPicId" src="CM_bg_top.jpg" hspace="0" vspace="0">
+</div>
+<div id="layerMenuWizard" onClick="clickMenu(this.id);" onMouseOver="mouseOverMenu(this.id);" onMouseOut="mouseOutMenu(this.id)">
+	<a href="wizard.htm" target="iframe_content" hidefocus="true">
+	<img id="menuWizardId" src="CM_green.png"><br/>
+	<div id="layerMenuWizardTxt">
+	<div id="menuWizardTxtId" class="menuTxtSel">Setup Wizard</div>
+	</div>
+	</a>
+</div>
+<div id="layerMenuUpload" onClick="clickMenu(this.id);" onMouseOver="mouseOverMenu(this.id);" onMouseOut="mouseOutMenu(this.id)">
+	<a href="upload.htm" target="iframe_content" hidefocus="true">
+	<img id="menuUploadId" src="CM_gray.png"><br/>
+	<div id="layerMenuUploadTxt">
+	<div id="menuUploadTxtId" class="menuTxt">Upgrade Firmware</div>
+	</div>
+	</a>
+</div>
+<div id="layerMenuStatus" onClick="clickMenu(this.id);" onMouseOver="mouseOverMenu(this.id);" onMouseOut="mouseOutMenu(this.id)">
+	<a href="status.htm" target="iframe_content" hidefocus="true">
+	<img id="menuStatusId" src="CM_gray.png"><br/>
+	<div id="layerMenuStatusTxt">
+	<div id="menuStatusTxtId" class="menuTxt">Status</div>
+	</div>
+	</a>
+</div>
+<div id="layerContentBackGroud">
+	<img id="contentImg" src="content.png">
+</div>
+<div id="LayerBottomLine"></div>
+<div id="layerContent">
+	<iframe allowTransparency="true" name="iframe_content" id="iframe_content_id" src="wizard.htm" width="645" height="500" frameborder=0>	
+</div>
+</body>
+
+
+
+</html>

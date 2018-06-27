@@ -1,0 +1,3 @@
+cdl_option CYGPKG_IO_WATCHDOG_SOFT {
+	user_value 1
+};

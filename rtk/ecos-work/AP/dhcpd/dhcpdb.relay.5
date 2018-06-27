@@ -1,0 +1,85 @@
+.TH DHCPDB.RELAY 5 "April 23, 1997"
+.SH NAME
+.B dhcpdb.relay
+\- database which lists relay agents
+.SH DESCRIPTION
+When the DHCP (Dynamic Host Configuration Protocol) server receives an
+address assignment request from client via relay agent,
+.B dhcpdb.relay
+is referred to get subnet mask on which client is.  And the server
+ignore requests forwarded from the relay agent which isn't described
+in this database.
+.LP
+.B dhcpdb.relay
+is configured as set of lines.  Each line are pair of IP address of
+relay agent and its subnet number.  Both value must have a format
+which is able to be converted by
+.BR inet_addr (3),
+and separated by spaces or tabs.
+.LP
+It has no mean to write the IP address of the relay agent to forward
+messages to which is on the same subnet as the server is on, or rather
+it may cause non-desirable behavior.  But it has no problem to relay
+messages to servers on another subnet.  So you don't have to describe
+the IP address of relay agent on the same subnet in this database.
+.LP
+relay agent notify IP address of the server from which it receives the
+message.  So the IP address described in
+.B dhcpdb.relay
+also should be the IP address which the relay agent handles.  If the
+relay agent handles multiple network interfaces, it is required to
+specify all of them in this file.
+.SH EXAMPLES
+.PD 0
+.TP 20
+133.4.30.9
+255.255.255.224
+.TP
+133.4.29.2
+255.255.255.224
+.TP
+133.27.4.200
+255.255.254.0
+.PD
+.SH FILES
+.PD 0
+.TP 25
+.B /etc/dhcpdb.bind
+Database about bindings (/var/db/dhcpdb.bind for BSD/OS and FreeBSD)
+.TP
+.B /etc/dhcpdb.pool
+Address Pool database
+.TP
+.B /etc/dhcpdb.relay
+Database which lists relay agents
+.TP
+.B /tmp/addrpool_dump
+Dump of the address pool database
+.TP
+.B /var/run/dhcps.pid
+File which includes process ID (/var/tmp/dhcps.pid for NEWSOS)
+.PD
+.SH SEE ALSO
+.BR dhcps (8)
+.LP
+R. Droms,
+.I Dynamic Host Configuration
+.IR Protocol ,
+RFC2131.
+.LP
+W. Wimer,
+.I Clarifications and Extensions for the Bootstrap
+.IR Protocol ,
+RFC1542.
+.LP
+S. Alexander, R. Droms,
+.I DHCP Options and BOOTP Vendor
+.IR Extensions ,
+RFC2132.
+.LP
+R. Droms,
+.I Interoperation Between DHCP and
+.IR BOOTP ,
+RFC1534.
+.SH AUTHOR
+Akihiro Tominaga <tomy@sfc.wide.ad.jp>

@@ -1,0 +1,3 @@
+cdl_option CYGPKG_NET_FREEBSD_STACK_CFLAGS_ADD {
+    user_value "-D_KERNEL -mips16"
+};

@@ -1,0 +1,219 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>Wireless Site Survey</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+var connectEnabled=0, autoconf=0;
+
+
+function opera()
+{
+	if(top.location != self.location){  
+		var a = window.parent.document.getElementsByTagName('iframe');  
+		for (var i=0; i<a.length; i++){  
+			if (a[i].name == self.name) {  
+				a[i].height = document.body.scrollHeight; return;  
+			}  
+		}  
+	}  
+}
+
+
+function enableConnect(selId)
+{ 	
+	if (is_cmj & ui_mode)
+	{
+		set_security(selId)
+		return;
+	}
+
+	if(parent.document.getElementById("select"))
+		parent.document.getElementById("select").value = "sel"+selId;
+				
+	if(parent.document.getElementById("next"))
+		enableTextField(parent.document.getElementById("next"));
+		
+	if(parent.document.getElementById("pocket_ssid"))		
+  parent.document.getElementById("pocket_ssid").value = document.getElementById("selSSID_VAL_"+selId).value;
+  
+  parent.document.getElementById("pocket_channel").value = document.getElementById("selChannel_"+selId).value;
+  
+//alert("pocket_channel="+parent.document.getElementById("pocket_channel").value);  
+
+  parent.document.getElementById("pocketAP_ssid").value = document.getElementById("selSSID_VAL_"+selId).value;
+  parent.document.getElementById("pocket_encrypt").value = document.getElementById("selEncrypt_"+selId).value;
+  
+  if(parent.document.getElementById("pocket_wpa_tkip_aes"))
+  parent.document.getElementById("pocket_wpa_tkip_aes").value = document.getElementById("wpa_tkip_aes_"+selId).value;
+  
+  if(parent.document.getElementById("pocket_wpa2_tkip_aes"))	
+  parent.document.getElementById("pocket_wpa2_tkip_aes").value = document.getElementById("wpa2_tkip_aes_"+selId).value;
+
+  if(parent.document.wizardPocketGW)
+  {
+	  if(document.getElementById("wpa_tkip_aes_"+selId).value == "aes/tkip")
+	  	parent.document.wizardPocketGW.elements["ciphersuite0"].value = "aes";
+	  else if(document.getElementById("wpa_tkip_aes_"+selId).value == "tkip")
+	  	parent.document.wizardPocketGW.elements["ciphersuite0"].value = "tkip";
+	  else if(document.getElementById("wpa_tkip_aes_"+selId).value == "aes")
+	  	parent.document.wizardPocketGW.elements["ciphersuite0"].value = "aes";
+	  	
+	  if(document.getElementById("wpa2_tkip_aes_"+selId).value == "aes/tkip")
+	  	parent.document.wizardPocketGW.elements["wpa2ciphersuite0"].value = "aes";
+	  else if(document.getElementById("wpa2_tkip_aes_"+selId).value == "tkip")
+	  	parent.document.wizardPocketGW.elements["wpa2ciphersuite0"].value = "tkip";
+	  else if(document.getElementById("wpa2_tkip_aes_"+selId).value == "aes")
+	  	parent.document.wizardPocketGW.elements["wpa2ciphersuite0"].value = "aes";
+  }
+}
+
+function siteSurvey(ifname, opmode)  
+{  
+	//alert("SSIDSiteSurvey wlan"+ifname);
+
+	if (is_cmj & ui_mode)
+		set_opmode(opmode)
+	
+	document.formWlSiteSurvey.ifname.value = "wlan"+ifname;
+	document.formWlSiteSurvey.submit();
+
+}
+
+//--- BEG: CONFIG_CUTE_MAHJONG -------------------------------------------------
+var is_cmj = <% getInfo("is_cmj"); %>;
+var ui_mode = <% getInfo("ui_mode"); %>;
+var gpio_2g5g = <% getInfo("gpio_2g5g"); %>;
+function set_security_debug(selId, encrypt, wpa_tkip_aes, wpa2_tkip_aes)
+{
+	var encrypt_val = parent.document.getElementById("sel_wlsurvey_encryption0").value;
+
+	if (0)
+	{
+	alert("AP_ssid["+document.getElementById("selSSID_VAL_"+selId).value+"], "+
+		"VXD_ssid["+document.getElementById("selSSID_VAL_"+selId).value+"], "+
+		"channel["+document.getElementById("selChannel_"+selId).value+"], "+
+		"encrypt["+document.getElementById("selEncrypt_"+selId).value+"], "+
+		"wpa_tkip_aes_["+document.getElementById("wpa_tkip_aes_"+selId).value+"], "+
+		"wpa2_tkip_aes_["+document.getElementById("wpa2_tkip_aes_"+selId).value+"]"
+		);
+	}
+	if (0)
+	{
+	alert("root_ssid["+parent.document.getElementById("wlbasic_ssid0").value+"], "+
+		"AP_ssid["+parent.document.getElementById("wisp_ap_ssid").value+"], "+
+		"VXD_ssid["+parent.document.getElementById("site_survey_ssid").value+"], "+
+		"channel["+parent.document.getElementById("sel_wlbasic_chnnelnum0").value+"], "+
+		"cmj_channel["+parent.document.getElementById("cmj_channel").value+"]"
+		);
+	}
+
+	if (encrypt_val == "0")
+		alert("no");
+	else if (encrypt_val == "1")
+		alert("wep");
+	else if (encrypt_val == "2")
+		alert("wpa-tkip");
+	else if (encrypt_val == "4")
+		alert("wpa2-aes");
+	else if (encrypt_val == "6")
+		alert("wpa2-mixed");
+	else
+		alert("other");
+
+	//alert("sel_wlsurvey_encryption0 is "+ parent.document.getElementById("sel_wlsurvey_encryption0").value);
+	//alert("ap-ssid is " +parent.document.getElementById("wlbasic_ssid0").value);
+	//alert("rpt-ssid is " +parent.document.getElementById("site_survey_ssid").value);
+}
+
+function set_security(selId)
+{
+	var encrypt = document.getElementById("selEncrypt_"+selId).value;
+	var wpa_tkip_aes = document.getElementById("wpa_tkip_aes_"+selId).value;
+	var wpa2_tkip_aes = document.getElementById("wpa2_tkip_aes_"+selId).value;
+	var channel = document.getElementById("selChannel_"+selId).value;
+
+	//fixd value!!!
+	if (gpio_2g5g == 2)
+		parent.document.getElementById("sel_wlbasic_band0").value = 10; //band should be BGN
+	else
+		parent.document.getElementById("sel_wlbasic_band0").value = 75; //band should be ANAC
+	parent.document.getElementById("sel_wlbasic_mode0").value = 0; //mode should be AP
+
+	//set channel
+	//parent.document.getElementById("sel_wlbasic_chnnelnum0").value = document.getElementById("selChannel_"+selId).value;
+	parent.document.getElementById("sel_wlbasic_chnnelnum0").value = channel;
+	parent.document.getElementById("cmj_channel").value = channel;
+
+//alert("channel is "+channel+", cmj_channel is "+parent.document.getElementById("cmj_channel").value);
+
+	//set ssid
+	parent.document.getElementById("wlbasic_ssid0").value = document.getElementById("selSSID_VAL_"+selId).value+"-rpt";
+	parent.document.getElementById("wisp_ap_ssid").value = document.getElementById("selSSID_VAL_"+selId).value+"-rpt";
+	parent.document.getElementById("site_survey_ssid").value = document.getElementById("selSSID_VAL_"+selId).value;
+
+	parent.document.getElementById("select").value = selId;
+//alert("select is "+parent.document.getElementById("select").value);
+
+	if (encrypt == "no")
+		parent.document.getElementById("sel_wlsurvey_encryption0").value = 0;
+	else if (encrypt == "WEP") {
+		parent.document.getElementById("sel_wlsurvey_encryption0").value = 1;
+
+		//default set 64bit/ascii
+		parent.document.getElementById("sel_wlsec_key_length").value = 1;
+		parent.document.getElementById("sel_wlsurvey_keyfmt").value = 1;
+	}
+	else if (encrypt == "WPA-PSK" && wpa_tkip_aes == "tkip")
+		parent.document.getElementById("sel_wlsurvey_encryption0").value = 2;
+	else if (encrypt == "WPA2-PSK" && wpa2_tkip_aes == "aes")
+		parent.document.getElementById("sel_wlsurvey_encryption0").value = 4;
+	else if (encrypt == "WPA-PSK/WPA2-PSK" && (wpa_tkip_aes == "aes" || wpa_tkip_aes == "aes/tkip" || wpa_tkip_aes == "tkip") && (wpa2_tkip_aes == "aes"|| wpa2_tkip_aes == "aes/tkip" || wpa2_tkip_aes == "tkip"))
+	{
+		//parent.document.getElementById("sel_wlsurvey_encryption0").value = 6;
+		parent.document.getElementById("sel_wlsurvey_encryption0").value = 4;
+	}
+	else
+		parent.document.getElementById("sel_wlsurvey_encryption0").value = 0;
+
+	//set_security_debug(selId, encrypt, wpa_tkip_aes, wpa2_tkip_aes)
+}
+
+function set_opmode(opmode)
+{
+	//alert("opmode is "+opmode);
+	if (opmode == 2)
+		document.formWlSiteSurvey.opmode.value = 2;
+	else
+		document.formWlSiteSurvey.opmode.value = 0;
+}
+//--- END: CONFIG_CUTE_MAHJONG -------------------------------------------------
+
+</script> 
+
+
+</head>
+
+<body onload="opera()">
+
+
+<form action=/formWlSiteSurvey.htm method=POST name="formWlSiteSurvey">
+	<input type="hidden" value="Site Survey" name="refresh">&nbsp;&nbsp;  
+  <input type="hidden" value="/pocket_sitesurvey.htm" name="submit-url">
+  <input type="hidden" value="" name="ifname">
+  <input type="hidden" value="" name="opmode">
+  <table border="1" style="table-layout:fixed" width=610>
+  
+  <% wlSiteSurveyTbl(); %>
+  </table>
+  <br>
+  
+ 
+</form>
+
+
+</body>
+</html>

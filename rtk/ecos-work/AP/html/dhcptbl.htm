@@ -1,0 +1,39 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>Active DHCP Client Table</title>
+</head>
+
+<body>
+<blockquote>
+<h2><font color="#0000FF"><script>dw(dhcp_header)</script></font></h2>
+
+<table border=0 width="480" cellspacing=0 cellpadding=0>
+  <tr><font size=2>
+ <script>dw(dhcp_explain)</script>
+  </tr>
+  <tr><hr size=1 noshade align=top></tr>
+</table>
+
+
+<form action=/formReflashClientTbl.htm method=POST name="formClientTbl">
+<table border='1' width="80%">
+<tr bgcolor=#7f7f7f> <td width="30%"><font size=2><b><script>dw(dhcp_ip)</script></b></td>
+<td width="40%"><font size=2><b><script>dw(dhcp_mac)</script></b></td>
+<td width="30%"><font size=2><b><script>dw(dhcp_time)</script></b></td></tr>
+<% dhcpClientList(); %>
+</table>
+
+<input type="hidden" value="/dhcptbl.htm" name="submit-url">
+  <p><input type="submit" value="Refresh" name="refresh">&nbsp;&nbsp;
+	<script>document.formClientTbl.refresh.value = dhcp_refresh;</script>
+  <input type="button" value=" Close " name="close" onClick="javascript: window.close();"></p>
+	<script>document.formClientTbl.close.value = dhcp_close;</script>
+</form>
+</blockquote>
+</body>
+
+</html>

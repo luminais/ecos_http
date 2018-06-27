@@ -1,0 +1,3 @@
+cdl_option CYGPKG_NET_FREEBSD_GET_MEMINFO {
+	user_value 1
+}

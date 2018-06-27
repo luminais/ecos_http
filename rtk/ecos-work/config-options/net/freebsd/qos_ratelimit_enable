@@ -1,0 +1,3 @@
+cdl_option CYGPKG_QOS_RATE_LIMIT_CHECK {
+    user_value 1
+};

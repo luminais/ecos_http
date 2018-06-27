@@ -1,0 +1,39 @@
+MiniUPnP project.
+Homepage : http://miniupnp.free.fr/
+
+================================ *BSD =================================
+To Build and Install :
+
+- use make to compile. BSD make is ok.
+- add "rdr-anchor miniupnpd" and "anchor miniupnpd" to /etc/pf.conf
+- dont forget to " pfctl -f /etc/pf.conf "
+- install as root using :
+  > PREFIX=/usr/local ; make install
+- run as root : The daemon needs rights to modify pf rules.
+
+All options are set using the command line.
+To stop the daemon use :
+  > kill `cat /var/run/miniupnpd.pid`
+
+=============================== Linux =================================
+To Build and install :
+
+- make sure you have libiptc available on your system
+- edit and run linux/iptables_init.sh shell script.
+  This script must allways be run before the daemon
+  to set up intial rules and chains.
+- Build the daemon
+  > make -f Makefile.linux
+- install as root using :
+  > make -f Makefile.linux install PREFIX=/usr/local
+- run as root.
+- anytime, you can use the linux/iptables_flush.sh
+  script to flush all rules added by the daemon.
+- after killing the daemon, you can get back to
+  iptables initial state by runing the linux/iptables_removeall.sh
+  script. Don't forget to edit the script to your convinience.
+
+All options are set using the command line.
+To stop the daemon use :
+  > kill `cat /var/run/miniupnpd.pid`
+

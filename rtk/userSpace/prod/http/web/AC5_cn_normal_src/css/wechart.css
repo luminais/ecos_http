@@ -1,0 +1,15 @@
+.wechart {
+  margin-top: 80px;
+  padding: 20px 40px;
+  min-height: 480px;
+  text-align: center;
+  font-size: 15px;
+}
+
+@media (max-width: 767px) {
+  .wechart {
+    margin-top: 15px;
+    padding: 10px;
+    min-height: 460px;
+  }
+}

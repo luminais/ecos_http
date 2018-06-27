@@ -1,0 +1,3 @@
+cdl_option CYGPKG_PPP_MPPC_MPPE_ENABLE {
+	user_value 1
+};

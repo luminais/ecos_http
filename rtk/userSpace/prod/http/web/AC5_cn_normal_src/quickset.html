@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Tenda Wizard</title>
+<link rel="shortcut icon" href="./favicon.ico">
+<link rel="stylesheet" href="./css/reasyui.css?t=20171226151">
+<link rel="stylesheet" href="./css/quickset.css?t=20171226151">
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 
+HTML5SHIV需放在头部，RESPOND.JS需要服务器--> 
+<!--[if lt IE 9]>
+<script src="./js/libs/respond.min.js"></script>
+<script src="./js/libs/html5shiv.min.js"></script>
+<![endif]--> 
+<script src="./lang/b28n.js?t=20171226151"></script>
+</head>
+<body >
+<noscript>
+  <div id="testJs" class="test-tips">
+    <p>Error! The browser does not support JavaScript. </p>
+    <p>Please enable JavaScript or try another browser compatible with JavaScript to 
+      experience more features of the device.
+    </p>
+  </div>
+</noscript>
+<div id="main_content">
+  <section class="container container-notinport container-fluid none" id="normalSet">
+    <header class="center-block pull-none col-sm-9 col-md-8 col-lg-8 logo-wrap">
+        <img src="img/logo.png" class="img-responsive" style="width:130px; height:30px; float:left; margin-right:12px">
+        <div style="display:inline; text-align:left;" class="col-xs-12 col-sm-12 logo-text">You can access the internet after completing settings on this page.</div>
+    </header>
+    <article class="quickSet box-shadow center-block pull-none col-sm-9 col-md-8 col-lg-8" style="padding:0px; margin-bottom:20px;" id="quickSetWrap">
+      <form class="form-horizontal">
+      <div class="quickContent text-center">
+        <div class="text-center net-status" style="border-bottom: 1px solid #E4E4E4;padding-bottom: 23px;padding-top: 13px;margin-bottom: 10px;"><img id="loading" class="img-loading" alt="Loading..." src="img/loading.gif"><span style="margin-left:12px;">Detecting your internet connection type...</span></div>
+        <div class="network-wrapper">
+          <div class="network-pic-wrapper hidden-xs hidden-sm"><span class="icon-internet quickSet-net-icon"></span><br /><div style="padding:10px 0;"><span data-lang="internetSetup">Internet</span></div></div>
+          <div class="network-config-wrapper">
+            <div class="form-group connection-type" style="margin-bottom: 4px;">
+  <label class="col-sm-4 col-md-3 control-label">Connection Type</label>
+  <div class="col-sm-8 type-radios">
+    <label class="radio-inline r-block" for="adsl">
+      <input type="radio" id="adsl" name="wanType" value="pppoe" />PPPoE</label>
+    <label class="radio-inline r-block" for="dhcp">
+      <input type="radio" id="dhcp" name="wanType" value="dhcp">Dynamic IP Address</label>
+    <label class="radio-inline r-block" for="static">
+      <input type="radio" id="static" name="wanType" value="static">Static IP Address</label>
+  </div>
+</div>
+            <section id="quickSetStaticWrap" class="none">
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label"></label>
+    <div class="controls col-sm-7 col-md-6 col-lg-9 quickset-connect-info">This type is applicable if you are assigned a fixed IP address for accessing the internet.</div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">IP Address</label>
+    <div class="controls col-sm-7 col-md-6 col-lg-7">
+      <input type="text" id="wanIP" name="wanIP" class="form-control validatebox" maxlength="15" required="required" data-options='{"type":"ip"}' placeholder="IP">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Subnet Mask</label>
+    <div class="controls col-sm-7 col-md-6 col-lg-7">
+      <input type="text" id="wanMask" name="wanMask" class="form-control validatebox" maxlength="15" required="required" data-options='{"type":"mask"}' placeholder="Subnet Mask">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Default Gateway</label>
+    <div class="controls col-sm-7 col-md-6 col-lg-7">
+      <input type="text" id="wanGateway" name="wanGateway"
+           class="form-control validatebox" maxlength="15"
+           required="required" data-options='{"type":"ip"}' placeholder="Default Gateway">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Preferred DNS</label>
+    <div class="controls col-sm-7 col-md-6 col-lg-7">
+      <input type="text" id="wanDns1" name="wanDns1"
+           class="form-control validatebox" maxlength="15"
+           required="required" data-options='{"type":"ip"}' placeholder="Preferred DNS Server" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Alternate DNS</label>
+    <div class="controls col-sm-7 col-md-6 col-lg-7">
+      <input type="text" id="wanDns2" name="wanDns2"
+           class="form-control validatebox" maxlength="15"
+           data-options='{"type":"ip"}' placeholder="Alternate DNS Server">
+    </div>
+  </div>
+</section>
+            <section id="quickSetDHCPWrap" class="none">
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label"></label>
+    <div class="controls col-sm-7 col-md-6 col-lg-9 quickset-connect-info">This type is applicable if you can access the internet without configuration after connecting the cable with internet connectivity to your computer.</div>
+  </div>
+</section>
+            <section id="quickSetPPPoEWrap">
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label"></label>
+    <div class="controls col-sm-7 col-md-6 col-lg-9 quickset-connect-info">This type is applicable if you have a user name and password for setting up a broadband dial-up connection. You can<span id="inportBtn" style="color:#0088cc; cursor:pointer;"> import them from your original router. </span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">User Name</label>
+    <div class="controls col-sm-7 col-md-6 col-lg-7">
+      <input type="text" id="wanPPPoEUser" name="wanPPPoEUser"
+            class="form-control validatebox" maxlength="128"
+            required="required" data-options='{"type": "ascii"}' />
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Password</label>
+    <div class="controls col-sm-7 col-md-6 col-lg-7">
+      <input type="password" id="wanPPPoEPwd" name="wanPPPoEPwd"
+           class="form-control validatebox" maxlength="128"
+           required="required" data-options='{"type": "ascii"}'>
+    </div>
+  </div>
+</section>
+          </div>
+        </div>
+        <div style="clear:both"></div><hr style="border-top:1px solid #f2f2f2;" />
+        <div class="wireless-wrapper">
+          <div class="wireless-pic-wrapper hidden-xs hidden-sm">
+          <span class="icon-wireless quickSet-wireless-icon"></span><div>Wireless</div>
+          </div>
+          <div class="wireless-config">
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wifiSSID">WiFi Name</label>
+    <div class="col-sm-7">
+      <input type="text" name="wifiSSID" id="wifiSSID" class="form-control validatebox" maxlength="29" required="required" data-options='{"type":"ssid_quickset"}'>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wifiPwd">WiFi Password</label>
+    <div class="col-sm-7">
+      <input type="password" name="wifiPwd" id="wifiPwd" class="form-control validatebox" maxlength="63" data-options='{"type":"ssidPasword","args":[8, 63]}'>
+    </div>
+  </div>
+</div>
+        </div><br /><br /><br /><br />
+      </div>
+      </form>
+      <footer class="quickset-footer">
+        <div class="col-md-4 col-sm-6 col-lg-3 col-sm-offset-3 col-md-offset-5">
+          <input class="form-control btn-primary" type="button" id="save" value="OK" style="margin-top:15px;" />
+        </div>
+      </footer>
+    </article>
+    <article class="quickSet box-shadow text-center center-block pull-none col-sm-9 col-md-8 col-lg-8 none" style="padding:0px; margin-bottom:20px;" id="quicksetDoneWrap">
+  <div id="savedWrap" style="padding-top:90px;">
+    <section class="content center-block" style="width:100px;"> 
+      <div id="status" class="pic-success"></div>
+      <div>Saved!</div>
+    </section>
+    <div id="wireSuccess" class="none"></div>
+    <div id="wirelessSuccess" class="none">
+      <span>The wireless connection has been released. Please connect to the WiFi network named:</span>
+      <div class="text-warn" id="newSSID">Tenda_AABBCC</div>
+    </div>
+  </div>
+</article>
+    <section id="inportWanPPPOE" class="dialog col-xs-10 col-sm-8 col-lg-6 col-xs-offset-1 col-lg-offset-3 col-sm-offset-2 none">
+	<div class="dialog-header">
+		<div class="dialog-title">
+			<span>Import User Name and Password</span>
+			<span class="dialog-close">×</span>
+		</div>
+	</div>
+	<div class="dialog-container">
+	    <div style="margin:16px 0;">Step 1: Power on the original router.</div>
+	    <div>Step 2: Connect one end of an Ethernet cable to the WAN port of the original router and the other end to a LAN port of the new router. The new router then automatically imports the broadband service user name and password from the original router.</div>
+	    <div style="position:relative; font-size:12px;">
+	    	<span class="oldDev">Original Router</span>
+	    	<span class="newDev">New Router</span>
+	    	<img src="img/inport.png" class="col-lg-10 col-lg-offset-2 col-sm-9 col-sm-offset-2 col-xs-12 col-xs-offset-1" style="margin:20px 0;">
+		</div>
+		<div class="help-block" style="display: inline-block; width:100%;">
+			<div class="col-lg-12 col-md-12 col-sm-12" style="padding-left:0px;">When import succeeds, all the LAN port indicators of the new router turn on for 3 seconds and this page is closed. You only need to set a WiFi password then.</div>
+		</div>
+    </div>
+</section>
+    <div id="progress-overlay" class="modal fade"></div>
+  </section>
+  <section class="wireless-container none" id="quickWireless">
+	<div class="wireless-box">
+		<div class="wireless-header">
+			<h4>Your WiFi network is not encrypted.</h4>
+			<h4>You are recommended to set a WiFi password for network security.</h4>
+		</div>
+		<div class="wireless-content">
+			  <div class="control-group clearfix">
+			    <label class="control-label" for="quickSSID">WiFi Name</label>
+			    <div class="controls">
+			      <input type="text" name="wifiSSID" id="quickSSID" class="form-control validatebox longthen" maxlength="32" required="required" data-options='{"type":"ssid"}' placeholder="">
+			    </div>
+			  </div> 
+			  <div class="control-group clearfix">
+			    <label class="control-label" for="quickPwd">WiFi Password</label>
+			    <div class="controls">
+			      <input type="password" name="wifiPwd" id="quickPwd" class="form-control validatebox longthen" maxlength="63" data-options='{"type":"ssidPasword","args":[8,63]}'>
+			    </div>
+			  </div>
+		</div>
+		<footer class="wireless-footer">
+			<button class="form-control btn-primary" id="sure">OK</button>
+		</footer>
+	</div>
+</section>
+</div>
+  <script src="./js/libs/j.js?t=20171226151"></script> 
+<script src="./js/libs/reasy-ui-1.0.3.js?t=20171226151"></script> 
+<script src="./js/libs/common.js?t=20171226151"></script>
+<script src="./js/quickset.js?t=20171226151"></script>
+<script src="./js/libs/time-zone.js?t=20171226151"></script>
+</body>
+</html>

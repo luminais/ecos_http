@@ -1,0 +1,127 @@
+$Id: Changelog.txt,v 1.1.1.1 2007-08-06 10:04:43 root Exp $
+
+2006/11/30:
+  minixml updated. should have no impact
+  Added support for presentationURL with -w switch
+
+2006/11/26:
+  no need to have miniupnpc sources to compile miniupnpd.
+  Makefile.openwrt updated
+  Closing sockets on exit thanks to Ryan Wagoner
+
+2006/11/23:
+  now handling signal SIGINT
+  setting HTTP socket with REUSEADDR thanks to Ryan Wagoner
+  daemon now tested on a Linksys WRT54G device running OpenWRT !
+
+2006/11/21:
+  disabling rtableid in pf code.
+
+2006/11/22:
+  Also responds on M-SEARCH with the uuid
+
+2006/11/20:
+  gaining some space in upnpsoap.c
+
+2006/11/19:
+  Cleaning up code to comply with ANSI C89
+
+2006/11/17:
+  Linux version now deleting both nat and accept rules
+  implemented -U option under Linux
+
+2006/11/16:
+  implemented delete_redirect_rule() for linux
+  returning error 714 in DeletePortMapping() when needed
+
+2006/11/12:
+  The linux/netfilter version should now WORK !
+  fix in the writepidfile() function. open with a mode !
+
+2006/11/10:
+  fixing the XML description generation for big endian machines
+  working on the linux/netfilter port
+
+2006/11/09:
+  improved a lot the handling of HTTP error cases
+
+2006/11/08:
+  Tried to make the Makefile compatible with both BSDmake
+  and GNUmake. It was hard because of $^ and $<
+
+2006/11/07:
+  Makefile compatible with BSD make
+  make install target.
+  getifstats.c compatible with both OpenBSD and FreeBSD.
+
+2006/11/06:
+  added getifstats.c for openBSD. May not work under FreeBSD ?
+  now reports bytes/packets sent/received
+  reporting bitrates
+  possibility to report system uptime
+
+2006/10/29:
+  added a -L option to enable loggin (is off by default now).
+
+2006/10/28:
+  Patch by Ryan Wagoner to correct the XML description (was NewUpTime
+  instead of NewUptime) and implement uptime.
+  Trying to fix the memory leak. Added some comments
+  added a -d option for debugging purpose
+  Tnaks to valgrind (under linux!) I removed a small memory access error.
+
+2006/10/27:
+  Thanks to a patch sent by Michael van Tellingen, miniupnpd is
+  now ignoring NOTIFY packets sent by other devices and is
+  writing is own pid to /var/run/miniupnpd.pid
+
+2006/10/23:
+  Allways set sendEvents="no" in XML description (was causing
+  pb with winXP as SUBSCRIBE is not implemented)
+
+2006/10/22:
+  added translation from hostname to IP in the AddPortMapping() method
+  Thanks to Ryan Wagoner.
+
+2006/10/18:
+  Added an INSTALL file
+
+2006/10/13:
+  Added the possibility to change the notify interval
+
+2006/09/29:
+  Improved compliance of the XML Descriptions
+  pretty print for testupnpdescgen
+
+2006/09/25:
+  improved the Error 404 response.
+  Better serviceType and serviceId for dummy service...
+
+2006/09/24:
+  updating the XML description generator
+
+2006/09/18:
+  Thanks to Rick Richard, support for SSDP "alive" and "byebye" notifications
+  was added. The -u options was also added. The SSDP response are now
+  improved.
+  The -o option is now working (to force a specific external IP address).
+  The Soap Methods errors are correctly responded (401 Invalid Action)
+
+2006/09/09:
+  Added code to handle filter rules. Thanks to Seth Mos (pfsense.com)
+  storing the descriptions in the label of the rule
+
+2006/09/02:
+  improved the generation of the XML descriptions.
+  I still need to add allowed values to variables.
+
+2006/07/29:
+  filtering SSDP requests and responding with same ST: field
+
+2006/07/25:
+  Added a dummy description for the WANDevice 
+
+2006/07/20:
+  Command line arguments processing
+  Added possibility to listen internally on several interfaces
+

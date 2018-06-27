@@ -1,0 +1,3 @@
+cdl_option CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT {
+    user_value 0
+};

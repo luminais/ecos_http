@@ -1,0 +1,61 @@
+menu "System Configuration"
+
+config RTL_8881A
+	bool "8881A GW"
+	help
+          This enables support for Realtek RTL8881A demo board
+
+config WATCHDOG
+        bool "WatchDog Support"
+ 
+config  MIPS16
+        bool "Mips16 Support"
+
+config  RTL_8881AM
+	bool "8881AM Support"
+config RTL_XDG
+	bool "realtek XDG"
+config CUTE_MAHJONG
+	bool "CUTE_MAHJONG"
+config ECOS_AP
+	depends on RTL_8881AM && !CUTE_MAHJONG && !RTL_XDG
+	bool "pure ap mode"
+choice 
+prompt "Choose cute mahjong ui style"
+default CUTE_MAHJONG_UI
+depends on CUTE_MAHJONG
+
+config CUTE_MAHJONG_UI
+	bool "CUTE_MAHJONG_UI"
+
+config CUTE_MAHJONG_RTK_UI
+	bool "CUTE_MAHJONG_RTK_UI"
+	select PPTP 
+	select L2TP
+	select PPPOE
+	select MEM_CHAIN_API
+	select MEM_CHAIN_UPGRADE
+endchoice
+
+choice
+prompt "Selected RAM_SIZE"
+default RAM_SIZE_16M
+ 
+config RAM_SIZE_64M
+        bool "64M"
+ 
+config RAM_SIZE_32M
+        bool "32M"
+ 
+config RAM_SIZE_16M
+        bool "16M"
+ 
+config RAM_SIZE_8M
+        bool "8M"
+ 
+config RAM_SIZE_4M
+        bool "4M"
+ 
+endchoice
+
+endmenu
