@@ -1,0 +1,152 @@
+# ====================================================================
+#
+#      ser_rtl819x.cdl
+#
+#      eCos serial configuration data
+#
+# ====================================================================
+## ####ECOSGPLCOPYRIGHTBEGIN####                                            
+## -------------------------------------------                              
+## This file is part of eCos, the Embedded Configurable Operating System.   
+## Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+##
+## eCos is free software; you can redistribute it and/or modify it under    
+## the terms of the GNU General Public License as published by the Free     
+## Software Foundation; either version 2 or (at your option) any later      
+## version.                                                                 
+##
+## eCos is distributed in the hope that it will be useful, but WITHOUT      
+## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or    
+## FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License    
+## for more details.                                                        
+##
+## You should have received a copy of the GNU General Public License        
+## along with eCos; if not, write to the Free Software Foundation, Inc.,    
+## 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.            
+##
+## As a special exception, if other files instantiate templates or use      
+## macros or inline functions from this file, or you compile this file      
+## and link it with other works to produce a work based on this file,       
+## this file does not by itself cause the resulting work to be covered by   
+## the GNU General Public License. However the source code for this file    
+## must still be made available in accordance with section (3) of the GNU   
+## General Public License v2.                                               
+##
+## This exception does not invalidate any other reasons why a work based    
+## on this file might be covered by the GNU General Public License.         
+## -------------------------------------------                              
+## ####ECOSGPLCOPYRIGHTEND####                                              
+# ====================================================================
+######DESCRIPTIONBEGIN####
+#
+# Author(s):      michael
+# Original data:  gthomas, dmoseley
+# Contributors:
+# Date:           2010-04-29
+#
+#####DESCRIPTIONEND####
+#
+# ====================================================================
+
+
+cdl_package CYGPKG_IO_SERIAL_RTL819X {
+    display       "RTL819X serial device drivers"
+
+    parent        CYGPKG_IO_SERIAL_DEVICES
+    active_if     CYGPKG_IO_SERIAL
+    #active_if     CYGPKG_HAL_MIPS_RLX
+
+    requires      CYGPKG_ERROR
+    include_dir   cyg/io
+    description   "
+           This option enables the serial device drivers for the
+           RTL819X."
+
+    compile       -library=libextras.a   rtl819x_serial.c
+
+    define_proc {
+        puts $::cdl_system_header "/***** serial driver proc output start *****/"
+        puts $::cdl_system_header "#define CYGDAT_IO_SERIAL_DEVICE_HEADER <pkgconf/io_serial_rtl819x.h>"
+        puts $::cdl_system_header "/*****  serial driver proc output end  *****/"
+    }
+
+cdl_component CYGPKG_IO_SERIAL_RTL819X_SERIAL_A {
+    display       "RTL819X serial port driver"
+    flavor        bool
+    default_value 1
+    description   "
+        This option includes the serial device driver for the 16C550 compatible UART on the 
+        RTL819X."
+
+    cdl_option CYGDAT_IO_SERIAL_RTL819X_SERIAL_A_NAME {
+        display       "Device name for RTL819X serial port"
+        flavor        data
+        default_value {"\"/dev/ser0\""}
+        description   "
+            This option specifies the device name on the RTL819X."
+    }
+
+    cdl_option CYGNUM_IO_SERIAL_RTL819X_SERIAL_A_BAUD {
+        display       "Baud rate for the RTL819X serial port driver"
+        flavor        data
+        legal_values  { 38400 115200 }
+        default_value 38400
+        description   "
+            This option specifies the default baud rate (speed) for the 
+            RTL819X 16C550 compatible UART port."
+    }
+
+    cdl_option CYGNUM_IO_SERIAL_RTL819X_SERIAL_A_BUFSIZE {
+        display       "Buffer size for the RTL819X serial port driver"
+        flavor        data
+        legal_values  0 to 8192
+        default_value 512
+        description   "
+            This option specifies the size of the internal buffers used
+            for the RTL819X 16C550 compatible UART port."
+    }
+
+    cdl_option CYGNUM_IO_SERIAL_RTL819X_SERIAL_SYSRQ {
+        display       "SYSRQ Debug"
+        flavor        bool
+        default_value 1
+	define -file system.h CONFIG_RTL_SYSRQ
+        description   "
+            This option enable Realtek sysrq debug."
+    }
+}
+
+    cdl_component CYGPKG_IO_SERIAL_RTL819X_OPTIONS {
+        display "Serial device driver build options"
+        flavor  none
+        description   "
+	    Package specific build options including control over
+	    compiler flags used only in building this package,
+	    and details of which tests are built."
+
+
+        cdl_option CYGPKG_IO_SERIAL_RTL819X_CFLAGS_ADD {
+            display "Additional compiler flags"
+            flavor  data
+            no_define
+            default_value { "" }
+            description   "
+                This option modifies the set of compiler flags for
+                building these serial device drivers. These flags are used in addition
+                to the set of global flags."
+        }
+
+        cdl_option CYGPKG_IO_SERIAL_RTL819X_CFLAGS_REMOVE {
+            display "Suppressed compiler flags"
+            flavor  data
+            no_define
+            default_value { "" }
+            description   "
+                This option modifies the set of compiler flags for
+                building these serial device drivers. These flags are removed from
+                the set of global flags if present."
+        }
+    }
+}
+
+# EOF ser_rtl819x.cdl
