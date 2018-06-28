@@ -1,0 +1,593 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ADC Device Drivers</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="ADC Support"
+HREF="io-adc.html"><LINK
+REL="PREVIOUS"
+TITLE="Overview"
+HREF="adc.html"><LINK
+REL="NEXT"
+TITLE="Framebuffer Support"
+HREF="io-framebuf.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="adc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-framebuf.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ADCDEV"
+></A
+>ADC Device Drivers</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN9889"
+></A
+><H2
+>Name</H2
+>Overview&nbsp;--&nbsp;ADC Device Drivers</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="ADCDEV-INTRO"
+></A
+><H2
+>Introduction</H2
+><P
+>This section describes how to write an ADC hardware device. While
+users of ADC devices do not need to read it, it may provide added
+insight into how the devices work.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="ADCDEV-DATA"
+></A
+><H2
+>Data Structures</H2
+><P
+>An ADC hardware driver is represented by a number of data
+structures. These are generic <TT
+CLASS="LITERAL"
+>device</TT
+> and
+<TT
+CLASS="LITERAL"
+>channel</TT
+> data structures, a driver private device
+data structure, a generic character device table entry and a driver
+function table. Most of these structures are instantiated using
+macros, which will be described here.</P
+><P
+>The data structure instantiation for a typical single device, four
+channel ADC would look like this:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>//==========================================================================
+// Instantiate data structures
+
+// -------------------------------------------------------------------------
+// Driver functions:
+
+CYG_ADC_FUNCTIONS( example_adc_funs,
+                   example_adc_enable,
+                   example_adc_disable,
+                   example_adc_set_rate );
+
+// -------------------------------------------------------------------------
+// Device instance:
+
+static example_adc_info example_adc_info0 =
+{
+    .base               = CYGARC_HAL_EXAMPLE_ADC_BASE,
+    .vector             = CYGNUM_HAL_INTERRUPT_ADC
+};
+
+CYG_ADC_DEVICE( example_adc_device,
+                &amp;example_adc_funs,
+                &amp;example_adc_info0,
+                CYGNUM_IO_ADC_EXAMPLE_DEFAULT_RATE );
+
+// -------------------------------------------------------------------------
+// Channel instances:
+
+#define EXAMPLE_ADC_CHANNEL( __chan )                                    \
+CYG_ADC_CHANNEL( example_adc_channel##__chan,                            \
+                 __chan,                                                 \
+                 CYGNUM_IO_ADC_EXAMPLE_CHANNEL##__chan##_BUFSIZE,        \
+                 &amp;example_adc_device );                                  \
+                                                                         \
+DEVTAB_ENTRY( example_adc_channel##__chan##_device,                      \
+              CYGDAT_IO_ADC_EXAMPLE_CHANNEL##__chan##_NAME,              \
+              0,                                                         \
+              &amp;cyg_io_adc_devio,                                         \
+              example_adc_init,                                          \
+              example_adc_lookup,                                        \
+              &amp;example_adc_channel##__chan );
+
+EXAMPLE_ADC_CHANNEL( 0 );
+EXAMPLE_ADC_CHANNEL( 1 );
+EXAMPLE_ADC_CHANNEL( 2 );
+EXAMPLE_ADC_CHANNEL( 3 );</PRE
+></TD
+></TR
+></TABLE
+><P
+>The macro <TT
+CLASS="LITERAL"
+>CYG_ADC_FUNCTIONS()</TT
+> instantiates a
+function table called <CODE
+CLASS="VARNAME"
+>example_adc_funs</CODE
+> and
+populates it with the ADC driver functions (see later for details).</P
+><P
+>Then an instance of the driver private device data structure is
+instantiated. In addition to the device base address and interrupt
+vector shown here, this stucture should contain the interrupt object
+and handle for attaching to the vector. It may also contain any other
+variables needed to manage the device.</P
+><P
+>The macro <TT
+CLASS="LITERAL"
+>CYG_ADC_DEVICE()</TT
+> instantiates a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_adc_device</CODE
+> structure, named
+<CODE
+CLASS="VARNAME"
+>example_adc_device</CODE
+> which will contain pointers to
+the function table and private data structure. The initial sample rate
+is also supplied here.</P
+><P
+>For each channel, an ADC channel structure and a device table entry
+must be created. The macro <TT
+CLASS="LITERAL"
+>EXAMPLE_ADC_CHANNEL()</TT
+> is
+defined to simplify this process. The macro
+<TT
+CLASS="LITERAL"
+>CYG_ADC_CHANNEL</TT
+> defines a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_adc_channel</CODE
+> structure, which contains the
+channel number, the buffer size, and a pointer to the device object
+defined earlier. The call to <TT
+CLASS="LITERAL"
+>DEVTAB_ENTRY()</TT
+>
+generates a device table entry containing the configured channel name,
+a pointer to a device function table defined in the generic ADC
+driver, pointers to init and lookup functions implemented here, and a
+pointer to the channel data structure just defined.</P
+><P
+>Finally, four channels, numbered 0 to 3 are created.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="ADCDEV-FUNCTIONS"
+></A
+><H2
+>Functions</H2
+><P
+>There are several classes of function that need to be defined in an
+ADC driver. These are those function that go into the channel's device
+table, those that go into the ADC device's function table, calls that
+the driver makes into the generic ADC package, and interrupt handling
+functions.</P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="ADCDEV-FUNCTIONS-DEVTAB"
+></A
+><H3
+>Device Table Functions</H3
+><P
+>These functions are placed in the standard device table entry for each
+channel and handle initialization and location of the device within
+the generic driver infrastructure.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>static bool example_adc_init(struct cyg_devtab_entry *tab)</CODE
+>
+
+This function is called from the device IO infrastructure to
+initialize the device. It should perform any work needed to start up
+the device, short of actually starting the generation of samples. This
+function will be called for each channel, so if there is
+initialization that only needs to be done once, such as creating an
+interrupt object, then care should be taken to do this. This function
+should also call <CODE
+CLASS="FUNCTION"
+>cyg_adc_device_init()</CODE
+> to
+initialize the generic parts of the driver.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>static Cyg_ErrNo example_adc_lookup(struct cyg_devtab_entry **tab, struct cyg_devtab_entry *sub_tab, const char *name)</CODE
+>
+
+This function is called when a client looks up or opens a channel. It
+should call <CODE
+CLASS="FUNCTION"
+>cyg_adc_channel_init()</CODE
+> to initialize
+the generic part of the channel. It should also perform any operations
+needed to start the channel generating samples.</P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="ADCDEV-FUNCTIONS-DRIVER"
+></A
+><H3
+>Driver Functions</H3
+><P
+>These are the functions installed into the driver function table by
+the <TT
+CLASS="LITERAL"
+>CYG_ADC_FUNCTIONS()</TT
+> macro.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>static void example_adc_enable( cyg_adc_channel *chan )</CODE
+>
+
+This function is called from the generic ADC package to enable the
+channel in response to a
+<TT
+CLASS="LITERAL"
+>CYG_IO_SET_CONFIG_ADC_ENABLE</TT
+> config operation. It
+should take any steps needed to start the channel generating samples.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>static void example_adc_disable( cyg_adc_channel *chan )</CODE
+>
+
+This function is called from the generic ADC package to enable the
+channel in response to a
+<TT
+CLASS="LITERAL"
+>CYG_IO_SET_CONFIG_ADC_DISABLE</TT
+> config operation. It
+should take any steps needed to stop the channel generating samples.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>static void example_adc_set_rate( cyg_adc_channel *chan, cyg_uint32 rate )</CODE
+>
+
+This function is called from the generic ADC package to enable the
+channel in response to a <TT
+CLASS="LITERAL"
+>CYG_IO_SET_CONFIG_ADC_RATE</TT
+>
+config operation. It should take any steps needed to change the sample
+rate of the channel, or of the entire device.</P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="ADCDEV-FUNCTIONS-GENERIC"
+></A
+><H3
+>Generic Package Functions</H3
+><P
+>These functions are called by a hardware ADC device driver to perform
+operations in the generic ADC package.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>__externC void cyg_adc_device_init( cyg_adc_device *device )</CODE
+>
+
+This function is called from the driver's init function and is used to
+initialize the <SPAN
+CLASS="TYPE"
+>cyg_adc_device</SPAN
+> object.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>__externC void cyg_adc_channel_init(cyg_adc_channel *chan)</CODE
+>
+
+This function is called from the driver's lookup function and is used
+to initialize the <SPAN
+CLASS="TYPE"
+>cyg_adc_channel</SPAN
+> object.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>__externC cyg_uint32 cyg_adc_receive_sample(cyg_adc_channel *chan, cyg_adc_sample_t sample)</CODE
+>
+
+This function is called from the driver's ISR to add a new sample to
+the buffer. The return value will be either zero, or
+<TT
+CLASS="LITERAL"
+>CYG_ISR_CALL_DSR</TT
+> and should be ORed with the return
+value of the ISR.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>__externC void cyg_adc_wakeup(cyg_adc_channel *chan )</CODE
+>
+
+This function is called from the driver's DSR to cause any threads
+waiting for data to wake up when a new sample is available. It should
+only be called if the <CODE
+CLASS="STRUCTFIELD"
+>wakeup</CODE
+> field of the
+channel object is <TT
+CLASS="LITERAL"
+>true</TT
+>.</P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="ADCDEV-FUNCTIONS-INTERRUPT"
+></A
+><H3
+>Interrupt Functions</H3
+><P
+>These functions are internal to the driver, but make calls on generic
+package functions. Typically an ADC device will have a single
+interrupt vector with which it signals available samples on the
+channels and any error conditions such as overruns.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>static cyg_uint32 example_adc_isr(cyg_vector_t vector, cyg_addrword_t data)</CODE
+>
+
+This function is the ISR attached to the ADC device's interrupt
+vector. It is responsible for reading samples from the channels and
+passing them on to the generic layer. It needs to check each channel
+for data, and call <CODE
+CLASS="FUNCTION"
+>cyg_adc_receive_sample()</CODE
+> for
+each new sample available, and then ready the device for the next
+interrupt.  It's activities are best explained by example:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>static cyg_uint32 example_adc_isr(cyg_vector_t vector, cyg_addrword_t data)
+{
+    cyg_adc_device *example_device = (cyg_adc_device *) data;
+    example_adc_info *example_info = example_device-&#62;dev_priv;
+    cyg_uint32 res = 0;
+    int i;
+
+    // Deal with errors if necessary
+    DEVICE_CHECK_ERRORS( example_info );
+
+    // Look for all channels with data available
+    for( i = 0; i &#60; CHANNEL_COUNT; i++ )
+    {
+        if( CHANNEL_SAMPLE_AVALIABLE(i) )
+        {
+            // Fetch data from this channel and pass up to higher
+            // level.
+
+            cyg_adc_sample_t data = CHANNEL_GET_SAMPLE(i);
+            
+            res |= CYG_ISR_HANDLED | cyg_adc_receive_sample( example_info-&#62;channel[i], data );
+        }
+    }
+
+   // Clear any interrupt conditions
+    DEVICE_CLEAR_INTERRUPTS( example_info );
+
+    cyg_drv_interrupt_acknowledge(example_info-&#62;vector);
+    
+    return res;
+}</PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+CLASS="FUNCTION"
+>static void example_adc_dsr(cyg_vector_t vector, cyg_ucount32 count, cyg_addrword_t data)</CODE
+>
+
+This function is the DSR attached to the ADC device's interrupt
+vector. It is called by the kernel if the ISR return value contains
+the <TT
+CLASS="LITERAL"
+>CYG_ISR_HANDLED</TT
+> bit. It needs to call
+<CODE
+CLASS="FUNCTION"
+>cyg_adc_wakeup()</CODE
+> for each channel that has its
+<CODE
+CLASS="STRUCTFIELD"
+>wakeup</CODE
+> field set. Again, and example should
+make it all clear:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>static void example_adc_dsr(cyg_vector_t vector, cyg_ucount32 count, cyg_addrword_t data)
+{
+    cyg_adc_device *example_device = (cyg_adc_device *) data;
+    example_adc_info *example_info = example_device-&#62;dev_priv;
+    int i;
+
+    // Look for all channels with pending wakeups
+    for( i = 0; i &#60; CHANNEL_COUNT; i++ )
+    {
+        if( example_info-&#62;channel[i]-&#62;wakeup )
+            cyg_adc_wakeup( example_info-&#62;channel[i] );
+    }
+}&#13;</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="adc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-framebuf.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Overview</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-adc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Framebuffer Support</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

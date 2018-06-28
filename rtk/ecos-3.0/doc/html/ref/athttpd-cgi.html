@@ -1,0 +1,457 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>CGI</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The ATHTTP Server"
+HREF="net-athttpd.html"><LINK
+REL="PREVIOUS"
+TITLE="C language callback functions"
+HREF="athttpd-callback.html"><LINK
+REL="NEXT"
+TITLE="Authentication"
+HREF="athttpd-authentication.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="athttpd-callback.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 65. The ATHTTP Server</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="athttpd-authentication.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ATHTTPD-CGI"
+>CGI</A
+></H1
+><P
+>The web server allows writing of pseudo-CGI programs. This is helpful in order
+to modify the functionality of the server without having to recompile it and
+reflash it.</P
+><P
+>One way to implement CGI is, of course, the C language callback mechanism
+described above: This assumes, of course, that all the callbacks are written
+by compile time and cannot be modified later on. Another way to perform the
+same functionality is the use of a library in the form of an object file. 
+These object files reside in the file system and are loaded, executed and 
+unloaded on demand.</P
+><P
+>Yet a third way is the use of a scripting language. Since full fledged
+implementation of the most popular scripting languages such as Python or Perl
+are too large for most embedded systems, a slim down implementation of tcl
+was chosen for this server. Most of the tcl functionality is still there,
+and makes writing cgi a lot easier.</P
+><P
+>In order to limit the footprint of the operating system support for both
+the objloader and the tcl script for dealing with cgi files can be 
+independently selected out. Tcl support in particular increases the memory
+requirements considerably.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="ATHTTPD-CGI-OBJLOADER"
+>CGI via objloader</A
+></H2
+><P
+>In order to use the cgi mechanism the CYGPKG_OBJLOADER must be included
+when building the operating system. This will enable the proper option in the
+configuration tool and if selected, the necessary code will be compiled
+in the eCos kernel. The user will then have to compile the necessary libraries
+and place them in the file system under a directory defined by 
+CYGDAT_NET_ATHTTPD_SERVEROPT_CGIDIR.
+When a request is made, the web server checks if the root directory of the 
+requested URL is inside the CYGDAT_NET_ATHTTPD_SERVEROPT_CGIDIR directory.
+If so, the server assumes that the user requested a cgi file and looks into the
+directory to see if a library by the same name is present, and if so load it
+and tries to execute a function inside the library with the following prototype:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void exec_cgi(CYG_HTTPD_STATE *)</PRE
+></TD
+></TR
+></TABLE
+><P
+>The pointer <B
+CLASS="COMMAND"
+>CYG_HTTPD_STATE*</B
+> gives access to the socket 
+data: The user will use this pointer to access the 'outbuffer' and use it to
+copy data to send data out.</P
+><P
+>When using the OBJLOADER package within the HTTP server a number of functions 
+are automatically added to the externals table of the OBJLOADER package. These
+functions are likely to be used inside the library and the relocator need to 
+have a pointer to them. In order to add more functions, see the OBJLOADER
+documentation. The complete list of the functions automatically added is:</P
+><P
+></P
+><UL
+><LI
+><P
+>cyg_httpd_start_chunked()</P
+></LI
+><LI
+><P
+>cyg_httpd_write_chunked()</P
+></LI
+><LI
+><P
+>cyg_httpd_end_chunked()</P
+></LI
+><LI
+><P
+>cyg_httpd_write()</P
+></LI
+><LI
+><P
+>cyg_httpd_find_form_variable()</P
+></LI
+><LI
+><P
+>cyg_httpd_find_ires()</P
+></LI
+><LI
+><P
+>cyg_httpd_send_ires()</P
+></LI
+><LI
+><P
+>diag_printf()</P
+></LI
+><LI
+><P
+>cyg_httpd_format_header()</P
+></LI
+><LI
+><P
+>cyg_httpd_find_mime_string()</P
+></LI
+></UL
+><P
+>Every time the web client issues a GET or POST request for a file with an 
+extension of '.o'in the /cgi-bin directory (or whatever path the user chooses 
+to hold the libraries) then the library by that name is loaded, run and
+when the execution is over, it is dumped from memory.
+
+The library must be compiled separately, using the same toolchain used to 
+compile the server and then added to the file system.</P
+><P
+>In order to reduce the footprint of the server, CGI through OBJLOADER
+can be compiled out by unchecking CYGOPT_NET_ATHTTPD_USE_CGIBIN_OBJLOADER
+in the configuration tool.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="ATHTTPD-CGI-TCL"
+>CGI via the simple tcl interpreter</A
+></H2
+><P
+>A small tcl interpreter has been added to the web server, and it can
+be used to write simple cgi scripts. The interpreter is admittedly very
+minimal, and it is only useful for very simple applications, but it is an
+excellent starting point for further development.</P
+><P
+>In order for the scripting language to be useful, it has to access
+the form variables passed on during the GET or POST request. Because of
+this, all form variables registered with the CYG_HTTPD_FVAR_TABLE_ENTRY()
+macro are accessible via tcl. For example, if we have registered a
+form variable called foo, and during the GET request we are defining foo
+as being "1":</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>GET /myForm.cgi?foo=1</PRE
+></TD
+></TR
+></TABLE
+><P
+>then tcl will be able to access the variable foo as $foo. The data
+in the body of a POST request is also accessible through the use of the variable
+$post_data. This is useful if the data is not in "multipart/form-data"
+and tcl has to perform any type of processing on the data itself.</P
+><P
+>In order to send back a response to the client a few functions have been
+added to the interpreter. These functions are:</P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="ATHTTPD-START-CHUNKED"
+>start_chunked</A
+></H3
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>start_chunked "extension";</PRE
+></TD
+></TR
+></TABLE
+><P
+>"extension" is a string used to search the 
+table of the mime types. For example, to send back to the client an HTML file, 
+we can use: start_chunked "html";</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="ATHTTPD-WRITE-CHUNKED"
+>write_chunked</A
+></H3
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>write_chunked content;</PRE
+></TD
+></TR
+></TABLE
+><P
+>content is a string to send back to the client. </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="ATHTTPD-END-CHUNKED"
+>end_chunked</A
+></H3
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>end_chunked;</PRE
+></TD
+></TR
+></TABLE
+><P
+>No parameters. Send back an end of frame to the client.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="ATHTTPD-TCL-HELLO-WORLD"
+>tcl hello world example</A
+></H3
+><P
+>The following example demonstrates how to send a log file in the file
+<TT
+CLASS="FILENAME"
+>/ram/log</TT
+> to a web client. It replaces
+newline characters with <TT
+CLASS="LITERAL"
+>&lt;br&gt;</TT
+> so that it is formatted on the
+browser correctly.
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>start_chunked "html";
+
+set fp [aio.open "/ram/log" r];
+$fp seek 0 end;
+set fsize [$fp tell];
+$fp seek 0 start;
+set data "abcxxx";
+set data [$fp read $fsize];
+$fp close;
+set data [string map {\n &lt;br&gt;} $data];
+
+set datax "";
+append datax "&lt;html&gt;&lt;body&gt;" $data "&lt;/body&gt;&lt;/html&gt;";
+
+write_chunked $datax;
+end_chunked;</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>The above file should exist on a filesystem
+on the embedded target within its <TT
+CLASS="FILENAME"
+>cgi-bin</TT
+>
+directory, for example as <TT
+CLASS="FILENAME"
+>/cgi-bin/hello.tcl</TT
+>. Thereafter
+it may be accessed at the URL
+<TT
+CLASS="LITERAL"
+>http://<TT
+CLASS="REPLACEABLE"
+><I
+>TARGET_NAME</I
+></TT
+>/cgi-bin/hello.tcl</TT
+>.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="athttpd-callback.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="athttpd-authentication.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>C language callback functions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-athttpd.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Authentication</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,364 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Variable Size Allocation Pools</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="eCos Memory pools"
+HREF="memalloc.html#ECOS-MEMORY-POOLS"><LINK
+REL="PREVIOUS"
+TITLE="eCos Memory Pools"
+HREF="memalloc.html"><LINK
+REL="NEXT"
+TITLE="Fixed Size Allocation Pools"
+HREF="fixed-pools.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="memalloc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="fixed-pools.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="VARIABLE-POOLS"
+></A
+>Variable Size Allocation Pools</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN14957"
+></A
+><H2
+>Name</H2
+>cyg_mempool_var_create, cyg_mempool_var_delete, cyg_mempool_var_alloc, cyg_mempool_var_timed_alloc, cyg_mempool_var_try_alloc, cyg_mempool_var_free, cyg_mempool_var_waiting, cyg_mempool_var_get_info&nbsp;--&nbsp;Variable Size Allocation Pools</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN14967"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN14968"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/kernel/kapi.h&gt;
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_mempool_var_create</CODE
+>(void* base, cyg_uint32 size, cyg_handle_t* varpool, cyg_mempool_var* var);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_mempool_var_delete</CODE
+>(cyg_handle_t varpool);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void* cyg_mempool_var_alloc</CODE
+>(cyg_handle_t varpool, cyg_uint32 size);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void* cyg_mempool_var_timed_alloc</CODE
+>(cyg_handle_t varpool, cyg_uint32 size, cyg_tick_count_t abstime);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void* cyg_mempool_var_try_alloc</CODE
+>(cyg_handle_t varpool, cyg_uint32 size);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_mempool_var_free</CODE
+>(cyg_handle_t varpool, void* p);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_bool_t cyg_mempool_var_waiting</CODE
+>(cyg_handle_t varpool);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_mempool_var_get_info</CODE
+>(cyg_handle_t varpool, cyg_mempool_info* info);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="MEMALLOC-VARIABLE-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>      The variable size memory pool functions are used for allocating
+      blocks of any size. Before memory can be allocated the pool must
+      first be created by calling
+      <CODE
+CLASS="FUNCTION"
+>cyg_mempool_var_create()</CODE
+>. The parameter
+      <CODE
+CLASS="PARAMETER"
+>base</CODE
+> is a point to the bottom of the
+      memory area to be used by the pool and
+      <CODE
+CLASS="PARAMETER"
+>size</CODE
+> is the size of the memory area in
+      bytes. It also takes a pointer to a
+      <CODE
+CLASS="STRUCTNAME"
+>cyg_mempool_var</CODE
+> data structure which is
+      typically statically allocated, and may be part of a larger data
+      structure. It should be noted that some memory is take from the
+      pool for book keeping purposes. If a memory pool is no longer
+      required and there are not threads waiting to allocate memory
+      from it, it can be destroyed with
+      <CODE
+CLASS="FUNCTION"
+>cyg_mempool_var_delete()</CODE
+>.  
+      </P
+><P
+>      Memory can be allocated from the pool using a number of
+      functions. They all take the
+      paramters<CODE
+CLASS="PARAMETER"
+>varpool</CODE
+>which indicates which
+      pool should be used and the <CODE
+CLASS="PARAMETER"
+>size</CODE
+>which
+      indicates who big a memory area should be
+      allocated. <CODE
+CLASS="FUNCTION"
+>cyg_mempool_var_alloc()</CODE
+> will
+      block until the memory becomes
+      available. <CODE
+CLASS="FUNCTION"
+>cyg_mempool_tryalloc()</CODE
+>will try
+      not block if no memory is available and will return
+      <TT
+CLASS="LITERAL"
+>NULL</TT
+>. Otherwise a pointer to the allocated
+      memory will be returned.
+      <CODE
+CLASS="FUNCTION"
+>cyg_mempool_var_timed_alloc()</CODE
+> will block if
+      memory is not available and wait for memory to become available
+      until the time<CODE
+CLASS="PARAMETER"
+>abstime</CODE
+> is reached. It will
+      then return <TT
+CLASS="LITERAL"
+>NULL</TT
+>.
+      </P
+><P
+>      Allocated memory can be freed using the function <CODE
+CLASS="FUNCTION"
+>cyg_mempool_var_free()</CODE
+>.
+      </P
+><P
+>      Lastly it is possible to query information about the pool using
+      the function
+      <CODE
+CLASS="FUNCTION"
+>cyg_mempool_var_get_info()</CODE
+>. This takes a
+      pointer to the structure <CODE
+CLASS="STRUCTNAME"
+>cyg_mempool_info</CODE
+> which is:
+      <TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct {
+    cyg_int32 totalmem;
+    cyg_int32 freemem;
+    void      *base;
+    cyg_int32 size;
+    cyg_int32 blocksize;
+    cyg_int32 maxfree;
+} cyg_mempool_info;
+      </PRE
+></TD
+></TR
+></TABLE
+>
+     </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="memalloc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="fixed-pools.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>eCos Memory Pools</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="memalloc.html#ECOS-MEMORY-POOLS"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Fixed Size Allocation Pools</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

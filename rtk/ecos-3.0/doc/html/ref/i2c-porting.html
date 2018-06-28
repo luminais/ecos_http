@@ -1,0 +1,776 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Porting to New Hardware</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="I2C Support"
+HREF="io-i2c.html"><LINK
+REL="PREVIOUS"
+TITLE="I2C Interface"
+HREF="i2c-api.html"><LINK
+REL="NEXT"
+TITLE="CAN Support"
+HREF="io-can.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="i2c-api.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-can.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="I2C-PORTING"
+></A
+>Porting to New Hardware</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN8830"
+></A
+><H2
+>Name</H2
+>Porting&nbsp;--&nbsp;Adding I2C support to new hardware</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="I2C-PORTING-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>Adding I2C support to an eCos port involves a number of steps. The
+generic I2C package <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_I2C</CODE
+> should be
+included in the appropriate <SPAN
+CLASS="DATABASE"
+>ecos.db</SPAN
+> target entry
+or entries. Next <CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_device</CODE
+> structures
+should be provided for every device on the bus. Usually this is the
+responsibility of the platform HAL. In the case of development boards
+where the I2C SDA and SCL lines are accessible via an expansion
+connector, more devices may have been added and it will be the
+application's responsibility to provide the structures. Finally
+there is a need for one or more <CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_bus</CODE
+>
+structures. Amongst other things these structures provide functions
+for actually driving the bus. If the processor has dedicated I2C
+hardware then this structure will usually be provided by a device
+driver package. If the bus is implemented by bit-banging then the bus
+structure will usually be provided by the platform HAL.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="I2C-PORTING-DEVICES"
+></A
+><H2
+>Adding a Device</H2
+><P
+>The eCos I2C API works in terms of
+<CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_device</CODE
+> structures, and these provide
+the information needed to access the hardware. A
+<CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_device</CODE
+> structure contains the
+following fields:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_i2c_bus*</SPAN
+> <CODE
+CLASS="VARNAME"
+>i2c_bus</CODE
+></DT
+><DD
+><P
+>This specifies the bus which the slave device is connected to. Most
+boards will only have a single I2C bus, but multiple buses are possible.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint16</SPAN
+> <CODE
+CLASS="VARNAME"
+>i2c_address</CODE
+></DT
+><DD
+><P
+>For most devices this will be the 7-bit I2C address the device will
+respond to. There is room for future expansion, for example to support
+10-bit addresses.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint16</SPAN
+> <CODE
+CLASS="VARNAME"
+>i2c_flags</CODE
+></DT
+><DD
+><P
+>This field is not used at present. It exists for future expansion, for
+example to allow for fast mode or high-speed mode, and incidentally
+pads the structure to a 32-bit boundary.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint32</SPAN
+> <CODE
+CLASS="VARNAME"
+>i2c_delay</CODE
+></DT
+><DD
+><P
+>This holds the clock period which should be used when interacting with
+the device, in nanoseconds. Usually this will be 10000 ns,
+corresponding to a 100KHz clock, and the header <TT
+CLASS="FILENAME"
+>cyg/io/i2c.h</TT
+> provides a
+<TT
+CLASS="LITERAL"
+>#define</TT
+> <CODE
+CLASS="VARNAME"
+>CYG_I2C_DEFAULT_DELAY</CODE
+>
+for this. Sometimes it may be desirable to use a slower clock, for
+example to reduce noise problems.
+        </P
+></DD
+></DL
+></DIV
+><P
+>The normal way to instantiate a <CODE
+CLASS="VARNAME"
+>cyg_i2c_device</CODE
+>
+structure uses the <CODE
+CLASS="FUNCTION"
+>CYG_I2C_DEVICE</CODE
+> macro, also
+provided by <TT
+CLASS="FILENAME"
+>cyg/io/i2c.h</TT
+>:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#include &lt;cyg/io/i2c.h&gt;
+
+CYG_I2C_DEVICE(cyg_i2c_wallclock_ds1307,
+               &amp;hal_alaia_i2c_bus,
+               0x68,
+               0x00,
+               CYG_I2C_DEFAULT_DELAY);
+
+CYG_I2C_DEVICE(hal_alaia_i2c_fs6377,
+               &amp;hal_alaia_i2c_bus,
+               0x58,
+               0x00,
+               CYG_I2C_DEFAULT_DELAY);
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The arguments to the macro are the variable name, an I2C bus pointer,
+the device address, the flags field, and the delay field. The above
+code fragment defines two I2C device variables,
+<CODE
+CLASS="VARNAME"
+>cyg_i2c_wallclock_ds1307</CODE
+> and
+<CODE
+CLASS="VARNAME"
+>hal_alaia_i2c_fs6377</CODE
+>, which can be used for the
+first argument to the <TT
+CLASS="LITERAL"
+>cyg_i2c_</TT
+> functions. Both
+devices are on the same bus. The device addresses are 0x68 and 0x58
+respectively, and the devices do not have any special requirements.
+    </P
+><P
+>When the platform HAL provides these structures it should also export
+them for use by the application and other packages. Usually this
+involves an entry in <TT
+CLASS="FILENAME"
+>cyg/hal/plf_io.h</TT
+>, which gets included
+automatically via one of the main exported HAL header files <TT
+CLASS="FILENAME"
+>cyg/hal/hal_io.h</TT
+>. Unfortunately
+exporting the structures directly can be problematical because of
+circular dependencies between the I2C header and the HAL headers.
+Instead the platform HAL should define a macro
+<CODE
+CLASS="VARNAME"
+>HAL_I2C_EXPORTED_DEVICES</CODE
+>: 
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+># define HAL_I2C_EXPORTED_DEVICES                                   \
+    extern cyg_i2c_bus                  hal_alaia_i2c_bus;          \
+    extern cyg_i2c_device               cyg_i2c_wallclock_ds1307;   \
+    extern cyg_i2c_device               hal_alaia_i2c_fs6377;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>This macro gets expanded automatically by <TT
+CLASS="FILENAME"
+>cyg/io/i2c.h</TT
+> once the data structures
+themselves have been defined, so application code can just include
+that header and all the buses and devices will be properly exported
+and usable.
+    </P
+><P
+>There is no single convention for naming the I2C devices. If the
+device will be used by some other package then typically that
+specifies the name that should be used. For example the DS1307
+wallclock driver expects the I2C device to be called
+<CODE
+CLASS="VARNAME"
+>cyg_i2c_wallclock_ds1307</CODE
+>, so failing to observe
+that convention will lead to compile-time and link-time errors. If the
+device will not be used by any other package then it is up to the
+platform HAL to select the name, and as long as reasonable care is
+taken to avoid name space pollution the exact name does not matter.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="I2C-PORTING-BITBANG"
+></A
+><H2
+>Bit-banged Bus</H2
+><P
+>Some processors come with dedicated I2C hardware. On other hardware
+the I2C bus involves simply connecting some GPIO pins to the SCL and
+SDA lines and then using software to implement the I2C protocol. This
+is usually referred to as bit-banging the bus. The generic I2C package
+<CODE
+CLASS="VARNAME"
+>CYGPKG_IO_I2C</CODE
+> provides the main code for a
+bit-banged implementation, requiring one platform-specific function
+that does the actual GPIO pin manipulation. This function is usually
+hardware-specific because different boards will use different pins for
+the I2C bus, so typically it is left to the platform HAL to provide
+this function and instantiate the I2C bus object. There is no point in
+creating a separate package for this because the code cannot be
+re-used for other platforms.
+    </P
+><P
+>Instantiating a bit-banged I2C bus requires the following:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#include &lt;cyg/io/i2c.h&gt;
+
+static cyg_bool
+hal_alaia_i2c_bitbang(cyg_i2c_bus* bus, cyg_i2c_bitbang_op op)
+{
+    cyg_bool result    = 0;
+    switch(op) {
+        &#8230;
+    }
+    return result;
+}
+
+CYG_I2C_BITBANG_BUS(hal_alaia_i2c_bus, &amp;hal_alaia_i2c_bitbang);
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>This gives a structure <CODE
+CLASS="VARNAME"
+>hal_alaia_i2c_bus</CODE
+> which can
+be used when defining the <CODE
+CLASS="VARNAME"
+>cyg_i2c_device</CODE
+>
+structures. The second argument specifies the function which will
+do the actual bit-banging. It takes two arguments. The first
+identifies the bus, which can be useful if the hardware has multiple
+I2C buses. The second specifies the bit-bang operation that should be
+performed. To understand these operations consider how I2C devices
+should be wired up according to the specification:
+    </P
+><DIV
+CLASS="INFORMALFIGURE"
+><P
+></P
+><A
+NAME="AEN8900"
+></A
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="i2c_hw.png"
+ALIGN="CENTER"></P
+></DIV
+><P
+></P
+></DIV
+><P
+>Master and slave devices are interfaced to the bus in exactly the same
+way. The default state of the bus is to have both lines high via the
+pull-up resistors. Any device on the bus can lower either line, when
+allowed to do so by the protocol. Usually the SDA line only changes
+while SCL is low, but the start and stop conditions involve SDA
+changing while SCL is high. All devices have the ability to both read
+and write both lines. In reality not all bit-banged hardware works
+quite like this. Instead just two GPIO pins are used, and these are
+switched between input and output mode as required.
+    </P
+><P
+>The bitbang function should support the following operations:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_I2C_BITBANG_INIT</TT
+></DT
+><DD
+><P
+>This will be called during system initialization, as a side effect of
+a prioritized C++ static constructor. The bitbang function should
+ensure that both SCL and SDA are driven high.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_I2C_BITBANG_SCL_HIGH</TT
+>, <TT
+CLASS="LITERAL"
+>CYG_I2C_BITBANG_SCL_LOW</TT
+>, <TT
+CLASS="LITERAL"
+>CYG_I2C_BITBANG_SDA_HIGH</TT
+>, <TT
+CLASS="LITERAL"
+>CYG_I2C_BITBANG_SDA_LOW</TT
+></DT
+><DD
+><P
+>These operations simply set the appropriate lines high or low.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_I2C_BITBANG_SCL_HIGH_CLOCKSTRETCH</TT
+></DT
+><DD
+><P
+>In its simplest form this operation should simply set the SCL line
+high, indicating that the data on the SDA line is stable. However
+there is a complication: if a device is not ready yet then it can
+throttle back the master by keeping the SCL line low. This is known as
+clock-stretching. Hence for this operation the bitbang function should
+allow the SCL line to float high, then poll it until it really has
+become high. If a single pin is used for the SCL line then this pin
+should be turned back into a high output at the end of the call.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_I2C_BITBANG_SCL_LOW_SDA_INPUT</TT
+></DT
+><DD
+><P
+>This is used when there is a change of direction and the slave device
+is about to start driving the SDA line. This can be significant if a
+single pin is used to handle both input and output of SDA, to avoid
+a situation where both the master and the slave are driving the SDA
+line for an extended period of time. The operation combines dropping
+the SCL line and switching SDA to an input in an atomic or near-atomic
+operation.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_I2C_BITBANG_SDA_READ</TT
+></DT
+><DD
+><P
+>The SDA line is currently set as an input and the bitbang function
+should sample and return the current state.
+        </P
+></DD
+></DL
+></DIV
+><P
+>The bitbang function returns a boolean. For most operations this
+return value is ignored. For
+<TT
+CLASS="LITERAL"
+>CYG_I2C_BITBANG_SDA_READ</TT
+> it should be the current
+level of the SDA line.
+    </P
+><P
+>Depending on the hardware some care may have to be taken when
+manipulating the GPIO pins. Although the I2C subsystem performs the
+required locking at the bus level, the device registers controlling
+the GPIO pins may get used by other subsystems or by the application.
+It is the responsibility of the bitbang function to perform
+appropriate locking, whether via a mutex or by briefly disabling
+interrupts around the register accesses.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="I2C-PORTING-BUS"
+></A
+><H2
+>Full Bus Driver</H2
+><P
+>If the processor has dedicated I2C hardware then usually this will
+involve a separate device driver package in the
+<TT
+CLASS="FILENAME"
+>devs/i2c</TT
+> hierarchy of the eCos component
+repository. That package should also be included in the appropriate
+<SPAN
+CLASS="DATABASE"
+>ecos.db</SPAN
+> target entry or entries. The device
+driver may exist already, or it may have to be written from scratch.
+    </P
+><P
+>A new I2C driver basically involves creating an
+<CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_bus</CODE
+> structure. The device driver
+should supply the following fields:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="FUNCTION"
+>i2c_init_fn</CODE
+></DT
+><DD
+><P
+>This function will be called during system initialization to set up
+the I2C hardware. The generic I2C code creates a static object with a
+prioritized constructor, and this constructor will invoke the init
+functions for the various I2C buses in the system.
+        </P
+></DD
+><DT
+><CODE
+CLASS="FUNCTION"
+>i2c_tx_fn</CODE
+>, <CODE
+CLASS="FUNCTION"
+>i2c_rx_fn</CODE
+>, <CODE
+CLASS="FUNCTION"
+>i2c_stop_fn</CODE
+></DT
+><DD
+><P
+>These functions implement the core I2C functionality. The arguments
+and results are the same as for the transaction functions
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_tx</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_rx</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_stop</CODE
+>.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>void*</SPAN
+> <CODE
+CLASS="VARNAME"
+>i2c_extra</CODE
+></DT
+><DD
+><P
+>This field holds any extra information that may be needed by the
+device driver. Typically it will be a pointer to some driver-specific
+data structure.
+        </P
+></DD
+></DL
+></DIV
+><P
+>To assist with instantiating a <CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_bus</CODE
+>
+object the header file <TT
+CLASS="FILENAME"
+>cyg/io/i2c.h</TT
+> provides a macro. Typical
+usage would be:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xyzzy_data {
+    &#8230;
+} xyzzy_object;
+
+static void
+xyzzy_i2c_init(struct cyg_i2c_bus* bus)
+{
+    &#8230;
+}
+
+static cyg_uint32
+xyzzy_i2c_tx(const cyg_i2c_device* dev,
+             cyg_bool send_start,
+             const cyg_uint8* tx_data, cyg_uint32 count,
+             cyg_bool send_stop)
+{
+    &#8230;
+}
+
+static cyg_uint32
+xyzzy_i2c_rx(const cyg_i2c_device* dev,
+             cyg_bool send_start,
+             cyg_uint8* rx_data, cyg_uint32 count,
+             cyg_bool send_nack, cyg_bool send_stop)
+{
+    &#8230;
+}
+
+static void
+xyzzy_i2c_stop(const cyg_i2c_device* dev)
+{
+    &#8230;
+}
+
+CYG_I2C_BUS(cyg_i2c_xyzzy_bus,
+            &amp;xyzzy_i2c_init,
+            &amp;xyzzy_i2c_tx,
+            &amp;xyzzy_i2c_rx,
+            &amp;xyzzy_i2c_stop,
+            (void*) &amp;xyzzy_object);
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The generic I2C code contains these functions for a bit-banged I2C bus
+device. It can be used as a starting point for new drivers. Note that
+the bit-bang code uses the <CODE
+CLASS="VARNAME"
+>i2c_extra</CODE
+> field to hold
+the hardware-specific bitbang function rather than a pointer to some
+data structure.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="i2c-api.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-can.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>I2C Interface</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-i2c.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CAN Support</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

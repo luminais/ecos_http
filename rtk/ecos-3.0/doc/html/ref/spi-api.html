@@ -1,0 +1,733 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>SPI Interface</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="SPI Support"
+HREF="io-spi.html"><LINK
+REL="PREVIOUS"
+TITLE="Overview"
+HREF="spi.html"><LINK
+REL="NEXT"
+TITLE="Porting to New Hardware"
+HREF="spi-porting.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="spi.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="spi-porting.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-API"
+></A
+>SPI Interface</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN8309"
+></A
+><H2
+>Name</H2
+>SPI Functions&nbsp;--&nbsp;allow applications and other packages to access SPI devices</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN8312"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN8313"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/io/spi.h&gt;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_spi_transfer</CODE
+>(cyg_spi_device* device, cyg_bool polled, cyg_uint32 count, const cyg_uint8* tx_data, cyg_uint8* rx_data);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_spi_tick</CODE
+>(cyg_spi_device* device, cyg_bool polled, cyg_uint32 count);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_spi_get_config</CODE
+>(cyg_spi_device* device, cyg_uint32 key, void* buf, cyg_uint32* len);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_spi_set_config</CODE
+>(cyg_spi_device* device, cyg_uint32 key, const void* buf, cyg_uint32* len);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_spi_transaction_begin</CODE
+>(cyg_spi_device* device);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_bool cyg_spi_transaction_begin_nb</CODE
+>(cyg_spi_device* device);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_spi_transaction_transfer</CODE
+>(cyg_spi_device* device, cyg_bool polled, cyg_uint32 count, const cyg_uint8* tx_data, cyg_uint8* rx_data, cyg_bool drop_cs);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_spi_transaction_tick</CODE
+>(cyg_spi_device* device, cyg_bool polled, cyg_uint32 count);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_spi_transaction_end</CODE
+>(cyg_spi_device* device);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SPI-API-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>All SPI functions take a pointer to a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_spi_device</CODE
+> structure as their first
+argument. This is an opaque data structure, usually provided by the
+platform HAL. It contains the information needed by the SPI bus driver
+to interact with the device, for example the required clock rate and
+polarity.
+    </P
+><P
+>An SPI transfer involves the following stages:
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Perform thread-level locking on the bus. Only one thread at a time is
+allowed to access an SPI bus. This eliminates the need to worry about
+locking at the bus driver level. If a platform involves multiple SPI
+buses then each one will have its own lock. Prepare the bus for
+transfers to the specified device, for example by making sure it will
+tick at the right clock rate.
+      </P
+></LI
+><LI
+><P
+>Assert the chip select on the specified device, then transfer data to
+and from the device. There may be a single data transfer or a
+sequence. It may or may not be necessary to keep the chip select
+asserted throughout a sequence.
+      </P
+></LI
+><LI
+><P
+>Optionally generate some number of clock ticks without asserting a
+chip select, for those devices which need this to complete an
+operation.
+      </P
+></LI
+><LI
+><P
+>Return the bus to a quiescent state. Then unlock the bus, allowing
+other threads to perform SPI operations on devices attached to this
+bus.
+      </P
+></LI
+></OL
+><P
+>The simple functions <CODE
+CLASS="FUNCTION"
+>cyg_spi_transfer</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_tick</CODE
+> perform all these steps in a single
+call. These are suitable for simple I/O operations. The alternative
+transaction-oriented functions each perform just one of these steps.
+This makes it possible to perform multiple transfers while only
+locking and unlocking the bus once, as required for more complicated
+devices.
+    </P
+><P
+>With the exception of
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_transaction_begin_nb</CODE
+> all the functions
+will block until completion. There are no error conditions. An SPI
+transfer will always take a predictable amount of time, depending on
+the transfer size and the clock rate. The SPI bus does not receive any
+feedback from a device about possible errors, instead those have to be
+handled by software at a higher level. If a thread cannot afford the
+time it will take to perform a complete large transfer then a number
+of smaller transfers can be used instead.
+    </P
+><P
+>SPI operations should always be performed at thread-level or during
+system initialization, and not inside an ISR or DSR. This greatly
+simplifies locking. Also a typical ISR or DSR should not perform a
+blocking operation such as an SPI transfer.
+    </P
+><P
+>SPI transfers can happen in either polled or interrupt-driven mode.
+Typically polled mode should be used during system initialization,
+before the scheduler has been started and interrupts have been
+enabled. Polled mode should also be used in single-threaded
+applications such as RedBoot. A typical multi-threaded application
+should normally use interrupt-driven mode because this allows for more
+efficient use of cpu cycles. Polled mode may be used in a
+multi-threaded application but this is generally undesirable: the cpu
+will spin while waiting for a transfer to complete, wasting cycles;
+also the current thread may get preempted or timesliced, making the
+timing of an SPI transfer much less predictable. On some hardware
+interrupt-driven mode is impossible or would be very inefficient. In
+such cases the bus drivers will only support polled mode and will
+ignore the <CODE
+CLASS="VARNAME"
+>polled</CODE
+> argument.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SPI-API-TRANSFER"
+></A
+><H2
+>Simple Transfers</H2
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_spi_transfer</CODE
+> can be used for SPI operations
+to simple devices. It takes the following arguments:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_spi_device*</SPAN
+> <CODE
+CLASS="VARNAME"
+>device</CODE
+></DT
+><DD
+><P
+>This identifies the SPI device that should be used.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_bool</SPAN
+> <CODE
+CLASS="VARNAME"
+>polled</CODE
+></DT
+><DD
+><P
+>Polled mode should be used during system initialization and in a
+single-threaded application. Interrupt-driven mode should normally be
+used in a multi-threaded application.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint32</SPAN
+> <CODE
+CLASS="VARNAME"
+>count</CODE
+></DT
+><DD
+><P
+>This identifies the number of data items to be transferred. Usually
+each data item is a single byte, but some devices use a larger size up
+to 16 bits.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>const cyg_uint8*</SPAN
+> <CODE
+CLASS="VARNAME"
+>tx_data</CODE
+></DT
+><DD
+><P
+>The data to be transferred to the device. If the device will only
+output data and ignore its input then a null pointer can be used.
+Otherwise the array should contain <CODE
+CLASS="VARNAME"
+>count</CODE
+> data
+items, usually bytes. For devices where each data item is larger than
+one byte the argument will be interpreted as an array of shorts
+instead, and should be aligned to a 2-byte boundary. The bottom n bits
+of each short will be sent to the device. The buffer need not be
+aligned to a cache-line boundary, even for SPI devices which use DMA
+transfers, but some bus drivers may provide better performance if the
+buffer is suitably aligned. The buffer will not be modified by the
+transfer. 
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint8*</SPAN
+> <CODE
+CLASS="VARNAME"
+>rx_data</CODE
+></DT
+><DD
+><P
+>A buffer for the data to be received from the device. If the device
+does not generate any output then a null pointer can be used.
+The same size and alignment rules apply as for <CODE
+CLASS="VARNAME"
+>tx_data</CODE
+>.
+        </P
+></DD
+></DL
+></DIV
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_spi_transfer</CODE
+> performs all the stages of an
+SPI transfer: locking the bus; setting it up correctly for the
+specified device; asserting the chip select and transferring the data;
+dropping the chip select at the end of the transfer; returning the bus
+to a quiescent state; and unlocking the bus.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SPI-API-TICK"
+></A
+><H2
+>Additional Clock Ticks</H2
+><P
+>Some devices require a number of clock ticks on the SPI bus between
+transfers so that they can complete some internal processing. These
+ticks must happen at the appropriate clock rate but no chip select
+should be asserted and no data transfer will happen.
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_tick</CODE
+> provides this functionality.
+The <CODE
+CLASS="VARNAME"
+>device</CODE
+> argument identifies the SPI bus, the
+required clock rate and the size of each data item. The
+<CODE
+CLASS="VARNAME"
+>polled</CODE
+> argument has the usual meaning. The
+<CODE
+CLASS="VARNAME"
+>count</CODE
+> argument specifies the number of data items
+that would be transferred, which in conjunction with the size of each
+data item determines the number of clock ticks.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SPI-API-TRANSACTION"
+></A
+><H2
+>Transactions</H2
+><P
+>A transaction-oriented API is available for interacting with more
+complicated devices. This provides separate functions for each of the
+steps in an SPI transfer.
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_spi_transaction_begin</CODE
+> must be used at the
+start of a transaction. This performs thread-level locking on the bus,
+blocking if it is currently in use by another thread. Then it prepares
+the bus for transfers to the specified device, for example by making
+sure it will tick at the right clock rate.
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_spi_transaction_begin_nb</CODE
+> is a non-blocking
+variant, useful for threads which cannot afford to block for an
+indefinite period. If the bus is currently locked the function returns
+false immediately. If the bus is not locked then it acts as
+<TT
+CLASS="FILENAME"
+>cyg_spi_transaction_begin</TT
+> and returns true.
+    </P
+><P
+>Once the bus has been locked it is possible to perform one or more
+data transfers by calling
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_transaction_transfer</CODE
+>. This takes the same
+arguments as <CODE
+CLASS="FUNCTION"
+>cyg_spi_transfer</CODE
+>, plus an additional
+one <CODE
+CLASS="VARNAME"
+>drop_cs</CODE
+>. A non-zero value specifies that
+the device's chip select should be dropped at the end of the transfer,
+otherwise the chip select remains asserted. It is essential that the
+chip select be dropped in the final transfer of a transaction. If the
+protocol makes this difficult then
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_transaction_tick</CODE
+> can be used to generate
+dummy ticks with all chip selects dropped.
+    </P
+><P
+>If the device requires additional clock ticks in the middle of a
+transaction without being selected,
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_transaction_tick</CODE
+> can be used. This will
+drop the device's chip select if necessary, then generate the
+appropriate number of ticks. The arguments are the same as for
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_tick</CODE
+>.
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_spi_transaction_end</CODE
+> should be called at the
+end of a transaction. It returns the SPI bus to a quiescent state,
+then unlocks it so that other threads can perform I/O.
+    </P
+><P
+>A typical transaction might involve the following. First a command
+should be sent to the device, consisting of four bytes. The device
+will then respond with a single status byte, zero for failure,
+non-zero for success. If successful then the device can accept another
+n bytes of data, and will generate a 2-byte response including a
+checksum. The device's chip select should remain asserted throughout.
+The code for this would look something like:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#include &lt;cyg/io/spi.h&gt;
+#include &lt;cyg/hal/hal_io.h&gt;    // Defines the SPI devices
+&#8230;
+    cyg_spi_transaction_begin(&amp;hal_spi_eprom);
+    // Interrupt-driven transfer, four bytes of command
+    cyg_spi_transaction_transfer(&amp;hal_spi_eprom, 0, 4, command, NULL, 0);
+    // Read back the status
+    cyg_spi_transaction_transfer(&amp;hal_spi_eprom, 0, 1, NULL, status, 0);
+    if (!status[0]) {
+        // Command failed, generate some extra ticks to drop the chip select
+        cyg_spi_transaction_tick(&amp;hal_spi_eprom, 0, 1);
+    } else {
+        // Transfer the data, then read back the final status. The
+        // chip select should be dropped at the end of this.
+        cyg_spi_transaction_transfer(&amp;hal_spi_eprom, 0, n, data, NULL, 0);
+        cyg_spi_transaction_transfer(&amp;hal_spi_eprom, 0, 2, NULL, status, 1);
+        // Code for checking the final status should go here 
+    }
+    // Transaction complete so clean up
+    cyg_spi_transaction_end(&amp;hal_spi_eprom);
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>A number of variations are possible. For example the command and
+status could be packed into the beginning and end of two 5-byte
+arrays, allowing a single transfer.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SPI-API-CONFIG"
+></A
+><H2
+>Device Configuration</H2
+><P
+>The functions <CODE
+CLASS="FUNCTION"
+>cyg_spi_get_config</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_set_config</CODE
+> can be used to examine and
+change parameters associated with SPI transfers. The only keys that
+are defined for all devices are
+<CODE
+CLASS="VARNAME"
+>CYG_IO_GET_CONFIG_SPI_CLOCKRATE</CODE
+> and
+<CODE
+CLASS="VARNAME"
+>CYG_IO_SET_CONFIG_SPI_CLOCKRATE</CODE
+>. Some types of
+device, for example MMC cards, support a range of clock rates. The
+<CODE
+CLASS="STRUCTNAME"
+>cyg_spi_device</CODE
+> structure will be initialized
+with a low clock rate. During system initialization the device will be
+queried for the optimal clock rate, and the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_spi_device</CODE
+> should then be updated. The
+argument should be a clock rate in Hertz. For example the following
+code switches communication to 1Mbit/s:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    cyg_uint32    new_clock_rate = 1000000;
+    cyg_uint32    len            = sizeof(cyg_uint32);
+    if (cyg_spi_set_config(&amp;hal_mmc_device,
+                           CYG_IO_SET_CONFIG_SPI_CLOCKRATE,
+                           (const void *)&amp;new_clock_rate, &amp;len)) {
+        // Error recovery code
+    }
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>If an SPI bus driver does not support the exact clock rate specified
+it will normally use the nearest valid one. SPI bus drivers may define
+additional keys appropriate for specific hardware. This means that the
+valid keys are not known by the generic code, and theoretically it is
+possible to use a key that is not valid for the SPI bus to which the
+device is attached. It is also possible that the argument used with
+one of these keys is invalid. Hence both
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_get_config</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_set_config</CODE
+> can return error codes. The
+return value will be 0 for success, non-zero for failure. The SPI bus
+driver's documentation should be consulted for further details.
+    </P
+><P
+>Both configuration functions will lock the bus, in the same way as
+<CODE
+CLASS="FUNCTION"
+>cyg_spi_transfer</CODE
+>. Changing the clock rate in the
+middle of a transfer or manipulating other parameters would have
+unexpected consequences.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-porting.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Overview</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-spi.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Porting to New Hardware</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

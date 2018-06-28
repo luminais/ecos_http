@@ -1,0 +1,221 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Authentication</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The ATHTTP Server"
+HREF="net-athttpd.html"><LINK
+REL="PREVIOUS"
+TITLE="CGI"
+HREF="athttpd-cgi.html"><LINK
+REL="NEXT"
+TITLE="Directory Listing"
+HREF="athttpd-dirlist.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="athttpd-cgi.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 65. The ATHTTP Server</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="athttpd-dirlist.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ATHTTPD-AUTHENTICATION"
+>Authentication</A
+></H1
+><P
+>The server supports both Basic (base64) and Digest (MD5) authentication, 
+although they have not been tested with all clients. In this implementation, 
+the contents of certain directories of the file system can be protected, such
+that the user will be required to issue a username/password to access the
+content of the directory.</P
+><P
+>To protect a directory with a basic authentication, there is a 
+specific macro:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_HTTPD_AUTH_TABLE_ENTRY(entry, path, domain, un, pw, mode)
+
+entry            : an identifier unique to this entry.
+path             : the path to the directory whose content must be
+                    authenticated before it is sent out
+domain           : a domain identifier for this directory.
+un               : username for authentication
+pw               : password for authentication
+mode             : CYG_HTTPD_AUTH_BASIC for base64 encoding or 
+                   CYG_HTTPD_AUTH_DIGEST for MD5 encoding</PRE
+></TD
+></TR
+></TABLE
+><P
+>for example, to require basic authentication of the content of directory 
+"/ecos/" with a username of "foo" and password "bar", the following is used:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_HTTPD_AUTH_TABLE_ENTRY(hal_domain1_entry,          \
+                           "/ecos/",    "ecos_domain", \
+                           "foo",       "bar",         \
+                           CYG_HTTPD_AUTH_BASIC);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Any request for a file in the directory /ecos/ will now trigger a
+credential check. These credentials, once provided, are automatically sent by
+the client for every request within the particular domain.</P
+><P
+>It must be noticed that the path name set in the macro is relative to the
+HTML document directory, CYGDAT_NET_HTTPD_SERVEROPT_HTMLDIR and it is the
+first part of the path provided by the client request (including the leading
+slash).</P
+><P
+>In order to reduce the footprint of the server, authentication
+is not enabled by default, and so the option CYGOPT_NET_ATHTTPD_USE_AUTH must
+be used to enable support for basic and digest authentication.</P
+><P
+>The MD5 digest authentication support is implemented using the RSA
+Data Security, Inc. MD5 Message-Digest Algorithm. Derivative works with
+MD5 digest authentication included must be identified as "derived from the
+RSA Data Security, Inc. MD5 Message-Digest Algorithm" in all material
+mentioning or referencing the derived work. See the file md5.c within this
+package for license details.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="athttpd-cgi.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="athttpd-dirlist.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CGI</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-athttpd.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Directory Listing</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

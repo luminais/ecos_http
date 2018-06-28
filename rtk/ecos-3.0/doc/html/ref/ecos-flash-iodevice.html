@@ -1,0 +1,373 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>FLASH I/O devices</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="FLASH Library"
+HREF="io-flash.html"><LINK
+REL="PREVIOUS"
+TITLE="FLASH device API"
+HREF="ecos-flash-v1-dev.html"><LINK
+REL="NEXT"
+TITLE="Using FLASH I/O devices"
+HREF="ecos-flash-iodevice-usage.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecos-flash-v1-dev.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ecos-flash-iodevice-usage.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="ECOS-FLASH-IODEVICE"
+></A
+>Chapter 29. FLASH I/O devices</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="ecos-flash-iodevice.html#ECOS-FLASH-IODEVICE-OVERVIEW-CONFIG"
+>Overview and CDL Configuration</A
+></DT
+><DT
+><A
+HREF="ecos-flash-iodevice-usage.html"
+>Using FLASH I/O devices</A
+></DT
+></DL
+></DIV
+><P
+>It can be useful to be able to access FLASH devices using the generic
+I/O infrastructure found in <CODE
+CLASS="VARNAME"
+>CYGPKG_IO</CODE
+>, and the generic
+FLASH layer provides an optional ability to do so. This allows
+the use of functions like <CODE
+CLASS="FUNCTION"
+>cyg_io_lookup()</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>cyg_io_read()</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>cyg_io_write()</CODE
+> etc.</P
+><P
+> Additionally it means that, courtesy of the
+&#8220;devfs&#8221; pseudo-filesystem in the file I/O layer
+(<CODE
+CLASS="VARNAME"
+>CYGPKG_IO_FILEIO</CODE
+>), functions like
+<CODE
+CLASS="FUNCTION"
+>open()</CODE
+>, <CODE
+CLASS="FUNCTION"
+>read()</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>write()</CODE
+> etc. can even be used directly
+on the FLASH devices.</P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECOS-FLASH-IODEVICE-OVERVIEW-CONFIG"
+>Overview and CDL Configuration</A
+></H1
+><P
+>This package implements support for FLASH as an I/O device by exporting
+it as if it is a block device. To enable this support, the CDL option
+titled &#8220;Provide /dev block devices&#8221;, also known as
+<CODE
+CLASS="VARNAME"
+>CYGPKG_IO_FLASH_BLOCK_DEVICE</CODE
+>, must be enabled.
+(There is also a legacy format alternative which is now deprecated).</P
+><P
+>There are two methods of addressing FLASH as a block device:</P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Using the FLASH Information System (FIS) - this is a
+method of defining and naming FLASH partitions, usually in RedBoot.
+This option is only valid if RedBoot is resident and was used to
+boot the application. To reference FLASH partitions in this way,
+you would use a device name of the form
+<TT
+CLASS="FILENAME"
+>/dev/flash/fis/<TT
+CLASS="REPLACEABLE"
+><I
+>partition-name</I
+></TT
+></TT
+>,
+for example <TT
+CLASS="FILENAME"
+>/dev/flash/fis/jffs2</TT
+> to reference a
+FIS partition named JFFS2.</P
+><P
+>The CDL option <CODE
+CLASS="VARNAME"
+>CYGFUN_IO_FLASH_BLOCK_FROM_FIS</CODE
+>
+must be enabled for this support.</P
+></LI
+><LI
+><P
+>Referencing by device number, offset and length - this
+method extracts addressing information from the name itself. The form
+of the device would be
+<TT
+CLASS="FILENAME"
+>/dev/flash/<TT
+CLASS="REPLACEABLE"
+><I
+>device-number</I
+></TT
+>/<TT
+CLASS="REPLACEABLE"
+><I
+>offset</I
+></TT
+>[,<TT
+CLASS="REPLACEABLE"
+><I
+>length</I
+></TT
+></TT
+>]</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>device-number</I
+></TT
+></DT
+><DD
+><P
+>This is a fixed number allocated to identify each FLASH
+region in the system. The first region is numbered 0, the second 1,
+and so on. If you have only one FLASH device, it will be numbered 0.</P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>offset</I
+></TT
+></DT
+><DD
+><P
+>This is the index into the FLASH region in bytes to use. It
+may be specified as decimal, or if prefixed with
+<TT
+CLASS="LITERAL"
+>0x</TT
+>, then hexadecimal.</P
+></DD
+><DT
+><TT
+CLASS="REPLACEABLE"
+><I
+>length</I
+></TT
+></DT
+><DD
+><P
+>This field is optional and defaults to the remainder
+of the FLASH region.  Again it may be specified in decimal or
+hexadecimal.</P
+></DD
+></DL
+></DIV
+><P
+>Some examples:
+<P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>/dev/flash/0/0</DT
+><DD
+><P
+>This defines a block device that uses the entirety of
+FLASH region 0.</P
+></DD
+><DT
+>/dev/flash/1/0x20000,65536</DT
+><DD
+><P
+>This defines a block device which points inside FLASH region 1,
+starting at offset 0x20000 (128Kb) and extending for 64Kb.</P
+></DD
+><DT
+>/dev/flash/0/65536</DT
+><DD
+><P
+>This defines a block device which points inside FLASH region 0,
+starting at offset 64Kb and continuing up to the end of the device.</P
+></DD
+></DL
+></DIV
+></P
+><P
+>Obviously great care is required when constructing the device names as
+using the wrong specification may subsequently overwrite important areas
+of FLASH, such as RedBoot. Using the alternative via FIS names is
+preferable as these are less error-prone to configure, and also allows for
+the FLASH region to be relocated without requiring program recompilation.</P
+></LI
+></OL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecos-flash-v1-dev.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecos-flash-iodevice-usage.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>FLASH device API</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-flash.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Using FLASH I/O devices</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

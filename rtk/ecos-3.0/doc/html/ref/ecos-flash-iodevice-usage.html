@@ -1,0 +1,575 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Using FLASH I/O devices</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="FLASH I/O devices"
+HREF="ecos-flash-iodevice.html"><LINK
+REL="PREVIOUS"
+TITLE="FLASH I/O devices"
+HREF="ecos-flash-iodevice.html"><LINK
+REL="NEXT"
+TITLE="SPI Support"
+HREF="io-spi.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecos-flash-iodevice.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 29. FLASH I/O devices</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-spi.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECOS-FLASH-IODEVICE-USAGE"
+>Using FLASH I/O devices</A
+></H1
+><P
+>The FLASH I/O block devices can be accessed, read and written using
+the standard interface supplied by the generic I/O
+(<CODE
+CLASS="VARNAME"
+>CYGPKG_IO</CODE
+>) package.  These include the functions:
+<CODE
+CLASS="FUNCTION"
+>cyg_io_lookup()</CODE
+> to access the device and get a
+handle, <CODE
+CLASS="FUNCTION"
+>cyg_io_read()</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_io_write()</CODE
+> for sequential read and write
+operations, <CODE
+CLASS="FUNCTION"
+>cyg_io_bread()</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_io_bwrite()</CODE
+> for random access read and write
+operations, and <CODE
+CLASS="FUNCTION"
+>cyg_io_get_config()</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_io_setconfig()</CODE
+> for run-time configuration
+inspection and control.</P
+><P
+>However there are two aspects that differ from some other I/O devices
+accessed this way:</P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>The first is that the lookup operation uses up
+resources which must be subsequently freed when the last user of the
+I/O handle is finished. The number of FLASH I/O devices that may be
+simultaneously opened is configured with the
+<CODE
+CLASS="VARNAME"
+>CYGNUM_IO_FLASH_BLOCK_DEVICES</CODE
+> CDL option. After the
+last user is finished, the device may be closed using
+<CODE
+CLASS="FUNCTION"
+>cyg_io_setconfig()</CODE
+> with the
+<CODE
+CLASS="VARNAME"
+>CYG_IO_SET_CONFIG_CLOSE</CODE
+> key. Reference counting to
+ensure that it is only the last user that causes a close, is left to
+higher layers.</P
+></LI
+><LI
+><P
+>The second is that write operations assume that the
+flash is already erased. Attempting to write to Flash that has
+already been written to may result in errors. Instead FLASH must
+be erased before it may be written.</P
+></LI
+></OL
+><P
+>FLASH block devices can also be read and written using the
+standard POSIX primitives, <CODE
+CLASS="FUNCTION"
+>open()</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>close()</CODE
+>, <CODE
+CLASS="FUNCTION"
+>read()</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>write()</CODE
+>, <CODE
+CLASS="FUNCTION"
+>lseek()</CODE
+>, and so on
+if the POSIX file I/O package (<CODE
+CLASS="VARNAME"
+>CYGPKG_FILEIO</CODE
+>) is
+included in the configuration. As with the eCos generic I/O interface
+you must call <CODE
+CLASS="FUNCTION"
+>close()</CODE
+> to ensure resources
+are freed when the device is no longer used.</P
+><P
+>Other configuration keys are provided to perform FLASH erase
+operations, and to retrieve device sizes, and FLASH block sizes at
+a particular address. These operations are accessed with
+<CODE
+CLASS="FUNCTION"
+>cyg_io_get_config()</CODE
+> (or if using the POSIX
+file I/O API, <CODE
+CLASS="FUNCTION"
+>cyg_fs_getinfo()</CODE
+>) with the
+following keys:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="VARNAME"
+>CYG_IO_GET_CONFIG_FLASH_ERASE</CODE
+></DT
+><DD
+><P
+>This erases a region of FLASH.
+<CODE
+CLASS="FUNCTION"
+>cyg_io_get_config()</CODE
+> must be passed a
+structure defined as per the following, which is also supplied
+in <TT
+CLASS="FILENAME"
+>&lt;cyg/io/flash.h&gt;</TT
+>:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct {
+    CYG_ADDRESS offset;
+    size_t len;
+    int flasherr;
+    cyg_flashaddr_t err_address;
+} cyg_io_flash_getconfig_erase_t;</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+> In this structure, <CODE
+CLASS="STRUCTFIELD"
+>offset</CODE
+> specifies
+the offset within the block device to erase, <CODE
+CLASS="STRUCTFIELD"
+>len</CODE
+>
+specifies the amount to address, <CODE
+CLASS="STRUCTFIELD"
+>flasherr</CODE
+> is
+set on return to specify an error with the FLASH erase operation itself,
+and <CODE
+CLASS="STRUCTFIELD"
+>err_address</CODE
+> is used if there was an error
+to specify at which address the error happened.</P
+></DD
+><DT
+><CODE
+CLASS="VARNAME"
+>CYG_IO_GET_CONFIG_FLASH_LOCK</CODE
+></DT
+><DD
+><P
+>This protects a region of FLASH using the locking facilities
+available on the card, if provided by the underlying driver. 
+<CODE
+CLASS="FUNCTION"
+>cyg_io_get_config()</CODE
+> must be passed a
+structure defined as per the following:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct {
+    CYG_ADDRESS offset;
+    size_t len;
+    int flasherr;
+    cyg_flashaddr_t err_address;
+} cyg_io_flash_getconfig_lock_t;</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+> In this structure, <CODE
+CLASS="STRUCTFIELD"
+>offset</CODE
+> specifies
+the offset within the block device to lock, <CODE
+CLASS="STRUCTFIELD"
+>len</CODE
+>
+specifies the amount to address, <CODE
+CLASS="STRUCTFIELD"
+>flasherr</CODE
+> is
+set on return to specify an error with the FLASH lock operation itself,
+and <CODE
+CLASS="STRUCTFIELD"
+>err_address</CODE
+> is used if there was an error
+to specify at which address the error happened. If locking
+support is not available -EINVAL will be returned from
+<CODE
+CLASS="FUNCTION"
+>cyg_io_get_config()</CODE
+>.</P
+></DD
+><DT
+><CODE
+CLASS="VARNAME"
+>CYG_IO_GET_CONFIG_FLASH_UNLOCK</CODE
+></DT
+><DD
+><P
+>This disables protection for a region of FLASH using the
+unlocking facilities available on the card, if provided by the underlying driver. 
+<CODE
+CLASS="FUNCTION"
+>cyg_io_get_config()</CODE
+> must be passed a
+structure defined as per the following:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct {
+    CYG_ADDRESS offset;
+    size_t len;
+    int flasherr;
+    cyg_flashaddr_t err_address;
+} cyg_io_flash_getconfig_unlock_t;</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+> In this structure, <CODE
+CLASS="STRUCTFIELD"
+>offset</CODE
+> specifies
+the offset within the block device to unlock, <CODE
+CLASS="STRUCTFIELD"
+>len</CODE
+>
+specifies the amount to address, <CODE
+CLASS="STRUCTFIELD"
+>flasherr</CODE
+> is
+set on return to specify an error with the FLASH unlock operation itself,
+and <CODE
+CLASS="STRUCTFIELD"
+>err_address</CODE
+> is used if there was an error
+to specify at which address the error happened. If unlocking
+support is not available -EINVAL will be returned from
+<CODE
+CLASS="FUNCTION"
+>cyg_io_get_config()</CODE
+>.</P
+></DD
+><DT
+><CODE
+CLASS="VARNAME"
+>CYG_IO_GET_CONFIG_FLASH_DEVSIZE</CODE
+></DT
+><DD
+><P
+>This returns the size of the FLASH block device. The
+<CODE
+CLASS="FUNCTION"
+>cyg_io_get_config()</CODE
+> function must be passed a
+structure defined as per the following, which is also supplied
+in <TT
+CLASS="FILENAME"
+>&lt;cyg/io/flash.h&gt;</TT
+>:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct {
+    size_t dev_size;
+} cyg_io_flash_getconfig_devsize_t;</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+> In this structure, <CODE
+CLASS="STRUCTFIELD"
+>dev_size</CODE
+> is used to
+return the size of the FLASH device.</P
+></DD
+><DT
+><CODE
+CLASS="VARNAME"
+>CYG_IO_GET_CONFIG_FLASH_DEVADDR</CODE
+></DT
+><DD
+><P
+>This returns the address in the virtual memory map that the
+generic flash layer has been informed that this FLASH device is mapped to. Note
+that some flash devices such as dataflash are not truly memory mapped,
+and so this function only returns useful information when used with a true
+memory mapped FLASH device. The
+<CODE
+CLASS="FUNCTION"
+>cyg_io_get_config()</CODE
+> function must be passed a
+structure defined as per the following, which is also supplied
+in <TT
+CLASS="FILENAME"
+>&lt;cyg/io/flash.h&gt;</TT
+>:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct {
+    cyg_flashaddr_t dev_addr;
+} cyg_io_flash_getconfig_devaddr_t;</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+> In this structure, <CODE
+CLASS="STRUCTFIELD"
+>dev_addr</CODE
+> is used to
+return the address corresponding to the base of the FLASH device in the
+virtual memory map.</P
+></DD
+><DT
+><CODE
+CLASS="VARNAME"
+>CYG_IO_GET_CONFIG_FLASH_BLOCKSIZE</CODE
+></DT
+><DD
+><P
+>This returns the size of a FLASH block at a
+supplied offset in the FLASH block device. The
+<CODE
+CLASS="FUNCTION"
+>cyg_io_get_config()</CODE
+> function must be passed a
+structure defined as per the following, which is also supplied
+in <TT
+CLASS="FILENAME"
+>&lt;cyg/io/flash.h&gt;</TT
+>:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct {
+    CYG_ADDRESS offset;
+    size_t block_size;
+} cyg_io_flash_getconfig_blocksize_t;</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+> In this structure, <CODE
+CLASS="STRUCTFIELD"
+>offset</CODE
+> specifies the
+address within the block device of which the FLASH block size is
+required - a single FLASH device may contain blocks of differing
+sizes. The <CODE
+CLASS="STRUCTFIELD"
+>block_size</CODE
+> field is used to
+return the block size at the specified offset.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecos-flash-iodevice.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-spi.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>FLASH I/O devices</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-flash-iodevice.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI Support</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

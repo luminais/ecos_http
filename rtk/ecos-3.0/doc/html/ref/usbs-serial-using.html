@@ -1,0 +1,360 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>API Function</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="eCos Support for USB Serial like Peripherals"
+HREF="io-usb-slave-serial.html"><LINK
+REL="PREVIOUS"
+TITLE="Host Configuration"
+HREF="usbs-serial-host-config.html"><LINK
+REL="NEXT"
+TITLE="eCos Synthetic Target"
+HREF="hal-synth-arch.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="usbs-serial-host-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="hal-synth-arch.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="USBS-SERIAL-USING"
+></A
+>API Function</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN17635"
+></A
+><H2
+>Name</H2
+>usbs_serial_start, usbs_serial_init, usbs_serial_start, usbs_serial_wait_until_configured, usbs_serial_is_configured, usbs_serial_start_tx, usbs_serial_wait_for_tx, usbs_serial_tx, usbs_serial_start_rx, usbs_serial_wait_for_rx, usbs_serial_rx, usbs_serial_state_change_handler&nbsp;--&nbsp;        eCos USB Serial like Peripherals API
+      </DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN17649"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN17650"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/io/usb/usbs_serial.h&gt;
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void 
+            usbs_serial_start
+          </CODE
+>(void);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void 
+            usbs_serial_init
+          </CODE
+>(usbs_serial * ser, usbs_tx_endpoint * tx_ep, usbs_rx_endpoint * rx_ep);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void 
+            usbs_serial_wait_until_configured
+          </CODE
+>(void&#62;);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_bool
+            usbs_serial_is_configured
+          </CODE
+>(void);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void 
+            usbs_serial_start_tx
+          </CODE
+>(usbs_serial * ser, const void *buf, int * n);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int 
+            usbs_serial_wait_for_tx
+          </CODE
+>(usbs_serial * ser);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void 
+            usbs_serial_start_rx
+          </CODE
+>(usbs_serial * ser, const void *buf, int * n);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int 
+            usbs_serial_wait_for_rx
+          </CODE
+>(usbs_serial * ser);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int 
+            usbs_serial_rx
+          </CODE
+>(usbs_serial * ser, const void *buf, int * n);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void 
+            usbs_serial_state_change_handler
+          </CODE
+>(usbs_control_endpoint * ep, void * data, usbs_state_change change, int prev_state);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="USBS-SERIAL-API-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>        For examples of how to use this API see the
+        files <TT
+CLASS="FILENAME"
+>.../tests/usbserial_echo.c</TT
+>
+        and <TT
+CLASS="FILENAME"
+>.../tests/usb2serial.c</TT
+>
+      </P
+><P
+>        The first function that needs calling
+        is <CODE
+CLASS="FUNCTION"
+>usbs_serial_start()</CODE
+>. This will initialise
+        the eCos USB slave layer, creating all the enumeration data and
+        then let the host know that the device exists.
+      </P
+><P
+>        Once the USB subsystem has been started it is necessary to wait
+        for the host to configure the device using the
+        function <CODE
+CLASS="FUNCTION"
+>usbs_serial_wait_until_configured()</CODE
+>. The
+        host will assign the device an ID and then load the appropriate
+        device driver in the host in order to make use the device.
+      </P
+><P
+>        Once the device is configured it is then possible to make use of
+        it, i.e. send and receive data. This transfer of data can be
+        accomplished either asynchronously or synchronously. It is also
+        possible to mix asynchronously and synchronously between
+        receiving and sending data.
+      </P
+><P
+>        To perform asynchronous operations the
+        functions <CODE
+CLASS="FUNCTION"
+>usbs_serial_start_rx()</CODE
+>
+        and <CODE
+CLASS="FUNCTION"
+>usbs_serial_start_tx()</CODE
+> is used to
+        start the operation. These functions start the necessary
+        actions and then return immediately. At a later time the
+        functions <CODE
+CLASS="FUNCTION"
+>usbs_serial_wait_for_tx()</CODE
+>
+        or <CODE
+CLASS="FUNCTION"
+>usbs_serial_wait_for_rx()</CODE
+> should be
+        called. These will, if necessary, block and then return the
+        status and any data for the previously started asynchronous
+        call.
+      </P
+><P
+>        To perform synchronous operations the
+        functions <CODE
+CLASS="FUNCTION"
+>usbs_serial_rx()</CODE
+>
+        and <CODE
+CLASS="FUNCTION"
+>usbs_serial_tx()</CODE
+> are used. These
+        functions will block until the requested action is complete.
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="usbs-serial-host-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="hal-synth-arch.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Host Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-usb-slave-serial.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>eCos Synthetic Target</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

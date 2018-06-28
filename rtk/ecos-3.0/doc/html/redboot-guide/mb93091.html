@@ -1,0 +1,374 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Fujitsu FR-V Design Kit (MB93091-CBxx)</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="RedBoot User's Guide"
+HREF="redboot-guide.html"><LINK
+REL="UP"
+TITLE="Installation and Testing"
+HREF="installation-and-testing.html"><LINK
+REL="PREVIOUS"
+TITLE="FRV/FRV400 Fujitsu FR-V 400 (MB-93091)"
+HREF="frv400.html"><LINK
+REL="NEXT"
+TITLE="Fujitsu FR-V Portable Demonstration Kit (MB93093-PD00)"
+HREF="mb93093.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>RedBoot User's Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="frv400.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Installation and Testing</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mb93093.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MB93091"
+>Fujitsu FR-V Design Kit (MB93091-CBxx)</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN5275"
+>Overview</A
+></H2
+><P
+> RedBoot supports both serial ports, which
+are available via the stacked serial connectors on the mother board in
+the case of the FR400 CPU board, and via serial connectors present on
+the other supported CPU boards themselves. The topmost port is the
+default and is considered to be port 0 by RedBoot.  The bottommost
+port is serial port 1.  The default serial port settings are
+115200,8,N,1. The serial port supports baud rates up to 460800, which
+can be set using the <B
+CLASS="COMMAND"
+>baud</B
+> command as described in
+<A
+HREF="redboot-commands-and-examples.html"
+>Chapter 2</A
+>.&#13;</P
+><P
+>FLASH management is also supported, but only for the FLASH device in IC7. 
+This arrangement allows for IC8 to retain either the original Fujitsu board
+firmware, or some application specific contents.
+Two basic RedBoot configurations are supported:
+
+      <DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN5287"
+></A
+><TABLE
+BORDER="1"
+FRAME="border"
+RULES="all"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Configuration</TH
+><TH
+>Mode</TH
+><TH
+>Description</TH
+><TH
+>File</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>ROMRAM</TD
+><TD
+>[ROMRAM]</TD
+><TD
+>RedBoot running from RAM, but contained in the
+	      board's flash boot sector.</TD
+><TD
+>redboot_ROMRAM.ecm</TD
+></TR
+><TR
+><TD
+>RAM</TD
+><TD
+>[RAM]</TD
+><TD
+>RedBoot running from RAM with RedBoot in the
+	      flash boot sector.</TD
+><TD
+>redboot_RAM.ecm</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></P
+><P
+>Since the normal RedBoot configuration does not use the FLASH ROM
+except during startup, it is unnecessary to load a RAM-based RedBoot
+before reprogramming the FLASH.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN5307"
+>Initial Installation Method</A
+></H2
+><P
+>RedBoot can be installed by directly programming the FLASH device in IC7
+or by using the Fujitsu provided software to download and install a
+version into the FLASH device.  Complete instructions are provided
+separately.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN5310"
+>Special RedBoot Commands</A
+></H2
+><P
+>The <B
+CLASS="COMMAND"
+>exec</B
+> command as described in <A
+HREF="redboot-commands-and-examples.html"
+>Chapter 2</A
+>
+is supported by RedBoot on this target, for executing Linux kernels. Only the command line and timeout options
+are relevant to this platform.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN5315"
+>Memory Maps</A
+></H2
+><P
+>The memory map of this platform is fixed by the hardware (cannot
+be changed by software).  The only attributes which can be modified are
+control over cacheability, as noted below.
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Address                 Cache?      Resource
+00000000-03EFFFFF         Yes       SDRAM (via plugin DIMM)
+03F00000-03FFFFFF         No        SDRAM (used for PCI window)
+10000000-1FFFFFFF         No        MB86943 PCI bridge
+20000000-201FFFFF         No        SRAM
+21000000-23FFFFFF         No        Motherboard resources
+24000000-25FFFFFF         No        PCI I/O space
+26000000-2FFFFFFF         No        PCI Memory space
+30000000-FDFFFFFF         ??        Unused
+FE000000-FEFFFFFF         No        I/O devices
+FF000000-FF1FFFFF         No        IC7 - RedBoot FLASH
+FF200000-FF3FFFFF         No        IC8 - unused FLASH
+FF400000-FFFFFFFF         No        Misc other I/O</PRE
+></TD
+></TR
+></TABLE
+></P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>NOTE: </B
+>The only configuration currently suppored requires a 64MiB SDRAM 
+DIMM to be present on the CPU card.  No other memory configuration
+is supported at this time.</P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN5322"
+>Rebuilding RedBoot</A
+></H2
+><P
+>These shell variables provide the platform-specific information
+needed for building RedBoot according to the procedure described in
+<A
+HREF="rebuilding-redboot.html"
+>Chapter 3</A
+>:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>export TARGET=mb93091
+export ARCH_DIR=frv
+export PLATFORM_DIR=mb93091</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>The names of configuration files are listed above with the
+description of the associated modes.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN5328"
+>Resource Usage</A
+></H2
+><P
+>The RedBoot image occupies flash addresses 0xFF000000 - 0xFF03FFFF. To
+execute it copies itself out of there to RAM at 0x03E00000. RedBoot
+reserves memory from 0x00000000 to 0x0001FFFF for its own use.
+User programs can use memory from 0x00020000 to 0x03DFFFFF.
+RAM based RedBoot configurations are
+designed to run from RAM at 0x00020000.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="frv400.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="redboot-guide.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mb93093.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>FRV/FRV400 Fujitsu FR-V 400 (MB-93091)</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="installation-and-testing.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Fujitsu FR-V Portable Demonstration Kit (MB93093-PD00)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,358 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>The HAL Port</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Freescale M5272C3 Board Support"
+HREF="hal-m68k-m5272c3-part.html"><LINK
+REL="PREVIOUS"
+TITLE="Configuration"
+HREF="m68k-m5272c3-config.html"><LINK
+REL="NEXT"
+TITLE="SuperH SH4-202 MicroDev Board Support"
+HREF="hal-sh4-microdev-part.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="m68k-m5272c3-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="hal-sh4-microdev-part.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="M68K-M5272C3-PORT"
+></A
+>The HAL Port</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN19576"
+></A
+><H2
+>Name</H2
+>HAL Port&nbsp;--&nbsp;Implementation Details</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-PORT-OVERVIEW"
+></A
+><H2
+>Overview</H2
+><P
+>This documentation explains how the eCos HAL specification has been
+mapped onto the M5272C3 hardware, and shold be read in conjunction
+with that specification. The M5272C3 platform HAL package complements
+the M68K architectural HAL, the MCFxxxx variant HAL, and the MCF5272
+processor HAL. It provides functionality which is specific to the
+target board.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-PORT-STARTUP"
+></A
+><H2
+>Startup</H2
+><P
+>Following a hard or soft reset the HAL will initialize or
+reinitialize most of the on-chip peripherals. There is an exception
+for RAM startup applications which depend on a ROM monitor for certain
+services: the UARTs and the ethernet device will not be reinitialized
+because they may be in use by RedBoot for communication with the host.
+    </P
+><P
+>For a ROM or ROMFFE startup the HAL will perform additional
+initialization, setting up the external DRAM and programming the
+various internal registers. The values used for most of these
+registers are <A
+HREF="m68k-m5272c3-config.html#M68K-M5272C3-CONFIG-REGISTERS"
+>configurable</A
+>. Full
+details can be found in the exported headers <TT
+CLASS="FILENAME"
+>cyg/hal/plf.inc</TT
+>
+and <TT
+CLASS="FILENAME"
+>cyg/hal/proc.inc</TT
+>.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-PORT-LINKER"
+></A
+><H2
+>Linker Scripts and Memory Maps</H2
+><P
+>The platform HAL package provides the memory layout information needed
+to generate the linker script. The key memory locations are as follows:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>external SDRAM</DT
+><DD
+><P
+>This is mapped to location 0x00000000. The first 384 bytes are used
+for hardware exception vectors. The next 256 bytes are normally used
+for the eCos virtual vectors, allowing RAM-based applications to use
+services provided by the ROM monitor. For ROM and ROMFFE startup all
+remaining SDRAM is available. For RAM and DBUG startup available SDRAM
+starts at location 0x00020000, with the bottom 128K reserved for use
+by either the RedBoot or dBUG ROM monitors.
+        </P
+></DD
+><DT
+>on-chip peripherals</DT
+><DD
+><P
+>These are accessible at location 0x10000000 onwards, as per the
+defined symbol <CODE
+CLASS="VARNAME"
+>HAL_MCFxxxx_MBAR</CODE
+>. This address
+cannot easily be changed during development because both the ROM
+monitor and the application must use the same address. The
+<CODE
+CLASS="VARNAME"
+>%mbar</CODE
+> system register is initialized appropriately
+during a ROM or ROMFFE startup.
+        </P
+></DD
+><DT
+>on-chip SRAM</DT
+><DD
+><P
+>The 4K of internal SRAM are normally mapped at location 0x20000000.
+The <CODE
+CLASS="VARNAME"
+>%rambar</CODE
+> register is initialized 
+during a ROM startup using the value of the configuration
+option <CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_M68K_M5272C3_RAMBAR</CODE
+>. Neither eCos
+nor RedBoot use the internal SRAM so all of it is available to
+application code.
+        </P
+></DD
+><DT
+>on-chip ROM</DT
+><DD
+><P
+>Usually this is left disabled since its contents are of no interest to
+most applications. If it is enabled then it is usually mapped at
+location 0x21000000. The <CODE
+CLASS="VARNAME"
+>%rombar</CODE
+> register is
+initialized during a ROM startup using the value of the configuration
+option <CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_M68K_M5272C3_ROMBAR</CODE
+>.
+        </P
+></DD
+><DT
+>off-chip Flash</DT
+><DD
+><P
+>This is located at the top of memory, location 0xFFE00000 onwards. For
+ROM and RAM startups it is assumed that a jumper is used to disable
+the bottom half of the flash, so location 0xFFE00000 is actually a
+mirror of 0xFFF00000. For ROMFFE and DBUG startups all of the flash is
+visible. By default the flash block at location 0xFFF00000 is used to
+hold RedBoot or another ROM startup application, and the block at
+location 0xFFFC00000 is used to hold flash management data and the
+RedBoot <B
+CLASS="COMMAND"
+>fconfig</B
+> variables. The blocks at
+0xFFF400000 and 0xFFF80000 can be used by application code.
+        </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-PORT-CLOCK"
+></A
+><H2
+>Clock Support</H2
+><P
+>The platform HAL provides configuration options for the eCos system
+clock. This always uses the hardware timer 3, which should not be used
+directly by application code. The gprof-based profiling code uses
+timer 2, so that is only available when not profiling. Timers 0 and 1
+are never used by eCos so application code is free to manipulate these
+as required. The actual HAL macros for managing the clock are provided
+by the MCF5272 processor HAL. The specific numbers used are a
+characteristic of the platform because they depend on the processor
+speed.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-PORT-OTHER-HAL"
+></A
+><H2
+>Other Issues</H2
+><P
+>The M5272C3 platform HAL does not affect the implementation of other
+parts of the eCos HAL specification. The MCF5272 processor HAL, the
+MCFxxxx variant HAL, and the M68K architectural HAL documentation
+should be consulted for further details.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-PORT-OTHER"
+></A
+><H2
+>Other Functionality</H2
+><P
+>The platform HAL package also provides a flash driver for the off-chip
+AMD AM29PL160C flash chip. This driver is inactive by default, and
+only becomes active if the configuration includes the generic flash
+support <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_FLASH</CODE
+>.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="m68k-m5272c3-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="hal-sh4-microdev-part.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="hal-m68k-m5272c3-part.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SuperH SH4-202 MicroDev Board Support</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

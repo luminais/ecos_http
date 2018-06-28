@@ -1,0 +1,845 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Framebuffer Colours</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Framebuffer Support"
+HREF="io-framebuf.html"><LINK
+REL="PREVIOUS"
+TITLE="Framebuffer Control Operations"
+HREF="framebuf-control.html"><LINK
+REL="NEXT"
+TITLE="Framebuffer Drawing Primitives"
+HREF="framebuf-drawing.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="framebuf-control.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="framebuf-drawing.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FRAMEBUF-COLOUR"
+></A
+>Framebuffer Colours</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN10412"
+></A
+><H2
+>Name</H2
+>Colours&nbsp;--&nbsp;formats and palette management</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN10415"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN10416"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/io/framebuf.h&gt;
+
+typedef struct cyg_fb {
+    cyg_ucount16    fb_depth;
+    cyg_ucount16    fb_format;
+    cyg_uint32      fb_flags0;
+    &#8230;    
+} cyg_fb;
+
+extern const cyg_uint8  cyg_fb_palette_ega[16 * 3];
+extern const cyg_uint8  cyg_fb_palette_vga[256 * 3];
+
+#define CYG_FB_DEFAULT_PALETTE_BLACK        0x00
+#define CYG_FB_DEFAULT_PALETTE_BLUE         0x01
+#define CYG_FB_DEFAULT_PALETTE_GREEN        0x02
+#define CYG_FB_DEFAULT_PALETTE_CYAN         0x03
+#define CYG_FB_DEFAULT_PALETTE_RED          0x04
+#define CYG_FB_DEFAULT_PALETTE_MAGENTA      0x05
+#define CYG_FB_DEFAULT_PALETTE_BROWN        0x06
+#define CYG_FB_DEFAULT_PALETTE_LIGHTGREY    0x07
+#define CYG_FB_DEFAULT_PALETTE_LIGHTGRAY    0x07
+#define CYG_FB_DEFAULT_PALETTE_DARKGREY     0x08
+#define CYG_FB_DEFAULT_PALETTE_DARKGRAY     0x08
+#define CYG_FB_DEFAULT_PALETTE_LIGHTBLUE    0x09
+#define CYG_FB_DEFAULT_PALETTE_LIGHTGREEN   0x0A
+#define CYG_FB_DEFAULT_PALETTE_LIGHTCYAN    0x0B
+#define CYG_FB_DEFAULT_PALETTE_LIGHTRED     0x0C
+#define CYG_FB_DEFAULT_PALETTE_LIGHTMAGENTA 0x0D
+#define CYG_FB_DEFAULT_PALETTE_YELLOW       0x0E
+#define CYG_FB_DEFAULT_PALETTE_WHITE        0x0F
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_ucount16 CYG_FB_FORMAT</CODE
+>(framebuf);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_read_palette</CODE
+>(cyg_fb* fb, cyg_ucount32 first, cyg_ucount32 count, void* data);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_write_palette</CODE
+>(cyg_fb* fb, cyg_ucount32 first, cyg_ucount32 count, const void* data, cyg_ucount16 when);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_fb_colour cyg_fb_make_colour</CODE
+>(cyg_fb* fb, cyg_ucount8 r, cyg_ucount8 g, cyg_ucount8 b);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_break_colour</CODE
+>(cyg_fb* fb, cyg_fb_colour colour, cyg_ucount8* r, cyg_ucount8* g, cyg_ucount8* b);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_READ_PALETTE</CODE
+>(FRAMEBUF, cyg_ucount32 first, cyg_ucount32 count, void* data);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_WRITE_PALETTE</CODE
+>(FRAMEBUF, cyg_ucount32 first, cyg_ucount32 count, const void* data, cyg_ucount16 when);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_fb_colour CYG_FB_MAKE_COLOUR</CODE
+>(FRAMEBUF, cyg_ucount8 r, cyg_ucount8 g, cyg_ucount8 b);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_BREAK_COLOUR</CODE
+>(FRAMEBUF, cyg_fb_colour colour, cyg_ucount8* r, cyg_ucount8* g, cyg_ucount8* b);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-COLOUR-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>Managing colours can be one of the most difficult aspects of writing
+graphics code, especially if that code is intended to be portable to
+many different platforms. Displays can vary from 1bpp monochrome, via
+2bpp and 4bpp greyscale, through 4bpp and 8bpp paletted, and up to
+16bpp and 32bpp true colour - and those are just the more common
+scenarios. The various <A
+HREF="framebuf-drawing.html"
+>drawing
+primitives</A
+> like <CODE
+CLASS="FUNCTION"
+>cyg_fb_write_pixel</CODE
+> work in
+terms of <SPAN
+CLASS="TYPE"
+>cyg_fb_colour</SPAN
+> values, usually an unsigned
+integer. Exactly how the hardware interprets a
+<SPAN
+CLASS="TYPE"
+>cyg_fb_colour</SPAN
+> depends on the format.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-COLOUR-FORMATS"
+></A
+><H2
+>Colour Formats</H2
+><P
+>There are a number of ways of finding out how these values will be
+interpreted by the hardware:
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>The <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_TRUE_COLOUR</TT
+> flag is set for all
+true colour displays. The format parameter can be examined for more
+details but this is not usually necessary. Instead code can use
+<A
+HREF="framebuf-colour.html#FRAMEBUF-COLOUR-TRUE"
+><CODE
+CLASS="FUNCTION"
+>cyg_fb_make_colour</CODE
+></A
+>
+or <A
+HREF="framebuf-colour.html#FRAMEBUF-COLOUR-TRUE"
+><CODE
+CLASS="FUNCTION"
+>CYG_FB_MAKE_COLOUR</CODE
+></A
+>
+to construct a <SPAN
+CLASS="TYPE"
+>cyg_fb_colour</SPAN
+> value from red, green and
+blue components.
+      </P
+></LI
+><LI
+><P
+>If the <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_WRITEABLE_PALETTE</TT
+> flag is set
+then a <SPAN
+CLASS="TYPE"
+>cyg_fb_colour</SPAN
+> value is an index into a lookup
+table known as the palette, and this table contains red, green and
+blue components. The size of the palette is determined by the display
+depth, so 16 entries for a 4bpp display and 256 entries for an 8bpp
+display. Application code or a graphics library can <A
+HREF="framebuf-colour.html#FRAMEBUF-COLOUR-PALETTE"
+>install</A
+> its own palette so
+can control exactly what colour each <SPAN
+CLASS="TYPE"
+>cyg_fb_colour</SPAN
+> value
+corresponds to. Alternatively there is support for installing a
+default palette.
+      </P
+></LI
+><LI
+><P
+>If <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_PALETTE</TT
+> is set but
+<TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_WRITEABLE_PALETTE</TT
+> is clear then the
+hardware uses a fixed palette. There is no easy way for portable
+software to handle this case. The palette can be read at run-time,
+allowing the application's desired colours to be mapped to whichever
+palette entry provides the best match. However normally it will be
+necessary to write code specifically for the fixed palette.
+      </P
+></LI
+><LI
+><P
+>Otherwise the display is monochrome or greyscale, depending on the
+depth. There are still variations, for example on a monochrome display
+colour 0 can be either white or black.
+      </P
+></LI
+></OL
+><P
+>As an alternative or to provide additional information, the exact
+colour format is provided by the <CODE
+CLASS="STRUCTFIELD"
+>fb_format</CODE
+>
+field of the <CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structure or by the
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_FORMAT</CODE
+> macro. It can be one of the
+following (more entries may be added in future):
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_1BPP_MONO_0_BLACK</TT
+></DT
+><DD
+><P
+>simple 1bpp monochrome display, with 0 as black or the darker of the
+two colours, and 1 as white or the ligher colour.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_1BPP_MONO_0_WHITE</TT
+></DT
+><DD
+><P
+>simple 1bpp monochrome display, with 0 as white or the lighter of the
+two colours, and 1 as black or the darker colour.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_1BPP_PAL888</TT
+></DT
+><DD
+><P
+>a 1bpp display which cannot easily be described as monochrome. This is
+unusual and not readily supported by portable code. It can happen if
+the framebuffer normally runs at a higher depth, for example 4bpp or
+8bpp paletted, but is run at only 1bpp to save memory. Hence only two
+of the palette entries are used, but can be set to arbitrary colours.
+The palette may be read-only or read-write.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_2BPP_GREYSCALE_0_BLACK</TT
+></DT
+><DD
+><P
+>a 2bpp display offering four shades of grey, with 0 as black or the
+darkest of the four shades, and 3 as white or the lightest.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_2BPP_GREYSCALE_0_WHITE</TT
+></DT
+><DD
+><P
+>a 2bpp display offering four shades of grey, with 0 as white or the
+lightest of the four shades, and 3 as black or the darkest.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_2BPP_PAL888</TT
+></DT
+><DD
+><P
+>a 2bpp display which cannot easily be described as greyscale, for
+example providing black, red, blue and white as the four colours.
+This is unusual and not readily supported by portable code. It can
+happen if the framebuffer normally runs at a higher depth, for example
+4bpp or 8bpp paletted, but is run at only 2bpp to save memory. Hence
+only four of the palette entries are used, but can be set to arbitrary
+colours. The palette may be read-only or read-write.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_4BPP_GREYSCALE_0_BLACK</TT
+></DT
+><DD
+><P
+>a 4bpp display offering sixteen shades of grey, with 0 as black or the
+darkest of the 16 shades, and 15 as white or the lighest.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_4BPP_GREYSCALE_0_WHITE</TT
+></DT
+><DD
+><P
+>a 4bpp display offering sixteen shades of grey, with 0 as white or the
+lightest of the 16 shades, and 15 as black or the darkest.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_4BPP_PAL888</TT
+></DT
+><DD
+><P
+>a 4bpp paletted display, allowing for 16 different colours on screen
+at the same time. The palette may be read-only or read-write.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_8BPP_PAL888</TT
+></DT
+><DD
+><P
+>an 8bpp paletted display, allowing for 256 different colours on screen
+at the same time. The palette may be read-only or read-write.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_8BPP_TRUE_332</TT
+></DT
+><DD
+><P
+>an 8bpp true colour display, with three bits (eight levels) of red and
+green intensity and two bits (four levels) of blue intensity.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_16BPP_TRUE_565</TT
+></DT
+><DD
+><P
+>a 16bpp true colour display with 5 bits each for red and blue and 6
+bits for green.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_16BPP_TRUE_555</TT
+></DT
+><DD
+><P
+>a 16bpp true colour display with five bits each for red, green and
+blue, and one unused bit.
+        </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FORMAT_32BPP_TRUE_0888</TT
+></DT
+><DD
+><P
+>a 32bpp true colour display with eight bits each for red, green and
+blue and eight bits unused.
+        </P
+></DD
+></DL
+></DIV
+><P
+>For the true colour formats the format does not define exactly which
+bits in the pixel are used for which colour. Instead the
+<CODE
+CLASS="FUNCTION"
+>cyg_fb_make_colour</CODE
+>
+and <CODE
+CLASS="FUNCTION"
+>cyg_fb_break_colour</CODE
+> functions or the
+equivalent macros should be used to construct or decompose pixel
+values.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-COLOUR-PALETTE"
+></A
+><H2
+>Paletted Displays</H2
+><P
+>Palettes are the common way of implementing low-end colour displays.
+There are two variants. A read-only palette provides a fixed set of
+colours and it is up to application code to use these colours
+appropriately. A read-write palette allows the application to select
+its own set of colours. Displays providing a read-write palette will
+have the <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_WRITEABLE_PALETTE</TT
+> flag set
+in addition to <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_PALETTE</TT
+>.
+    </P
+><P
+>Even if application code can install its own palette, many
+applications do not exploit this functionality and instead stick with
+a default. There are two standard palettes: the 16-entry PC EGA for
+4bpp displays; and the 256-entry PC VGA, a superset of the EGA one,
+for 8bpp displays. This package provides the data for both, in the
+form of arrays <CODE
+CLASS="VARNAME"
+>cyg_fb_palette_ega</CODE
+> and
+<CODE
+CLASS="VARNAME"
+>cyg_fb_palette_vga</CODE
+>, and 16
+<TT
+CLASS="LITERAL"
+>#define</TT
+>'s such as
+<CODE
+CLASS="VARNAME"
+>CYG_FB_DEFAULT_PALETTE_BLACK</CODE
+> for the EGA colours
+and the first 16 VGA colours. By default device drivers for read-write
+paletted displays will install the appropriate default palette, but
+this can be suppressed using configuration option
+<CODE
+CLASS="VARNAME"
+>CYGFUN_IO_FRAMEBUF_INSTALL_DEFAULT_PALETTE</CODE
+>. If a
+custom palette will be used then installing the default palette
+involves wasting 48 or 768 bytes of memory.
+    </P
+><P
+>It should be emphasized that displays vary widely. A colour such
+as <CODE
+CLASS="VARNAME"
+>CYG_FB_DEFAULT_PALETTE_YELLOW</CODE
+> may appear rather
+differently on two different displays, although it should always be
+recognizable as yellow. Developers may wish to fine-tune the palette
+for specific hardware.
+    </P
+><P
+>The current palette can be retrieved using
+<CODE
+CLASS="FUNCTION"
+>cyg_fb_read_palette</CODE
+> or
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_READ_PALETTE</CODE
+>. The
+<CODE
+CLASS="PARAMETER"
+>first</CODE
+> and <CODE
+CLASS="PARAMETER"
+>count</CODE
+>
+arguments control which palette entries should be retrieved. For
+example, to retrieve just palette entry 12
+<CODE
+CLASS="PARAMETER"
+>first</CODE
+> should be set to 12 and
+<CODE
+CLASS="PARAMETER"
+>count</CODE
+> should be set to 1. To retrieve all 256
+entries for an 8bpp display, <CODE
+CLASS="PARAMETER"
+>first</CODE
+> should be
+set to 0 and <CODE
+CLASS="PARAMETER"
+>count</CODE
+> should be set to 256. The
+<CODE
+CLASS="PARAMETER"
+>data</CODE
+> argument should point at an array of
+bytes, allowing three bytes for every entry. Byte 0 will contain the red
+intensity for the first entry, byte 1 green and byte 2 blue.
+    </P
+><P
+>For read-write palettes the palette can be updated using
+<CODE
+CLASS="FUNCTION"
+>cyg_fb_write_palette</CODE
+> or
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_WRITE_PALETTE</CODE
+>. The
+<CODE
+CLASS="PARAMETER"
+>first</CODE
+> and <CODE
+CLASS="PARAMETER"
+>count</CODE
+> arguments
+are the same as for <CODE
+CLASS="FUNCTION"
+>cyg_fb_read_palette</CODE
+>, and the
+<CODE
+CLASS="PARAMETER"
+>data</CODE
+> argument should point at a suitable byte
+array packed in the same way. The <CODE
+CLASS="PARAMETER"
+>when</CODE
+> argument
+should be one of <TT
+CLASS="LITERAL"
+>CYG_FB_UPDATE_NOW</TT
+> or
+<TT
+CLASS="LITERAL"
+>CYG_FB_UPDATE_VERTICAL_RETRACE</TT
+>. With some displays
+updating the palette in the middle of an update may result in visual
+noise, so synchronizing to the vertical retrace avoids this. However
+not all device drivers will support this.
+    </P
+><P
+>There is an assumption that palette entries use 8 bits for each of the
+red, green and blue colour intensities. This is not always the case,
+but the device drivers will perform appropriate adjustments. Some
+hardware may use only 6 bits per colour, and the device driver will
+ignore the bottom two bits of the supplied intensity values.
+Occasionally hardware may use more than 8 bits, in which case the
+supplied 8 bits are shifted left appropriately and zero-padded. Device
+drivers for such hardware may also provide device-specific routines to
+manipulate the palette in a non-portable fashion.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-COLOUR-TRUE"
+></A
+><H2
+>True Colour displays</H2
+><P
+>True colour displays are often easier to manage than paletted
+displays. However this comes at the cost of extra memory. A 16bpp true
+colour display requires twice as much memory as an 8bpp paletted
+display, yet can offer only 32 or 64 levels of intensity for each
+colour as opposed to the 256 levels provided by a palette. It also
+requires twice as much video memory bandwidth to send all the pixel
+data to the display for every refresh, which may impact the
+performance of the rest of the system. A 32bpp true colour display
+offers the same colour intensities but requires four times the memory
+and four times the bandwidth.
+    </P
+><P
+>Exactly how the colour bits are organized in
+a <SPAN
+CLASS="TYPE"
+>cyg_fb_colour</SPAN
+> pixel value is not
+defined by the colour format. Instead code should use the
+<CODE
+CLASS="FUNCTION"
+>cyg_fb_make_colour</CODE
+> or
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_MAKE_COLOUR</CODE
+> primitives. These take 8-bit
+intensity levels for red, green and blue, and return the corresponding
+<SPAN
+CLASS="TYPE"
+>cyg_fb_colour</SPAN
+>. When using the macro interface the
+arithmetic happens at compile-time, for example:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define BLACK        CYG_FB_MAKE_COLOUR(FRAMEBUF,   0,   0,   0)
+#define WHITE        CYG_FB_MAKE_COLOUR(FRAMEBUF, 255, 255, 255)
+#define RED          CYG_FB_MAKE_COLOUR(FRAMEBUF, 255,   0,   0)
+#define GREEN        CYG_FB_MAKE_COLOUR(FRAMEBUF,   0, 255,   0)
+#define BLUE         CYG_FB_MAKE_COLOUR(FRAMEBUF,   0,   0, 255)
+#define YELLOW       CYG_FB_MAKE_COLOUR(FRAMEBUF, 255, 255,  80)
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>Displays vary widely so the numbers may need to be adjusted to give
+the exact desired colours.
+    </P
+><P
+>For symmetry there are also <CODE
+CLASS="FUNCTION"
+>cyg_fb_break_colour</CODE
+>
+and <CODE
+CLASS="FUNCTION"
+>CYG_FB_BREAK_COLOUR</CODE
+> primitives. These take a
+<SPAN
+CLASS="TYPE"
+>cyg_fb_colour</SPAN
+> value and decompose it into its red, green
+and blue components.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="framebuf-control.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="framebuf-drawing.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Framebuffer Control Operations</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-framebuf.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Framebuffer Drawing Primitives</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,233 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Filesystem Interface</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="RedBoot User's Guide"
+HREF="redboot-guide.html"><LINK
+REL="UP"
+TITLE="RedBoot Commands and Examples"
+HREF="redboot-commands-and-examples.html"><LINK
+REL="PREVIOUS"
+TITLE="fis write"
+HREF="fis-write-command.html"><LINK
+REL="NEXT"
+TITLE="fs info"
+HREF="fs-info-command.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>RedBoot User's Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="fis-write-command.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. RedBoot Commands and Examples</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="fs-info-command.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FILESYSTEM-COMMANDS"
+>Filesystem Interface</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="fs-info-command.html"
+>fs info</A
+>&nbsp;--&nbsp;Print filesystem information</DT
+><DT
+><A
+HREF="fs-mount-command.html"
+>fs mount</A
+>&nbsp;--&nbsp;Mount a filesystem</DT
+><DT
+><A
+HREF="fs-umount-command.html"
+>fs umount</A
+>&nbsp;--&nbsp;Unmount filesystem</DT
+><DT
+><A
+HREF="fs-cd-command.html"
+>fs cd</A
+>&nbsp;--&nbsp;Change filesystem directory</DT
+><DT
+><A
+HREF="fs-mkdir-command.html"
+>fs mkdir</A
+>&nbsp;--&nbsp;Create filesystem directory</DT
+><DT
+><A
+HREF="fs-deldir-command.html"
+>fs deldir</A
+>&nbsp;--&nbsp;Delete filesystem directory</DT
+><DT
+><A
+HREF="fs-del-command.html"
+>fs del</A
+>&nbsp;--&nbsp;Delete file</DT
+><DT
+><A
+HREF="fs-move-command.html"
+>fs move</A
+>&nbsp;--&nbsp;Move file</DT
+><DT
+><A
+HREF="fs-list-command.html"
+>fs list</A
+>&nbsp;--&nbsp;List filesystem directory</DT
+><DT
+><A
+HREF="fs-write-command.html"
+>fs write</A
+>&nbsp;--&nbsp;Write to filesystem</DT
+></DL
+></DIV
+><P
+>&#13;
+If the platform has access to secondary storage, then RedBoot may be
+able to access a filesystem stored on this device. RedBoot can access
+FAT filesystems stored on IDE disks or CompactFlash devices and can
+use JFFS2 filesystems stored in FLASH memory. The
+<B
+CLASS="COMMAND"
+>fs</B
+> command is used to manipulate files on
+filesystems. Applications may be loaded into memory using the
+<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>file</I
+></SPAN
+> mode of the <B
+CLASS="COMMAND"
+>load</B
+> command.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="fis-write-command.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="redboot-guide.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="fs-info-command.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>fis write</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="redboot-commands-and-examples.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>fs info</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

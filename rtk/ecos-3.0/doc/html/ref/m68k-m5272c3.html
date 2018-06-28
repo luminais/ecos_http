@@ -1,0 +1,291 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Overview</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Freescale M5272C3 Board Support"
+HREF="hal-m68k-m5272c3-part.html"><LINK
+REL="PREVIOUS"
+TITLE="Freescale M5272C3 Board Support"
+HREF="hal-m68k-m5272c3-part.html"><LINK
+REL="NEXT"
+TITLE="Setup"
+HREF="m68k-m5272c3-setup.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="hal-m68k-m5272c3-part.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="m68k-m5272c3-setup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="M68K-M5272C3"
+></A
+>Overview</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN19375"
+></A
+><H2
+>Name</H2
+>eCos Support for the Freescale M5272C3 Board&nbsp;--&nbsp;Overview</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>The Freescale M5272C3 board has an MCF5272 ColdFire processor, 4MB of
+external SDRAM, 2MB of external flash memory, and connectors plus
+required support chips for all the on-chip peripherals. By default the
+board comes with its own dBUG ROM monitor, located in the bottom half
+of the flash.
+    </P
+><P
+>For typical eCos development a RedBoot image is programmed into the
+top half of the flash memory, and the board is made to boot this image
+rather than the existing dBUG monitor. RedBoot provides gdb stub
+functionality so it is then possible to download and debug eCos
+applications via the gdb debugger. This can happen over either a
+serial line or over ethernet.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-HARDWARE"
+></A
+><H2
+>Supported Hardware</H2
+><P
+>In a typical setup the bottom half of the flash memory is reserved for
+the dBUG ROM monitor and is not accessible to eCos. That leaves four
+flash blocks of 256K each. Of these one is used for the RedBoot image
+and another is used for managing the flash and holding RedBoot fconfig
+values. The remaining two blocks at 0xFFF40000 and 0xFFF80000 can be
+used by application code.
+    </P
+><P
+>By default eCos will only support the four megabytes of external SDRAM
+present on the initial versions of the board, accessible at location
+0x00000000. Later versions come with 16MB. If all 16MB of memory are
+required then the ACR0 register needs to be changed. The default value
+is controlled by the configuration option
+<CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_M68K_M5272C3_ACR0</CODE
+>, but this option is
+only used during ROM startup so in a typical setup it would be
+necessary to rebuild and update RedBoot. Alternatively the register
+can be updated by application code, preferably using a high priority
+static constructor to ensure that the extra memory is visible before
+any code tries to use that memory. It will also be necessary to change
+the memory layout so that the linker knows about the additional
+memory.
+    </P
+><P
+>By default the 4K of internal SRAM is mapped to location 0x20000000
+using the RAMBAR register. This is not used by eCos or by RedBoot so
+can be used by application code. The M68K architectural HAL has an
+<TT
+CLASS="FILENAME"
+>iram1.c</TT
+> testcase to illustrate the linker script
+support for this. The internal 16K of ROM is left
+disabled by default because its contents are of no use to most
+applications. The on-chip peripherals are mapped at 0x10000000 via the
+MBAR register.
+    </P
+><P
+>There is a serial driver <CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_SERIAL_MCFxxxx</CODE
+>
+which supports both on-chip UARTs. One of the UARTs, usually uart0,
+can be used by RedBoot for communication with the host. If this UART
+is needed by the application, either directly or via the serial
+driver, then it cannot also be used for RedBoot communication. Another
+communication channel such as ethernet should be used instead. The
+serial driver package is loaded automatically when configuring for the
+M5272C3 target.
+    </P
+><P
+>There is an ethernet driver <CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_ETH_MCFxxxx</CODE
+>
+for the on-chip ethernet device. This driver is also loaded
+automatically when configuring for the M5272C3 target. The M5272C3
+board does not have a unique MAC address, so a suitable address has to
+be programmed into flash via RedBoot's <B
+CLASS="COMMAND"
+>fconfig</B
+>
+command.
+    </P
+><P
+>eCos manages the on-chip interrupt controller. Timer 3 is used to
+implement the eCos system clock, but timers 0, 1 and 2 are unused and
+left for the application. The GPIO pins are manipulated only as needed
+to get the UARTs and ethernet working. eCos will reset the remaining
+on-chip peripherals (DMA, USB, PLCI, QSPI and PWM) during system
+startup or soft reset but will not otherwise manipulate them.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-TOOLS"
+></A
+><H2
+>Tools</H2
+><P
+>The M5272C3 port is intended to work with GNU tools configured for an
+m68k-elf target. The original port was done using m68k-elf-gcc version
+3.2.1, m68k-elf-gdb version 5.3, and binutils version 2.13.1.
+    </P
+><P
+>By default eCos is built using the compiler flag
+<CODE
+CLASS="OPTION"
+>-fomit-frame-pointer</CODE
+>. Omitting the frame pointer
+eliminates some work on every function call and makes another register
+available, so the code should be smaller and faster. However without a
+frame pointer m68k-elf-gdb is not always able to identify stack
+frames, so it may be unable to provide accurate backtrace information.
+Removing this compiler flag from the configuration option
+<CODE
+CLASS="VARNAME"
+>CYGBLD_GLOBAL_CFLAGS</CODE
+> avoids such debug problems.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="hal-m68k-m5272c3-part.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="m68k-m5272c3-setup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Freescale M5272C3 Board Support</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="hal-m68k-m5272c3-part.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Setup</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

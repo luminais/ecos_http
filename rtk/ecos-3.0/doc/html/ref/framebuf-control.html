@@ -1,0 +1,918 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Framebuffer Control Operations</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Framebuffer Support"
+HREF="io-framebuf.html"><LINK
+REL="PREVIOUS"
+TITLE="Framebuffer Parameters"
+HREF="framebuf-parameters.html"><LINK
+REL="NEXT"
+TITLE="Framebuffer Colours"
+HREF="framebuf-colour.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="framebuf-parameters.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="framebuf-colour.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FRAMEBUF-CONTROL"
+></A
+>Framebuffer Control Operations</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN10266"
+></A
+><H2
+>Name</H2
+>Control Operations&nbsp;--&nbsp;managing a framebuffer</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN10269"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN10270"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/io/framebuf.h&gt;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_fb_on</CODE
+>(cyg_fb* fbdev);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_fb_off</CODE
+>(cyg_fb* fbdev);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_fb_ioctl</CODE
+>(cyg_fb* fbdev, cyg_uint16 key, void* data, size_t* len);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int CYG_FB_ON</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int CYG_FB_OFF</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int CYG_FB_IOCTL</CODE
+>(FRAMEBUF, cyg_uint16 key, void* data, size_t* len);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-CONTROL-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>The main operations on a framebuffer are drawing and colour
+management. However on most hardware it is also necessary to switch
+the display <A
+HREF="framebuf-control.html#FRAMEBUF-CONTROL-ONOFF"
+>on</A
+> before the
+user can see anything, and application code should be able to control
+when this happens. There are also miscellaneous operations such as
+manipulating the backlight or moving the viewpoint. These do not
+warrant dedicated functions, especially since the functionality will
+only be available on some hardware, so an <A
+HREF="framebuf-control.html#FRAMEBUF-CONTROL-IOCTL"
+><CODE
+CLASS="FUNCTION"
+>ioctl</CODE
+></A
+>
+interface is used.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-CONTROL-ONOFF"
+></A
+><H2
+>Switching the Display On or Off</H2
+><P
+>With most hardware nothing will be visible until there is a call to
+<CODE
+CLASS="FUNCTION"
+>cyg_fb_on</CODE
+> or an invocation of the
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_ON</CODE
+> macro. This will initialize the
+framebuffer control circuitry, start sending the data signals to the
+display unit, and switch on the display if necessary. The exact
+initialization semantics are left to the framebuffer device driver. In
+some cases the hardware may already be partially or fully initialized
+by a static constructor or by boot code that ran before eCos.
+    </P
+><P
+>There are some circumstances in which initialization can fail, and
+this is indicated by a POSIX error code such as
+<TT
+CLASS="LITERAL"
+>ENODEV</TT
+>. An example would be plug and play hardware
+where the framebuffer device is not detected at run-time. Another
+example is hardware which can operate in several modes, with separate
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structures for each mode, if the
+hardware is already in use for a different mode. A return value of 0
+indicates success.
+    </P
+><P
+>Some but not all hardware allows the framebuffer memory and, if
+present, the palette to be manipulated before the device is switched
+on. That way the user does not see random noise on the screen during
+system startup. The flag <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_MUST_BE_ON</TT
+>
+should be checked:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>static void
+init_screen(cyg_fb_colour background)
+{
+    int result;
+
+#if (! (CYG_FB_FLAGS0(FRAMEBUF) &amp; CYG_FB_FLAGS0_MUST_BE_ON))
+    CYG_FB_FILL_BLOCK(FRAMEBUF, 0, 0,
+                      CYG_FB_WIDTH(FRAMEBUF), CYG_FB_HEIGHT(FRAMEBUF),
+                      background);
+#endif
+
+    result = CYG_FB_ON(FRAMEBUF);
+    if (0 != result) {
+        &lt;handle unusual error condition&gt;
+    }
+
+#if (CYG_FB_FLAGS0(FRAMEBUF) &amp; CYG_FB_FLAGS0_MUST_BE_ON)
+    CYG_FB_FILL_BLOCK(FRAMEBUF, 0, 0,
+                      CYG_FB_WIDTH(FRAMEBUF), CYG_FB_HEIGHT(FRAMEBUF),
+                      background);
+#endif
+}
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>Obviously if the application has already manipulated framebuffer
+memory or the palette but then the <CODE
+CLASS="FUNCTION"
+>cyg_fb_on</CODE
+>
+operation fails, the system is left in an undefined state.
+    </P
+><P
+>It is also possible to switch a framebuffer device off, using the
+function <CODE
+CLASS="FUNCTION"
+>cyg_fb_off</CODE
+> or the macro
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_OFF</CODE
+>, although this functionality is rarely
+used in embedded systems. The exact semantics of switching a device
+off are implementation-defined, but typically it involves shutting
+down the display, stopping the data signals to the display, and
+halting the control circuitry. The framebuffer memory and the palette
+are left in an undefined state, and application code should assume
+that both need full reinitializing when the device is switched back
+on. Some hardware may also provide a <A
+HREF="framebuf-control.html#FRAMEBUF-CONTROL-IOCTL-BLANK"
+>blank</A
+> operation which
+typically just manipulates the display, not the whole framebuffer
+device. Normally <CODE
+CLASS="FUNCTION"
+>cyg_fb_on</CODE
+> returns 0. The API
+allows for a POSIX error code as with <CODE
+CLASS="FUNCTION"
+>cyg_fb_on</CODE
+>,
+but switching a device off is not an operation that is likely to fail.
+    </P
+><P
+>If a framebuffer device can operate in several modes, represented by
+several <CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structures and macro
+identifiers, then switching modes requires turning the current device
+off before turning the next one one.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-CONTROL-IOCTL"
+></A
+><H2
+>Miscellaneous Control Operations</H2
+><P
+>Some hardware functionality such as an LCD panel backlight is common
+but not universal. Supporting these does not warrant dedicated
+functions. Instead a catch-all <CODE
+CLASS="FUNCTION"
+>ioctl</CODE
+> interface is
+provided, with the arguments just passed straight to the device
+driver. This approach also allows for future expansion and for
+device-specific operations. <CODE
+CLASS="FUNCTION"
+>cyg_fb_ioctl</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_IOCTL</CODE
+> take four arguments: a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structure or framebuffer identifier; a
+key that specifies the operation to be performed; an arbitrary
+pointer, which should usually be a pointer to a data structure
+specific to the key; and a length field. Key values from 0 to 0x7fff
+are generic. Key values from 0x8000 onwards are reserved for the
+individual framebuffer device drivers, for device-specific
+functionality. The length field should be set to the size of the data
+structure, and may get updated by the device driver.
+    </P
+><P
+>With most ioctl operations the device can indicate whether or not it
+supports the functionality by one of the flags, for example:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void
+backlight_off(cyg_fb* fb)
+{
+    if (fb-&#62;fb_flags0 &amp; CYG_FB_FLAGS0_BACKLIGHT) {
+        cyg_fb_ioctl_backlight  new_setting;
+        size_t                  len = sizeof(cyg_fb_ioctl_backlight);
+        int                     result;
+
+        new_setting.fbbl_current = 0;
+        result = cyg_fb_ioctl(fb, CYG_FB_IOCTL_BACKLIGHT_SET,
+                              &amp;new_setting, &amp;len);
+        if (0 != result) {
+            &#8230;
+        }
+    }
+}
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The operation returns zero for success or a POSIX error code on
+failure, for example <TT
+CLASS="LITERAL"
+>ENOSYS</TT
+> if the device driver
+does not implement the requested functionality.
+    </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="FRAMEBUF-CONTROL-IOCTL-VIEWPORT"
+></A
+><H3
+>Viewport</H3
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+># define CYG_FB_IOCTL_VIEWPORT_GET_POSITION     0x0100
+# define CYG_FB_IOCTL_VIEWPORT_SET_POSITION     0x0101
+
+typedef struct cyg_fb_ioctl_viewport {
+    cyg_ucount16    fbvp_x;     // position of top-left corner of the viewport within
+    cyg_ucount16    fbvp_y;     // the framebuffer
+    cyg_ucount16    fbvp_when;  // set-only, now or vert retrace
+} cyg_fb_ioctl_viewport;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>On some targets the framebuffer device has a higher resolution than
+the display. Only a subset of the pixels, the viewport, is currently
+visible. Application code can exploit this functionality to achieve
+certain effects, for example smooth scrolling. Framebuffers which
+support this functionality will have the
+<TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_VIEWPORT</TT
+> flag set. The viewport
+dimensions are available as additional <A
+HREF="framebuf-parameters.html"
+>parameters</A
+> to the normal
+framebuffer width and height.
+      </P
+><P
+>The current position of the viewport can be obtained using an
+<TT
+CLASS="LITERAL"
+>CYG_FB_IOCTL_VIEWPORT_GET_POSITION</TT
+> ioctl operation.
+The data argument should be a pointer to a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb_ioctl_viewport</CODE
+> structure. On return
+the <CODE
+CLASS="STRUCTFIELD"
+>fbvp_x</CODE
+> and
+<CODE
+CLASS="STRUCTFIELD"
+>fbvp_y</CODE
+> fields will be filled in. To move
+the viewport use <TT
+CLASS="LITERAL"
+>CYG_FB_IOCTL_VIEWPORT_SET_POSITION</TT
+>
+with <CODE
+CLASS="STRUCTFIELD"
+>fbvp_x</CODE
+> and
+<CODE
+CLASS="STRUCTFIELD"
+>fbvp_y</CODE
+> set to the top left corner of the
+new viewport within the framebuffer, and
+<CODE
+CLASS="STRUCTFIELD"
+>fbvp_when</CODE
+> set to either
+<TT
+CLASS="LITERAL"
+>CYG_FB_UPDATE_NOW</TT
+> or
+<TT
+CLASS="LITERAL"
+>CYG_FB_UPDATE_VERTICAL_RETRACE</TT
+>. If the device
+driver cannot easily synchronize to a vertical retrace period then
+this last field is ignored.
+      </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void
+move_viewport(cyg_fb* fb, int dx, int dy)
+{
+#ifdef CYGHWR_IO_FRAMEBUF_FUNCTIONALITY_VIEWPORT
+    cyg_fb_ioctl_viewport viewport;
+    int len = sizeof(cyg_fb_ioctl_viewport);
+    int result;
+
+    result = cyg_fb_ioctl(fb, CYG_FB_IOCTL_VIEWPORT_GET_POSITION,
+                        &amp;viewport, &amp;len);
+    if (result != 0) {
+        &#8230;
+    }
+    if (((int)viewport.fbvp_x + dx) &lt; 0) {
+        viewport.fbvp_x = 0;
+    } else if ((viewport.fbvp_x + dx + fb-&gt;fb_viewport_width) &gt; fb-&gt;fb_width) {
+        viewport.fbvp_x = fb-&gt;fb_width - fb-&gt;fb_viewport_width;
+    } else {
+        viewport.fbvp_x += dx;
+    }
+    if (((int)viewport.fbvp_y + dy) &lt; 0) {
+        viewport.fbvp_y = 0;
+    } else if ((viewport.fbvp_y + dy + fb-&gt;fb_viewport_height) &gt; fb-&gt;fb_height) {
+        viewport.fbvp_y = fb-&gt;fb_height - fb-&gt;fb_viewport_height;
+    } else {
+        viewport.fbvp_y += dy;
+    }
+    result = cyg_fb_ioctl(fb, CYG_FB_IOCTL_VIEWPORT_SET_POSITION,
+                          &amp;viewport, &amp;len);
+    if (result != 0) {
+        &#8230;
+    }
+#else
+    CYG_UNUSED_PARAM(cyg_fb*, fb);
+    CYG_UNUSED_PARAM(int, dx);
+    CYG_UNUSED_PARAM(int, dy);
+#endif
+}
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>If an attempt is made to move the viewport beyond the boundaries of
+the framebuffer then the resulting behaviour is undefined. Some
+hardware may behave reasonably, wrapping around as appropriate, but
+portable code cannot assume this. The above code fragment is careful
+to clip the viewport to the framebuffer dimensions.
+      </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="FRAMEBUF-CONTROL-IOCTL-PAGEFLIP"
+></A
+><H3
+>Page Flipping</H3
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+># define CYG_FB_IOCTL_PAGE_FLIPPING_GET_PAGES   0x0200
+# define CYG_FB_IOCTL_PAGE_FLIPPING_SET_PAGES   0x0201
+
+typedef struct cyg_fb_ioctl_page_flip {
+    cyg_uint32      fbpf_number_pages;
+    cyg_uint32      fbpf_visible_page;
+    cyg_uint32      fbpf_drawable_page;
+    cyg_ucount16    fbpf_when;  // set-only, now or vert retrace
+} cyg_fb_ioctl_page_flip;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>On some targets the framebuffer has enough memory for several pages,
+only one of which is visible at a time. This allows the application
+to draw into one page while displaying another. Once drawing is
+complete the display is flipped to the newly drawn page, and the
+previously displayed page is now available for updating. This
+technique is used for smooth animation, especially in games. The flag
+<TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_PAGE_FLIPPING</TT
+> indicates support for
+this functionality.
+      </P
+><P
+><TT
+CLASS="LITERAL"
+>CYG_FB_IOCTL_PAGE_FLIPPING_GET_PAGES</TT
+> can be used to
+get the current settings of the page flipping support. The data
+argument should be a pointer to a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb_ioctl_page_flip</CODE
+> structure. The
+resulting <CODE
+CLASS="STRUCTFIELD"
+>fbpf_number_pages</CODE
+> field indicates
+the total number of pages available: 2 is common, but more pages are
+possible. <CODE
+CLASS="STRUCTFIELD"
+>fbpf_visible_page</CODE
+> gives the page
+that is currently visible to the user, and will be between 0 and
+(<CODE
+CLASS="STRUCTFIELD"
+>fbpf_number_pages</CODE
+>&nbsp;-&nbsp;1).
+Similarly <CODE
+CLASS="STRUCTFIELD"
+>fbpf_drawable_page</CODE
+> gives the page
+that is currently visible. It is implementation-defined whether or not
+the visible and drawable page can be the same one.
+      </P
+><P
+><TT
+CLASS="LITERAL"
+>CYG_FB_IOCTL_PAGE_FLIPPING_SET_PAGES</TT
+> can be used to
+change the visible and drawable page. The
+<CODE
+CLASS="STRUCTFIELD"
+>fbpf_number_pages</CODE
+> field is ignored.
+<CODE
+CLASS="STRUCTFIELD"
+>fbpf_visible_page</CODE
+> and
+<CODE
+CLASS="STRUCTFIELD"
+>fbpf_drawable_page</CODE
+> give the new settings.
+<CODE
+CLASS="STRUCTFIELD"
+>fbpf_when</CODE
+> should be one of
+<TT
+CLASS="LITERAL"
+>CYG_FB_UPDATE_NOW</TT
+> or
+<TT
+CLASS="LITERAL"
+>CYG_FB_UPDATE_VERTICAL_RETRACE</TT
+>, but may be ignored
+by some device drivers.
+      </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#if !(CYG_FB_FLAGS0(FRAMEBUF) &amp; CYG_FB_FLAGS0_PAGE_FLIPPING)
+# error Current framebuffer device does not support page flipping
+#endif
+
+static cyg_uint32 current_visible = 0;
+
+static void
+page_flip_init(cyg_fb_colour background)
+{
+    cyg_fb_ioctl_page_flip flip;
+    size_t len = sizeof(cyg_fb_ioctl_page_flip);
+
+    flip.fbpf_visible_page  = current_visible;
+    flip.fbpf_drawable_page = 1 - current_visible;
+    flip.fbpf_when          = CYG_FB_UPDATE_NOW;
+    CYG_FB_IOCTL(FRAMEBUF, CYG_FB_IOCTL_PAGE_FLIPPING_SET_PAGES,
+                 &amp;flip, &amp;len);
+    CYG_FB_FILL_BLOCK(FRAMEBUF, 0, 0,
+                      CYG_FB_WIDTH(FRAMEBUF), CYG_FB_HEIGHT(FRAMEBUF),
+                      background);
+    flip.fbpf_visible_page  = 1 - current_visible;
+    flip.fbpf_drawable_page = current_visible;
+    CYG_FB_IOCTL(FRAMEBUF, CYG_FB_IOCTL_PAGE_FLIPPING_SET_PAGES,
+                 &amp;flip, &amp;len);
+    CYG_FB_FILL_BLOCK(FRAMEBUF, 0, 0,
+                      CYG_FB_WIDTH(FRAMEBUF), CYG_FB_HEIGHT(FRAMEBUF),
+                      background);
+    current_visible = 1 - current_visible;
+}
+
+static void
+page_flip_toggle(void)
+{
+    cyg_fb_ioctl_page_flip flip;
+    size_t len = sizeof(cyg_fb_ioctl_page_flip);
+
+    flip.fbpf_visible_page  = 1 - current_visible;
+    flip.fbpf_drawable_page = current_visible;
+    CYG_FB_IOCTL(FRAMEBUF, CYG_FB_IOCTL_PAGE_FLIPPING_SET_PAGES,
+                 &amp;flip, &amp;len);
+    current_visible = 1 - current_visible;
+}
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>A page flip typically just changes a couple of pointers within the
+hardware and device driver. No attempt is made to synchronize the
+contents of the pages, that is left to higher-level code.
+      </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="FRAMEBUF-CONTROL-IOCTL-BLANK"
+></A
+><H3
+>Blanking the Screen</H3
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+># define CYG_FB_IOCTL_BLANK_GET                 0x0300
+# define CYG_FB_IOCTL_BLANK_SET                 0x0301
+
+typedef struct cyg_fb_ioctl_blank {
+    cyg_bool        fbbl_on;
+} cyg_fb_ioctl_blank;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>Some hardware allows the display to be switched off or blanked without
+shutting down the entire framebuffer device, greatly reducing power
+consumption. The current blanking state can be obtained using
+<TT
+CLASS="LITERAL"
+>CYG_FB_IOCTL_BLANK_GET</TT
+> and the state can be updated
+using <TT
+CLASS="LITERAL"
+>CYG_FB_IOCTL_BLANK_SET</TT
+>. The data argument
+should be a pointer to a <CODE
+CLASS="STRUCTNAME"
+>cyg_fb_ioctl_blank</CODE
+>
+structure. Support for this functionality is indicated by the
+<TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_BLANK</TT
+> flag.
+      </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>static cyg_bool
+display_blanked(cyg_fb_* fb)
+{
+    cyg_fb_ioctl_blank blank;
+    size_t len = sizeof(cyg_fb_ioctl_blank);
+    
+    if (! (fb-&#62;fb_flags0 &amp; CYG_FB_FLAGS0_BLANK)) {
+        return false;
+    }
+    (void) cyg_fb_ioctl(fb, CYG_FB_IOCTL_BLANK_GET, &amp;blank, &amp;len);
+    return !blank.fbbl_on;
+}
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="FRAMEBUF-CONTROL-IOCTL-BACKLIGHT"
+></A
+><H3
+>Controlling the Backlight</H3
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+># define CYG_FB_IOCTL_BACKLIGHT_GET             0x0400
+# define CYG_FB_IOCTL_BACKLIGHT_SET             0x0401
+
+typedef struct cyg_fb_ioctl_backlight {
+    cyg_ucount32    fbbl_current;
+    cyg_ucount32    fbbl_max;
+} cyg_fb_ioctl_backlight;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>Many LCD panels provide some sort of backlight, making the display
+easier to read at the cost of increased power consumption. Support for
+this is indicated by the <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_BACKLIGHT</TT
+>
+flag. <TT
+CLASS="LITERAL"
+>CYG_FB_IOCTL_BACKLIGHT_GET</TT
+> can be used to get
+both the current setting and the maximum value. If the maximum is 1
+then the backlight can only be switched on or off. Otherwise it is
+possible to control the intensity.
+      </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>static void
+set_backlight_50_percent(void)
+{
+#if (CYG_FB_FLAGS0(FRAMEBUF) &#38; CYG_FB_FLAGS0_BACKLIGHT)
+    cyg_fb_ioctl_backlight backlight;
+    size_t len = sizeof(cyg_fb_ioctl_backlight);
+
+    CYG_FB_IOCTL(FRAMEBUF, CYG_FB_IOCTL_BACKLIGHT_GET, &amp;backlight, &amp;len);
+    backlight.fbbl_current = (backlight.fbbl_max + 1) &#62;&#62; 1;    
+    CYG_FB_IOCTL(FRAMEBUF, CYG_FB_IOCTL_BACKLIGHT_SET, &amp;backlight, &amp;len);
+#endif
+}
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="framebuf-parameters.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="framebuf-colour.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Framebuffer Parameters</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-framebuf.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Framebuffer Colours</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

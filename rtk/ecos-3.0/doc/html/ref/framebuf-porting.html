@@ -1,0 +1,1065 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Writing a Framebuffer Device Driver</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Framebuffer Support"
+HREF="io-framebuf.html"><LINK
+REL="PREVIOUS"
+TITLE="Framebuffer Pixel Manipulation"
+HREF="framebuf-iterating.html"><LINK
+REL="NEXT"
+TITLE="eCos POSIX compatibility layer"
+HREF="posix-compatibility.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="framebuf-iterating.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="posix-compatibility.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FRAMEBUF-PORTING"
+></A
+>Writing a Framebuffer Device Driver</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN11205"
+></A
+><H2
+>Name</H2
+>Porting&nbsp;--&nbsp;writing a new framebuffer device driver</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-PORTING-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>As with most device drivers, the easiest way to write a new
+framebuffer package is to start with an existing one. Suitable ones
+include the PC VGA mode13 driver, an 8bpp paletted display, and the
+ARM iPAQ driver, a 16bpp true colour display. This document only
+outlines the process.
+    </P
+><P
+>Before writing any code it is necessary to decide how many framebuffer
+devices should be provided by the device driver. Each such device
+requires a <CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structure and appropriate
+functions, and an identifier for use with the macro API plus
+associated macros. There are no hard rules here. Some device drivers
+may support just a single device, others may support many devices
+which drive the hardware in different modes or orientations. Optional
+functionality such as viewports and page flipping may be supported by
+having different <CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> devices, or by a
+number of configuration options which affect a single
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> device. Usually providing multiple
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structures is harmless because the
+unused ones will get eliminated at link-time.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-PORTING-CONFIGURATION"
+></A
+><H2
+>Configuration</H2
+><P
+>The CDL for a framebuffer package is usually straightforward. A
+framebuffer package should be a hardware package and reside in the
+<TT
+CLASS="FILENAME"
+>devs/framebuf</TT
+> hierarchy,
+further organized by architecture. Generic framebuffer packages, if
+any, can go into a <TT
+CLASS="FILENAME"
+>generic</TT
+>
+subdirectory, and will normally rely on the platform HAL to provide
+some platform-specific information such as base addresses. The package
+should be part of the target definition and hence loaded
+automatically, but should be
+<TT
+CLASS="LITERAL"
+>active_if&nbsp;CYGPKG_IO_FRAMEBUF</TT
+> so that the
+driver only gets built if the generic framebuffer support is
+explicitly added to the configuration.
+    </P
+><P
+>The configuration option <CODE
+CLASS="VARNAME"
+>CYGDAT_IO_FRAMEBUF_DEVICES</CODE
+>
+should hold all the valid identifiers which can be used as the first
+argument for the macro API. This helps application developers to
+select the appropriate identifier, and allows higher-level graphics
+library packages to check that they have been configured correctly.
+This is achieved using something like the following, where
+<TT
+CLASS="LITERAL"
+>mode13_320x200x8</TT
+> is a valid identifier for the PC
+VGA driver:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  requires { is_substr(CYGDAT_IO_FRAMEBUF_DEVICES, " mode13_320x200x8 ") }
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The spaces ensure that the CDL inference engine keeps the identifiers
+separate.
+    </P
+><P
+><CODE
+CLASS="VARNAME"
+>CYGPKG_IO_FRAMEBUF</CODE
+> contains a number of interfaces
+which should be implemented by individual device drivers when
+appropriate. This is used to eliminate some code or data structure
+fields at compile-time, keeping down memory requirements. The
+interfaces are
+<CODE
+CLASS="VARNAME"
+>CYGHWR_IO_FRAMEBUF_FUNCTIONALITY_32BPP</CODE
+>,
+<CODE
+CLASS="VARNAME"
+>CYGHWR_IO_FRAMEBUF_FUNCTIONALITY_TRUE_COLOUR</CODE
+>,
+<CODE
+CLASS="VARNAME"
+>CYGHWR_IO_FRAMEBUF_FUNCTIONALITY_PALETTE</CODE
+>,
+<CODE
+CLASS="VARNAME"
+>CYGHWR_IO_FRAMEBUF_FUNCTIONALITY_WRITEABLE_PALETTE</CODE
+>,
+<CODE
+CLASS="VARNAME"
+>CYGHWR_IO_FRAMEBUF_FUNCTIONALITY_DOUBLE_BUFFER</CODE
+>,
+and <CODE
+CLASS="VARNAME"
+>CYGHWR_IO_FRAMEBUF_FUNCTIONALITY_VIEWPORT</CODE
+>.
+For example if a device driver provides a true colour display but
+fails to implement the relevant interface then functions like
+<CODE
+CLASS="FUNCTION"
+>cyg_fb_make_colour</CODE
+> will be no-ops.
+    </P
+><P
+>Device drivers for paletted displays should observe the generic
+configuration option
+<CODE
+CLASS="VARNAME"
+>CYGFUN_IO_FRAMEBUF_INSTALL_DEFAULT_PALETTE</CODE
+> and
+install either <CODE
+CLASS="VARNAME"
+>cyg_fb_palette_ega</CODE
+> or
+<CODE
+CLASS="VARNAME"
+>cyg_fb_palette_vga</CODE
+> as part of their
+<CODE
+CLASS="FUNCTION"
+>cyg_fb_on</CODE
+> implementation.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-PORTING-HEADER"
+></A
+><H2
+>Exported Header File(s)</H2
+><P
+>Each framebuffer device driver should export one or more header files
+to <TT
+CLASS="FILENAME"
+>cyg/io/framebufs</TT
+>. A custom
+build step in <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_FRAMEBUF</CODE
+> ensures that
+application code can just <TT
+CLASS="LITERAL"
+>#include</TT
+> <TT
+CLASS="FILENAME"
+>cyg/io/framebuf.h</TT
+> and this will
+automatically include the device-specific headers. Drivers may export
+one header per <CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> device or a single
+header for all devices, without affecting any code outside the device
+driver.
+    </P
+><P
+>Each exported header serves two purposes. First it defines the
+<A
+HREF="framebuf-parameters.html"
+>parameters</A
+>, <A
+HREF="framebuf-drawing.html"
+>drawing primitive</A
+> macros, and
+<A
+HREF="framebuf-iterating.html"
+>iteration</A
+> macros for each
+device. Second it declares the <CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+>
+structure.
+    </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="FRAMEBUF-PORTING-HEADER-PARAMETERS"
+></A
+><H3
+>Parameters</H3
+><P
+>The parameter section should resemble the following:
+      </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define CYG_FB_320x240x16_STRUCT            cyg_ipaq_fb_320x240x16
+#define CYG_FB_320x240x16_DEPTH             16
+#define CYG_FB_320x240x16_FORMAT            CYG_FB_FORMAT_16BPP_TRUE_565
+#define CYG_FB_320x240x16_WIDTH             320
+#define CYG_FB_320x240x16_HEIGHT            240
+#define CYG_FB_320x240x16_VIEWPORT_WIDTH    320
+#define CYG_FB_320x240x16_VIEWPORT_HEIGHT   240
+#define CYG_FB_320x240x16_FLAGS0            (CYG_FB_FLAGS0_LINEAR_FRAMEBUFFER | \
+                                             CYG_FB_FLAGS0_TRUE_COLOUR        | \
+                                             CYG_FB_FLAGS0_BLANK              | \
+                                             CYG_FB_FLAGS0_BACKLIGHT)
+#define CYG_FB_320x240x16_FLAGS1            0
+#define CYG_FB_320x240x16_FLAGS2            0
+#define CYG_FB_320x240x16_FLAGS3            0
+#define CYG_FB_320x240x16_BASE              ((void*)0x01FC0020)
+#define CYG_FB_320x240x16_STRIDE            640
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>Here <TT
+CLASS="LITERAL"
+>320x240x16</TT
+> is the framebuffer identifier for
+use with the macro API. Application code like:
+      </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define FRAMEBUF 320x240x16
+cyg_ucount16 width = CYG_FB_WIDTH(FRAMEBUF);
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>will end up using the <CODE
+CLASS="VARNAME"
+>CYG_FB_320x240x16_WIDTH</CODE
+>
+definition. To allow for efficient portable code all parameters must
+be compile-time constants. If the hardware may allow some of the
+parameters to be varied, for example different resolutions, then this
+should be handled either by defining separate devices for each
+resolution or by configuration options.
+      </P
+><P
+>The viewport width and height should always be defined. If the device
+driver does not support a viewport then these will be the same as the
+standard width and height.
+      </P
+><P
+>To allow for future expansion there are <TT
+CLASS="LITERAL"
+>FLAGS1</TT
+>,
+<TT
+CLASS="LITERAL"
+>FLAGS2</TT
+> and <TT
+CLASS="LITERAL"
+>FLAGS3</TT
+> parameters. No
+flags are defined for these at present, but device drivers should
+still define the parameters.
+      </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="FRAMEBUF-PORTING-HEADER-DRAWING"
+></A
+><H3
+>Drawing Primitives</H3
+><P
+>For each device the exported header file should define macros for the
+drawing primitives, using the same naming convention as for
+parameters. In the case of true colour displays there should also be
+macros for the make-colour and break-colour primitives:
+        </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define CYG_FB_320x240x16_WRITE_PIXEL(_x_, _y_, _colour_) &#8230;
+#define CYG_FB_320x240x16_READ_PIXEL(_x_, _y_) &#8230;
+#define CYG_FB_320x240x16_WRITE_HLINE(_x_, _y_, _len_, _colour_) &#8230;
+#define CYG_FB_320x240x16_WRITE_VLINE(_x_, _y_, _len_, _colour_) &#8230;
+#define CYG_FB_320x240x16_FILL_BLOCK(_x_, _y_, _w_, _h_, _colour_) &#8230;
+#define CYG_FB_320x240x16_WRITE_BLOCK(_x_, _y_, _w_, _h_, _data_, _off_, _s_) &#8230;
+#define CYG_FB_320x240x16_READ_BLOCK(_x_, _y_, _w_, _h_, _data_, _off_, _s_) &#8230;
+#define CYG_FB_320x240x16_MOVE_BLOCK(_x_, _y_, _w_, _h_, _new_x_, _new_y_) &#8230;
+#define CYG_FB_320x240x16_MAKE_COLOUR(_r_, _g_, _b_) &#8230;
+#define CYG_FB_320x240x16_BREAK_COLOUR(_colour_, _r_, _g_, _b_) &#8230;
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+>For typical linear framebuffers there are default implementations of
+all of these primitives in the generic framebuffer package, held in
+the exported header <TT
+CLASS="FILENAME"
+>cyg/io/framebuf.inl</TT
+>. Hence the
+definitions will typically look something like:
+        </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#include &lt;cyg/io/framebuf.inl&gt;
+&#8230;
+#define CYG_FB_320x240x16_WRITE_PIXEL(_x_, _y_, _colour_)      \
+    CYG_MACRO_START                                            \
+    cyg_fb_linear_write_pixel_16_inl(CYG_FB_320x240x16_BASE,   \
+                                     CYG_FB_320x240x16_STRIDE, \
+                                     _x_, _y_, _colour_);      \
+    CYG_MACRO_END
+#define CYG_FB_320x240x16_READ_PIXEL(_x_, _y_)                   \
+    ({ cyg_fb_linear_read_pixel_16_inl(CYG_FB_320x240x16_BASE,   \
+                                       CYG_FB_320x240x16_STRIDE, \
+                                       _x_, _y_); })
+&#8230;
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+>All of the drawing primitives have variants for the common display
+depths and layouts: 1le, 1be, 2le, 2be, 4le, 4be, 8, 16 and 32. The
+inlines take the framebuffer memory base address as the first
+argument, and the stride in bytes as the second. Similarly there are
+default definitions of the true colour primitives for
+<TT
+CLASS="LITERAL"
+>8BPP_TRUE_332</TT
+>, <TT
+CLASS="LITERAL"
+>16BPP_TRUE_565</TT
+>,
+<TT
+CLASS="LITERAL"
+>16BPP_TRUE_555</TT
+>, and <TT
+CLASS="LITERAL"
+>32BPP_TRUE_0888</TT
+>:
+        </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define CYG_FB_320x240x16_MAKE_COLOUR(_r_, _g_, _b_)             \
+    ({  CYG_FB_MAKE_COLOUR_16BPP_TRUE_565(_r_, _g_, _b_); })
+#define CYG_FB_320x240x16_BREAK_COLOUR(_colour_, _r_, _g_, _b_)  \
+    CYG_MACRO_START                                              \
+    CYG_FB_BREAK_COLOUR_16BPP_TRUE_565(_colour_, _r_, _g_, _b_); \
+    CYG_MACRO_END
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+>These default definitions assume the most common layout of colours
+within a pixel value, so for
+example <CODE
+CLASS="FUNCTION"
+>CYG_FB_MAKE_COLOUR_16BPP_TRUE_565</CODE
+> assumes
+bits 0 to 4 hold the blue intensity, bits 5 to 10 the green, and bits
+11 to 15 the red.
+        </P
+><P
+>If the hardware does not implement a linear framebuffer then obviously
+writing the device driver will be significantly more work. The macros
+will have to perform the operations themselves instead of relying on
+generic implementations. The required functionality should be obvious,
+and the generic implementations can still be consulted as a reference.
+For complicated hardware it may be appropriate to map the macros onto
+function calls, rather than try to implement everything inline.
+        </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+> At the time of writing the support for linear
+framebuffers is incomplete. Only 8bpp, 16bpp and 32bpp depths have
+full support. There may also be future extensions, for example
+<TT
+CLASS="LITERAL"
+>r90</TT
+>, <TT
+CLASS="LITERAL"
+>r180</TT
+> and
+<TT
+CLASS="LITERAL"
+>r270</TT
+> variants to support rotation in software, and
+<TT
+CLASS="LITERAL"
+>db</TT
+> variants to support double-buffered displays.
+         </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="FRAMEBUF-PORTING-HEADER-ITERATING"
+></A
+><H3
+>Iteration Macros</H3
+><P
+>In addition to the drawing primitives the exported header file should
+define iteration macros:
+        </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define CYG_FB_320x240x16_PIXELx_VAR(  _fb_, _id_) &#8230;
+#define CYG_FB_320x240x16_PIXELx_SET(  _fb_, _id_, _x_, _y_) &#8230;
+#define CYG_FB_320x240x16_PIXELx_GET(  _fb_, _id_, _x_, _y_) &#8230;
+#define CYG_FB_320x240x16_PIXELx_ADDX( _fb_, _id_, _incr_) &#8230;
+#define CYG_FB_320x240x16_PIXELx_ADDY( _fb_, _id_, _incr_) &#8230;
+#define CYG_FB_320x240x16_PIXELx_WRITE(_fb_, _id_, _colour_) &#8230;
+#define CYG_FB_320x240x16_PIXELx_READ( _fb_, _id_)&#8230;
+#define CYG_FB_320x240x16_PIXELx_FLUSHABS( _fb_, _id_, _x0_, _y0_, _w_, _h_) &#8230;
+#define CYG_FB_320x240x16_PIXELx_FLUSHREL( _fb_, _id_, _x0_, _y0_, _dx_, _dy_) &#8230;
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+>The <CODE
+CLASS="PARAMETER"
+>_fb_</CODE
+> argument will be the identifier, in
+this case <TT
+CLASS="LITERAL"
+>320x240x16</TT
+>, and the
+<CODE
+CLASS="PARAMETER"
+>_id_</CODE
+> will be a small number, 0 for a
+<TT
+CLASS="LITERAL"
+>PIXEL0</TT
+> iteration, 1 for <TT
+CLASS="LITERAL"
+>PIXEL1</TT
+>,
+and so on. Together these two should allow unique local variable names
+to be constructed. Again there are default definitions of the macros
+in <TT
+CLASS="FILENAME"
+>cyg/io/framebuf.inl</TT
+> for
+linear framebuffers:
+        </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define CYG_FB_320x240x16_PIXELx_VAR(  _fb_, _id_) \
+    CYG_FB_PIXELx_VAR_16(  _fb_, _id_)
+#define CYG_FB_320x240x16_PIXELx_SET(  _fb_, _id_, _x_, _y_)    \
+    CYG_MACRO_START                                             \
+    CYG_FB_PIXELx_SET_16( _fb_, _id_,                           \
+                          CYG_FB_320x240x16_BASE,               \
+                          320, _x_, _y_);                       \
+    CYG_MACRO_END
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+>The linear <TT
+CLASS="LITERAL"
+>SET</TT
+> and <TT
+CLASS="LITERAL"
+>GET</TT
+> macros
+take base and stride information. The <TT
+CLASS="LITERAL"
+>ADDX</TT
+> and
+<TT
+CLASS="LITERAL"
+>ADDY</TT
+> macros only need the stride. By convention
+most of the macros are wrapped in
+<TT
+CLASS="LITERAL"
+>CYG_MACRO_START</TT
+>/<TT
+CLASS="LITERAL"
+>CYG_MACRO_END</TT
+> or
+<TT
+CLASS="LITERAL"
+>({</TT
+>/<TT
+CLASS="LITERAL"
+>})</TT
+> pairs, allowing debug code
+to be inserted if necessary. However the <TT
+CLASS="LITERAL"
+>_VAR</TT
+> macro
+must not be wrapped in this way: its purpose is to define one or more
+local variables; wrapping the macro would declare the variables in a
+new scope, inaccessible to the other macros.
+        </P
+><P
+>Again for non-linear framebuffers it will be necessary to implement
+these macros fully rather than rely on generic implementations, but
+the generic versions can be consulted as a reference.
+        </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="FRAMEBUF-PORTING-HEADER-FB"
+></A
+><H3
+>The <CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> declaration</H3
+><P
+>Finally there should be an export of the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structure or structures. Typically
+this uses the <TT
+CLASS="LITERAL"
+>_STRUCT</TT
+> parameter, reducing the
+possibility of an accidental mismatch between the macro and function APIs:
+        </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern cyg_fb   CYG_FB_320x240x16_STRUCT;
+        </PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-PORTING-SOURCE"
+></A
+><H2
+>Driver-Specific Source Code</H2
+><P
+>Exporting parameters and macros in a header file is not enough. It is
+also necessary to actually define the <CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+>
+structure or structures, and to provide hardware-specific versions of
+the control operations. For non-linear framebuffers it will also be
+necessary to provide the drawing functions. There is a utility macro
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_FRAMEBUFFER</CODE
+> for instantiating a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structure. Drivers may ignore this
+macro and do the work themselves, but at an increased risk of
+compatibility problems with future versions of the generic code.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_FB_FRAMEBUFFER(CYG_FB_320x240x16_STRUCT,
+                   CYG_FB_320x240x16_DEPTH,
+                   CYG_FB_320x240x16_FORMAT,
+                   CYG_FB_320x240x16_WIDTH,
+                   CYG_FB_320x240x16_HEIGHT,
+                   CYG_FB_320x240x16_VIEWPORT_WIDTH,
+                   CYG_FB_320x240x16_VIEWPORT_HEIGHT,
+                   CYG_FB_320x240x16_BASE,
+                   CYG_FB_320x240x16_STRIDE,
+                   CYG_FB_320x240x16_FLAGS0,
+                   CYG_FB_320x240x16_FLAGS1,
+                   CYG_FB_320x240x16_FLAGS2,
+                   CYG_FB_320x240x16_FLAGS3,
+                   0, 0, 0, 0,   // fb_driver0 -&#62; fb_driver3
+                   &amp;cyg_ipaq_fb_on,
+                   &amp;cyg_ipaq_fb_off,
+                   &amp;cyg_ipaq_fb_ioctl,
+                   &amp;cyg_fb_nop_synch,
+                   &amp;cyg_fb_nop_read_palette,
+                   &amp;cyg_fb_nop_write_palette,
+                   &amp;cyg_fb_dev_make_colour_16bpp_true_565,
+                   &amp;cyg_fb_dev_break_colour_16bpp_true_565,
+                   &amp;cyg_fb_linear_write_pixel_16,
+                   &amp;cyg_fb_linear_read_pixel_16,
+                   &amp;cyg_fb_linear_write_hline_16,
+                   &amp;cyg_fb_linear_write_vline_16,
+                   &amp;cyg_fb_linear_fill_block_16,
+                   &amp;cyg_fb_linear_write_block_16,
+                   &amp;cyg_fb_linear_read_block_16,
+                   &amp;cyg_fb_linear_move_block_16,
+                   0, 0, 0, 0 // fb_spare0 -&#62; fb_spare3
+);
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The first 13 arguments to the macro correspond to the device
+parameters. The next four are arbitrary <SPAN
+CLASS="TYPE"
+>CYG_ADDRWORD</SPAN
+>
+values for use by the device driver. Typically these are used to share
+on/off/ioctl functions between multiple
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structure. They are followed by
+function pointers: on/off/ioctl control; double buffer synch; palette
+management; true colour support; and the drawing primitives.
+<TT
+CLASS="LITERAL"
+>nop</TT
+> versions of the on, off, ioctl, synch, palette
+management and true colour functions are provided by the generic
+framebuffer package, and often these arguments to the
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_FRAMEBUFFER</CODE
+> macro will be discarded
+at compile-time because the relevant CDL interface is not implemented.
+The final four arguments are currently unused and should be 0. They
+are intended for future expansion, with a value of 0 indicating that a
+device driver does not implement non-core functionality.
+    </P
+><P
+>As with the macros there are default implementations of the true
+colour primitives for <TT
+CLASS="LITERAL"
+>8bpp_true_332</TT
+>,
+<TT
+CLASS="LITERAL"
+>16bpp_true_565</TT
+>, <TT
+CLASS="LITERAL"
+>16bpp_true_555</TT
+>
+and <TT
+CLASS="LITERAL"
+>32bpp_true_0888</TT
+>, assuming the most common
+layout for these colour modes. There are also default
+implementations of the drawing primitives for linear framebuffers,
+with variants for the common display depths and layouts. Obviously
+non-linear framebuffers will need rather more work.
+    </P
+><P
+>Typically a true colour or grey scale framebuffer device driver will
+have to implement just three hardware-specific functions:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int
+cyg_ipaq_fb_on(cyg_fb* fb)
+{
+    &#8230;
+}
+
+int
+cyg_ipaq_fb_off(cyg_fb* fb)
+{
+    &#8230;
+}
+
+int
+cyg_ipaq_fb_ioctl(cyg_fb* fb, cyg_ucount16 key, void* data, size_t* len)
+{
+    int result;
+
+    switch(key) {
+        case CYG_FB_IOCTL_BLANK_GET: &#8230;
+        &#8230;
+        default: result = ENOSYS; break;
+    }
+    return result;
+}
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>These control operations are entirely hardware-specific and cannot be
+implemented by generic code. Paletted displays will need two more
+functions, again hardware-specific:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void
+cyg_pcvga_fb_read_palette(cyg_fb* fb, cyg_ucount32 first, cyg_ucount32 len,
+                          void* data)
+{
+    &#8230;
+}
+
+void
+cyg_pcvga_fb_write_palette(cyg_fb* fb, cyg_ucount32 first,  cyg_ucount32 len,
+                           const void* data, cyg_ucount16 when)
+{
+    &#8230;
+}
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-PORTING-EXPANSION"
+></A
+><H2
+>Future Expansion</H2
+><P
+>As has been mentioned before framebuffer hardware varies widely. The
+design of a generic framebuffer API requires complicated trade-offs
+between efficiency, ease of use, ease of porting, and still supporting
+a very wide range of hardware. To some extent this requires a lowest
+common denominator approach, but the design allows for some future
+expansion and optional support for more advanced features like
+hardware acceleration.
+    </P
+><P
+>The most obvious route for expansion is the <CODE
+CLASS="FUNCTION"
+>ioctl</CODE
+>
+interface. Device drivers can define their own keys, values
+<TT
+CLASS="LITERAL"
+>0x8000</TT
+> and higher, for any operation. Alternatively
+a device driver does not have to implement just the interface provided
+by the generic framebuffer package: additional functions and macros
+can be exported as required.
+    </P
+><P
+>Currently there are only a small number of <CODE
+CLASS="FUNCTION"
+>ioctl</CODE
+>
+operations. Additional ones may get added in future, for example to
+support a hardware mouse cursor, but only in cases where the
+functionality is likely to be provided by a significant number of
+framebuffer devices. Adding new generic functionality adds to the
+maintenance overhead of both code and documentation. When a new
+generic <CODE
+CLASS="FUNCTION"
+>ioctl</CODE
+> operation is added there will
+usually also be one or more new flags, so that device drivers can
+indicate they support the functionality. At the time of writing only
+12 of the 32 <TT
+CLASS="LITERAL"
+>FLAGS0</TT
+> flags are used, and a further
+96 are available in <TT
+CLASS="LITERAL"
+>FLAGS1</TT
+>,
+<TT
+CLASS="LITERAL"
+>FLAGS2</TT
+> and <TT
+CLASS="LITERAL"
+>FLAGS3</TT
+>.
+    </P
+><P
+>Another route for future expansion is the four spare arguments to the
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_FRAMEBUFFER</CODE
+> macro. As an example of how
+these may get used in future, consider support for 3d hardware
+acceleration. One of the spare fields would become another table of
+function pointers to the various accelerators, or possibly a
+structure. A <TT
+CLASS="LITERAL"
+>FLAGS0</TT
+> flag would indicate that the
+device driver implements such functionality.
+    </P
+><P
+>Other forms of expansion such as defining a new standard drawing
+primitive would be more difficult, since this would normally involve
+changing the <CODE
+CLASS="FUNCTION"
+>CYG_FB_FRAMEBUFFER</CODE
+> macro. Such
+expansion should not be necessary because the existing primitives
+provide all reasonable core functionality. Instead other packages such
+as graphics libraries can work on top of the existing primitives.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="framebuf-iterating.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="posix-compatibility.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Framebuffer Pixel Manipulation</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-framebuf.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>eCos POSIX compatibility layer</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

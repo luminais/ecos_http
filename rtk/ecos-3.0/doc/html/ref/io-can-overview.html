@@ -1,0 +1,231 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Overview</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="CAN Support"
+HREF="io-can.html"><LINK
+REL="PREVIOUS"
+TITLE="CAN Support"
+HREF="io-can.html"><LINK
+REL="NEXT"
+TITLE="eCos Support for CAN"
+HREF="io-can-ecos-support.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-can.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-can-ecos-support.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="IO-CAN-OVERVIEW"
+></A
+>Chapter 30. Overview</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="io-can-overview.html#IO-CAN-OVERVIEW-DESCR"
+>Description</A
+></DT
+><DT
+><A
+HREF="io-can-ecos-support.html"
+>eCos Support for CAN</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="IO-CAN-OVERVIEW-DESCR"
+>Description</A
+></H1
+><P
+>The Controller Area Network, CAN, is a multicast shared, differential 
+serial bus standard especially suited for networking "intelligent" 
+devices as well as sensors and actuators within a system or sub-system. 
+The protocol was originally developed in the 1980s by Robert Bosch GmbH 
+aiming at automotive applications. Nowadays CAN has gained widespread use 
+and is used in industrial automation as well as in automotive, mobile 
+machines and in many embedded control applications.</P
+><P
+>The CAN protocol is defined by the ISO 11898-1 standard. The physical layer 
+uses differential transmission on a twisted pair wire.  CAN uses a 
+non-destructive bit-wise arbitration to control access to the bus.</P
+><P
+>There is no explicit address in the messages because in CAN networks there 
+is no addressing of subscribers or stations, but instead, each message carries 
+a prioritized identifier. A transmitter sends a message to all CAN nodes 
+(broadcasting). The identifier may serve as an identification of the contents 
+of the message and also determines the priority that the message enjoys in 
+competition for bus access. A node decides on the basis of this identifier 
+received whether it should process the message or not.</P
+><P
+>The CAN messages are small (at most eight data bytes) and are protected 
+by a checksum. Each CAN message consists of  an 11 bit message ID, up to 8 
+bytes of data and, a CRC checksum and a number of  control bits. These 
+short messages ensure a robust transfer of data in electromagnetically 
+noisy environments. An extended version of the CAN frame supports 29 bit 
+message identifiers.</P
+><P
+>Basically there are two different operational modes for CAN receivers - 
+FullCAN and BasicCAN.  The difference between these two modes is the 
+Object Storage function. The BasicCAN architecture is quite similar to a 
+simple UART. A BasicCAN device has typically one transmit buffer and two 
+receive buffers. The CAN chip handles only the transmitting and receiving 
+of the data (and the error handling) and so most of the manipulation of the 
+data has to be done by the CPU. The CPU has to request the transmitting or 
+acknowledge the receiving of the data through the interrupt flags. This will 
+burden the CPU and take up much of the CPU time. </P
+><P
+>The FullCAN architecture is more suitable for high-speed performance. It 
+has its own storage area on chip and works with a number of message buffers 
+or message boxes. The CAN controller has its own Acceptance Filtering Mask 
+on chip. It can thus determine which frames are to be received by examining 
+the identifiers. The CPU in this case will only receive the valid (wanted) 
+frames and hence improve the performance of the CPU.</P
+><P
+>You can find more information at the 
+<A
+HREF="http://www.can-cia.org/"
+TARGET="_top"
+>CAN in Automation</A
+> website.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-can.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-can-ecos-support.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CAN Support</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-can.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>eCos Support for CAN</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

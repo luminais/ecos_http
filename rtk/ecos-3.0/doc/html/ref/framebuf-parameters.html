@@ -1,0 +1,760 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Framebuffer Parameters</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Framebuffer Support"
+HREF="io-framebuf.html"><LINK
+REL="PREVIOUS"
+TITLE="Overview"
+HREF="framebuf.html"><LINK
+REL="NEXT"
+TITLE="Framebuffer Control Operations"
+HREF="framebuf-control.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="framebuf.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="framebuf-control.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FRAMEBUF-PARAMETERS"
+></A
+>Framebuffer Parameters</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN10066"
+></A
+><H2
+>Name</H2
+>Parameters&nbsp;--&nbsp;determining framebuffer capabilities</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN10069"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN10070"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/io/framebuf.h&gt;
+
+typedef struct cyg_fb {
+    cyg_ucount16    fb_depth;
+    cyg_ucount16    fb_format;
+    cyg_ucount16    fb_width;
+    cyg_ucount16    fb_height;
+#ifdef CYGHWR_IO_FRAMEBUF_FUNCTIONALITY_VIEWPORT
+    cyg_ucount16    fb_viewport_width;
+    cyg_ucount16    fb_viewport_height;
+#endif
+    void*           fb_base;
+    cyg_ucount16    fb_stride;
+    cyg_uint32      fb_flags0;
+    &#8230;    
+} cyg_fb;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_fb* CYG_FB_STRUCT</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_ucount16 CYG_FB_DEPTH</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_ucount16 CYG_FB_FORMAT</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_ucount16 CYG_FB_WIDTH</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_ucount16 CYG_FB_HEIGHT</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_ucount16 CYG_FB_VIEWPORT_WIDTH</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_ucount16 CYG_FB_VIEWPORT_HEIGHT</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void* CYG_FB_BASE</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_ucount16 CYG_FB_STRIDE</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_uint32 CYG_FB_FLAGS0</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-PARAMETERS-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>When developing an application for a specific platform the various
+framebuffer parameters such as width and height are known, and the
+code can be written accordingly. However when writing code that should
+work on many platforms with different framebuffer devices, for example
+a graphics library, the code must be able to get these parameters and
+adapt.
+    </P
+><P
+>Code using the function API can extract the parameters from the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structures at run-time. The macro API
+provides dedicated macros for each parameter. These do not follow the
+usual eCos convention where the result is provided via an extra
+argument. Instead the result is returned as normal, and is guaranteed
+to be a compile-time constant. This allows code like the following:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#if CYG_FB_DEPTH(FRAMEBUF) &lt; 8
+    &#8230;
+#else
+    &#8230;
+#endif
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>or alternatively:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    if (CYG_FB_DEPTH(FRAMEBUF) &#60; 8) {
+        &#8230;
+    } else {
+        &#8230;
+    }
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>or:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    switch (CYG_FB_DEPTH(FRAMEBUF)) {
+        case  1 : &#8230; break;
+        case  2 : &#8230; break;
+        case  4 : &#8230; break;
+        case  8 : &#8230; break;
+        case 16 : &#8230; break;
+        case 32 : &#8230; break;
+    }
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>In terms of the code actually generated by the compiler these
+approaches have much the same effect. The macros expand to a
+compile-time constant so unnecessary code can be easily eliminated.
+    </P
+><P
+>The available parameters are as follows:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>depth</DT
+><DD
+><P
+>The number of bits per pixel or bpp. The common depths are 1, 2, 4, 8,
+16 and 32. 
+        </P
+></DD
+><DT
+>format</DT
+><DD
+><P
+>How the pixel values are mapped on to visible <A
+HREF="framebuf-colour.html"
+>colours</A
+>, for example true colour
+or paletted or greyscale.
+        </P
+></DD
+><DT
+>width, height</DT
+><DD
+><P
+>The number of framebuffer pixels horizontally and vertically.
+        </P
+></DD
+><DT
+>viewport width, viewport height</DT
+><DD
+><P
+>With some devices the framebuffer height and/or width are greater than
+what the display can actually show. The display is said to offer a
+viewport into the larger framebuffer. The number of visible pixels is
+determined from the viewport width and height. The position of the
+viewport is controlled via an <A
+HREF="framebuf-control.html#FRAMEBUF-CONTROL-IOCTL-VIEWPORT"
+><CODE
+CLASS="FUNCTION"
+>ioctl</CODE
+></A
+>.
+Within a <CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structure these fields are
+only present if
+<CODE
+CLASS="VARNAME"
+>CYGHWR_IO_FRAMEBUF_FUNCTIONALITY_VIEWPORT</CODE
+>
+is defined, to avoid wasting data space on fields that are unnecessary
+for the current platform. For the macro API the viewport macros should only be used
+if <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_VIEWPORT</TT
+> is set for the framebuffer:
+        </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#if (CYG_FB_FLAGS0(FRAMEBUF) &amp; CYG_FB_FLAGS0_VIEWPORT)
+    &#8230;
+#endif
+        </PRE
+></TD
+></TR
+></TABLE
+></DD
+><DT
+>base, stride</DT
+><DD
+><P
+>For <A
+HREF="framebuf-parameters.html#FRAMEBUF-PARAMETERS-LINEAR"
+>linear</A
+>
+framebuffers these parameters provide the information needed to access
+framebuffer memory. The stride is in bytes.
+        </P
+></DD
+><DT
+>flags0</DT
+><DD
+><P
+>This gives further information about the hardware capabilities.
+Some of this overlaps with other parameters, especially when it comes
+to colour, because it is often easier to test for a single flag than
+for a range of colour modes. The current flags are:
+        </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_LINEAR_FRAMEBUFFER</TT
+></DT
+><DD
+><P
+>Framebuffer memory is organized in a conventional fashion and can be
+<A
+HREF="framebuf-parameters.html#FRAMEBUF-PARAMETERS-LINEAR"
+>accessed</A
+> directly by
+higher-level code using the base and stride parameters.
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_LE</TT
+></DT
+><DD
+><P
+>This flag is only relevant for 1bpp, 2bpp and 4bpp devices and
+controls how the pixels are organized within each byte. If the flag is
+set then the layout is little-endian: for a 1bpp device pixel (0,0)
+occupies bit 0 of the first byte of framebuffer memory. The more
+common layout is big-endian where pixel (0,0) occupies bit 7 of the
+first byte.
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_TRUE_COLOUR</TT
+></DT
+><DD
+><P
+>The framebuffer uses a true colour format where the value of each
+pixel directly encodes the red, green and blue intensities. This is
+common for 16bpp and 32bpp devices, and is occasionally used for 8bpp
+devices. 
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_PALETTE</TT
+></DT
+><DD
+><P
+>The framebuffer uses a palette. A pixel value does not directly encode
+the colours, but instead acts as an index into a separate table of
+colour values. That table may be read-only or read-write. Paletted
+displays are common for 8bpp and some 4bpp displays.
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_WRITEABLE_PALETTE</TT
+></DT
+><DD
+><P
+>The palette is read-write.
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_DELAYED_PALETTE_UPDATE</TT
+></DT
+><DD
+><P
+>Palette updates can be synchronized to a vertical blank, in other
+words a brief time period when the display is not being updated,
+by using <TT
+CLASS="LITERAL"
+>CYG_FB_UPDATE_VERTICAL_RETRACE</TT
+> as the last
+argument to <CODE
+CLASS="FUNCTION"
+>cyg_fb_write_palette</CODE
+> or
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_WRITE_PALETTE</CODE
+>. With some hardware updating
+the palette in the middle of a screen update may result in visual noise.
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_VIEWPORT</TT
+></DT
+><DD
+><P
+>The framebuffer contains more pixels than can be shown on the display.
+Instead the display provides a viewport into the framebuffer. An
+<A
+HREF="framebuf-control.html#FRAMEBUF-CONTROL-IOCTL-VIEWPORT"
+><CODE
+CLASS="FUNCTION"
+>ioctl</CODE
+></A
+>
+can be used to move the viewport.
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_DOUBLE_BUFFER</TT
+></DT
+><DD
+><P
+>The display does not show the current contents of the framebuffer, so
+the results of drawing into the framebuffer are not immediately
+visible. Instead higher-level code needs to perform an explicit 
+<A
+HREF="framebuf-drawing.html#FRAMEBUF-DRAWING-SYNCH"
+>synch</A
+> operation to
+update the display.
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_PAGE_FLIPPING</TT
+></DT
+><DD
+><P
+>The hardware supports two or more pages, each of width*height pixels,
+only one of which is visible on the display. This allows higher-level
+code to update one page without disturbing what is currently visible.
+An <A
+HREF="framebuf-control.html#FRAMEBUF-CONTROL-IOCTL-PAGEFLIP"
+><CODE
+CLASS="FUNCTION"
+>ioctl</CODE
+></A
+>
+is used to switch the visible page.
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_BLANK</TT
+></DT
+><DD
+><P
+>The display can be <A
+HREF="framebuf-control.html#FRAMEBUF-CONTROL-IOCTL-BLANK"
+>blanked</A
+>
+without affecting the framebuffer contents or settings.
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_BACKLIGHT</TT
+></DT
+><DD
+><P
+>There is a backlight which can be <A
+HREF="framebuf-control.html#FRAMEBUF-CONTROL-IOCTL-BACKLIGHT"
+>switched</A
+> 
+on or off. Some hardware provides finer-grained control over the
+backlight intensity.
+            </P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_MUST_BE_ON</TT
+></DT
+><DD
+><P
+>Often it is desirable to perform some initialization such as clearing
+the screen or setting the palette before the display is <A
+HREF="framebuf-control.html#FRAMEBUF-CONTROL-ONOFF"
+>switched on</A
+>, to avoid visual
+noise. However not all hardware allows this. If this flag is set then
+it is possible to access framebuffer memory and the palette before the
+<CODE
+CLASS="FUNCTION"
+>cyg_fb_on</CODE
+> or <CODE
+CLASS="FUNCTION"
+>CYG_FB_ON</CODE
+>
+operation. It may also be possible to perform some other operations
+such as activating the backlight, but that is implementation-defined.
+            </P
+></DD
+></DL
+></DIV
+></DD
+></DL
+></DIV
+><P
+>To allow for future expansion there are also flags1, flags2, and
+flags3 fields. These may get used for encoding additional
+<CODE
+CLASS="FUNCTION"
+>ioctl</CODE
+> functionality, support for hardware
+acceleration, and similar features.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-PARAMETERS-LINEAR"
+></A
+><H2
+>Linear Framebuffers</H2
+><P
+>There are drawing primitives for writing and reading individual
+pixels. However these involve a certain amount of arithmetic each time
+to get from a position to an address within the frame buffer, plus
+function call overhead if the function API is used, and this will slow
+down graphics operations.
+    </P
+><P
+>When the framebuffer device is known at compile-time and the macro API
+is used then there are additional macros specifically for <A
+HREF="framebuf-iterating.html"
+>iterating</A
+> over parts of the frame
+buffer. These should prove very efficient for many graphics
+operations. However if the device is selected at run-time then the
+macros are not appropriate and code may want to manipulate framebuffer
+memory directly. This is possible if two conditions are satisfied:
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>The <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_LINEAR_FRAMEBUFFER</TT
+> flag must be
+set. Otherwise framebuffer memory is either not directly accessible or
+has a non-linear layout.
+      </P
+></LI
+><LI
+><P
+>The <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_DOUBLE_BUFFER</TT
+> flag must be clear.
+An efficient double buffer synch operation requires knowing what part
+of the framebuffer have been updated, and the various drawing
+primitives will keep track of this. If higher-level code then starts
+manipulating the framebuffer directly the synch operation may perform
+only a partial update.
+      </P
+></LI
+></OL
+><P
+>The base, stride, depth, width and height parameters, plus the
+<TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_LE</TT
+> flag for 1bpp, 2bpp and 4bpp
+devices, provide all the information needed to access framebuffer
+memory. A linear framebuffer has pixel (0,0) at the base address.
+Incrementing y means adding stride bytes to the pointer.
+    </P
+><P
+>The base and stride parameters may be set even if
+<TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_LINEAR_FRAMEBUFFER</TT
+> is clear. This can
+be useful if for example the display is rotated in software from
+landscape to portrait mode. However the meaning of these parameters
+for non-linear framebuffers is implementation-defined.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="framebuf.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="framebuf-control.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Overview</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-framebuf.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Framebuffer Control Operations</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

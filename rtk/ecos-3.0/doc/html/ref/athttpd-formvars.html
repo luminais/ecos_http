@@ -1,0 +1,267 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Form Variables</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The ATHTTP Server"
+HREF="net-athttpd.html"><LINK
+REL="PREVIOUS"
+TITLE="Directory Listing"
+HREF="athttpd-dirlist.html"><LINK
+REL="NEXT"
+TITLE="Internal Resources"
+HREF="athttpd-ires.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="athttpd-dirlist.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 65. The ATHTTP Server</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="athttpd-ires.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ATHTTPD-FORMVARS"
+>Form Variables</A
+></H1
+><P
+>The server will automatically try to parse form variables when a form is
+submitted in the following cases:
+
+<P
+></P
+><UL
+><LI
+><P
+>In a GET request, when the URL is followed by a question
+                  mark sign</P
+></LI
+><LI
+><P
+>In a POST request, when the the 'Content-Type' header line
+                  is set to 'application/x-www-form-urlencoded'</P
+></LI
+></UL
+>
+
+The variable names to look for during the parsing are held in
+an eCos table. In order to take advantage of this feature, the user first
+adds the variable names to the table, which also requires providing a buffer 
+where the parsed value will eventually be stored. The values will then be
+available in the buffers during the processing of the request, presumably in
+the body of a c language callback or CGI script.</P
+><P
+>For example, if the user wants two form variables, "foo" and "bar", to 
+be parsed automatically, those variable names must be added to the table 
+with the following macro:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_HTTPD_FVAR_TABLE_ENTRY(entry, name, buffp, bufflen)
+
+entry            : an identifier unique to this entry.
+name             : name of the form variable
+buffp            : a pointer to a buffer of characters where to store the value
+                   of the form variable.
+bufflen          : The length of the buffer. Must include a trailing string
+                   terminator.</PRE
+></TD
+></TR
+></TABLE
+><P
+>or, in the specific instance mentioned above:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define HTML_VAR_LEN   20
+char var_foo[HTML_VAR_LEN];
+char var_bar[HTML_VAR_LEN];
+CYG_HTTPD_FVAR_TABLE_ENTRY(hal_form_entry_foo, "foo", var_foo, HTML_VAR_LEN);
+CYG_HTTPD_FVAR_TABLE_ENTRY(hal_form_entry_bar, "bar", var_bar, HTML_VAR_LEN);</PRE
+></TD
+></TR
+></TABLE
+><P
+>and after the GET or POST submissions, the list will contain the value 
+for "foo" and "bar" (if they were found in the form data.) It is the 
+responsability of the user to make sure that the buffer is large enough
+to hold all the data parsed (including the string terminator). The parser will
+write only up to the length of the buffer minus one (the last being the
+terminator) and discard any additional data.</P
+><P
+>The values parsed are likely going to be used in c language callback, or
+in CGI files. In a c language callback the user can directly access the pointers
+of individual variables for further processing, keeping in mind that the parsing 
+always result in a string of characters to be produced, and any conversion
+(e.g. from strings to integer) must be performed within the callback. In
+a TCL script the user can just access a variable by its name. For example,
+in the case of the variables 'foo' and 'bar' shown above, it is possible
+to do something like 'write_chunked "You wrote $foo". The data that was sent in
+the body of a POST request is accessible in through a variable called
+'post_data'. In CGI functions
+implemented using the objloader the pointers to the
+variables cannot be accessed directly, since the library will likely not
+know their location in memory. The proper way to access them is by using the
+cyg_httpd_find_form_variable() function from within the library:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>char* cyg_httpd_find_form_variable(char* name)
+
+name             : name of the form variable to look up
+
+returns a pointer to the buffer, or 0 if the variable was not found.</PRE
+></TD
+></TR
+></TABLE
+><P
+>When using the OBJLOADER package within the web server, an entry
+for the cyg_httpd_find_form_variable() function is automatically added to the
+externals table the OBJLOADER for relocation. See the OBLOADER paragraph of 
+the ATHTTP user's guide for the full list of the exported functions.</P
+><P
+>In order to avoid stale data, all the buffers in the table are cleared
+before running the parser and thus any variable in the list that was not
+assigned a new value dureing the request will be an empty string.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="athttpd-dirlist.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="athttpd-ires.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Directory Listing</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-athttpd.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Internal Resources</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,116 @@
+cdl_package RTLPKG_IO_USB_HOST {
+	display         "rltk usb hcd"
+	include_dir     cyg/io
+	compile         -library=libextras.a device_if.c  \
+	                usb_core.c usb_dev.c   usb_dynamic.c   usb_handle_request.c \
+	                usb_hub.c  usb_lookup.c  usb_msctest.c  usb_request.c \
+	                pci_if.c    usb_busdma.c  usb_debug.c  usb_util.c usb_device.c \
+	                usb_error.c   usb_hid.c  usb_if.c  usb_mbuf.c  usb_parse.c \
+	                usb_process.c  usb_transfer.c   bus_if.c    usb_support.c \
+	                controller/usb_controller.c kern/subr_kobj.c kern/subr_bus.c \
+	                kern/kern_module.c  usb_generic.c if_usb_hcd.c usb_compat_linux.c
+
+	 cdl_option CYGDAT_RLTK_USB_HCD {
+	    display       "Device name for the realtek usb 8652 driver"
+	    flavor        data
+	    default_value {"\"/dev/rltk_usb_hcd\""}
+	    description   "
+	        This option sets the name of the serial device for the realtek usb 8652."
+	 }
+
+	cdl_option RTLPKG_USB_OHCI_HCD {
+		display       "USB OHCI host controller driver support"
+	    default_value 0
+	    flavor        bool
+
+	    description   "
+	        This option enables support for USB OHCI host controller."
+	    define_proc {
+	    	puts $::cdl_system_header "#define USB_OHCI_HCD 0"
+	    }
+	    compile	-library=libextras.a \
+	        controller/ohci.c controller/ohci_pci.c
+	}
+
+	cdl_option RTLPKG_USB_EHCI_HCD {
+		display       "USB EHCI host controller driver support"
+	    default_value 0
+	    flavor        bool
+
+	    description   "
+	        This option enables support for USB EHCI host controller."
+	    define_proc {
+	    	puts $::cdl_system_header "#define USB_EHCI_HCD 0"
+	    }
+	    compile	-library=libextras.a \
+	        controller/ehci.c controller/ehci_pci.c
+
+	}
+
+	cdl_option RTLPKG_USB_OTG_HCD {
+		display       "USB OTG host controller driver support"
+	    default_value 0
+	    flavor        bool
+
+	    description   "
+	        This option enables support for USB OTG host controller."
+	    define_proc {
+	    	puts $::cdl_system_header "#define USB_OTG_HCD 0"
+	    }
+	    compile	-library=libextras.a \
+	        controller/dwc_otg.c controller/dwc_otg_atmelarm.c 
+
+	}
+
+	cdl_option RTLPKG_USB_MASS_STORAGE_DRIVER {
+		display       "USB mass storage driver support"
+	    default_value 0
+	    flavor        bool
+
+	    description   "
+	        This option enables support for USB mass storage device."
+	    define_proc {
+	    	puts $::cdl_system_header "#define USB_MASS_STORAGE_DRIVER 0"
+	    }
+	    compile	-library=libextras.a \
+	        storage/umass.c
+
+	}
+
+	cdl_option RTLPKG_USB_DEBUG_ENABLE {
+		display       "USB Debug Enable"
+	    default_value 0
+	    flavor        bool
+
+	    description   "
+	        This option enables debug for USB ."
+	    define_proc {
+	    	puts $::cdl_system_header "#define USB_DEBUG 0"
+	    }
+	}
+
+	cdl_option RTLPKG_IO_USB_HOST_CFLAGS_ADD {
+	    display "Additional compiler flags"
+	    flavor  data
+	    no_define
+	    default_value { "-D_KERNEL" }
+	    description   "
+	        This option modifies the set of compiler flags for
+	        building this package. These flags are used in addition
+	        to the set of global flags."
+
+	}
+
+	 cdl_option RTLPKG_IO_USB_HOST_CFLAGS_REMOVE {
+        display "Additional compiler flags"
+        flavor  data
+        no_define
+        default_value { "" }
+        description   "
+            This option modifies the set of compiler flags for
+            building this package. These flags are used in addition
+            to the set of global flags."
+    }
+}
+
+

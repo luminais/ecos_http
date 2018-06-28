@@ -1,0 +1,246 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>MIME types</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The ATHTTP Server"
+HREF="net-athttpd.html"><LINK
+REL="PREVIOUS"
+TITLE="Starting the server"
+HREF="athttpd-using.html"><LINK
+REL="NEXT"
+TITLE="C language callback functions"
+HREF="athttpd-callback.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="athttpd-using.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 65. The ATHTTP Server</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="athttpd-callback.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ATHTTPD-MIME-TYPES"
+>MIME types</A
+></H1
+><P
+>The server has an internal table with all the recognized mime types. Each time
+a file or an internal resource is sent out by the server, its extension is 
+searched in this table and if a match is found, the associated MIME type is
+then sent out in the header. 
+
+The server already provides entries for the following standard file extensions:
+
+'html', 'htm', 'gif', 'jpg', 'css', 'js', 'png'
+
+and the user is responsible for adding any further entry. The syntax for 
+adding an entry is the following:</P
+><P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_HTTPD_MIME_TABLE_ENTRY(entry_label, extension_string, mime_tipe_sting);
+
+entry table      : an identifier unique to this entry
+extension string : a string containing the extension for this entry
+type_string      : the mime string. The strings for many more mime types 
+                   is included in a file in the "doc" directory.</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>The following is an example of how to add the Adobe Portable Document Format
+<B
+CLASS="COMMAND"
+>pdf</B
+> MIME type to the table:</P
+><P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_HTTPD_MIME_TABLE_ENTRY(hal_pdf_entry, "pdf", "application/pdf");</PRE
+></TD
+></TR
+></TABLE
+></P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="ATHTTPD-MIME-TYPES-CHUNKED"
+>MIME Types for Chunked Frames</A
+></H2
+><P
+>For chunked frames, which are generally used inside c language callbacks, there
+is no file name to match an extension to, and thus the extension to be used
+must be passed in the <B
+CLASS="COMMAND"
+>cyg_httpd_start_chunked()</B
+> call. The
+server will then scan the MIME table to find a MIME type to match the extension.
+
+For example, to start a chunked transfer of an <B
+CLASS="COMMAND"
+>html</B
+> file, 
+the following call is used:</P
+><P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>cyg_httpd_start_chunked("html");</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>In any event, it is the responsibility of the user to make sure that a match to
+all used extensions is found in the table search. Failing this, 
+the default MIME type specified in the CYGDAT_NET_ATHTTPD_DEFAULT_MIME_TYPE
+string is returned.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="athttpd-using.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="athttpd-callback.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Starting the server</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-athttpd.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>C language callback functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

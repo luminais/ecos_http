@@ -1,0 +1,191 @@
+# ====================================================================
+#
+#      hal_mips_rlx.cdl
+#
+#      MIPS/rlx variant architectural HAL package configuration data
+#
+# ====================================================================
+## ####ECOSGPLCOPYRIGHTBEGIN####                                            
+## -------------------------------------------                              
+## This file is part of eCos, the Embedded Configurable Operating System.   
+## Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+##
+## eCos is free software; you can redistribute it and/or modify it under    
+## the terms of the GNU General Public License as published by the Free     
+## Software Foundation; either version 2 or (at your option) any later      
+## version.                                                                 
+##
+## eCos is distributed in the hope that it will be useful, but WITHOUT      
+## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or    
+## FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License    
+## for more details.                                                        
+##
+## You should have received a copy of the GNU General Public License        
+## along with eCos; if not, write to the Free Software Foundation, Inc.,    
+## 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.            
+##
+## As a special exception, if other files instantiate templates or use      
+## macros or inline functions from this file, or you compile this file      
+## and link it with other works to produce a work based on this file,       
+## this file does not by itself cause the resulting work to be covered by   
+## the GNU General Public License. However the source code for this file    
+## must still be made available in accordance with section (3) of the GNU   
+## General Public License v2.                                               
+##
+## This exception does not invalidate any other reasons why a work based    
+## on this file might be covered by the GNU General Public License.         
+## -------------------------------------------                              
+## ####ECOSGPLCOPYRIGHTEND####                                              
+# ====================================================================
+######DESCRIPTIONBEGIN####
+#
+# Author(s):      michael
+# Original data:  
+# Contributors:
+# Date:           2009-11-02
+#
+#####DESCRIPTIONEND####
+#
+# ====================================================================
+
+cdl_package CYGPKG_HAL_MIPS_RLX {
+    display       "RLX variant"
+    parent        CYGPKG_HAL_MIPS
+    hardware
+    include_dir   cyg/hal
+    description   "
+           The RLX architecture HAL package provides generic support
+           for this processor architecture. It is also necessary to
+           select a specific target platform HAL package."
+
+    cdl_option CYGHWR_HAL_MIPS_RLX_CORE {
+        display       "RLX processor core used"
+        flavor        data
+        default_value {"4181"}
+        legal_values  {"4181" "5181" "4281" "5281"}
+        description   "
+            RLX processor core used"
+    }
+
+    implements    CYGINT_HAL_MIPS_VARIANT
+
+    cdl_option CYGHWR_HAL_MIPS_FPU {
+        display    "Variant FPU support"
+        calculated 0
+    }
+        
+    cdl_option CYGPKG_HAL_MIPS_MSBFIRST {
+        display    "CPU Variant big-endian"
+        calculated 1
+    }
+
+    cdl_option CYGPKG_HAL_MIPS_GDB_REPORT_CP0 {
+        display "Report contents of CP0 to GDB"
+        calculated 0
+    }
+
+    cdl_option CYGPKG_HAL_DWALLOC_SUPPORT {
+        display "DCACHE write-allocate support"
+        active_if  {CYGHWR_HAL_MIPS_RLX_CORE == "5281"}
+        default_value 0
+        description   ""
+    }
+
+    cdl_option CYGPKG_HAL_ROMEPERF_SUPPORT {
+        display "romeperf support"
+        default_value 0
+        description   ""
+        compile       romeperf.c
+    }
+
+    cdl_option CYGPKG_HAL_TIMERADJUST_SUPPORT {
+        display "timer adjust support"
+        default_value 0
+	define CONFIG_RTL_TIMER_ADJUSTMENT
+        description   ""
+    }
+
+    cdl_option CYGPKG_HAL_DBG_STAT_SUPPORT {
+        display "memory debug statistic support"
+        default_value 0
+	define ECOS_DBG_STAT
+        description   ""
+    }
+    cdl_option CYGPKG_HAL_RLX_PROFILING_SUPPORT {
+        display "RLX profiling support"
+        default_value 0
+        description   ""
+        compile       rlx_prof_int.c
+        requires { !is_substr(CYGBLD_GLOBAL_CFLAGS, " -ffunction-sections") }
+    }
+
+    define_proc {
+        puts $::cdl_header "#include <pkgconf/hal_mips.h>"
+    }
+
+    compile       var_misc.c variant.S
+
+    make {
+        <PREFIX>/lib/target.ld: <PACKAGE>/src/mips_rlx.ld
+        $(CC) -E -P -Wp,-MD,target.tmp -DEXTRAS=1 -xc $(INCLUDE_PATH) $(CFLAGS) -o $@ $<
+        @echo $@ ": \\" > $(notdir $@).deps
+        @tail -n +2 target.tmp >> $(notdir $@).deps
+        @echo >> $(notdir $@).deps
+        @rm target.tmp
+    }
+
+    cdl_option CYGBLD_LINKER_SCRIPT {
+        display "Linker script"
+        flavor data
+	no_define
+        calculated  { "src/mips_rlx.ld" }
+    }
+
+
+    cdl_component CYGBLD_GLOBAL_OPTIONS {
+        display "Global build options"
+        flavor  none
+        parent  CYGPKG_NONE
+        description   "
+	    Global build options including control over
+	    compiler flags, linker flags and choice of toolchain."
+
+
+        cdl_option CYGBLD_GLOBAL_COMMAND_PREFIX {
+            display "Global command prefix"
+            flavor  data
+            no_define
+            default_value { "mips-elf" }
+            description "
+                This option specifies the command prefix used when
+                invoking the build tools."
+        }
+
+        cdl_option CYGBLD_GLOBAL_CFLAGS {
+            display "Global compiler flags"
+            flavor  data
+            no_define
+            default_value { CYGBLD_GLOBAL_WARNFLAGS . 
+                            "-march=" . CYGHWR_HAL_MIPS_RLX_CORE . " -fuse-uls" .
+                            " -msoft-float -g -Os -ffix-bdsl -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -G0 -fno-common"
+            }
+            description   "
+                This option controls the global compiler flags which
+                are used to compile all packages by
+                default. Individual packages may define
+                options which override these global flags."
+        }
+
+        cdl_option CYGBLD_GLOBAL_LDFLAGS {
+            display "Global linker flags"
+            flavor  data
+            no_define
+            default_value { "-march=" . CYGHWR_HAL_MIPS_RLX_CORE . " -msoft-float -g -nostdlib -Wl,--gc-sections -Wl,-static" }
+            description   "
+                This option controls the global linker flags. Individual
+                packages may define options which override these global flags."
+        }
+
+    }
+    
+}

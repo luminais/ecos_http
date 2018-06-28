@@ -1,0 +1,234 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Internal Resources</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The ATHTTP Server"
+HREF="net-athttpd.html"><LINK
+REL="PREVIOUS"
+TITLE="Form Variables"
+HREF="athttpd-formvars.html"><LINK
+REL="NEXT"
+TITLE="Memory Allocation"
+HREF="services-memalloc-common.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="athttpd-formvars.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 65. The ATHTTP Server</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="services-memalloc-common.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ATHTTPD-IRES"
+>Internal Resources</A
+></H1
+><P
+>When the server does not use a file system the user must be responsible
+to provide a C language callback function for each URL that will be
+requested by the client. This means locating the data and sending it out
+using either <B
+CLASS="COMMAND"
+>cyg_httpd_write()</B
+> or
+<B
+CLASS="COMMAND"
+>cyg_httpd_write_chunked()</B
+>.</P
+><P
+>In order to simplify this process the server allows registering
+any number of URLs as internal resources, by providing the URL name, the
+pointer to the resource data and its size. When a URL is requested the
+server will look it up among all internal resources, and if found, it
+will send out the resource.</P
+><P
+>Internal resource can also be used along with a file system. In this
+case the file system is searched first, and if a file is found, it it
+sent. If a file is not found, the internal resources are searched and
+if a match if found it is sent.</P
+><P
+>The drawback of this approach is, of course, that all these
+resources are going to add to the size of the operating system image, and thus
+it should be used only when memory is not a major constraint of the 
+design.</P
+><P
+>As always, to provide this type of customization, ecos tables are used.
+The format for adding a new resource to the internal table is the following:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_HTTPD_IRES_TABLE_ENTRY(entry, name, buffp, len)
+
+entry            : an identifier unique to this entry.
+name             : name of the URL including leading '/'
+buffp            : a pointer to a buffer of characters where to store the value
+                   of the form variable.
+len              : size of the array                   </PRE
+></TD
+></TR
+></TABLE
+><P
+>As an example, if the user wants to provide his own web page by
+hardcoding it in the application code, here is how he would do it:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define MY_OWN_HOME_PAGE "eCos RTOS"
+CYG_HTTPD_IRES_TABLE_ENTRY(cyg_httpd_ires_home,       \
+                           "/index.html",             \
+                           MY_OWN_HOME_PAGE,          \
+                           9);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The extension of the file name determines the MIME type to be used for
+internal resources.</P
+><P
+>When using directory listing you are implicitly making use of internal
+resources. The small icons that appear to the left of file names and
+directories are internal resources. Unchecking CYGOPT_NET_HTTP_USE_DIRLIST
+will prevent the addition of these files.</P
+><P
+>In order to use internal resources, a generic file must first be
+turned into a c language array, which is then compiled in the application
+code. To create this array you can use the tcl script that comes with the
+ecos distribution at packages/fs/rom/current/support/file2.tcl.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="athttpd-formvars.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="services-memalloc-common.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Form Variables</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-athttpd.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Memory Allocation</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,338 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>C language callback functions</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The ATHTTP Server"
+HREF="net-athttpd.html"><LINK
+REL="PREVIOUS"
+TITLE="MIME types"
+HREF="athttpd-mime-types.html"><LINK
+REL="NEXT"
+TITLE="CGI"
+HREF="athttpd-cgi.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="athttpd-mime-types.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 65. The ATHTTP Server</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="athttpd-cgi.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ATHTTPD-CALLBACK"
+>C language callback functions</A
+></H1
+><P
+>The server allows the association of particular URLs to C language callback 
+functions. eCos tables are used to define the association between a URL and its
+corresponding callback. The syntax of the macro to add callback entries to 
+the table is:</P
+><P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_HTTPD_HANDLER_TABLE_ENTRY(entry_label, url_string, callback);
+
+entry table      : an identifier unique to this entry.
+url_string       : a string with the extension url that will be appended to the
+                   default directory.
+callback         : a function with a prototype:
+                   cyg_int32 callback_function(CYG_HTTPD_STATE*); 
+                   Return value is ignored - just return 0.</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+><B
+CLASS="COMMAND"
+>CYG_HTTPD_STATE*</B
+> is a pointer to a structure that
+contains, among others, a buffer (outbuffer) that can be used to send data
+out. The definitions of the structure is in http.h.</P
+><P
+>The following is an example of how to add a callback to a function myForm()
+whenever the URL /myform.cgi is requested:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_HTTPD_HANDLER_TABLE_ENTRY(hal_cb_entry, "/myform.cgi", myForm);</PRE
+></TD
+></TR
+></TABLE
+><P
+>and somewhere in the source tree there is a function:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>cyg_int32 myForm(CYG_HTTPD_STATE* p)
+{
+   cyg_httpd_start_chunked("html");
+   strcpy(p-&#62;outbuffer, "eCos Web Server");
+   cyg_httpd_write_chunked(p-&#62;outbuffer, strlen(p-&#62;outbuffer))
+   cyg_httpd_end_chunked();
+}  </PRE
+></TD
+></TR
+></TABLE
+><P
+>This function also shows the correct method of using the chunked frames
+API inside a c language callback and also shows the use of outbuffer to
+collect data to send out.</P
+><P
+>Chunked frames are useful when the size of the frame is not known upfront. 
+In this case it possible to send a response in chunks of various sizes, and
+terminate it with a null chunk (See RFC 2616 for details). To use chunked 
+frames, the <B
+CLASS="COMMAND"
+>cyg_httpd_start_chunked()</B
+> function is used. 
+The prototype is the following:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ssize_t cyg_httpd_start_chunked(char *);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The only parameter is the <B
+CLASS="COMMAND"
+>extension</B
+> to use in the 
+search for the MIME type. For most files this will be "html" or "htm" and
+it will be searched in the MIME table for an approriate MIME type that will
+be sent along in the header. The function returns the number of bytes sent
+out.</P
+><P
+>The chunked frame must be terminated by a call to 
+<B
+CLASS="COMMAND"
+>cyg_httpd_end_chunked()</B
+>:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void cyg_httpd_end_chunked()(void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>In between these two calls, the user can call the function
+<B
+CLASS="COMMAND"
+>cyg_httpd_write_chunked()</B
+> to send out data any number of
+times. It is important that <B
+CLASS="COMMAND"
+>cyg_httpd_write_chunked()</B
+> be
+the only function used to send data out for chunked frames. This
+guarantees that proper formatting of the response is respected.
+The prototype for the function is:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ssize_t cyg_httpd_write_chunked(char* p, int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The 'char*' points to the data to send out, the 'int' is the length of the
+data to send.</P
+><P
+>In the case in which the size of the data is known upfront, the
+callback can instead create the header with a call to
+<B
+CLASS="COMMAND"
+>cyg_httpd_create_std_header()</B
+> with the following
+prototype:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void cyg_httpd_create_std_header(char *ext, int len);
+
+extension   : the extension used in the search of the MIME type
+len         : length of the data to send out</PRE
+></TD
+></TR
+></TABLE
+><P
+>and use
+<B
+CLASS="COMMAND"
+>cyg_httpd_write()</B
+> to send data out to the client. The
+ prototype of <B
+CLASS="COMMAND"
+>cyg_httpd_write()</B
+> is the same as 
+<B
+CLASS="COMMAND"
+>cyg_httpd_write_chunked()</B
+></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="athttpd-mime-types.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="athttpd-cgi.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>MIME types</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-athttpd.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CGI</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

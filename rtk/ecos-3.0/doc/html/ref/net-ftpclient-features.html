@@ -1,0 +1,310 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>FTP Client Features</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="FTP Client for eCos TCP/IP Stack"
+HREF="net-ftpclient.html"><LINK
+REL="PREVIOUS"
+TITLE="FTP Client for eCos TCP/IP Stack"
+HREF="net-ftpclient.html"><LINK
+REL="NEXT"
+TITLE="Simple Network Time Protocol Client"
+HREF="net-sntp-client.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="net-ftpclient.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="net-sntp-client.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="NET-FTPCLIENT-FEATURES"
+></A
+>Chapter 63. FTP Client Features</H1
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="NET-FTPCLIENT-FEATURES-API"
+>FTP Client API</A
+></H1
+><P
+>This package implements an FTP client.  The API is in include file
+<TT
+CLASS="FILENAME"
+>install/include/ftpclient.h</TT
+> and it can be used thus:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#include &lt;network.h&gt;
+#include &lt;ftpclient.h&gt;</PRE
+></TD
+></TR
+></TABLE
+>
+It looks like this:</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="NET-FTPCLIENT-FEATURES-API-GET"
+>ftp_get</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int ftp_get(char &#0042; hostname, 
+            char &#0042; username, 
+            char &#0042; passwd, 
+            char &#0042; filename, 
+            char &#0042; buf, 
+            unsigned buf_size,
+            ftp_printf_t ftp_printf);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Use the FTP protocol to retrieve a file from a server. Only binary
+mode is supported. The filename can include a directory name. Only
+use unix style &#8216;/&#8217; file separators,
+not &#8216;\&#8217;.
+The file is placed into <CODE
+CLASS="PARAMETER"
+>buf</CODE
+>.
+<CODE
+CLASS="PARAMETER"
+>buf</CODE
+> has maximum size <CODE
+CLASS="PARAMETER"
+>buf_size</CODE
+>.
+If the file is bigger than this, the
+transfer fails and <SPAN
+CLASS="ERRORCODE"
+>FTP_TOOBIG</SPAN
+> is returned.
+Other error codes listed in the header can also be returned.
+If the transfer is successful the number of bytes received is returned.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="NET-FTPCLIENT-FEATURES-API-PUT"
+>ftp_put</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int ftp_put(char &#0042; hostname, 
+            char &#0042; username, 
+            char &#0042; passwd, 
+            char &#0042; filename, 
+            char &#0042; buf, 
+            unsigned buf_size,
+            ftp_printf_t ftp_printf);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Use the FTP protocol to send a file to a server.
+Only binary
+mode is supported. The filename can include a directory name. Only
+use unix style &#8216;/&#8217; file separators,
+not &#8216;\&#8217;.
+The contents of <CODE
+CLASS="PARAMETER"
+>buf</CODE
+> are placed into the file on the
+server. If an error occurs one of the codes listed will be returned. If the
+transfer is successful zero is returned.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="NET-FTPCLIENT-FEATURES-API-PRINTF"
+>ftpclient_printf</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void ftpclient_printf(unsigned error, const char *fmt, ...);</PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+CLASS="FUNCTION"
+>ftp_get()</CODE
+> and <CODE
+CLASS="FUNCTION"
+>ftp_put</CODE
+>
+take a pointer to a function to use for printing
+out diagnostic and error messages. This is a sample implementation
+which can be used if you don't want to implement the function
+yourself.
+<CODE
+CLASS="PARAMETER"
+>error</CODE
+> will be true when the message to print is an
+error message. Otherwise the message is diagnostic, eg. the commands sent
+and received from the server.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="net-ftpclient.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="net-sntp-client.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>FTP Client for eCos TCP/IP Stack</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-ftpclient.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Simple Network Time Protocol Client</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

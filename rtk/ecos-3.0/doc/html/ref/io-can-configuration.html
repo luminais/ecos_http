@@ -1,0 +1,246 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Configuration</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="CAN Support"
+HREF="io-can.html"><LINK
+REL="PREVIOUS"
+TITLE="Runtime Configuration"
+HREF="io-can-runtime-cfg.html"><LINK
+REL="NEXT"
+TITLE="Writing a CAN hardware device driver"
+HREF="io-can-device-drivers.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-can-runtime-cfg.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-can-device-drivers.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="IO-CAN-CONFIGURATION"
+></A
+>Chapter 33. Configuration</H1
+><P
+>The CAN subsystem has a number of configuration options.</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="TYPE"
+>cdl_interface CYGINT_IO_CAN_TIMESTAMP</SPAN
+></DT
+><DD
+><P
+>A hardware device driver that supports timestamps should implement this interface.
+          </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cdl_option CYGOPT_IO_CAN_SUPPORT_TIMESTAMP</SPAN
+></DT
+><DD
+><P
+>If the CAN hardware driver supports some kind of timestamps then this option enables 
+propagation of timestamps to higher layers. This may add some extra code to hardware 
+drivers.
+          </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cdl_option CYGOPT_IO_CAN_TX_EVENT_SUPPORT</SPAN
+></DT
+><DD
+><P
+> This option enables support for TX
+events. If a CAN message is transmitted successfully a TX event will
+be inserted into the receive event queue and propagated to higher
+layers.  If this option is enabled the RX event queue will be filled
+faster.</P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cdl_option CYGOPT_IO_CAN_SUPPORT_NONBLOCKING</SPAN
+></DT
+><DD
+><P
+>This option enables extra code in the generic CAN driver which allows
+clients to switch read() and write() call semantics from blocking to
+non-blocking.</P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cdl_option CYGOPT_IO_CAN_SUPPORT_CALLBACK</SPAN
+></DT
+><DD
+><P
+>This option enables extra code in the generic CAN driver which allows
+an application to register a callback for events. The callback function
+is called from DSR context so you should be careful to only call API
+functions that are safe in DSR context.</P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cdl_option CYGNUM_IO_CAN_DEFAULT_TIMEOUT_READ</SPAN
+></DT
+><DD
+><P
+>The initial timeout value in clock ticks for <CODE
+CLASS="FUNCTION"
+>cyg_io_read()</CODE
+> calls.
+          </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cdl_option CYGNUM_IO_CAN_DEFAULT_TIMEOUT_WRITE</SPAN
+></DT
+><DD
+><P
+> The initial timeout value in clock ticks
+for <CODE
+CLASS="FUNCTION"
+>cyg_io_write()</CODE
+> calls.
+          </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-can-runtime-cfg.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-can-device-drivers.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Runtime Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-can.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Writing a CAN hardware device driver</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

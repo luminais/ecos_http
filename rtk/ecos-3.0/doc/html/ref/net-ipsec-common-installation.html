@@ -1,0 +1,212 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Installation and Configuration</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="IPSEC for eCos"
+HREF="net-ipsec-common.html"><LINK
+REL="PREVIOUS"
+TITLE="IPSEC for eCos"
+HREF="net-ipsec-common.html"><LINK
+REL="NEXT"
+TITLE="libipsec Reference"
+HREF="libipsec-library-reference.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="net-ipsec-common.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libipsec-library-reference.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="NET-IPSEC-COMMON-INSTALLATION"
+></A
+>Chapter 50. Installation and Configuration</H1
+><P
+>    Due to the restrictions imposed by various countries on the
+    exportation and importation of cryptographic software, it has been
+    decided to distribute the crypto parts of FreeBSD IPSEC separately
+    from the rest of eCos. Before IPSEC can be enabled the eCos
+    package bsd_crypto must be installed. This package can be found on
+    the eCosCentric server at
+    <A
+HREF="ftp://ftp.ecoscentric.com:/pub/contrib"
+TARGET="_top"
+>    ftp.ecoscentric.com:/pub/contrib</A
+>. Once the package has been
+    downloaded it must be installed using the
+    <TT
+CLASS="LITERAL"
+>ecosadmin.tcl</TT
+> script.
+    </P
+><P
+>    When the bsd_crypto package has been installed, the building of
+    IPSEC will automatically be enabled when the FreeBSD stack is
+    used. It can be disabled using the configuration option
+    <TT
+CLASS="LITERAL"
+>CYGPKG_NET_IPSEC</TT
+>. There are no other
+    configuration options for IPSEC as a whole.
+    </P
+><P
+>    In order to use IPSEC, connections must be configured. This can be
+    performed using <CODE
+CLASS="FUNCTION"
+>setsockopt()</CODE
+> calls. A more
+    convenient way is the use the <TT
+CLASS="LITERAL"
+>libipsec</TT
+> library
+    from the <SPAN
+CLASS="PRODUCTNAME"
+>KAME</SPAN
+> distribution. eCos
+    contains a snapshot of this library, which is documented else
+    where. The aim is to also port the
+    <SPAN
+CLASS="PRODUCTNAME"
+>racoon</SPAN
+> daemon to eCos in the near
+    future.
+    </P
+><P
+>    It should be noted that the FreeBSD stack in eCos is quite
+    old. IPSEC and IPv6 have continued to develop. It is quite
+    possible there could be interoperabilty problems when using the
+    IPSEC implementation in eCos with more modern implementations.
+    </P
+><P
+>    It should also be noted that IPSEC, libipsec etc are currently
+    work in progress items.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="net-ipsec-common.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libipsec-library-reference.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>IPSEC for eCos</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-ipsec-common.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>libipsec Reference</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

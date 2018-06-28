@@ -1,0 +1,674 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>load</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="RedBoot User's Guide"
+HREF="redboot-guide.html"><LINK
+REL="UP"
+TITLE="Common Commands"
+HREF="common-commands.html"><LINK
+REL="PREVIOUS"
+TITLE="ip_address"
+HREF="ip-address-command.html"><LINK
+REL="NEXT"
+TITLE="mcmp"
+HREF="mcmp-command.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>RedBoot User's Guide</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ip-address-command.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mcmp-command.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="DOWNLOAD-COMMAND"
+></A
+>load</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN1252"
+></A
+><H2
+>Name</H2
+>load&nbsp;--&nbsp;Download programs or data to the RedBoot platform</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN1255"
+></A
+><H2
+>Synopsis</H2
+><P
+><B
+CLASS="COMMAND"
+>load</B
+>  [-v ] [-d ] [-r ] [-m
+           [[xmodem | ymodem | tftp | disk | file]
+            ]
+        ] [-h <TT
+CLASS="REPLACEABLE"
+><I
+> server_IP_address</I
+></TT
+>] [-f <TT
+CLASS="REPLACEABLE"
+><I
+> location</I
+></TT
+>] [-b <TT
+CLASS="REPLACEABLE"
+><I
+> location</I
+></TT
+>] [-c <TT
+CLASS="REPLACEABLE"
+><I
+> channel</I
+></TT
+>] [<TT
+CLASS="REPLACEABLE"
+><I
+>file_name</I
+></TT
+>]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN1280"
+></A
+><H2
+>Arguments</H2
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN1282"
+></A
+><TABLE
+BORDER="1"
+FRAME="border"
+RULES="all"
+CLASS="CALSTABLE"
+><COL
+WIDTH="1*"
+TITLE="C1"><COL
+WIDTH="1*"
+TITLE="C2"><COL
+WIDTH="1*"
+TITLE="C3"><COL
+WIDTH="1*"
+TITLE="C4"><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>Type</TH
+><TH
+>Description</TH
+><TH
+>Default</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>-v</TD
+><TD
+>Boolean</TD
+><TD
+>Display a small spinner (indicator)
+while the download is in  progress. This is just for feedback, especially
+during long loads. Note that the option has no effect when using a
+serial download method since it would interfere with the protocol.</TD
+><TD
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>quiet</I
+></SPAN
+></TD
+></TR
+><TR
+><TD
+>-d</TD
+><TD
+>Boolean</TD
+><TD
+>Decompress data stream (gzip data)</TD
+><TD
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>non-compressed data</I
+></SPAN
+></TD
+></TR
+><TR
+><TD
+>-r</TD
+><TD
+>Boolean</TD
+><TD
+>Raw (or binary) data. -b or -f must be used</TD
+><TD
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>formatted (S-records, ELF image, etc)</I
+></SPAN
+></TD
+></TR
+><TR
+><TD
+>-m tftp</TD
+><TD
+>&nbsp;</TD
+><TD
+>Transfer data via the network using <ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+> protocol.</TD
+><TD
+><ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+></TD
+></TR
+><TR
+><TD
+>-m http</TD
+><TD
+>&nbsp;</TD
+><TD
+>Transfer data via the network using <ACRONYM
+CLASS="ACRONYM"
+>HTTP</ACRONYM
+> protocol.</TD
+><TD
+><ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+></TD
+></TR
+><TR
+><TD
+>-m xmodem</TD
+><TD
+>&nbsp;</TD
+><TD
+>Transfer data using <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>X-modem</I
+></SPAN
+> protocol.</TD
+><TD
+><ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+></TD
+></TR
+><TR
+><TD
+>-m ymodem</TD
+><TD
+>&nbsp;</TD
+><TD
+>Transfer data using <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Y-modem</I
+></SPAN
+> protocol.</TD
+><TD
+><ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+></TD
+></TR
+><TR
+><TD
+>-m disk</TD
+><TD
+>&nbsp;</TD
+><TD
+>Transfer data from a local disk.</TD
+><TD
+><ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+></TD
+></TR
+><TR
+><TD
+>-m file</TD
+><TD
+>&nbsp;</TD
+><TD
+>Transfer data from a local filesystem such as
+	             JFFS2 or FAT.</TD
+><TD
+><ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+></TD
+></TR
+><TR
+><TD
+>-h <TT
+CLASS="REPLACEABLE"
+><I
+>server_IP_address</I
+></TT
+></TD
+><TD
+>Numeric IP or DNS name</TD
+><TD
+>The IP address of the <ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+> or <ACRONYM
+CLASS="ACRONYM"
+>HTTP</ACRONYM
+> server.</TD
+><TD
+>Value set by <B
+CLASS="COMMAND"
+>ip_address</B
+></TD
+></TR
+><TR
+><TD
+>-b <TT
+CLASS="REPLACEABLE"
+><I
+>location</I
+></TT
+></TD
+><TD
+>Number</TD
+><TD
+>Address in memory to load the data.  Formatted data streams will have
+an implied load address which this option may override.</TD
+><TD
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Depends on data format</I
+></SPAN
+></TD
+></TR
+><TR
+><TD
+>-f <TT
+CLASS="REPLACEABLE"
+><I
+>location</I
+></TT
+></TD
+><TD
+>Number</TD
+><TD
+>Address in flash to load the data.  Formatted data streams will have
+an implied load address which this option may override.</TD
+><TD
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Depends on data format</I
+></SPAN
+></TD
+></TR
+><TR
+><TD
+>-c <TT
+CLASS="REPLACEABLE"
+><I
+>channel</I
+></TT
+></TD
+><TD
+>Number</TD
+><TD
+>Specify which I/O channel to
+use for download.  This option is only supported when using either
+xmodem or ymodem protocol.</TD
+><TD
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Depends on data format</I
+></SPAN
+></TD
+></TR
+><TR
+><TD
+><TT
+CLASS="REPLACEABLE"
+><I
+>file_name</I
+></TT
+></TD
+><TD
+>String</TD
+><TD
+>The name of the file on the <ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+> or <ACRONYM
+CLASS="ACRONYM"
+>HTTP</ACRONYM
+>
+server or the local disk. Details of how this is specified for <ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+> are
+host-specific. For local disk files, the name must be in <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>disk</I
+></SPAN
+>:
+<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>filename</I
+></SPAN
+> format. The disk portion must match one of the disk
+names listed by the <B
+CLASS="COMMAND"
+>disks</B
+> command.</TD
+><TD
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>None</I
+></SPAN
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN1396"
+></A
+><H2
+>Description</H2
+><P
+>The <B
+CLASS="COMMAND"
+>load</B
+> command is used to download
+data into the target system. Data can be loaded via a network connection,
+using either the <ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+> or <ACRONYM
+CLASS="ACRONYM"
+>HTTP</ACRONYM
+> protocols, or the console serial connection using the
+X/Y modem protocol. Files may also be loaded directly from local filesystems
+on disk. Files to be downloaded may either be executable images in 
+ELF executable program format,
+Motorola S-record (SREC)
+format or raw data.
+      </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>When downloading an ELF image, RedBoot will forcibly terminate the transfer
+once all the relevant (loadable) ELF sections have been received. This
+behaviour reduces download time when using the X/Y modem protocol
+over a slow serial connection. However, the terminal emulator may report
+that the transfer is incomplete and has been cancelled. Such messages
+are normal and may be ignored.
+        </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN1405"
+></A
+><H2
+>Examples</H2
+><P
+>Download a Motorola S-record (or ELF) image, using <ACRONYM
+CLASS="ACRONYM"
+>TFTP</ACRONYM
+>, specifying the 
+base memory address.
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&#62; <KBD
+CLASS="USERINPUT"
+>load redboot.ROM -b 0x8c400000</KBD
+>
+Address offset = 0x0c400000
+Entry point: 0x80000000, address range: 0x80000000-0x8000fe80</PRE
+></TD
+></TR
+></TABLE
+> 
+      </P
+><P
+>Download a Motorola S-record (or ELF) image, using <ACRONYM
+CLASS="ACRONYM"
+>HTTP</ACRONYM
+>, specifying the
+host [server] address.
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&#62; <KBD
+CLASS="USERINPUT"
+>load /redboot.ROM -m HTTP -h 192.168.1.104</KBD
+>
+Address offset = 0x0c400000
+Entry point: 0x80000000, address range: 0x80000000-0x8000fe80</PRE
+></TD
+></TR
+></TABLE
+> 
+      </P
+><P
+>Load an ELF file from /dev/hda1 which should be an EXT2 partition:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&#62; <KBD
+CLASS="USERINPUT"
+>load -mode disk hda1:hello.elf</KBD
+>
+Entry point: 0x00020000, address range: 0x00020000-0x0002fd70</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>Load an ELF file from /jffs2/applications which should be a directory
+in a JFFS2 filesystem:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&#62; <KBD
+CLASS="USERINPUT"
+>load -mode file /jffs2/applications/hello.elf</KBD
+>
+Entry point: 0x00020000, address range: 0x00020000-0x0002fd70</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ip-address-command.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="redboot-guide.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mcmp-command.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ip_address</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="common-commands.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mcmp</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

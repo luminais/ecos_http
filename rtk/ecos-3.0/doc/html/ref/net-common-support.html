@@ -1,0 +1,410 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Support Features</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="TCP/IP Stack Support for eCos"
+HREF="net-common-tcpip.html"><LINK
+REL="PREVIOUS"
+TITLE="Maintenance Tools "
+HREF="net-common-maintenance-tools.html"><LINK
+REL="NEXT"
+TITLE="DHCP"
+HREF="net-common-dhcp.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="net-common-maintenance-tools.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="net-common-dhcp.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="NET-COMMON-SUPPORT"
+></A
+>Chapter 41. Support Features</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="net-common-support.html#NET-COMMON-TFTP"
+>TFTP</A
+></DT
+><DT
+><A
+HREF="net-common-dhcp.html"
+>DHCP</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="NET-COMMON-TFTP"
+>TFTP</A
+></H1
+><P
+>The TFTP client and server are described in
+<TT
+CLASS="FILENAME"
+>tftp_support.h</TT
+>;</P
+><P
+>The TFTP client has and new and an older, deprecated, API. The
+new API works for both IPv4 and IPv6 where as the deprecated API is
+IPv4 only.</P
+><P
+>The new API is as follows:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int tftp_client_get(const char * const filename,
+		    const char * const server,
+		    const int port,
+		    char *buf,
+		    int len,
+		    const int mode,
+		    int * const err);
+
+int tftp_client_put(const char * const filename,
+		    const char * const server,
+		    const int port,
+		    const char *buf,
+		    int len,
+		    const int mode,
+		    int *const err);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Currently <CODE
+CLASS="VARNAME"
+>server</CODE
+> can only be a numeric IPv4 or
+IPv6 address. The resolver is currently not used, but it is planned to
+add this feature (patches welcome). If <CODE
+CLASS="VARNAME"
+>port</CODE
+> is zero
+the client connects to the default TFTP port on the server. Otherwise
+the specified port is used.</P
+><P
+> 
+The deprecated API is:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int tftp_get(const char * const filename, 
+             const struct sockaddr_in * const server, 
+             char * buf, 
+             int len, 
+             const int mode, 
+             int * const error);
+
+int tftp_put(const char * const filename, 
+             const struct sockaddr_in * const server, 
+             const char * buffer, 
+             int len, 
+             const int mode, 
+             int * const err);</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>The <CODE
+CLASS="VARNAME"
+>server</CODE
+> should contain the address of the
+server to contact. If the <CODE
+CLASS="VARNAME"
+>sin_port</CODE
+> member of the
+structure is zero the default TFTP port is used. Otherwise the
+specified port is used.</P
+><P
+>Both API's report errors in the same way. The functions return a value
+of -1 and <CODE
+CLASS="VARNAME"
+>*err</CODE
+> will be set to one of the
+following values:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define	TFTP_ENOTFOUND   1   /* file not found */
+#define	TFTP_EACCESS     2   /* access violation */
+#define	TFTP_ENOSPACE    3   /* disk full or allocation exceeded */
+#define	TFTP_EBADOP      4   /* illegal TFTP operation */
+#define	TFTP_EBADID      5   /* unknown transfer ID */
+#define	TFTP_EEXISTS     6   /* file already exists */
+#define	TFTP_ENOUSER     7   /* no such user */
+#define TFTP_TIMEOUT     8   /* operation timed out */
+#define TFTP_NETERR      9   /* some sort of network error */
+#define TFTP_INVALID    10   /* invalid parameter */
+#define TFTP_PROTOCOL   11   /* protocol violation */
+#define TFTP_TOOLARGE   12   /* file is larger than buffer */</PRE
+></TD
+></TR
+></TABLE
+><P
+>If there are no errors the return value is the number of bytes
+transfered.</P
+><P
+>The server is more complex.  It requires a filesystem implementation
+to be supplied by the user, and attached to the tftp server by means
+of a vector of function pointers:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct tftpd_fileops {
+             int (&#0042;open)(const char &#0042;, int);
+             int (&#0042;close)(int);
+             int (&#0042;write)(int, const void &#0042;, int);
+             int (&#0042;read)(int, void &#0042;, int);
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>These functions have the obvious semantics.  The structure
+describing the filesystem is an argument to the <CODE
+CLASS="FUNCTION"
+>tftpd_start</CODE
+>:
+<TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int tftp_start(int port,
+               struct tftpd_fileops *ops);</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>The first argument is the port to use for the server. If this
+port number is zero, the default TFTP port number will be used. The
+return value from <CODE
+CLASS="FUNCTION"
+>tftpd_start</CODE
+> is a handle which
+can be passed to <CODE
+CLASS="FUNCTION"
+>tftpd_stop</CODE
+>. This will kill the
+tftpd thread. Note that this is not a clean shutdown. The thread will
+simply be killed. <CODE
+CLASS="FUNCTION"
+>tftpd_stop</CODE
+> will attempt to
+close the sockets the thread was listening on and free some of its
+allocated memory. But if the thread was actively transferreing data at
+the time <CODE
+CLASS="FUNCTION"
+>tftpd_stop</CODE
+> is called, it is quite likely
+some memory and a socket will be leaked. Use this function with
+caution (or implement a clean shutdown and please contribute the code
+back :-).</P
+><P
+>There are two CDL configuration options that control how many
+servers on how many different ports tftp can be
+started. CYGSEM_NET_TFTPD_MULTITHREADED, when enabled, allows multiple
+tftpd threads to operate on the same port number. With only one
+thread, while the thread is active transferring data, new requests for
+transfers will not be served until the active transfer is
+complete. When multiple threads are started on the same port, multiple
+transfers can take place simultaneous, up to the number of threads
+started. However a semaphore is required to synchronise the
+threads. This semaphore is required per port. The CDL option
+CYGNUM_NET_TFTPD_MULTITHREADED_PORTS controls how many different port
+numbers multithreaded servers can service.</P
+><P
+>If CYGSEM_NET_TFTPD_MULTITHREADED is not enabled, only one
+thread may be run per port number. But this removes the need for a
+semaphore and so CYGNUM_NET_TFTPD_MULTITHREADED_PORTS is not required
+and unlimited number of ports can be used. </P
+><P
+>It should be noted that the TFTPD does not perform any form of
+file locking. When multiple servers are active, it is assumed the
+underlying filesystem will refuse to open the same file multiple
+times, operate correctly with simultaneous read/writes to the same
+file, or if you are unlucky, corrupt itself beyond all repair.</P
+><P
+>When IPv6 is enabled the tftpd thread will listen for requests
+from both IPv4 and IPv6 addresses.</P
+><P
+>As discussed in the description of the tftp_server_test
+above, an example filesystem is provided in
+<TT
+CLASS="FILENAME"
+>net/common/<TT
+CLASS="REPLACEABLE"
+><I
+>VERSION</I
+></TT
+>/src/tftp_dummy_file.c</TT
+>
+for
+use by the tftp server test.  The dummy filesystem is not a supported
+part of the network stack, it exists purely for demonstration purposes.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="net-common-maintenance-tools.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="net-common-dhcp.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Maintenance Tools</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-common-tcpip.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DHCP</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

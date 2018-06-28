@@ -1,0 +1,381 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Configuration</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="M68000 Architectural Support"
+HREF="hal-m68k-arch.html"><LINK
+REL="PREVIOUS"
+TITLE="Overview"
+HREF="m68k.html"><LINK
+REL="NEXT"
+TITLE="The HAL Port"
+HREF="m68k-port.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="m68k.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="m68k-port.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="M68K-CONFIGURATION"
+></A
+>Configuration</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN18880"
+></A
+><H2
+>Name</H2
+>Options&nbsp;--&nbsp;Configuring the M68K Architectural Package</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-CONFIG-LOAD"
+></A
+><H2
+>Loading and Unloading the Package</H2
+><P
+>The M68K architectural HAL package <CODE
+CLASS="VARNAME"
+>CYGPKG_HAL_M68K</CODE
+>
+should be loaded automatically when eCos is configured for M68K-based
+target hardware. It should never be necessary to load this package
+explicitly. Unloading the package should only happen as a side effect
+of switching target hardware. <CODE
+CLASS="VARNAME"
+>CYGPKG_HAL_M68K</CODE
+>
+serves primarily as a container for lower-level HALs and has only a
+small number of configuration options.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-CONFIG-STACKS"
+></A
+><H2
+>Stacks</H2
+><P
+>By default the architectural HAL provides a single block of memory to
+act as both the startup stack and the interrupt stack. The variant,
+processor or platform HAL may override this. For example if there are
+several banks of RAM with different performance characteristics it may
+be desirable to place the interrupt stack in fast RAM rather than in
+ordinary RAM.
+    </P
+><P
+>The assembler startup code sets the stack pointer to the startup stack
+before switching to C code. This stack used for all HAL
+initialization, running any C++ static constructors defined either by
+eCos or by the application, and the <CODE
+CLASS="FUNCTION"
+>cyg_start</CODE
+>
+entry point. In configurations containing the eCos kernel
+<CODE
+CLASS="FUNCTION"
+>cyg_start</CODE
+> will enable interrupts, activate the
+scheduler and threads will then run on their own stacks. In non-kernel
+single-threaded applications the whole system continues to run on the
+startup stack.
+    </P
+><P
+>When an interrupt occurs the default behaviour is to switch to a
+separate interrupt stack. This behaviour is controlled by the common
+HAL configuration option
+<CODE
+CLASS="VARNAME"
+>CYGIMP_HAL_COMMON_INTERRUPTS_USE_INTERRUPT_STACK</CODE
+>.
+It reduces the stack requirements of all threads in the system, at the
+cost of some extra instructions during interrupt handling. In kernel
+configurations the startup stack is no longer used once the scheduler
+starts running so its memory can be reused for the interrupt stack. To
+handle the possibility of nested interrupts the interrupt handling
+code will detect if it is already on the interrupt stack, so in
+non-kernel configurations it is also safe to use the same area of
+memory for both startup and interrupt stacks. This leads to the
+following scenarios:
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>If interrupt stacks are enabled via
+<CODE
+CLASS="VARNAME"
+>CYGIMP_HAL_COMMON_INTERRUPTS_USE_INTERRUPT_STACK</CODE
+>
+and the interrupt stack is not provided by the variant, processor or
+platform HAL then a single block of memory will be used for both
+startup and interrupt stacks. The size of this block is determined by
+the common HAL configuration option
+<CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_COMMON_INTERRUPTS_STACK_SIZE</CODE
+>, with a
+default value
+<CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_DEFAULT_INTERRUPT_STACK_SIZE</CODE
+> provided by
+the M68K architectural HAL.
+      </P
+></LI
+><LI
+><P
+>If the use of an interrupt stack is disabled then the M68K
+architectural HAL will provide just the startup stack, unless this is
+done by the variant, processor or platform HAL. The size of the
+startup stack is controlled by
+<CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_M68K_STARTUP_STACK_SIZE</CODE
+>.
+      </P
+></LI
+><LI
+><P
+>Otherwise the interrupt and/or startup stacks are provided by other
+packages and it is up to those packages to provide configuration
+options for setting the sizes.
+      </P
+></LI
+></OL
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-CONFIG-FPU"
+></A
+><H2
+>Floating Point Support</H2
+><P
+>There are many variants of the basic M68K architecture. Some of these
+have hardware floating point support. Originally this came in the form
+of a separate 68881 coprocessor, but with modern variants it will be
+part of the main processor chip. If the processor does not have
+hardware floating point then software emulation will be used instead.
+    </P
+><P
+>If the processor on the target hardware has a floating point unit then
+the variant or processor HAL will implement the CDL interface
+<CODE
+CLASS="VARNAME"
+>CYGINT_HAL_M68K_VARIANT_FPU</CODE
+>. This allows the
+architectural HAL and other packages to do the right thing on
+different hardware.
+    </P
+><P
+>Saving and restoring hardware floating point context increases
+interrupt and dispatch latency, code size, and data size. If the
+application does not actually use floating point then these overheads
+are unnecessary, and can be suppressed by disabling the configuration
+option <CODE
+CLASS="VARNAME"
+>CYGIMP_HAL_M68K_FPU_SAVE</CODE
+>. Some applications
+do use floating point but only in one thread. In that scenario it is
+also unnecessary to save the floating point context during interrupts
+and context switches, so the configuration option can be disabled.
+    </P
+><P
+>The exact behaviour of the hardware floating point unit is determined
+by the floating point control register <CODE
+CLASS="VARNAME"
+>%fpcr</CODE
+>. By
+default this is initialized to 0, giving IEE754 standard behaviour,
+but another initial value can be specified using the configuration
+option <CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_M68K_FPU_CR_DEFAULT</CODE
+>. For details
+of the various bits in this control register see appropriate hardware
+documentation. eCos assumes that the control register does not change
+on a per-thread basis and hence the register is not saved or restored
+during interrupt handling or a context switch.
+    </P
+><DIV
+CLASS="WARNING"
+><P
+></P
+><TABLE
+CLASS="WARNING"
+BORDER="1"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="CENTER"
+><B
+>Warning</B
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+><P
+>At the time of writing eCos has not run on an M68K processor with
+hardware floating point so the support for this is untested.
+      </P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-CONFIG-OTHER"
+></A
+><H2
+>Other Options</H2
+><P
+>There are configuration options to change the compiler flags used for
+building this packages. 
+The M68K architectural HAL package does not define any other
+configuration options that can be manipulated by the user. It does
+define a number of interfaces such as
+<CODE
+CLASS="VARNAME"
+>CYGINT_HAL_M68K_USE_STANDARD_PLATFORM_STUB_SUPPORT</CODE
+>
+which can be used by lower levels of the M68K HAL hierarchy to enable
+certain functionality within the architectural package. Usually these
+are of no interest to application developers.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="m68k.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="m68k-port.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Overview</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="hal-m68k-arch.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The HAL Port</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

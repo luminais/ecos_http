@@ -1,0 +1,702 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Setup</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="SuperH SH4-202 MicroDev Board Support"
+HREF="hal-sh4-microdev-part.html"><LINK
+REL="PREVIOUS"
+TITLE="Overview"
+HREF="sh4-microdev.html"><LINK
+REL="NEXT"
+TITLE="Configuration"
+HREF="sh4-microdev-config.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="sh4-microdev.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sh4-microdev-config.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SH4-MICRODEV-SETUP"
+></A
+>Setup</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN19657"
+></A
+><H2
+>Name</H2
+>Setup&nbsp;--&nbsp;Preparing the MicroDev board for eCos Development</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SH4-MICRODEV-SETUP-OVERVIEW"
+></A
+><H2
+>Overview</H2
+><P
+>In a typical development environment, the MicroDev board boots from
+flash into the RedBoot ROM monitor. eCos applications are configured
+for RAM startup and then downloaded and run on the board via the
+debugger sh-elf-gdb. Preparing the board therefore usually involves
+programming a suitable RedBoot image into flash memory. Alternatively
+RedBoot may be programmed into a PLCC EEPROM and inserted into socket U21,
+although in that case, the flash memory is not accessible.
+    </P
+><P
+>The following RedBoot configurations are supported:
+    </P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN19664"
+></A
+><TABLE
+BORDER="1"
+FRAME="border"
+RULES="all"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Configuration</TH
+><TH
+>Description</TH
+><TH
+>Use</TH
+><TH
+>File</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>ROM</TD
+><TD
+>RedBoot running from the board's flash</TD
+><TD
+>redboot_ROM.ecm</TD
+><TD
+>redboot_ROM.bin</TD
+></TR
+><TR
+><TD
+>EEPROM</TD
+><TD
+>RedBoot running from the board's socketed EEPROM</TD
+><TD
+>redboot_EEPROM.ecm</TD
+><TD
+>redboot_EEPROM.bin</TD
+></TR
+><TR
+><TD
+>RAM</TD
+><TD
+>Used for upgrading ROM version</TD
+><TD
+>redboot_RAM.ecm</TD
+><TD
+>redboot_RAM.bin</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+><P
+>For serial communications, all versions run with 8 bits, no parity, and
+1 stop bit at 38400 baud. This baud rate can be changed via the
+configuration option
+<CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_SH_SH4_SCIF_BAUD_RATE</CODE
+> and rebuilding
+RedBoot. RedBoot also supports ethernet communication and flash
+management.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SH4-MICRODEV-SETUP-FIRST"
+></A
+><H2
+>Initial Installation</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SH4-MICRODEV-FLASH"
+></A
+><H3
+>Flash Installation</H3
+><P
+>This process assumes that the board is connected to a SuperH Micro
+Probe. The Micro Probe should be set up as described in Appendix A of
+the "SH4 Development Tools User Guide". You should also have access to
+the SuperH development tools since it is necessary to use the version
+of GDB that comes with those tools to access the Micro Probe,
+<B
+CLASS="COMMAND"
+>sh-elf-gdb</B
+> will not work.
+    </P
+><P
+>Programming the RedBoot ROM monitor into flash memory requires an
+application that can manage flash blocks. RedBoot itself has this
+capability. Rather than have a separate application that is used only
+for flash management during the initial installation, a special
+RAM-resident version of RedBoot is loaded into memory and run. This
+version can then be used to load the normal flash-resident version of
+RedBoot and program it into the flash.
+    </P
+><P
+>The first step is to connect an RS232 null modem cable between the MicroDev
+serial port and the host PC. Next start a terminal emulation application such as
+HyperTerminal or minicom on the host PC and set the serial
+communication parameters to 38400 baud, 8 data bits, no parity, 1 stop
+bit (8N1) and no flow control (handshaking). 
+    </P
+><P
+>Now run the <B
+CLASS="COMMAND"
+>sh4gdb</B
+> command, giving it the name of
+the RAM redboot ELF file, connect to the Micro Probe, load the
+executable and run it. The entire session should look like this:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ <KBD
+CLASS="USERINPUT"
+>sh4gdb redboot_RAM.elf</KBD
+>
+GNU gdb 5.2.1
+Copyright 2002 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "--host=i686-pc-linux-gnu --target=sh-superh-elf"...
+(gdb) <KBD
+CLASS="USERINPUT"
+>sh4si superh</KBD
+>
+The target is assumed to be little endian
+The target architecture is assumed to be sh4
+0xa0000000 in ?? ()
+(gdb) <KBD
+CLASS="USERINPUT"
+>load</KBD
+>
+Loading section .vectors, size 0x9e0 lma 0x88010000
+Loading section .text, size 0x1ab20 lma 0x880109e0
+Loading section .rodata, size 0x3e6c lma 0x8802b500
+Loading section .data, size 0xf30 lma 0x8802f370
+Start address 0x88010000, load size 131740
+Transfer rate: 351306 bits/sec, 433 bytes/write.
+(gdb) <KBD
+CLASS="USERINPUT"
+>cont</KBD
+>
+Continuing.
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The required <TT
+CLASS="FILENAME"
+>redboot_RAM.elf</TT
+> file is normally
+supplied with the eCos release in the <TT
+CLASS="FILENAME"
+>loaders</TT
+> directory. If it needs to be
+rebuilt then instructions for this are supplied <A
+HREF="sh4-microdev-setup.html#SH4-MICRODEV-SETUP-REBUILD"
+>below</A
+>.
+    </P
+><P
+>If this sequence fails in any way then check the setup and connections
+of the Micro Probe. It if is successful then you should see the
+following printed out on the serial line:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>+FLASH configuration checksum error or invalid key
+... waiting for BOOTP information
+Ethernet eth0: MAC address 00:08:ee:00:0b:37                                   
+Can't get BOOTP info for device!
+                                                                                
+RedBoot(tm) bootstrap and debug environment [RAM]                               
+Non-certified release, version UNKNOWN - built 14:28:55, Sep  8 2003            
+                                                                                
+Copyright (C) 2000, 2001, 2002, Free Software Foundation, Inc.                                   
+                                                                                
+RAM: 0x88000000-0x8c000000, 0x8812cca0-0x8bfb1000 available                     
+FLASH: 0xa0000000 - 0xa2000000, 128 blocks of 0x00040000 bytes each.
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>If the ethernet cable is not plugged in there may be a fairly long
+wait after the "... waiting for BOOTP information" message.
+At this stage the RedBoot flash management initialization has not yet
+happened so the warning about the configuration checksum error is
+expected. To perform this initialization use the
+<B
+CLASS="COMMAND"
+>fis&nbsp;init&nbsp;-f</B
+> command:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&gt; <KBD
+CLASS="USERINPUT"
+>fis init -f</KBD
+>
+About to initialize [format] FLASH image system - continue (y/n)? <KBD
+CLASS="USERINPUT"
+>y</KBD
+>
+*** Initialize FLASH Image System                                               
+... Unlock from 0xa1fc0000-0xa2000000: .                                        
+... Erase from 0xa1fc0000-0xa2000000: .                                         
+... Program from 0x8bfbf000-0x8bfff000 at 0xa1fc0000: .                         
+... Lock from 0xa1fc0000-0xa2000000: .                                         
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>At the end, the block of flash at
+location 0xA1FC0000 holds information about the various flash blocks,
+allowing other flash management operations to be performed. The next
+step is to set up RedBoot's non-volatile configuration values:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&gt; <KBD
+CLASS="USERINPUT"
+>fconfig -i</KBD
+>
+Initialize non-volatile configuration - continue (y/n)? <KBD
+CLASS="USERINPUT"
+>y</KBD
+>
+Run script at boot: false                                                       
+Use BOOTP for network configuration: true                                       
+Console baud rate: 38400                                                        
+DNS server IP address:                                                          
+Set eth0 network hardware address [MAC]: false                                  
+GDB connection port: 9000                                                       
+Force console for special debug messages: false                                 
+Network debug at boot time: false                                               
+Update RedBoot non-volatile configuration - continue (y/n)? <KBD
+CLASS="USERINPUT"
+>y</KBD
+>
+... Unlock from 0xa1f80000-0xa1f81000: .                                        
+... Erase from 0xa1f80000-0xa1f81000: .                                         
+... Program from 0x8bfb2000-0x8bfb3000 at 0xa1f80000: .                         
+... Lock from 0xa1f80000-0xa1f81000: .
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>For most of these configuration variables, the default value is
+correct. If there is no suitable BOOTP service running on the local
+network then BOOTP should be disabled and, instead, RedBoot will prompt
+for a fixed IP address, netmask, and addresses for the local gateway
+and DNS server.
+    </P
+><P
+>It is now possible to load the flash-resident version of RedBoot.
+Because of the way that flash chips work, it is better to first load it
+into RAM and then program it into flash.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&gt; <KBD
+CLASS="USERINPUT"
+>load -r -m xmodem -b %{freememlo}</KBD
+>
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The file <TT
+CLASS="FILENAME"
+>redboot_ROM.bin</TT
+> should now be uploaded
+using the terminal emulator. The file is a raw binary and should be
+transferred using the X-modem protocol.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Raw file loaded 0x8812d000-0x8814e32f, assumed entry at 0x8812d000              
+xyzModem - CRC mode, 1064(SOH)/0(STX)/0(CAN) packets, 2 retries
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>Once RedBoot has been loaded into RAM it can be programmed into flash:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&gt; <KBD
+CLASS="USERINPUT"
+>fis create RedBoot -b %{freememlo}</KBD
+>
+An image named 'RedBoot' exists - continue (y/n)? <KBD
+CLASS="USERINPUT"
+>y</KBD
+>
+... Erase from 0xa0000000-0xa0040000: .                                         
+... Program from 0x8812d000-0x8816d000 at 0xa0000000: .                         
+... Unlock from 0xa1fc0000-0xa2000000: .                                        
+... Erase from 0xa1fc0000-0xa2000000: .                                         
+... Program from 0x8bfbf000-0x8bfff000 at 0xa1fc0000: .                         
+... Lock from 0xa1fc0000-0xa2000000: .                                          
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The flash-resident version of RedBoot has now been programmed at location
+0xA0000000, and the flash info block at 0xA1FC0000 has been updated.
+The initial setup is now complete. Power off the Micro Probe and reset
+the MicroDev board using S6. You should see the following:
+
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>+... waiting for BOOTP information                                     
+Ethernet eth0: MAC address 00:08:ee:00:0b:37                                    
+Can't get BOOTP info for device!                                                
+                                                                                
+RedBoot(tm) bootstrap and debug environment [ROM]                               
+Non-certified release, version UNKNOWN - built 14:22:57, Sep  8 2003            
+                                                                                
+Copyright (C) 2000, 2001, 2002, Free Software Foundation, Inc.                                   
+                                                                                
+RAM: 0x88000000-0x8c000000, 0x8800db98-0x8bfb1000 available                     
+FLASH: 0xa0000000 - 0xa2000000, 128 blocks of 0x00040000 bytes each.
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>When RedBoot issues its prompt, it is also ready to accept connections
+from sh-elf-gdb, allowing applications to be downloaded and
+debugged.
+    </P
+><P
+>Occasionally it may prove necessary to update the installed RedBoot
+image. This can be done simply by repeating the above process, using
+the Micro Probe. Alternatively, the existing
+RedBoot install can be used to load the RAM-resident version. You can
+even install the RAM resident RedBoot in the "RedBoot[backup]" flash
+region. See the RedBoot documentation for instruction on how to do this.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="SH4-MICRODEV-EEPROM"
+></A
+><H3
+>EEPROM Installation</H3
+><P
+>The board has a 32-pin PLCC socket suitable for an EEPROM, silk screened U21.
+To use RedBoot running from EEPROM, you must first program the file
+<TT
+CLASS="FILENAME"
+>redboot_EEPROM.bin</TT
+> (normally supplied with the eCos release
+in the <TT
+CLASS="FILENAME"
+>loaders</TT
+> directory) into the
+EEPROM using an appropriate programmer. No byte swapping is required. If RedBoot
+needs to be rebuilt, then instructions for this are supplied <A
+HREF="sh4-microdev-setup.html#SH4-MICRODEV-SETUP-REBUILD"
+>below</A
+>, and the import file
+<TT
+CLASS="FILENAME"
+>redboot_EEPROM.ecm</TT
+> should be used.
+      </P
+><P
+>To configure the board to boot from the EEPROM instead of flash, you must
+power off the board and change the following DIP switch settings, which may
+both be found on DIP switch 2 (silk screened S2): switch 2 (silk
+screened FEMI SIZ1) should be set to ON, which will change the access
+width for FEMI area 0 from 32-bit to 8-bit; switch 6 (silk screened
+FPGA SW3) should be set to OFF to configure the FPGA to map memory
+accesses for FEMI area 0 to point at the EEPROM instead of flash. In
+this mode, it is no longer possible to access flash memory as the EEPROM
+is mapped into the same area in the address space.
+      </P
+><P
+>Note that it is usually preferable to boot from flash instead of EEPROM as
+flash is accessed 32-bits at a time, whereas the EEPROM is accessed 8-bits
+at a time, which therefore affects performance as this requires 4 times as
+many read cycles.
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SH4-MICRODEV-SETUP-REBUILD"
+></A
+><H2
+>Rebuilding RedBoot</H2
+><P
+>Should it prove necessary to rebuild a RedBoot binary, this is done
+most conveniently at the command line. The steps needed to rebuild the
+RAM version of RedBoot are:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ mkdir redboot_ram
+$ cd redboot_ram
+$ ecosconfig new sh4_202_md redboot
+$ ecosconfig import $ECOS_REPOSITORY/hal/sh/sh4_202_md/v2_0_2/misc/redboot_RAM.ecm
+$ ecosconfig resolve
+$ ecosconfig tree
+$ make
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>At the end of the build the <TT
+CLASS="FILENAME"
+>install/bin</TT
+> subdirectory should contain
+the file <TT
+CLASS="FILENAME"
+>redboot.bin</TT
+>.
+    </P
+><P
+>Rebuilding the ROM versions involves basically the same
+process. The ROM version uses the file
+<TT
+CLASS="FILENAME"
+>redboot_ROM.ecm</TT
+> and generates a file
+<TT
+CLASS="FILENAME"
+>redboot.bin</TT
+>. Make sure you don't mix up the
+different redboot.bin files; rename them to something more memorable
+such as <TT
+CLASS="FILENAME"
+>redboot_RAM.bin</TT
+> and
+<TT
+CLASS="FILENAME"
+>redboot_ROM.bin</TT
+>.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="sh4-microdev.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sh4-microdev-config.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Overview</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="hal-sh4-microdev-part.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Configuration</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

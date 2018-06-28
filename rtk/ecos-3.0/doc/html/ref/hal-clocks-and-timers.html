@@ -1,0 +1,417 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Clocks and Timers</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="HAL Interfaces"
+HREF="hal-interfaces.html"><LINK
+REL="PREVIOUS"
+TITLE="Interrupt Handling"
+HREF="hal-interrupt-handling.html"><LINK
+REL="NEXT"
+TITLE="HAL I/O"
+HREF="hal-input-and-output.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="hal-interrupt-handling.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. HAL Interfaces</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="hal-input-and-output.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="HAL-CLOCKS-AND-TIMERS"
+>Clocks and Timers</A
+></H1
+><P
+>These interfaces contain definitions related to clock and timer
+handling. They include interfaces to initialize and read a clock for
+generating regular interrupts, definitions for setting the frequency of
+the clock, and support for short timed delays.</P
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN2833"
+>Clock Control</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>HAL_CLOCK_INITIALIZE( period )
+HAL_CLOCK_RESET( vector, period )
+HAL_CLOCK_READ( pvalue )</PRE
+></TD
+></TR
+></TABLE
+><P
+>These macros provide control over a clock or timer device that may be
+used by the kernel to provide time-out, delay and scheduling
+services. The clock is assumed to be implemented by some form of
+counter that is incremented or decremented by some external source and
+which raises an interrupt when it reaches a predetermined value.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>HAL_CLOCK_INITIALIZE()</CODE
+> initializes the timer
+device to interrupt at the given period. The period is essentially the
+value used to initialize the timer counter and must be calculated from
+the timer frequency and the desired interrupt rate. The timer device
+should generate an interrupt every <CODE
+CLASS="VARNAME"
+>period</CODE
+> cycles.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>HAL_CLOCK_RESET()</CODE
+> re-initializes the timer to
+provoke the next interrupt. This macro is only really necessary when
+the timer device needs to be reset in some way after each interrupt.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>HAL_CLOCK_READ()</CODE
+> reads the current value of the
+timer counter and puts the value in the location pointed to by
+<CODE
+CLASS="PARAMETER"
+>pvalue</CODE
+>. The value stored will always be the
+number of timer cycles since the last interrupt, and hence ranges
+between zero and the initial period value. If this is a count-down
+cyclic timer, some arithmetic may be necessary to generate this value.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN2845"
+>Microsecond Delay</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>HAL_DELAY_US(us)</PRE
+></TD
+></TR
+></TABLE
+><P
+>This macro provides a busy loop delay for the given number of
+microseconds. It is intended mainly for controlling hardware that
+needs short delays between operations. Code which needs longer delays,
+of the order of milliseconds, should instead use higher-level
+functions such as <CODE
+CLASS="FUNCTION"
+>cyg_thread_delay</CODE
+>. The macro
+implementation should be thread-safe. It can also be used in ISRs or
+DSRs, although such usage is undesirable because of the impact on
+interrupt and dispatch latency.</P
+><P
+>The macro should never delay for less than the specified amount of
+time. It may delay for somewhat longer, although since the macro uses
+a busy loop this is a waste of cpu cycles. Of course the code invoking
+<CODE
+CLASS="FUNCTION"
+>HAL_DELAY_US</CODE
+> may get interrupted or timesliced,
+in which case the delay may be much longer than intended. If this is
+unacceptable then the calling code must take preventative action
+such as disabling interrupts or locking the scheduler.</P
+><P
+>There are three main ways of implementating the macro:</P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>a counting loop, typically written in inline assembler, using an outer
+loop for the microseconds and an inner loop that consumes
+approximately 1us. This implementation is automatically thread-safe
+and does not impose any dependencies on the rest of the system, for
+example it does not depend on the system clock having been started.
+However it assumes that the cpu clock speed is known at compile-time
+or can be easily determined at run-time.
+  </P
+></LI
+><LI
+><P
+>monitor one of the hardware clocks, usually the system clock. Usually
+this clock ticks at a rate independent of the cpu so calibration is
+easier. However the implementation relies on the system clock having
+been started, and assumes that no other code is manipulating the clock
+hardware. There can also be complications when the system clock wraps
+around.
+  </P
+></LI
+><LI
+><P
+>a combination of the previous two. The system clock is used during
+system initialization to determine the cpu clock speed, and the result
+is then used to calibrate a counting loop. This has the disadvantage
+of significantly increasing the system startup time, which may be
+unacceptable to some applications. There are also complications if the
+system startup code normally runs with the cache disabled because the
+instruction cache will greatly affect any calibration loop.
+  </P
+></LI
+></OL
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN2860"
+>Clock Frequency Definition</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYGNUM_HAL_RTC_NUMERATOR
+CYGNUM_HAL_RTC_DENOMINATOR
+CYGNUM_HAL_RTC_PERIOD</PRE
+></TD
+></TR
+></TABLE
+><P
+>These macros are defined in the CDL for each platform and supply the
+necessary parameters to specify the frequency at which the clock
+interrupts. These parameters are usually found in the CDL definitions
+for the target platform, or in some cases the CPU variant.</P
+><P
+><TT
+CLASS="LITERAL"
+>CYGNUM_HAL_RTC_NUMERATOR</TT
+> and
+<TT
+CLASS="LITERAL"
+>CYGNUM_HAL_RTC_DENOMINATOR</TT
+> specify the resolution
+of the clock interrupt.  This resolution involves two separate values,
+the numerator and the denominator. The result of dividing the
+numerator by the denominator should correspond to the number of
+nanoseconds between clock interrupts. For example a numerator of
+1000000000 and a denominator of 100 means that there are 10000000
+nanoseconds (or 10 milliseconds) between clock interrupts. Expressing
+the resolution as a fraction minimizes clock drift even for
+frequencies that cannot be expressed as a simple integer. For example
+a frequency of 60Hz corresponds to a clock resolution of
+16666666.66...  nanoseconds. This can be expressed accurately as
+1000000000 over 60.</P
+><P
+><TT
+CLASS="LITERAL"
+>CYGNUM_HAL_RTC_PERIOD</TT
+> specifies the exact value
+used to initialize the clock hardware, it is the value passed as a
+parameter to <TT
+CLASS="LITERAL"
+>HAL_CLOCK_INITIALIZE()</TT
+> and
+<TT
+CLASS="LITERAL"
+>HAL_CLOCK_RESET()</TT
+>. The exact meaning of the value
+and the range of legal values therefore depends on the target
+hardware, and the hardware documentation should be consulted for
+further details.</P
+><P
+>The default values for these macros in all HALs are calculated to give
+a clock interrupt frequency of 100Hz, or 10ms between interrupts. To
+change the clock frequency, the period needs to be changed, and the
+resolution needs to be adjusted accordingly. As an example consider
+the i386 PC target. The default values for these macros are:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYGNUM_HAL_RTC_NUMERATOR     1000000000
+CYGNUM_HAL_RTC_DENOMINATOR   100
+CYGNUM_HAL_RTC_PERIOD        11932</PRE
+></TD
+></TR
+></TABLE
+><P
+>To change to, say, a 200Hz clock the period needs to be halved to
+5966, and to compensate the denominator needs to be doubled to 200. To
+change to a 1KHz interrupt rate change the period to 1193 and the
+denominator to 1000.</P
+><P
+>Some HALs make this process a little easier by deriving the period
+arithmetically from the denominator. This calculation may also involve
+the CPU clock frequency and possibly other factors. For example in the
+ARM AT91 variant HAL the period is defined by the following
+expression:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>((CYGNUM_HAL_ARM_AT91_CLOCK_SPEED/32) / CYGNUM_HAL_RTC_DENOMINATOR)</PRE
+></TD
+></TR
+></TABLE
+><P
+>In this case it is not necessary to change the period at all, just
+change the denominator to select the desired clock frequency. However,
+note that for certain choices of frequency, rounding errors in this
+calculation may result in a small clock drift over time. This is
+usually negligible, but if perfect accuracy is required, it may be
+necessary to adjust the frequency or period by hand.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="hal-interrupt-handling.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="hal-input-and-output.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Interrupt Handling</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="hal-interfaces.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>HAL I/O</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

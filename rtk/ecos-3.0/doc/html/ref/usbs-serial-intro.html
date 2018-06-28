@@ -1,0 +1,204 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Introduction</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="eCos Support for USB Serial like Peripherals"
+HREF="io-usb-slave-serial.html"><LINK
+REL="PREVIOUS"
+TITLE="eCos Support for USB Serial like Peripherals"
+HREF="io-usb-slave-serial.html"><LINK
+REL="NEXT"
+TITLE="Configuration"
+HREF="usbs-serial-config.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-usb-slave-serial.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="usbs-serial-config.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="USBS-SERIAL-INTRO"
+></A
+>Introduction</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN17566"
+></A
+><H2
+>Name</H2
+>Introduction&nbsp;--&nbsp;        eCos support for USB Serial like Peripherals
+      </DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN17569"
+></A
+><H2
+>Introduction</H2
+><P
+>        The eCos USB-Serial package provides additional support for
+        USB peripherals that look like a serial port to the
+        host. These can follow the ACM communication device
+        specification or simpler devices which just have two bulk
+        endpoints. Microsoft Windows requires ACM mode. Linux should
+        operate with both modes, however ACM may cause problems since
+        the eCos driver does not implement all the class descriptors,
+        so generic mode is recommended.
+      </P
+><P
+>        The USB-Serial package is not tied to any specific
+        hardware. It requires the presence of USB hardware on the
+        target and a suitable device driver to make endpoints
+        available for this code to use.  The configuration system
+        cannot load the eCos package automatically for specific
+        targets, in the way that a USB device driver or an ethernet
+        driver can be loaded automatically. Instead, the package has
+        to be added explicitly. When using the command line tools this
+        will involve an operation like the following:
+      </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>        $ ecosconfig add usbs_serial
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>        Typically, this will automatically cause the USB device driver
+        to become active. 
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-usb-slave-serial.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="usbs-serial-config.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>eCos Support for USB Serial like Peripherals</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-usb-slave-serial.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Configuration</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

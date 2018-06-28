@@ -1,0 +1,257 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Strata-Specific Functions</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Intel Strata Flash Device Driver"
+HREF="devs-flash-strata.html"><LINK
+REL="PREVIOUS"
+TITLE="Instantiating a Strata Device"
+HREF="strata-instance.html"><LINK
+REL="NEXT"
+TITLE="Motorola MCF52xx ColdFire I2C Bus Driver"
+HREF="devs-i2c-m68k-mcf52xx-part.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="strata-instance.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="devs-i2c-m68k-mcf52xx-part.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="STRATA-API-OTHER"
+></A
+>Strata-Specific Functions</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN21277"
+></A
+><H2
+>Name</H2
+>Strata&nbsp;--&nbsp;driver-specific functions</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN21280"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN21281"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/io/strata_dev.h&gt;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_strata_read_devid_XX</CODE
+>(struct cyg_flash_dev* device, cyg_uint32* manufacturer, cyg_uint32* device);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_strata_unlock_all_j3_XX</CODE
+>(struct cyg_flash_dev* device);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="STRATA-API-OTHER-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>The driver provides two sets of functions specific to Strata devices
+and not accessible via the standard eCos flash API. Both may be used
+safely before the flash subsystem is initialized using
+<CODE
+CLASS="FUNCTION"
+>cyg_flash_init</CODE
+>. 
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_strata_read_devid_XX</CODE
+> can be used to get the
+manufacturer and device codes. Typically it is called from a
+platform-specific driver initialization routine, allowing the platform
+HAL to adapt to the actual device present on the board. This may be
+useful if a board may get manufactured with several different and
+somewhat incompatible chips, although usually
+<CODE
+CLASS="FUNCTION"
+>cyg_strata_init_cfi</CODE
+> is the better approach. It
+may also be used during testing and porting to check that the chip is
+working correctly.
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_strata_unlock_all_j3_XX</CODE
+> is only useful with
+28FxxxJ3 chips and compatibles. These do not allow individual blocks
+to be unlocked. Hence the standard block unlock functionality is
+expensive: it requires checking the locked state of every block,
+unlocking every block, and then relocking all the blocks that should
+still be blocked. Worse, unlocking every block is a time-consuming
+operation, taking approximately a second, that needs to run with
+interrupts disabled. For many applications it is better to just ignore
+the chip's locking capabilities and run with all blocks permanently
+unlocked. Invoking <CODE
+CLASS="FUNCTION"
+>cyg_strata_unlock_all_j3_XX</CODE
+>
+during manufacture or when the board is commissioned achieves this.
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="strata-instance.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="devs-i2c-m68k-mcf52xx-part.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Instantiating a Strata Device</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="devs-flash-strata.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Motorola MCF52xx ColdFire I<SUP
+>2</SUP
+>C Bus Driver</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,169 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Inclusion of bridge code</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="OpenBSD TCP/IP stack port"
+HREF="tcpip-openbsd-stack-port.html"><LINK
+REL="PREVIOUS"
+TITLE="Building the Network Stack"
+HREF="tcpip-openbsd-building-the-network-stack.html"><LINK
+REL="NEXT"
+TITLE="APIs"
+HREF="tcpip-openbsd-tcpip-apis.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="tcpip-openbsd-building-the-network-stack.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 47. OpenBSD TCP/IP stack port</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="tcpip-openbsd-tcpip-apis.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TCPIP-OPENBSD-BUILDING-THE-BRIDGE-CODE"
+>Inclusion of bridge code</A
+></H1
+><P
+>The OpenBSD stack does not by default result in the inclusion of
+the bridge code. To include bridging functionality the CDL option
+CYGPKG_NET_BRIDGE must be enable . It is also possible to enable more
+than one concurrent bridge. The number of bridges active in a device
+is configured by the CDL option CYGNUM_NET_BRIDGES, which has a
+default value of 1.</P
+><P
+>The default behavior of a bridge is to operate without the
+spanning tree protocol. When devices are operated in this default mode
+it must be ensured the network topology is loop-free. Any loops will
+cause broadcast storms and general mayhem on the network.  Including
+spanning tree code during the build process will allow the bridge to
+communicate with other bridges. They can then detect such loops and by
+disabling selected interfaces break the loop. To enable spanning tree enable
+the CDL option CYGPKG_NET_BRIDGE_STP_CODE.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tcpip-openbsd-building-the-network-stack.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tcpip-openbsd-tcpip-apis.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Building the Network Stack</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tcpip-openbsd-stack-port.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>APIs</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

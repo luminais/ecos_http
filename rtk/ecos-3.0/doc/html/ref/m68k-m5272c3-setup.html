@@ -1,0 +1,664 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Setup</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Freescale M5272C3 Board Support"
+HREF="hal-m68k-m5272c3-part.html"><LINK
+REL="PREVIOUS"
+TITLE="Overview"
+HREF="m68k-m5272c3.html"><LINK
+REL="NEXT"
+TITLE="Configuration"
+HREF="m68k-m5272c3-config.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="m68k-m5272c3.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="m68k-m5272c3-config.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="M68K-M5272C3-SETUP"
+></A
+>Setup</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN19404"
+></A
+><H2
+>Name</H2
+>Setup&nbsp;--&nbsp;Preparing the M5272C3 board for eCos Development</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-SETUP-OVERVIEW"
+></A
+><H2
+>Overview</H2
+><P
+>In a typical development environment the M5272C3 board boots from
+flash into the RedBoot ROM monitor. eCos applications are configured
+for a RAM startup, and then downloaded and run on the board via the
+debugger m68k-elf-gdb. Preparing the board therefore involves
+programming a suitable RedBoot image into flash memory.
+    </P
+><P
+>The following RedBoot configurations are supported:
+    </P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN19411"
+></A
+><TABLE
+BORDER="1"
+FRAME="border"
+RULES="all"
+CLASS="CALSTABLE"
+><COL><COL><COL><COL><THEAD
+><TR
+><TH
+>Configuration</TH
+><TH
+>Description</TH
+><TH
+>Use</TH
+><TH
+>File</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>ROM</TD
+><TD
+>RedBoot running from the board's flash</TD
+><TD
+>redboot_ROM.ecm</TD
+><TD
+>redboot_rom.bin</TD
+></TR
+><TR
+><TD
+>dBUG</TD
+><TD
+>Used for initial setup</TD
+><TD
+>redboot_DBUG.ecm</TD
+><TD
+>redboot_dbug.srec</TD
+></TR
+><TR
+><TD
+>RAM</TD
+><TD
+>Used for upgrading ROM version</TD
+><TD
+>redboot_RAM.ecm</TD
+><TD
+>redboot_ram.bin</TD
+></TR
+><TR
+><TD
+>ROMFFE</TD
+><TD
+>RedBoot running from the board's flash at 0xFFE00000</TD
+><TD
+>redboot_ROMFFE.ecm</TD
+><TD
+>redboot_romffe.bin</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+><P
+>For serial communications all versions run with 8 bits, no parity, and
+1 stop bit. The dBUG version runs at 19200 baud. The ROM and RAM
+versions run at 38400 baud. These baud rates can be changed via the
+configuration option
+<CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_M68K_MCFxxxx_DIAGNOSTICS_BAUD</CODE
+> and
+rebuilding RedBoot. By default RedBoot will use the board's terminal
+port, corresponding to uart0, but this can also be changed via the
+configuration option
+<CODE
+CLASS="VARNAME"
+>CYGHWR_HAL_M68K_MCFxxxx_DIAGNOSTICS_PORT</CODE
+>. On an
+M5272C3 platform RedBoot also supports ethernet communication and
+flash management.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-SETUP-FIRST"
+></A
+><H2
+>Initial Installation</H2
+><P
+>This process assumes that the board still has its original dBUG ROM
+monitor and does not require any special debug hardware. It leaves the
+existing ROM monitor in place, allowing the setup process to be
+repeated just in case that should ever prove necessary.
+    </P
+><P
+>Programming the RedBoot rom monitor into flash memory requires an
+application that can manage flash blocks. RedBoot itself has this
+capability. Rather than have a separate application that is used only
+for flash management during the initial installation, a special
+RAM-resident version of RedBoot is loaded into memory and run. This
+version can then be used to load the normal flash-resident version of
+RedBoot and program it into the flash.
+    </P
+><P
+>The first step is to connect an RS232 cable between the M5272C3
+terminal port and the host PC. A suitable cable is supplied with the
+board. Next start a terminal emulation application such as
+HyperTerminal or minicom on the host PC and set the serial
+communication parameters to 19200 baud, 8 data bits, no parity, 1 stop
+bit (8N1) and no flow control (handshaking). Make sure that the jumper
+next to the flash chip is set for bootstrap from the bottom of flash,
+location 0xFFE00000. The details of this jumper depend on the revision
+of the board, so the supplied board documentation should be consulted
+for more details. Apply power to the board and you should see a
+<SAMP
+CLASS="PROMPT"
+>dBUG&gt;</SAMP
+> prompt.
+    </P
+><P
+>Once dBUG is up and running the RAM-resident version of RedBoot can be
+downloaded: 
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>dBUG&gt; dl
+Escape to local host and send S-records now...
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The required S-records file is <TT
+CLASS="FILENAME"
+>redboot_dbug.srec</TT
+>,
+which is normally supplied with the eCos release in the <TT
+CLASS="FILENAME"
+>loaders</TT
+> directory. If it needs to be
+rebuilt then instructions for this are supplied <A
+HREF="m68k-m5272c3-setup.html#M68K-M5272C3-SETUP-REBUILD"
+>below</A
+>. The file should be
+sent to the target as raw text using the terminal emulator:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>S-record download successful!
+dBUG&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>It is now possible to run the RAM-resident version of RedBoot:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>dBUG&gt; go 0x20000
++FLASH configuration checksum error or invalid key
+Ethernet eth0: MAC address 00:00:00:00:00:03
+Can't get BOOTP info for device!
+
+RedBoot(tm) bootstrap and debug environment [DBUG]
+Non-certified release, version v2_0_1 - built 09:55:34, Jun 24 2003
+
+Platform: M5272C3 (Freescale MCF5272)
+Copyright (C) 2000, 2001, 2002, Free Software Foundation, Inc.
+
+RAM: 0x00000000-0x00400000, 0x0003f478-0x003bd000 available
+FLASH: 0xffe00000 - 0x00000000, 8 blocks of 0x00040000 bytes each.
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>At this stage the RedBoot flash management initialization has not yet
+happened so the warning about the configuration checksum error is
+expected. To perform this initialization use the
+<B
+CLASS="COMMAND"
+>fis&nbsp;init&nbsp;-f</B
+> command:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&gt; fis init -f
+About to initialize [format] FLASH image system - continue (y/n)? y
+*** Initialize FLASH Image System
+... Erase from 0xfff40000-0xfffc0000: ..
+... Erase from 0x00000000-0x00000000:
+... Erase from 0xfffc0000-0xffffffff: .
+... Program from 0x003bf000-0x003ff000 at 0xfffc0000: .
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The flash chip on the M5272C3 board is slow at erasing flash blocks so
+this operation can take some time. At the end the block of flash at
+location 0xFFFC0000 holds information about the various flash blocks,
+allowing other flash management operations to be performed. The next
+step is to set up RedBoot's non-volatile configuration values:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&gt; fconfig -i
+Initialize non-volatile configuration - continue (y/n)? y
+Run script at boot: false
+Use BOOTP for network configuration: true
+DNS server IP address:
+GDB connection port: 9000
+Force console for special debug messages: false
+Network hardware address [MAC]: 0x00:0x00:0x00:0x00:0x00:0x03
+Network debug at boot time: false
+Update RedBoot non-volatile configuration - continue (y/n)? y
+... Erase from 0xfffc0000-0xffffffff: .
+... Program from 0x003bf000-0x003ff000 at 0xfffc0000: .
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>For most of these configuration variables the default value is
+correct. If there is no suitable BOOTP service running on the local
+network then BOOTP should be disabled, and instead RedBoot will prompt
+for a fixed IP address, netmask, and addresses for the local gateway
+and DNS server. The other exception is the network hardware address,
+also known as MAC address. All boards should be given a unique MAC
+address, not the one in the above example. If there are two boards on
+the same network trying to use the same MAC address then the resulting
+behaviour is undefined.
+    </P
+><P
+>It is now possible to load the flash-resident version of RedBoot.
+Because of the way that flash chips work it is better to first load it
+into RAM and then program it into flash.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&gt; load -r -m ymodem -b %{freememlo}
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The file <TT
+CLASS="FILENAME"
+>redboot_rom.bin</TT
+> should now be uploaded
+using the terminal emulator. The file is a raw binary and should be
+transferred using the Y-modem protocol.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Raw file loaded 0x0003f800-0x000545a3, assumed entry at 0x0003f800
+xyzModem - CRC mode, 2(SOH)/84(STX)/0(CAN) packets, 5 retries
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>Once RedBoot has been loaded into RAM it can be programmed into flash:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>RedBoot&gt; fis create RedBoot -b %{freememlo}
+An image named 'RedBoot' exists - continue (y/n)? y
+... Erase from 0xfff00000-0xfff40000: .
+... Program from 0x0003f800-0x0007f800 at 0xfff00000: .
+... Erase from 0xfffc0000-0xffffffff: .
+... Program from 0x003bf000-0x003ff000 at 0xfffc0000: .
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The flash-resident version of RedBoot has now programmed at location
+0xFFF00000, and the flash info block at 0xFFFC0000 has been updated.
+The initial setup is now complete. Power off the board and set the
+flash jumper to boot from location 0xFFF00000 instead of 0xFFE00000.
+Also set the terminal emulator to run at 38400 baud (the usual baud
+rate for RedBoot), and power up the board again.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>+Ethernet eth0: MAC address 00:00:00:00:00:03
+Can't get BOOTP info for device!
+
+RedBoot(tm) bootstrap and debug environment [ROM]
+Non-certified release, version v2_0_1 - built 09:57:50, Jun 24 2003
+
+Platform: M5272C3 (Freescale MCF5272)
+Copyright (C) 2000, 2001, 2002, Free Software Foundation, Inc.
+
+RAM: 0x00000000-0x00400000, 0x0000b400-0x003bd000 available
+FLASH: 0xffe00000 - 0x00000000, 8 blocks of 0x00040000 bytes each.
+RedBoot&gt;
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>When RedBoot issues its prompt it is also ready to accept connections
+from m68k-elf-gdb, allowing eCos applications to be downloaded and
+debugged.
+    </P
+><P
+>Occasionally it may prove necessary to update the installed RedBoot
+image. This can be done simply by repeating the above process, using
+dBUG to load the dBUG version of RedBoot
+<TT
+CLASS="FILENAME"
+>redboot_dbug.srec</TT
+>. Alternatively the existing
+RedBoot install can be used to load a RAM-resident version,
+<TT
+CLASS="FILENAME"
+>redboot_ram.bin</TT
+>.
+    </P
+><P
+>The ROMFFE version of RedBoot can be installed at location 0xFFE00000,
+replacing dBUG. This may be useful if the system needs more flash
+blocks than are available with the usual ROM RedBoot. Installing this
+RedBoot image will typically involve a BDM-based utility.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-SETUP-REBUILD"
+></A
+><H2
+>Rebuilding RedBoot</H2
+><P
+>Should it prove necessary to rebuild a RedBoot binary, this is done
+most conveniently at the command line. The steps needed to rebuild the
+dBUG version of RedBoot are:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ mkdir redboot_dbug
+$ cd redboot_dbug
+$ ecosconfig new m5272c3 redboot
+$ ecosconfig import $ECOS_REPOSITORY/hal/m68k/mcf52xx/mcf5272/m5272c3/v2_0_1/misc/redboot_DBUG.ecm
+$ ecosconfig resolve
+$ ecosconfig tree
+$ make
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>At the end of the build the <TT
+CLASS="FILENAME"
+>install/bin</TT
+> subdirectory should contain
+the required file <TT
+CLASS="FILENAME"
+>redboot_dbug.srec</TT
+>.
+    </P
+><P
+>Rebuilding the RAM and ROM versions involves basically the same
+process. The RAM version uses the file
+<TT
+CLASS="FILENAME"
+>redboot_RAM.ecm</TT
+> and generates a file
+<TT
+CLASS="FILENAME"
+>redboot_ram.bin</TT
+>. The ROM version uses the file
+<TT
+CLASS="FILENAME"
+>redboot_ROM.ecm</TT
+> and generates a file
+<TT
+CLASS="FILENAME"
+>redboot_rom.bin</TT
+>. 
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-BDM"
+></A
+><H2
+>BDM</H2
+><P
+>An alternative to debugging an application on top of Redboot is to use
+a BDM hardware debug solution. On the eCos side this requires building
+the configuration for RAM startup and
+with <CODE
+CLASS="VARNAME"
+>CYGSEM_HAL_USE_ROM_MONITOR</CODE
+> disabled. Note that
+a RAM build of RedBoot automatically has the latter configuration
+option disabled, so it is possible to run a RAM RedBoot via BDM and
+bypass the dBUG stages of the installation process.
+    </P
+><P
+>On the host-side the details depend on exactly which BDM solution is
+in use. Typically it will be necessary to initialize the hardware
+prior to downloading the eCos application, either via a configuration
+file or by using gdb macros. The
+file <TT
+CLASS="FILENAME"
+>misc/bdm.gdb</TT
+> in the platform HAL defines
+example gdb macros.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="m68k-m5272c3.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="m68k-m5272c3-config.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Overview</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="hal-m68k-m5272c3-part.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Configuration</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,690 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Task Management Functions</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="µITRON API"
+HREF="compat-uitron-microitron-api.html"><LINK
+REL="PREVIOUS"
+TITLE="µITRON and eCos"
+HREF="compat-uitron-over-ecos.html"><LINK
+REL="NEXT"
+TITLE="Task-Dependent Synchronization Functions"
+HREF="compat-uitron-task-dependent-synch-functions.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="compat-uitron-over-ecos.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 36. &micro;ITRON API</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="compat-uitron-task-dependent-synch-functions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="COMPAT-UITRON-TASK-MANAGEMENT-FUNCTIONS"
+>Task Management Functions</A
+></H1
+><P
+>The following functions are fully supported in this release: </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>sta_tsk</CODE
+>( 
+  ID <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>tskid,</I
+></SPAN
+>
+  INT <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>stacd</I
+></SPAN
+> )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void <CODE
+CLASS="FUNCTION"
+>ext_tsk</CODE
+>( void )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void <CODE
+CLASS="FUNCTION"
+>exd_tsk</CODE
+>( void )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>dis_dsp</CODE
+>( void )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>ena_dsp</CODE
+>( void )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>chg_pri</CODE
+>( 
+  ID <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>tskid,</I
+></SPAN
+>
+  PRI <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>tskpri</I
+></SPAN
+> )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>rot_rdq</CODE
+>( 
+  PRI <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>tskpri</I
+></SPAN
+> )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>get_tid</CODE
+>( 
+  ID *<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>p_tskid</I
+></SPAN
+> )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>ref_tsk</CODE
+>( 
+  T_RTSK *<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>pk_rtsk,</I
+></SPAN
+>
+  ID <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>tskid</I
+></SPAN
+> )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>ter_tsk</CODE
+>( 
+  ID <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>tskid</I
+></SPAN
+> )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>rel_wai</CODE
+>( 
+  ID <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>tskid</I
+></SPAN
+> )</PRE
+></TD
+></TR
+></TABLE
+><P
+>The following two functions are supported in this release,
+when enabled with the configuration option 
+<TT
+CLASS="LITERAL"
+>CYGPKG_UITRON_TASKS_CREATE_DELETE</TT
+>
+with some restrictions:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>cre_tsk</CODE
+>( 
+  ID <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>tskid,</I
+></SPAN
+>
+  T_CTSK *<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>pk_ctsk</I
+></SPAN
+> )</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ER <CODE
+CLASS="FUNCTION"
+>del_tsk</CODE
+>( 
+  ID <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>tskid</I
+></SPAN
+> )</PRE
+></TD
+></TR
+></TABLE
+><P
+>These functions are restricted as follows:</P
+><P
+>Because of the static initialization facilities provided for
+system objects, a task is allocated stack space statically in the
+configuration. So while tasks can be created and deleted, the same
+stack space is used for that task (task ID number) each time. Thus
+the stack size (pk_ctsk-&gt;stksz) requested in <CODE
+CLASS="FUNCTION"
+>cre_tsk()</CODE
+> is
+checked for being less than that which was statically allocated,
+and otherwise ignored. This ensures that the new task will have
+enough stack to run. For this reason <CODE
+CLASS="FUNCTION"
+>del_tsk()</CODE
+> does
+not in any sense free the memory that was in use for the task's
+stack. </P
+><P
+>The task attributes (pk_ctsk-&gt;tskatr) are
+ignored; current versions of <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>eCos</I
+></SPAN
+> do not need
+to know whether a task is written in assembler or C/C&#0043;&#0043; so
+long as the procedure call standard appropriate to the CPU is followed.</P
+><P
+>Extended information (pk_ctsk-&gt;exinf) is
+	  ignored.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN11882"
+>Error checking</A
+></H2
+><P
+>For all these calls, an invalid task id (tskid) (less than
+1 or greater than the number of configured tasks) only returns E_ID
+when bad params return errors (
+<TT
+CLASS="LITERAL"
+>CYGSEM_UITRON_BAD_PARAMS_RETURN_ERRORS</TT
+>
+is enabled, see above).</P
+><P
+>Similarly, the following conditions are only checked for,
+and only return errors if 
+<TT
+CLASS="LITERAL"
+>CYGSEM_UITRON_BAD_PARAMS_RETURN_ERRORS</TT
+>
+is enabled:</P
+><P
+></P
+><UL
+><LI
+><P
+>pk_crtk in 
+<CODE
+CLASS="FUNCTION"
+>cre_tsk()</CODE
+>
+ is a valid pointer, otherwise return E_PAR</P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>ter_tsk()</CODE
+>
+ or 
+<CODE
+CLASS="FUNCTION"
+>rel_wai()</CODE
+>
+ on the calling task returns E_OBJ</P
+></LI
+><LI
+><P
+>the CPU is not locked already in 
+<CODE
+CLASS="FUNCTION"
+>dis_dsp()</CODE
+>
+ and 
+<CODE
+CLASS="FUNCTION"
+>ena_dsp()</CODE
+>
+; returns E_CTX</P
+></LI
+><LI
+><P
+>priority level in 
+<CODE
+CLASS="FUNCTION"
+>chg_pri()</CODE
+>
+ and 
+<CODE
+CLASS="FUNCTION"
+>rot_rdq()</CODE
+>
+ is checked for validity, E_PAR</P
+></LI
+><LI
+><P
+>return value pointer in 
+<CODE
+CLASS="FUNCTION"
+>get_tid()</CODE
+>
+ and 
+<CODE
+CLASS="FUNCTION"
+>ref_tsk()</CODE
+>
+ is a valid pointer, or E_PAR</P
+></LI
+></UL
+><P
+>The following conditions are checked for, and return
+	    error codes if appropriate, regardless of the setting of
+<TT
+CLASS="LITERAL"
+>CYGSEM_UITRON_BAD_PARAMS_RETURN_ERRORS</TT
+>
+:</P
+><P
+></P
+><UL
+><LI
+><P
+>When create and delete functions 
+<CODE
+CLASS="FUNCTION"
+>cre_tsk()</CODE
+>
+ and 
+<CODE
+CLASS="FUNCTION"
+>del_tsk()</CODE
+>
+ are supported, all calls which use a valid task ID number check
+that the task exists; if not, E_NOEXS is returned</P
+></LI
+><LI
+><P
+>When supported, 
+<CODE
+CLASS="FUNCTION"
+>cre_tsk()</CODE
+>
+: the task must not already exist; otherwise E_OBJ</P
+></LI
+><LI
+><P
+>When supported, 
+<CODE
+CLASS="FUNCTION"
+>cre_tsk()</CODE
+>
+: the requested stack size must not be larger than that statically
+configured for the task; see the configuration options
+&#8220;Static initializers&#8221;, and &#8220;Default stack size&#8221;.
+Else E_NOMEM</P
+></LI
+><LI
+><P
+>When supported, 
+<CODE
+CLASS="FUNCTION"
+>del_tsk()</CODE
+>
+: the underlying 
+<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>eCos</I
+></SPAN
+>
+ thread must not be running - this would imply either a bug or some
+program bypassing the 
+&micro;ITRON compatibility layer and manipulating the thread directly.
+E_OBJ</P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>sta_tsk()</CODE
+>
+: the task must be dormant, else E_OBJ</P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>ter_tsk()</CODE
+>
+: the task must not be dormant, else E_OBJ</P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>chg_pri()</CODE
+>
+: the task must not be dormant, else E_OBJ</P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>rel_wai()</CODE
+>
+: the task must be in 
+<CODE
+CLASS="VARNAME"
+>WAIT</CODE
+> or <CODE
+CLASS="VARNAME"
+>WAIT-SUSPEND</CODE
+>
+ state, else E_OBJ</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="compat-uitron-over-ecos.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="compat-uitron-task-dependent-synch-functions.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&micro;ITRON and <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>eCos</I
+></SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="compat-uitron-microitron-api.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Task-Dependent Synchronization Functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
