@@ -1,0 +1,1456 @@
+# ====================================================================
+#
+#      819x_wlan_drivers.cdl
+#
+#      wlan drivers - support for RealTek 819x wlan controller
+#
+# ====================================================================
+## ####ECOSGPLCOPYRIGHTBEGIN####                                            
+## -------------------------------------------                              
+## This file is part of eCos, the Embedded Configurable Operating System.   
+## Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+##
+## eCos is free software; you can redistribute it and/or modify it under    
+## the terms of the GNU General Public License as published by the Free     
+## Software Foundation; either version 2 or (at your option) any later      
+## version.                                                                 
+##
+## eCos is distributed in the hope that it will be useful, but WITHOUT      
+## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or    
+## FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License    
+## for more details.                                                        
+##
+## You should have received a copy of the GNU General Public License        
+## along with eCos; if not, write to the Free Software Foundation, Inc.,    
+## 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.            
+##
+## As a special exception, if other files instantiate templates or use      
+## macros or inline functions from this file, or you compile this file      
+## and link it with other works to produce a work based on this file,       
+## this file does not by itself cause the resulting work to be covered by   
+## the GNU General Public License. However the source code for this file    
+## must still be made available in accordance with section (3) of the GNU   
+## General Public License v2.                                               
+##
+## This exception does not invalidate any other reasons why a work based    
+## on this file might be covered by the GNU General Public License.         
+## -------------------------------------------                              
+## ####ECOSGPLCOPYRIGHTEND####                                              
+# ====================================================================
+######DESCRIPTIONBEGIN####
+#
+# Author(s):      David Hsu
+# Contributors:
+# Date:           2010-4-1
+#
+#####DESCRIPTIONEND####
+#
+# ====================================================================
+
+cdl_package RTLPKG_DEVS_ETH_RLTK_819X_WLAN {
+    display       "RealTek 819x wlan driver"
+    description   "Wireless lan driver for RTL819x."
+
+    parent        CYGPKG_IO_ETH_DRIVERS
+    active_if	  CYGPKG_IO_ETH_DRIVERS
+    #active_if     CYGPKG_HAL_MIPS_RLX
+    
+    include_dir   cyg/io/eth/rltk/819x/wlan
+    
+    # FIXME: This really belongs in the RealTek_819x package ?
+    cdl_interface RTLINT_DEVS_ETH_RLTK_819X_WLAN_REQUIRED {
+        display   "RealTek 819x wireless lan driver required"
+    }
+
+    define_proc {
+        puts $::cdl_system_header "/***** wlan driver proc output start *****/"
+        puts $::cdl_system_header "#define RTLDAT_DEVS_ETH_RLTK_819X_WLAN0_INL \"devs_eth_rltk_819x_wlan0.inl\""
+        puts $::cdl_system_header "#define RTLDAT_DEVS_ETH_RLTK_819X_WLAN1_INL \"devs_eth_rltk_819x_wlan1.inl\""
+        puts $::cdl_system_header "#define RTLDAT_DEVS_ETH_RLTK_819X_WLAN_CFG <pkgconf/devs_eth_rltk_819x_wlan.h>"
+        puts $::cdl_system_header "/*****  wlan driver proc output end  *****/"
+    }
+
+    cdl_component RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WLAN0 {
+        display       "WLAN primary driver"
+        flavor        bool
+        default_value 1
+
+        implements CYGHWR_NET_DRIVERS
+        implements CYGHWR_NET_DRIVER_WLAN0
+        implements RTLINT_DEVS_ETH_RLTK_819X_WLAN_REQUIRED
+
+        cdl_option RTLDAT_DEVS_ETH_RLTK_819X_WLAN_WLAN0_NAME {
+            display       "Device name for the WLAN primary driver"
+            flavor        data
+            default_value {"\"wlan0\""}
+            description   "
+                This option sets the name of the wireless device for the
+                RealTek 819x wlan primary interface."
+        }
+
+	compile       -library=libextras.a if_819x_wlan.c 8192cd_ecos.c \
+        rtl8192cd/8192cd_tx.c rtl8192cd/8192cd_rx.c rtl8192cd/8192cd_osdep.c rtl8192cd/8192cd_sme.c rtl8192cd/8192cd_util.c \
+        rtl8192cd/8192d_hw.c rtl8192cd/8192cd_hw.c rtl8192cd/8192cd_security.c rtl8192cd/8192cd_tkip.c rtl8192cd/8192cd_aes.c \
+        rtl8192cd/8192cd_proc.c rtl8192cd/8192cd_br_ext.c rtl8192cd/8192cd_eeprom.c rtl8192cd/8192cd_mp.c rtl8192cd/8192cd_psk.c \
+        rtl8192cd/8192cd_ioctl.c rtl8192cd/1x_kmsm_aes.c rtl8192cd/1x_kmsm_hmac.c rtl8192cd/1x_md5c.c rtl8192cd/1x_rc4.c \
+        rtl8192cd/8192cd_mib.c rtl8192cd/8192cd_dmem.c rtl8192cd/8192cd_host.c rtl8192cd/8192cd_led.c rtl8192cd/8192cd_11h.c\
+        rtl8192cd/8192cd_dfs.c rtl8192cd/8192cd_dfs_det.c rtl8192cd/8812_vht_gen.c rtl8192cd/HalDMOutSrc.c rtl8192cd/Beamforming.c
+	#rtl8192cd/tenda_wlan/tenda_sta_steering.c
+	#rtl8192cd/tenda_wlan/tenda_wlan_dbg.c 
+    }
+
+    cdl_component RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WLAN1 {
+        display       "WLAN secondary driver"
+        calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 && (RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_1 || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8197F)}
+
+        implements CYGHWR_NET_DRIVERS
+        implements CYGHWR_NET_DRIVER_WLAN1
+        implements RTLINT_DEVS_ETH_RLTK_819X_WLAN_REQUIRED
+        
+        cdl_option RTLDAT_DEVS_ETH_RLTK_819X_WLAN_WLAN1_NAME {
+            display       "Device name for the WLAN secondary driver"
+            flavor        data
+            default_value {"\"wlan1\""}
+            description   "
+                This option sets the name of the wireless device for the
+                RealTek 819x wlan secondary interface."
+        }
+    }
+
+    cdl_component RTLPKG_DEVS_ETH_RLTK_819X_WLAN_PWLAN0 {
+        display       "wireless pwlan0"
+        flavor        bool
+        default_value 0
+        #define -file system.h CONFIG_RTL_CUSTOM_PASSTHRU
+        
+
+        cdl_option RTLDAT_DEVS_ETH_RLTK_819X_WLAN_PWLAN0_NAME {
+            display       "Device name for the pseudo WLAN primary driver"
+            flavor        data
+            default_value {"\"pwlan0\""}
+            description   "
+                This option sets the name of the pseudo wireless device for passthu."
+        }
+    }
+
+
+    # SNMP demands to know stuff; this sadly makes us break the neat
+    # abstraction of the device having nothing exported.
+    # include_files include/819x_info.h
+    # and tell them that it is available
+    define_proc {
+	    puts $::cdl_system_header \
+      "#define CYGBLD_DEVS_WLAN_DEVICE_H <pkgconf/devs_eth_rltk_819x_wlan.h>"
+
+      puts $::cdl_header "#include RTLDAT_DEVS_ETH_RLTK_819X_WLAN_CFG";
+    }
+	
+    cdl_option RTLDBG_DEVS_ETH_RLTK_819X_WLAN_CHATTER {
+      display "Print debugging messages"
+      default_value 0
+      description   "
+        If this option is set, a lot of debugging messages are printed
+        to the console to help debug the driver."
+    }
+
+    ##########################################################################
+    # Select the interface WiFi device connects to
+    ##########################################################################
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_PCIE {
+        display "pcie interface support"
+        define -file system.h CONFIG_PCI_HCI
+        flavor   bool
+        default_value 1
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SDIO {
+        display "sdio interface support"
+        define -file system.h CONFIG_SDIO_HCI
+        flavor   bool
+        default_value 0
+	compile -library=libextras.a \
+		rtl8192cd/8188e_sdio.c rtl8192cd/8188e_sdio_recv.c rtl8192cd/8188e_sdio_xmit.c rtl8192cd/8188e_sdio_cmd.c
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SDIO_NOVA {
+        display "nova sdio platform"
+        requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ENABLE_EFUSE
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SDIO
+        define -file system.h CONFIG_SDIO_NOVA
+        define -file system.h NOT_RTK_BSP
+        define -file system.h _LITTLE_ENDIAN_
+        define -file system.h SMP_SYNC
+        flavor   bool
+        default_value 0
+    }
+
+    ##########################################################################
+    # Select WiFi device on Lextra Bus
+    ##########################################################################
+    cdl_component RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8197F {
+        display "Realtek 8197F wireless support"
+        requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER
+        active_if {CYGPKG_HAL_MIPS_RTL8197F}
+        define -file system.h CONFIG_WLAN_HAL_8197F
+        flavor   bool
+        default_value 1
+        compile -library=libextras.a \
+			src/rtl8192cd/phydm/rtl8197f/halphyrf_8197f.c \
+			src/rtl8192cd/phydm/rtl8197f/phydm_iqk_8197f.c \
+			src/rtl8192cd/efuse_97f/efuse.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8197F/Hal8197FFirmware.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8197F/Hal8197FGen.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8197F/Hal8197FHWImg.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8197F/Hal8197FIsr.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8197F/Hal8197FPwrSeqCmd.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8197F/Hal8197FRxDesc.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8197F/Hal8197FTxDesc.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8197F/Hal8197FVerify.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8197F/Hal8197FPhyCfg.c \
+		rtl8192cd/WlanHAL/RTL88XX/RTL8197F/RTL8197FE/Hal8197FEGen.c 
+            make -priority 99 {
+                data-8197f : <PACKAGE>/src/rtl8192cd/bin2c.pl
+                make -f Makefile.ecos -C $(dir $<) CONFIG_WLAN_HAL=y CONFIG_WLAN_HAL_8197F=y data
+            }
+	}
+    cdl_component RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A {
+        display "Realtek 8881A wireless support"
+        requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER
+        active_if {CYGPKG_HAL_MIPS_RLX_RTL8881A}
+        define -file system.h CONFIG_WLAN_HAL_8881A
+        flavor   bool
+        default_value 1
+        compile -library=libextras.a \
+			src/rtl8192cd/phydm/rtl8821a/phydm_iqk_8821a_ap.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8881A/Hal8881AFirmware.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8881A/Hal8881AGen.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8881A/Hal8881AHWImg.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8881A/Hal8881AIsr.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8881A/Hal8881APwrSeqCmd.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8881A/Hal8881ARxDesc.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8881A/Hal8881ATxDesc.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8881A/Hal8881AVerify.c \
+        	rtl8192cd/WlanHAL/RTL88XX/RTL8881A/Hal8881APhyCfg.c \
+		rtl8192cd/WlanHAL/RTL88XX/RTL8881A/RTL8881AE/Hal8881AEGen.c \
+        	rtl8192cd/8812_hw.c
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REG_PARAM {
+            display       "Register parameter"
+            flavor        data
+            default_value {"V702BSW" }
+            legal_values  {"V700" "V702B" "V702BSW"}
+            description   ""
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REG_PARAMETER_V700 {
+            display    "MAC PHY RF Parameter V700"
+            define -file system.h CONFIG_MAC_PHY_RF_Parameter_V700
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REG_PARAM == "V700"}
+            make -priority 99 {
+                data-8881a : <PACKAGE>/src/rtl8192cd/bin2c.pl
+                make -f Makefile.ecos -C $(dir $<) CONFIG_WLAN_HAL=y CONFIG_WLAN_HAL_8881A=y CONFIG_MAC_PHY_RF_Parameter_V700=y data
+            }
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REG_PARAMETER_V702B {
+            display    "MAC PHY RF Parameter V702B"
+            define -file system.h CONFIG_MAC_PHY_RF_Parameter_V702B
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REG_PARAM == "V702B"}
+            make -priority 99 {
+                data-8881a : <PACKAGE>/src/rtl8192cd/bin2c.pl
+                make -f Makefile.ecos -C $(dir $<) CONFIG_WLAN_HAL=y CONFIG_WLAN_HAL_8881A=y CONFIG_MAC_PHY_RF_Parameter_V702B=y data
+            }
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REG_PARAMETER_V702BSW {
+            display    "MAC PHY RF Parameter V702BSW"
+            define -file system.h CONFIG_MAC_PHY_RF_Parameter_V702B_Skyworth
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REG_PARAM == "V702BSW"}
+            make -priority 99 {
+                data-8881a : <PACKAGE>/src/rtl8192cd/bin2c.pl
+                make -f Makefile.ecos -C $(dir $<) CONFIG_WLAN_HAL=y CONFIG_WLAN_HAL_8881A=y CONFIG_MAC_PHY_RF_Parameter_V702B_Skyworth=y data
+            }
+        }
+    }
+
+    ##########################################################################
+    # Select WiFi device on PCIe slot 0
+    ##########################################################################
+    cdl_component RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 {
+        display "Use PCIe slot 0 WiFi device"
+        define -file system.h CONFIG_USE_PCIE_SLOT_0
+        flavor   bool
+        default_value 0
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC {
+            display       "PCIe Slot 0 device"
+            flavor        data
+            default_value {"8192E" }
+            legal_values  {"8192C" "8192D" "8188E" "8192E" "8812" "8812AR_VN" "8814AE" "8194" "8822BE"}
+            description   ""
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_92C {
+            display    "RTL8192C"
+            define -file system.h CONFIG_SLOT_0_92C
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC == "8192C"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_92D {
+            display    "RTL8192D"
+            define -file system.h CONFIG_SLOT_0_92D
+            define -file system.h CONFIG_RTL_5G_SLOT_0
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC == "8192D"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_92D_DMDP {
+            display    "RTL8192D dual-MAC-dual-PHY mode"
+            active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_92D
+            define -file system.h CONFIG_RTL_92D_DMDP
+            flavor   bool
+            default_value 0
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_88E {
+            display    "RTL8188E"
+            define -file system.h CONFIG_SLOT_0_88E
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC == "8188E"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8192EE {
+            display    "RTL8192E"
+            define -file system.h CONFIG_SLOT_0_8192EE
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC == "8192E"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8812AR_VN {
+            display    "RTL8812AR_VN"
+            define -file system.h CONFIG_SLOT_0_8812_AR_VN
+            define -file system.h CONFIG_RTL_5G_SLOT_0
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC == "8812AR_VN"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8812 {
+            display    "RTL8812"
+            define -file system.h CONFIG_SLOT_0_8812
+            define -file system.h CONFIG_RTL_5G_SLOT_0
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC == "8812"}
+        }
+
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8814 {
+            display    "RTL8194"
+            define -file system.h CONFIG_SLOT_0_8814AE
+            define -file system.h CONFIG_RTL_5G_SLOT_0
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC == "8814AE"}
+        }
+
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8194 {
+            display    "RTL8194"
+            define -file system.h CONFIG_SLOT_0_8194AE
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC == "8194"}
+        }
+
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8822 {
+            display    "RTL8822"
+            define -file system.h CONFIG_SLOT_0_8822BE
+			define -file system.h CONFIG_RTL_5G_SLOT_0
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_IC == "8822BE"}
+        }
+
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_0 {
+	    display	"Type 0: internel PA/LNA"
+	    requires	RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 
+	    define -file system.h CONFIG_SLOT_0_RFE_TYPE_0
+	    flavor bool
+	    default_value 0
+	}
+
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_1 {
+	    display	"Type 1: external PA/LNA (SKY85728)"
+	    requires	RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8822 
+	    define -file system.h CONFIG_SLOT_0_RFE_TYPE_1
+	    flavor bool
+	    default_value 0
+	}
+
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_2 {
+            display     "Type 2: externel PA/LNA (2G SKY85300, 5G LX5586A)"
+            define -file system.h CONFIG_SLOT_0_RFE_TYPE_2
+            flavor bool
+        }
+
+	 cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_3 {
+            display     "Type 3: externel PA/LNA (2G SE2623L/SKY85201-11, 5G SKY85405/SKY85605-11)"
+            define -file system.h CONFIG_SLOT_0_RFE_TYPE_3
+            flavor bool
+        }
+
+	 cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_4 {
+            display     "Type 4: externel PA/LNA (2G SKY85303, 5G SKY85717)"
+            define -file system.h CONFIG_SLOT_0_RFE_TYPE_4
+            flavor bool
+        }
+
+	 cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_5 {
+            display     "Type 5: externel PA/LNA (2G SE2623L/SKY85201-11, 5G SKY85405/SKY85605-11)"
+            define -file system.h CONFIG_SLOT_0_RFE_TYPE_5
+            flavor bool
+        }
+
+	 cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_6 {
+            display     "Type 6: external PA/LNA NORMAL 2-LAYER(SKY85742) "
+	    requires    RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8822
+            define -file system.h CONFIG_SLOT_0_RFE_TYPE_6
+		define -file system.h CONFIG_SLOT_0_EXT_PA
+		define -file system.h CONFIG_SLOT_0_EXT_LNA
+            flavor bool
+        }
+	
+	 cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_7 {
+            display     "Type 7: external PA/LNA NORMAL 4-LAYER(SKY85742/85734/85712) "
+	    requires    RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8822
+            define -file system.h CONFIG_SLOT_0_RFE_TYPE_7
+		define -file system.h CONFIG_SLOT_0_EXT_PA
+                define -file system.h CONFIG_SLOT_0_EXT_LNA
+            flavor bool
+        }
+	
+	 cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_8 {
+            display     "Type 8: internal PA/LNA TFPGA "
+	    requires    RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8822
+            define -file system.h CONFIG_SLOT_0_RFE_TYPE_8
+            flavor bool
+        }
+
+	 cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_9 {
+            display     "Type 9: external LNA NORMAL 4-LAYER(SKY85608)"
+	    requires    RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8822
+            define -file system.h CONFIG_SLOT_0_RFE_TYPE_9
+		define -file system.h CONFIG_SLOT_0_EXT_LNA
+            flavor bool
+        }
+	
+	 cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_10 {
+            display     "Type 10: internal PA/LNA with TRSW "
+	    requires    RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8822
+            define -file system.h CONFIG_SLOT_0_RFE_TYPE_10
+            flavor bool
+        }
+		
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_RFE_TYPE_13 {
+            display     "Type 13: internal PA/LNA with TRSW 2L "
+	    requires    RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0
+            define -file system.h CONFIG_SLOT_0_RFE_TYPE_13
+            flavor bool
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_EXT_PA {
+            display    "PCIe slot 0 Enable external high power PA"
+            define -file system.h CONFIG_SLOT_0_EXT_PA
+            flavor   bool
+            default_value 0
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_EXT_LNA {
+            display    "PCIe slot 0 Enable external LNA"
+            active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_92C || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_88E || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8812 || (RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8192EE) || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8194 || (RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8822)}
+            define -file system.h CONFIG_SLOT_0_EXT_LNA
+            flavor   bool
+            default_value 0
+        }
+
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_PA_RTC5634 {
+	    display    "PCIe slot 0 Support 8812 RTC5634 PA Type"
+            active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8812 && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_EXT_PA}
+            define -file system.h CONFIG_PA_RTC5634
+            flavor   bool
+            default_value 0
+	}
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_TX_BEAMFORMING {
+            display    "PCIe slot 0 Enable TX BEAMFORMING"
+            active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8192EE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8812 || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8194}
+            define -file system.h CONFIG_SLOT_0_TX_BEAMFORMING
+            flavor   bool
+            default_value 1
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_ANT_SWITCH {
+            display    "PCIe slot 0 Enable Antenna Diversity"
+            active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_0 && (RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8192EE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_88E) && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_92C && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_92D }
+            define -file system.h CONFIG_SLOT_0_ANT_SWITCH
+            flavor   bool
+            default_value 0
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_ANT_SWITCH_TYPE {
+            display       "Choose Antenna Diversity Type"
+            flavor        data
+            active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_ANT_SWITCH
+            default_value {"NO_2G_DIVERSITY" }            
+            legal_values  {"NO_2G_DIVERSITY" "2G_CGCS_RX_DIVERSITY" "2G_CG_TRX_DIVERSITY"}
+            description   "Slot 0 Antenna Diversity Type"
+        }   
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_ANT_SWITCH_TYPE_NO_2G_DIVERSITY {
+            display    "Not Support Antenna Diversity"
+            define -file system.h CONFIG_NO_2G_DIVERSITY
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_ANT_SWITCH_TYPE == "NO_2G_DIVERSITY"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_ANT_SWITCH_TYPE_2G_CGCS_RX_DIVERSITY {
+            display    "Enable RX Antenna Diversity"
+            define -file system.h CONFIG_2G_CGCS_RX_DIVERSITY
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_ANT_SWITCH_TYPE == "2G_CGCS_RX_DIVERSITY"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_ANT_SWITCH_TYPE_2G_CG_TRX_DIVERSITY {
+            display    "Enable TRX Antenna Diversity"
+            define -file system.h CONFIG_2G_CG_TRX_DIVERSITY
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_ANT_SWITCH_TYPE == "2G_CG_TRX_DIVERSITY"}
+       }
+    }
+
+    ##########################################################################
+    # Select WiFi device on PCIe slot 1
+    ##########################################################################
+    cdl_component RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_1 {
+        display "Use PCIe slot 1 WiFi device"
+        active_if {CYGPKG_HAL_MIPS_RLX_RTL819XD_8197D || CYGPKG_HAL_MIPS_RLX_RTL819XD_8197DL}
+        define -file system.h CONFIG_USE_PCIE_SLOT_1
+        flavor   bool
+        default_value 0
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_IC {
+            display       "PCIe Slot 1 device"
+            flavor        data
+            default_value {"8812" }
+            legal_values  {"8192C" "8192D" "8188E" "8192E" "8812" "8812AR_VN"}
+            description   ""
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_92C {
+            display    "RTL8192C"
+            define -file system.h CONFIG_SLOT_1_92C
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_IC == "8192C"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_92D {
+            display    "RTL8192D"
+            define -file system.h CONFIG_SLOT_1_92D
+            define -file system.h CONFIG_RTL_5G_SLOT_1
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_IC == "8192D"}
+        }
+
+        #cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_92D_DMDP {
+        #    display    "RTL8192D dual-MAC-dual-PHY mode"
+        #    active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_92D
+        #    define -file system.h CONFIG_RTL_92D_DMDP
+        #    flavor   bool
+        #    default_value 0
+        #}
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_88E {
+            display    "RTL8188E"
+            define -file system.h CONFIG_SLOT_1_88E
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_IC == "8188E"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8192EE {
+            display    "RTL8192E"
+            define -file system.h CONFIG_SLOT_1_8192EE
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_IC == "8192E"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812AR_VN {
+            display    "RTL8812AR_VN"
+            define -file system.h CONFIG_SLOT_1_8812_AR_VN
+            define -file system.h CONFIG_RTL_5G_SLOT_1
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_IC == "8812AR_VN"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812 {
+            display    "RTL8812"
+            define -file system.h CONFIG_SLOT_1_8812
+            define -file system.h CONFIG_RTL_5G_SLOT_1
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_IC == "8812"}
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_EXT_PA {
+            display    "PCIe slot 1 Enable external high power PA"
+            define -file system.h CONFIG_SLOT_1_EXT_PA
+            flavor   bool
+            default_value 0
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_EXT_LNA {
+            display    "PCIe slot 1 Enable external LNA"
+	    active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_92C || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_88E || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812i || (RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8192EE && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_EXT_PA)}
+	    define -file system.h CONFIG_SLOT_1_EXT_LNA
+            flavor   bool
+            default_value 0
+        }
+
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_PA_RTC5634 {
+            display    "PCIe slot 1 Support 8812 RTC5634 PA Type"
+            active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_1 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812 && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_EXT_PA}
+            define -file system.h CONFIG_PA_RTC5634
+            flavor   bool
+            default_value 0
+	}	
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_TX_BEAMFORMING {
+            display    "PCIe slot 1 Enable TX BEAMFORMING"
+            active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8192EE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812}
+            define -file system.h CONFIG_SLOT_1_TX_BEAMFORMING
+            flavor   bool
+            default_value 1
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_ANT_SWITCH {
+            display    "PCIe slot 1 Enable Antenna Diversity"
+            active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_USE_PCIE_SLOT_1 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812}
+            define -file system.h CONFIG_SLOT_1_ANT_SWITCH
+            flavor   bool
+            default_value 0
+        }
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_ANT_SWITCH_TYPE {
+            display       "Choose Antenna Diversity Type"
+            flavor        data
+            active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_ANT_SWITCH && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812}
+            default_value {"NO_5G_DIVERSITY" }
+            legal_values  {"NO_5G_DIVERSITY" "5G_CGCS_RX_DIVERSITY" "5G_CG_TRX_DIVERSITY"}
+            description   "Slot 1 Antenna Diversity Type"
+    	}
+
+    	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_ANT_SWITCH_TYPE_NO_5G_DIVERSITY {
+            display    "Not Support Antenna Diversity"
+            define -file system.h CONFIG_NO_5G_DIVERSITY
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_ANT_SWITCH_TYPE == "NO_5G_DIVERSITY"}
+    	}
+
+    	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_ANT_SWITCH_TYPE_5G_CGCS_RX_DIVERSITY {
+            display    "Enable RX Antenna Diversity"
+            define -file system.h CONFIG_5G_CGCS_RX_DIVERSITY
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_ANT_SWITCH_TYPE == "5G_CGCS_RX_DIVERSITY"}
+    	}
+
+    	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_ANT_SWITCH_TYPE_5G_CG_TRX_DIVERSITY {
+            display    "Enable TRX Antenna Diversity"
+            define -file system.h CONFIG_5G_CG_TRX_DIVERSITY
+            calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_ANT_SWITCH_TYPE == "5G_CG_TRX_DIVERSITY"}
+    	}
+    }
+
+    ##########################################################################
+    # Select interface config
+    ##########################################################################
+
+    ###### WLAN_HAL relative configuration
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL {
+        display "Wlan HAL support"
+        active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8192EE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8197F || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8194}
+        define -file system.h CONFIG_WLAN_HAL
+        flavor   bool
+        default_value 1
+	compile -library=libextras.a \
+	rtl8192cd/WlanHAL/HalCommon.c rtl8192cd/WlanHAL/HalCfg.c rtl8192cd/WlanHAL/HalDbgCmd.c rtl8192cd/WlanHAL/HalMacFunc.c rtl8192cd/WlanHAL/HalMacAPI.c
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_88XX {
+        display "Wlan HAL 88XX support"
+        active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8192EE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8197F || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8194}
+        define -file system.h CONFIG_WLAN_HAL_88XX
+        flavor   bool
+        default_value 1
+	compile -library=libextras.a \
+	rtl8192cd/WlanHAL/RTL88XX/Hal88XXFirmware.c rtl8192cd/WlanHAL/RTL88XX/Hal88XXGen.c rtl8192cd/WlanHAL/RTL88XX/Hal88XXHWImg.c \
+	rtl8192cd/WlanHAL/RTL88XX/Hal88XXIsr.c rtl8192cd/WlanHAL/RTL88XX/Hal88XXPwrSeqCmd.c rtl8192cd/WlanHAL/RTL88XX/Hal88XXRxDesc.c \
+	rtl8192cd/WlanHAL/RTL88XX/Hal88XXTxDesc.c rtl8192cd/WlanHAL/RTL88XX/Hal88XXVerify.c rtl8192cd/WlanHAL/RTL88XX/Hal88XXPhyCfg.c
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8192EE {
+        display "RTL8192E support"
+        requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER
+        define -file system.h CONFIG_WLAN_HAL_8192EE
+        calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8192EE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8192EE}
+	compile -library=libextras.a \
+	rtl8192cd/phydm/rtl8192e/halphyrf_8192e_ap.c rtl8192cd/phydm/rtl8192e/phydm_rtl8192e.c \
+	rtl8192cd/WlanHAL/RTL88XX/RTL8192E/RTL8192EE/Hal8192EEGen.c rtl8192cd/WlanHAL/RTL88XX/RTL8192E/Hal8192EGen.c \
+	rtl8192cd/WlanHAL/RTL88XX/RTL8192E/Hal8192EPhyCfg.c rtl8192cd/WlanHAL/RTL88XX/RTL8192E/Hal8192EPwrSeqCmd.c
+
+        make -priority 99 {
+            data-92e : <PACKAGE>/src/rtl8192cd/bin2c.pl
+            make -f Makefile.ecos -C $(dir $<) CONFIG_WLAN_HAL=y CONFIG_WLAN_HAL_8192EE=y data
+        }
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8814AE {
+	display "RTL8814AE support"
+	requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER
+	calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8814}
+	define -file system.h CONFIG_WLAN_HAL_8814AE
+	flavor	bool
+	compile -library=libextras.a \
+        rtl8192cd/phydm/rtl8814a/halphyrf_8814a_ap.c rtl8192cd/phydm/rtl8814a/phydm_iqk_8814a.c rtl8192cd/8812_hw.c \
+        rtl8192cd/WlanHAL/RTL88XX/RTL8814A/RTL8814AE/Hal8814AEGen.c rtl8192cd/WlanHAL/RTL88XX/RTL8814A/Hal8814AGen.c \
+        rtl8192cd/WlanHAL/RTL88XX/RTL8814A/Hal8814APhyCfg.c rtl8192cd/WlanHAL/RTL88XX/RTL8814A/Hal8814APwrSeqCmd.c \
+   	rtl8192cd/phydm/rtl8814a/halhwimg8814a_bb.c rtl8192cd/phydm/rtl8814a/halhwimg8814a_mac.c \
+	rtl8192cd/phydm/rtl8814a/halhwimg8814a_rf.c rtl8192cd/phydm/phydm_adc_sampling.c \
+	rtl8192cd/phydm/rtl8814a/phydm_regconfig8814a.c rtl8192cd/phydm/rtl8814a/phydm_rtl8814a.c \
+	rtl8192cd/phydm/phydm_ccx.c
+
+	   make -priority 99 {
+           data-8814a: <PACKAGE>/src/rtl8192cd/bin2c.pl
+           make -f Makefile.ecos -C $(dir $<) CONFIG_WLAN_HAL=y CONFIG_WLAN_HAL_8814AE=y data
+        }
+     }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8194AE {
+	display "RTL8194AE support"
+	requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER
+	calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8194}
+	define -file system.h CONFIG_WLAN_HAL_8814AE
+	flavor	bool
+	compile -library=libextras.a \
+        rtl8192cd/phydm/rtl8814a/halphyrf_8814a_ap.c rtl8192cd/phydm/rtl8814a/phydm_iqk_8814a.c rtl8192cd/8812_hw.c \
+        rtl8192cd/WlanHAL/RTL88XX/RTL8814A/RTL8814AE/Hal8814AEGen.c rtl8192cd/WlanHAL/RTL88XX/RTL8814A/Hal8814AGen.c \
+        rtl8192cd/WlanHAL/RTL88XX/RTL8814A/Hal8814APhyCfg.c rtl8192cd/WlanHAL/RTL88XX/RTL8814A/Hal8814APwrSeqCmd.c \
+   	rtl8192cd/phydm/rtl8814a/halhwimg8814a_bb.c rtl8192cd/phydm/rtl8814a/halhwimg8814a_mac.c \
+	rtl8192cd/phydm/rtl8814a/halhwimg8814a_rf.c rtl8192cd/phydm/phydm_adc_sampling.c \
+	rtl8192cd/phydm/rtl8814a/phydm_regconfig8814a.c rtl8192cd/phydm/rtl8814a/phydm_rtl8814a.c \
+	rtl8192cd/phydm/phydm_ccx.c
+
+	   make -priority 99 {
+           data-8814a: <PACKAGE>/src/rtl8192cd/bin2c.pl
+           make -f Makefile.ecos -C $(dir $<) CONFIG_WLAN_HAL=y CONFIG_WLAN_HAL_8814AE=y data
+        }
+     }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8822BE {
+	display "RTL8822BE support"
+	requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER
+	calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8822}
+	define -file system.h CONFIG_WLAN_HAL_8822BE
+	flavor	bool
+	compile -library=libextras.a \
+        rtl8192cd/phydm/rtl8822b/halphyrf_8822b.c rtl8192cd/phydm/rtl8822b/phydm_iqk_8822b.c rtl8192cd/8812_hw.c \
+        rtl8192cd/WlanHAL/RTL88XX/RTL8822B/Hal8822BFirmware.c rtl8192cd/WlanHAL/RTL88XX/RTL8822B/RTL8822BE/Hal8822BEGen.c \
+        rtl8192cd/WlanHAL/RTL88XX/RTL8822B/Hal8822BGen.c rtl8192cd/WlanHAL/RTL88XX/RTL8822B/Hal8822BPwrSeqCmd.c \
+        rtl8192cd/WlanHAL/RTL88XX/RTL8822B/Hal8822BPhyCfg.c \
+   	rtl8192cd/phydm/rtl8822b/halhwimg8822b_bb.c rtl8192cd/phydm/rtl8822b/halhwimg8822b_mac.c \
+	rtl8192cd/phydm/rtl8822b/halhwimg8822b_rf.c rtl8192cd/phydm/rtl8822b/halhwimg8822b_fw.c \
+	rtl8192cd/phydm/rtl8822b/phydm_regconfig8822b.c rtl8192cd/phydm/rtl8822b/phydm_hal_api8822b.c \
+	rtl8192cd/phydm/rtl8822b/phydm_rtl8822b.c
+
+	   make -priority 99 {
+           data-8822be: <PACKAGE>/src/rtl8192cd/bin2c.pl
+           make -f Makefile.ecos -C $(dir $<) CONFIG_WLAN_HAL=y CONFIG_WLAN_HAL_8822BE=y data
+        }
+     }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_MACHAL_API {
+	display "RTL WLAN HAL AP support"
+	requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER
+	active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8822BE
+	define -file system.h CONFIG_WLAN_MACHAL_API
+	flavor	bool
+	default_value 1
+	compile -library=libextras.a \
+        rtl8192cd/WlanHAL/HalMac88XX/halmac_api.c rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_api_88xx.c \
+        rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_api_88xx_pcie.c \
+		rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_api_88xx_sdio.c \
+		rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_api_88xx_usb.c \
+		rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_func_88xx.c \
+		rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_8822b/halmac_8822b_pwr_seq.c \
+		rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_8822b/halmac_api_8822b.c \
+		rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_8822b/halmac_api_8822b_pcie.c \
+		rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_8822b/halmac_api_8822b_sdio.c \
+		rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_8822b/halmac_api_8822b_usb.c \
+		rtl8192cd/WlanHAL/HalMac88XX/halmac_88xx/halmac_8822b/halmac_func_8822b.c 
+	}
+
+    ###### End------WLAN_HAL relative configuration
+    
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_92C_SUPPORT {
+        display    "RTL8192C support"
+        define -file system.h CONFIG_RTL_92C_SUPPORT
+        calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_92C || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_92C}
+        compile -library=libextras.a \
+        	rtl8192cd/Hal8192CDMOutSrc.c
+        make -priority 99 {
+            data-92c : <PACKAGE>/src/rtl8192cd/bin2c.pl
+            make -f Makefile.ecos -C $(dir $<) CONFIG_RTL_92C_SUPPORT=y data
+        }
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_92D_SUPPORT {
+        display    "RTL8192D support"
+        define -file system.h CONFIG_RTL_92D_SUPPORT
+        calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_92D || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_92D}
+        compile -library=libextras.a \
+        	rtl8192cd/Hal8192CDMOutSrc.c
+        make -priority 99 {
+            data-92d : <PACKAGE>/src/rtl8192cd/bin2c.pl
+            make -f Makefile.ecos -C $(dir $<) CONFIG_RTL_92D_SUPPORT=y data
+        }
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT {
+        display    "RTL8188E support"
+        requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER
+        define -file system.h CONFIG_RTL_88E_SUPPORT
+        calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_88E || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_88E}
+        compile -library=libextras.a \
+	rtl8192cd/HalPwrSeqCmd.c rtl8192cd/Hal8188EPwrSeq.c	rtl8192cd/8188e_hw.c 
+        make -priority 99 {
+            data-88e : <PACKAGE>/src/rtl8192cd/bin2c.pl
+            make -f Makefile.ecos -C $(dir $<) CONFIG_RTL_88E_SUPPORT=y data
+        }
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_SUPPORT {
+        display    "RTL8812 support"
+        requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER
+        define -file system.h CONFIG_RTL_8812_SUPPORT
+        calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8812 || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812 || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8812AR_VN || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812AR_VN}
+        compile -library=libextras.a \
+	rtl8192cd/HalPwrSeqCmd.c rtl8192cd/Hal8812PwrSeq.c rtl8192cd/8812_hw.c rtl8192cd/phydm/rtl8812a/halphyrf_8812a_ap.c
+        make -priority 99 {
+            data-8812 : <PACKAGE>/src/rtl8192cd/bin2c.pl
+            make -f Makefile.ecos -C $(dir $<) CONFIG_RTL_8812_SUPPORT=y data
+        }
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812AR_VN_SUPPORT {
+        display    "RTL8812 support"
+        requires RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER
+        define -file system.h CONFIG_RTL_8812AR_VN_SUPPORT
+        calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8812AR_VN || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812AR_VN}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER {
+        display "Enable outsource dynamic mechanism driver"
+        active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_SUPPORT || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8192EE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8197F || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8814AE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8194AE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8822BE }
+        define -file system.h CONFIG_RTL_ODM_WLAN_DRIVER
+        flavor   bool
+        default_value 1
+	compile -library=libextras.a \
+	rtl8192cd/phydm/phydm.c rtl8192cd/phydm/phydm_dig.c rtl8192cd/phydm/phydm_edcaturbocheck.c rtl8192cd/phydm/phydm_antdiv.c rtl8192cd/phydm/phydm_soml.c \
+	rtl8192cd/phydm/phydm_dynamicbbpowersaving.c rtl8192cd/phydm/phydm_pathdiv.c rtl8192cd/phydm/phydm_rainfo.c \
+	rtl8192cd/phydm/phydm_dynamictxpower.c rtl8192cd/phydm/phydm_powertracking_ap.c rtl8192cd/phydm/phydm_adaptivity.c \
+	rtl8192cd/phydm/phydm_debug.c rtl8192cd/phydm/phydm_interface.c rtl8192cd/phydm/phydm_hwconfig.c \
+	rtl8192cd/phydm/halphyrf_ap.c rtl8192cd/phydm/phydm_cfotracking.c rtl8192cd/phydm/phydm_acs.c rtl8192cd/phydm/phydm_adc_sampling.c rtl8192cd/EdcaTurboCheck.c rtl8192cd/phydm/phydm_ccx.c
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_ODM_WLAN_DRIVER {
+        display "Enable 88E odm driver"
+        calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ODM_WLAN_DRIVER}
+        compile -library=libextras.a \
+        	rtl8192cd/phydm/rtl8188e/halhwimg8188e_bb.c \
+        	rtl8192cd/phydm/rtl8188e/halhwimg8188e_mac.c rtl8192cd/phydm/rtl8188e/halhwimg8188e_rf.c \
+        	rtl8192cd/phydm/rtl8188e/phydm_regconfig8188e.c rtl8192cd/phydm/rtl8188e/hal8188erateadaptive.c \
+        	rtl8192cd/phydm/rtl8188e/phydm_rtl8188e.c rtl8192cd/phydm/rtl8188e/halphyrf_8188e_ap.c	
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_97F_ODM_WLAN_DRIVER {
+        display "Enable 8197F odm driver"
+        define -file system.h CONFIG_SOC_WIFI
+        calculated {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8197F}
+        compile -library=libextras.a \
+        	rtl8192cd/phydm/rtl8197f/halhwimg8197f_bb.c \
+        	rtl8192cd/phydm/rtl8197f/halhwimg8197f_mac.c rtl8192cd/phydm/rtl8197f/halhwimg8197f_rf.c \
+        	rtl8192cd/phydm/rtl8197f/phydm_hal_api8197f.c rtl8192cd/phydm/rtl8197f/phydm_regconfig8197f.c \
+        	rtl8192cd/phydm/rtl8197f/phydm_rtl8197f.c
+    }
+    #
+    # General options
+    #
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE {
+        display       "8197F RFE TYPE"
+        flavor        data
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8197F
+        default_value {"SOC_RFE_TYPE_1" }
+        legal_values  {"SOC_RFE_TYPE_0" "SOC_RFE_TYPE_1" "SOC_RFE_TYPE_2" "SOC_RFE_TYPE_3" "SOC_RFE_TYPE_4" "SOC_RFE_TYPE_5" "SOC_RFE_TYPE_6"}
+        description   "8197F RFE type"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE_INT {
+        display    "Type 0: internal PA/LNA"
+        define -file system.h CONFIG_SOC_RFE_TYPE_0
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE == "SOC_RFE_TYPE_0"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE_EXT {
+	display    "Type 1: external PA/LNA (SKY85309)"
+        define -file system.h CONFIG_SOC_RFE_TYPE_1
+		define -file system.h CONFIG_SOC_EXT_PA
+		define -file system.h CONFIG_SOC_EXT_LNA
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE == "SOC_RFE_TYPE_1"}
+    }
+    
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE2 {
+	display    "Type 2: internal PA/LNA 2-LAYER"
+	define -file system.h CONFIG_SOC_RFE_TYPE_2
+	calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE == "SOC_RFE_TYPE_2"}
+    }
+      
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE3 {
+	display    "Type 3: internal PA/LNA with TRSW"
+	define -file system.h CONFIG_SOC_RFE_TYPE_3
+	calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE == "SOC_RFE_TYPE_3"}
+    }
+    
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE4 {
+	display    "Type 4: internal PA + external LNA(BFU725F/N1)"
+        define -file system.h CONFIG_SOC_RFE_TYPE_4
+		define -file system.h CONFIG_SOC_EXT_LNA
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE == "SOC_RFE_TYPE_4"}
+    }
+    
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE5 {
+	display    "Type 5: external PA/LNA (SKY85325)"
+        define -file system.h CONFIG_SOC_RFE_TYPE_5
+		define -file system.h CONFIG_SOC_EXT_PA
+		define -file system.h CONFIG_SOC_EXT_LNA
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE == "SOC_RFE_TYPE_5"}
+    }
+     
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE6 {
+	display    "Type 6: internal PA + external LNA(BFU725F/N1) 2-LAYER "
+        define -file system.h CONFIG_SOC_RFE_TYPE_6
+		define -file system.h CONFIG_SOC_EXT_LNA
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8197F_RFE_TYPE == "SOC_RFE_TYPE_6"}
+    }
+    
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_PA_TYPE {
+        display       "8881A PA TYPE"
+        flavor        data
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A
+        default_value {"EXT-PA" }
+        legal_values  {"EXT-PA" "INT-PA"}
+        description   "8881A PA type"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_PA_TYPE_EXT {
+        display    "External PA"
+        define -file system.h CONFIG_8881A_EXT_PA
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_PA_TYPE == "EXT-PA"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_PA_TYPE_INT {
+        display    "Internal PA"
+        define -file system.h CONFIG_8881A_INT_PA
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_PA_TYPE == "INT-PA"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_INTERNAL_PA_TYPE {
+        display       "Internal PA Type"
+        flavor        data
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_PA_TYPE_INT 
+        default_value {"INT-PA-5008" }
+        legal_values  {"INT-PA-5008" "INT-PA-5634"}
+        description   "Internal PA Type"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_INTERNAL_PA_TYPE_INT_5008 {
+        display    "skyworks SE5008"
+        define -file system.h CONFIG_8881A_INT_PA_SE5008
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_INTERNAL_PA_TYPE == "INT-PA-5008"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_INTERNAL_PA_TYPE_INT_5634 {
+        display    "RTC 5634"
+        define -file system.h CONFIG_8881A_INT_PA_RTC5634
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_INTERNAL_PA_TYPE == "INT-PA-5634"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_HP {
+      	display "8881A High Power"
+      	define -file system.h CONFIG_8881A_HP
+      	active_if CONFIG_8881A_EXT_PA
+      	default_value 0
+      	description   "8881A High Power"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_2LAYER {
+        display "8881A 2 LAYER"
+        define -file system.h CONFIG_8881A_2LAYER
+        active_if CONFIG_8881A_EXT_PA
+        default_value 0
+        description   "8881A 2 LAYER"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_SELECTIVE {
+      display "Realtek 8881A selective support "
+      define -file system.h CONFIG_RTL_8881A_SELECTIVE
+      active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8192EE}
+      default_value 1
+      description   "
+        Using 8881A selective mode"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_AC2G_256QAM {
+      display "Support 256QAM (11AC mode) for Band 2.4G "
+      define -file system.h CONFIG_RTL_AC2G_256QAM
+      active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8192EE}
+      default_value 0
+      description   "
+        256QAM (11AC mode) for Band 2.4G"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH {
+      display "Realtek 8881A Enable Antenna Diversity "
+      define -file system.h CONFIG_RTL_8881A_ANT_SWITCH
+      active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A
+      default_value 0
+      description   "
+        Realtek 8881A Enable Antenna Diversity"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH_TYPE {
+        display       "Choose Antenna Diversity Type"
+        flavor        data
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH
+        default_value {"NO_5G_DIVERSITY_8881A" }
+        legal_values  {"NO_5G_DIVERSITY_8881A" "5G_CGCS_RX_DIVERSITY_8881A" "5G_CG_TRX_DIVERSITY_8881A" "2G5G_CG_TRX_DIVERSITY_8881A"}
+        description   "8881A Antenna Diversity Type"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH_TYPE_NO_5G_DIVERSITY_8881A {
+        display    "Not Support Antenna Diversity"
+        define -file system.h CONFIG_NO_5G_DIVERSITY_8881A
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH_TYPE == "NO_5G_DIVERSITY_8881A"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH_TYPE_5G_CGCS_RX_DIVERSITY_8881A {
+        display    "Enable RX Antenna Diversity"
+        define -file system.h CONFIG_5G_CGCS_RX_DIVERSITY_8881A
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH_TYPE == "5G_CGCS_RX_DIVERSITY_8881A"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH_TYPE_5G_CG_TRX_DIVERSITY_8881A {
+        display    "Enable TRX Antenna Diversity"
+        define -file system.h CONFIG_5G_CG_TRX_DIVERSITY_8881A_
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH_TYPE == "5G_CG_TRX_DIVERSITY_8881A"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH_TYPE_2G5G_CG_TRX_DIVERSITY_8881A {
+        display    "Enable 2G5G TRX Antenna Diversity"
+        define -file system.h CONFIG_2G5G_CG_TRX_DIVERSITY_8881A_
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8881A_ANT_SWITCH_TYPE == "2G5G_CG_TRX_DIVERSITY_8881A"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_PA_TYPE {
+        display       "8812 external PA type"
+        flavor        data
+        active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8812 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_EXT_PA} || {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8812 && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_EXT_PA}
+        default_value {"Skyworks-5022"}
+        legal_values  {"Skyworks-5022" "RFDM-4501" "Skyworks-5023"}
+        description   "8812 ext pa type"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_PA_TYPE_5022 {
+        display    "Skyworks-5022"
+        define -file system.h CONFIG_PA_SKYWORKS_5022
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_PA_TYPE == "Skyworks-5022"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_PA_TYPE_4501 {
+        display    "RFDM-4501 / Skywork-85703"
+        define -file system.h CONFIG_PA_RFMD_4501
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_PA_TYPE == "RFDM-4501"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_PA_TYPE_5023 {
+        display    "Skyworks-5023"
+        define -file system.h CONFIG_PA_SKYWORKS_5023
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_PA_TYPE == "Skyworks-5023"}
+    }
+ 
+   cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE {
+        display       "92E external LNA type"
+        flavor        data
+        active_if {( RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8192EE && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_EXT_LNA) || ( TLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_EXT_LNA8192EE && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_EXT_LNA)}
+        default_value {"22dBm"}
+        legal_values  {"22dBm" "18dBm" "16dBm" "14dBm" "eFuse"}
+        description   "92E external LNA type"
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE_0_22DBM {
+        display    "LNA type 0, 22dBm"
+        define -file system.h CONFIG_LNA_TYPE_0
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE == "22dBm"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE_1_18DBM {
+        display    "LNA type 1, 18dBm"
+        define -file system.h CONFIG_LNA_TYPE_1
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE == "18dBm"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE_2_16DBM {
+        display    "LNA type 2, 16dBm"
+        define -file system.h CONFIG_LNA_TYPE_2
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE == "16dBm"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE_3_14DBM {
+        display    "LNA type 3, 14dBm"
+        define -file system.h CONFIG_LNA_TYPE_3
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE == "14dBm"}
+    }
+	
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE_FROM_EFUSE {
+        display    "LNA type from eFuse"
+	active_if  RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ENABLE_EFUSE
+        define -file system.h CONFIG_LNA_FROM_EFUSE
+        calculated { RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_LNA_TYPE == "efuse"}
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_1T1R_SUPPORT {
+        display "Realtek 8812 1T1R mode"
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_SUPPORT
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_8812_1T1R_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_IWCONTROL {
+        display "IWCONTROL support"
+        default_value 0
+    }
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_HS2_SUPPORT {
+		display "Enable HS2.0 Support"
+		flavor   bool
+		default_value 0
+		define -file system.h CONFIG_RTL_HS2_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_RTL_MULTI_REPEATER_MODE_SUPPORT {
+        display "Enable multiple repeater mode"
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REPEATER_MODE
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_MULTI_REPEATER_MODE_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_RTL_MULTI_CLONE_SUPPORT {
+        display "Enable multiple mac clone mode"
+        active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REPEATER_MODE && RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8192EE}
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_MULTI_CLONE_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_RTL_HOSTAPD_SUPPORT {
+        display "Realtek hostapd support"
+	flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_HOSTAPD_SUPPORT
+    }
+
+    #cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HIGH_POWER_EXT_PA {
+    #    display "Enable external high power PA"
+    #    flavor   bool
+    #    default_value 0
+    #    define -file system.h CONFIG_HIGH_POWER_EXT_PA
+    #}
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ANT_SWITCH {
+        display "Enable Antenna Diversity"
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_ANT_SWITCH
+    }
+
+    #cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_PCIE_PS {
+    #    display "PCIE power saving support"
+    #    flavor   bool
+    #    default_value 0
+    #    no_define
+    #    define -file system.h CONFIG_PCIE_POWER_SAVING
+    #}
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_DFS_SUPPORT {
+        display "DFS Support"
+        active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_92D_SUPPORT || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_SUPPORT || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8814AE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8822BE}
+        flavor   bool
+        default_value 0 
+        define -file system.h CONFIG_RTL_DFS_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_CLIENT_MODE {
+        display "Client Mode support"
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_CLIENT_MODE_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REPEATER_MODE {
+        display "  Repeater Mode support"
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_CLIENT_MODE
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_REPEATER_MODE_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_802_1X_CLIENT {
+        display "  Client Mode 802.1x support"
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_CLIENT_MODE
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_802_1X_CLIENT_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_MULTI_PROFILE {
+        display "  Multiple AP profile Support"
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_CLIENT_MODE
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_SUPPORT_MULTI_PROFILE
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WDS {
+        display "WDS support"
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_WDS_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WDS_NUM {
+        display "  The number of WDS"
+        #active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WDS
+        flavor        data
+        legal_values  1 2 4 8
+        default_value 4
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_MBSSID {
+        display "Virtual AP Support"
+        flavor   bool
+        default_value 1
+        define -file system.h CONFIG_RTL_VAP_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_MBSSID_NUM {
+        display "  The number of virtual AP"
+        #active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_MBSSID
+        flavor        data
+        legal_values  1 4
+        default_value 4
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_ENABLE_EFUSE {
+        display "Efuse support"
+        #active_if !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT
+        default_value 0
+        define -file system.h CONFIG_ENABLE_EFUSE
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WAPI_SUPPORT {
+        display "WAPI support"
+        default_value 0
+        define -file system.h CONFIG_RTL_WAPI_SUPPORT
+        compile -library=libextras.a \
+        	rtl8192cd/wapi_wai.c rtl8192cd/wapiCrypto.c rtl8192cd/wapiRandom.c
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_PACP_SUPPORT {
+        display "Monitor mode support"
+        default_value 0
+        define -file system.h CONFIG_PACP_SUPPORT
+        compile -library=libextras.a \
+        	rtl8192cd/8192cd_comapi.c
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WAPI_LOCAL_AS_SUPPORT {
+        display "  support local AS"
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WAPI_SUPPORT
+        default_value 0
+        define -file system.h CONFIG_RTL_WAPI_LOCAL_AS_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_MP_PSD_SUPPORT {
+        display "MP quick PSD support"
+        active_if !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT
+        default_value 0
+        define -file system.h CONFIG_MP_PSD_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_P2P_SUPPORT {
+        display "Realtek P2P support"
+        default_value 0
+        define -file system.h CONFIG_RTL_P2P_SUPPORT
+        compile -library=libextras.a \
+        	rtl8192cd/8192cd_p2p.c
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WPS {
+        display "WPS support"
+        default_value 0
+        define -file system.h CONFIG_RTL_WPS2_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_PHY_EAT_40MHZ {
+        display "Host Clock Source, Select is 40MHz, otherwise 25MHz"
+        active_if !CYGSEM_HAL_819X_AUTO_PCIE_PHY_SCAN || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8814AE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8822BE
+        flavor   bool
+        default_value 1
+        no_define
+        define -file system.h CONFIG_PHY_EAT_40MHZ
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_PHY_WLAN_EAT_40MHZ {
+        display "Device Clock Source, Select is 40MHz, otherwise 25MHz"
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_PHY_EAT_40MHZ 
+        flavor   bool
+        default_value 1
+        no_define
+        define -file system.h CONFIG_PHY_WLAN_EAT_40MHZ
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_TXPWR_LMT {
+        display "Band Edge Limit support for 92C/92D/8812/88E/92E/8881A/8197F/8194"
+        active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_92C_SUPPORT || \
+        	   RTLPKG_DEVS_ETH_RLTK_819X_WLAN_92D_SUPPORT || \
+        	   RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_SUPPORT || \
+        	   RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT || \
+        	   RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8192EE || \
+        	   RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8197F || \
+        	   RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8881A || \
+		   RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8814AE || \
+		   RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HAL_8822BE}
+        flavor   bool
+        default_value 1
+        define -file system.h CONFIG_TXPWR_LMT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_MESH_SUPPORT {
+        display "RTL Mesh Support"
+        #active_if {!RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_SUPPORT}
+        default_value 0
+        define -file system.h CONFIG_RTL_MESH_SUPPORT
+	compile -library=libextras.a \
+                rtl8192cd/mesh_ext/hash_table.c rtl8192cd/mesh_ext/mesh_11kv.c \
+                rtl8192cd/mesh_ext/mesh_proc.c rtl8192cd/mesh_ext/mesh_security.c \
+                rtl8192cd/mesh_ext/mesh_sme.c rtl8192cd/mesh_ext/mesh_util.c \
+                rtl8192cd/mesh_ext/mesh_route.c rtl8192cd/mesh_ext/mesh_tx.c \
+                rtl8192cd/mesh_ext/mesh_rx.c
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SIMPLE_CONFIG {
+	display "RTL Simple Config Support"
+	default_value 0
+	define -file system.h CONFIG_RTL_SIMPLE_CONFIG
+	compile -library=libextras.a \
+		8192cd_profile.c
+    }
+
+   cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SIMPLE_CONFIG_USE_WPS_BUTTON {
+        display "RTL Simple Config use the same HW PBC with WPS"
+        default_value 0
+        define -file system.h CONFIG_RTL_SIMPLE_CONFIG_USE_WPS_BUTTON 
+        compile -library=libextras.a \
+                8192cd_profile.c
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_A4_STA_SUPPORT {
+        display "RTL A4_STA Support"
+        default_value 0
+        define -file system.h CONFIG_RTL_A4_STA_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_DOS_FILTER {
+        display "Enable WLAN DoS Filter"
+        active_if {!RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT && !RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_SUPPORT}
+        default_value 0
+        define -file system.h CONFIG_RTL_WLAN_DOS_FILTER
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_HS2_SUPPORT {
+        display "Enable WLAN HS2 Support"
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_HS2_SUPPORT
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_11W_SUPPORT {
+        display "Realtek PMF support"
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_RTL_11W_SUPPORT
+        compile -library=libextras.a \
+   		rtl8192cd/sha256.c
+    }	
+	
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_TENDA_STEER_SUPPORT {
+        display "Tenda STEER support"
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_TENDA_WLAN_STA_STEER
+        compile -library=libextras.a \
+   		rtl8192cd/tenda_wlan/tenda_sta_steering.c rtl8192cd/tenda_wlan/tenda_wlan_proc_ecos.c rtl8192cd/tenda_wlan/tenda_dev_probe.c
+    }	
+	
+	cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_TENDA_DBG_SUPPORT {
+        display "Tenda DBG support"
+        flavor   bool
+        default_value 0
+        define -file system.h CONFIG_TENDA_WLAN_DBG
+        compile -library=libextras.a \
+   		rtl8192cd/tenda_wlan/tenda_wlan_dbg.c 
+    }	
+	
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_BT_COEXIST_92EE {
+        display "Enable BT Coexist"
+        active_if RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_0_8192EE || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_SLOT_1_8192EE 
+	flavor   bool
+        default_value 0
+        define -file system.h CONFIG_BT_COEXIST_92EE
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_REALSIL {
+        display "realsil wlan modification"
+        flavor   bool
+        default_value 1
+        define -file system.h CONFIG_RTL_819X_ECOS
+    }
+
+    ##########################################################################
+    # Select WiFi Band on Wlan0
+    ##########################################################################
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_BAND_5G_ON_WLAN0 {
+        display "Select 5g band on wlan0"
+        flavor   bool
+        default_value 1
+        define -file system.h CONFIG_BAND_5G_ON_WLAN0
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_NON_HAL_EXIST {
+        display "Non HAL exist"
+        active_if {RTLPKG_DEVS_ETH_RLTK_819X_WLAN_92C_SUPPORT || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_92D_SUPPORT || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_88E_SUPPORT || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_SUPPORT}
+        flavor   bool
+        default_value 1
+        define -file system.h CONFIG_RTL_WLAN_HAL_NOT_EXIST
+    }
+
+    cdl_component RTLPKG_DEVS_ETH_RLTK_819X_WLAN_OPTIONS {
+        display "819x wlan support build options"
+        flavor  none
+		no_define
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_CFLAGS_ADD {
+            display "Additional compiler flags"
+            flavor  data
+            no_define
+			default_value { "-D_KERNEL -D__ECOS -DDM_ODM_SUPPORT_TYPE=0x01 -include pkgconf/system.h -I$(REPOSITORY)/$(PACKAGE)/src/rtl8192cd/phydm -I$(REPOSITORY)/$(PACKAGE)/src/rtl8192cd -I$(REPOSITORY)/$(PACKAGE)/src/rtl8192cd/WlanHAL -I$(REPOSITORY)/$(PACKAGE)/src/rtl8192cd/WlanHAL/Include -I$(REPOSITORY)/$(PACKAGE)/src/rtl8192cd/WlanHAL/HalHeader -I$(REPOSITORY)/$(PACKAGE)/src/rtl8192cd/WlanHAL/HalMac88XX -I$(REPOSITORY)/$(PACKAGE)/src/rtl8192cd/WlanHAL/HalMac88XX/WlanHAL/HalMac88XX/halmac_88xx -I$(REPOSITORY)/$(PACKAGE)/src/rtl8192cd/WlanHAL/RTL88XX -I$(REPOSITORY)/$(PACKAGE)/src/rtl8192cd/WlanHAL/RTL88XX/RTL8197F -I$(REPOSITORY)/$(PACKAGE)/src/rtl8192cd/efuse_97f " }
+            description   "
+                This option modifies the set of compiler flags for
+                building the 819x wlan support package. These flags are used in addition
+                to the set of global flags."
+        }
+    }        
+}
