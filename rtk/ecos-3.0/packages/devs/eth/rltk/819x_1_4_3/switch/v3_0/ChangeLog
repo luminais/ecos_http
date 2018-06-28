@@ -1,0 +1,35 @@
+2010-03-05  David Hsu <davishsu@realtek.comcom>
+
+	* src/asicregs.h, rtl8651_debug.h,rtl_types.h, swTable.h
+	  devs_eth_rltk_819x_switch.inl, rtl8651_hwPatch.h, rtl_utils.h, types.h
+	  eth865x.c, rtl8651_layer2.h, swCore.c, vlanTable.c, if_819x.c 
+	  rtl8651_tblAsicDrv.h, swCore.h, vlanTable.h, if_819x.h, 
+	  rtl8651_tblDrv.h, swNic_poll.c, mbuf.h, rtl865xC_tblAsicDrv.h 
+	  swNic_poll.h, phy.h, rtl_errno.h, swTable.c
+	
+	* cdl/819x_eth_drivers.cdl: 
+	New package - RTL819x ethernet switch driver 
+	
+//===========================================================================
+// ####GPLCOPYRIGHTBEGIN####                                                
+// -------------------------------------------                              
+// This file is part of eCos, the Embedded Configurable Operating System.   
+// Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+//
+// This program is free software; you can redistribute it and/or modify     
+// it under the terms of the GNU General Public License as published by     
+// the Free Software Foundation; either version 2 or (at your option) any   
+// later version.                                                           
+//
+// This program is distributed in the hope that it will be useful, but      
+// WITHOUT ANY WARRANTY; without even the implied warranty of               
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU        
+// General Public License for more details.                                 
+//
+// You should have received a copy of the GNU General Public License        
+// along with this program; if not, write to the                            
+// Free Software Foundation, Inc., 51 Franklin Street,                      
+// Fifth Floor, Boston, MA  02110-1301, USA.                                
+// -------------------------------------------                              
+// ####GPLCOPYRIGHTEND####                                                  
+//===========================================================================
