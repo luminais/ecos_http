@@ -1,0 +1,204 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003~2005. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>System Command</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+var isMeshDefined = <% getIndex("isMeshDefined"); %> 
+
+function updateState(){
+	if(document.formSysLog.logEnabled.checked){
+		enableTextField(document.formSysLog.syslogEnabled);
+		enableTextField(document.formSysLog.wlanlogEnabled);
+		if(<% getIndex("dos_support") %>)
+			enableTextField(document.formSysLog.doslogEnabled);
+		enableTextField(document.formSysLog.rtLogEnabled);
+		if(document.formSysLog.rtLogEnabled.checked){
+			enableTextField(document.formSysLog.rtlogServer);
+		}
+		else{
+			disableTextField(document.formSysLog.rtlogServer);
+		}
+if( isMeshDefined ==1)
+		enableTextField(document.formSysLog.meshlogEnabled);
+		updateStateSys();
+	}
+	else {
+		disableTextField(document.formSysLog.syslogEnabled);
+		disableTextField(document.formSysLog.wlanlogEnabled);
+		if(<% getIndex("dos_support") %>)
+			disableTextField(document.formSysLog.doslogEnabled);
+		disableTextField(document.formSysLog.rtLogEnabled);
+		disableTextField(document.formSysLog.rtlogServer);
+if( isMeshDefined ==1)
+		disableTextField(document.formSysLog.meshlogEnabled);
+	}
+}
+
+function updateStateRemote()
+{
+	if(document.formSysLog.rtLogEnabled.checked)
+	{
+		enableTextField(document.formSysLog.rtlogServer);
+	}
+	else
+	{
+		disableTextField(document.formSysLog.rtlogServer);
+	}
+}
+function updateStateSys(){
+	if(document.formSysLog.syslogEnabled.checked){
+		disableTextField(document.formSysLog.wlanlogEnabled);
+if( isMeshDefined ==1)
+		disableTextField(document.formSysLog.meshlogEnabled);
+		if(<% getIndex("dos_support") %>)
+			disableTextField(document.formSysLog.doslogEnabled);
+	}
+	else {
+		enableTextField(document.formSysLog.wlanlogEnabled);
+if( isMeshDefined ==1)
+		enableTextField(document.formSysLog.meshlogEnabled);
+		if(<% getIndex("dos_support") %>)
+			enableTextField(document.formSysLog.doslogEnabled);
+	}
+}
+
+function scrollElementToEnd (element) {
+   if (typeof element.scrollTop != 'undefined' &&
+       typeof element.scrollHeight != 'undefined') {
+     element.scrollTop = element.scrollHeight;
+   }
+}
+
+function init()
+{
+	var cf = document.formSysLog;
+	var logEnabled = <%getIndex("logEnabled");%>;
+	
+	
+	if((<% getIndex("rtLogEnabled");%>) > 0){
+		cf.rtLogEnabled.checked = 1;
+	}
+	else{
+		cf.rtLogEnabled.checked = 0;
+	}
+	document.getElementById("remotelog_display").style.display = (<% getInfo("remotelog_support");%>) ? "block": "none";
+
+	
+    	if(logEnabled & 1) 
+        	cf.logEnabled.checked = 1;
+        else
+        	cf.logEnabled.checked = 0;
+
+    	if((logEnabled>>1) & 1)
+        	cf.syslogEnabled.checked = 1;
+        else
+        	cf.syslogEnabled.checked = 0;
+        
+        if((logEnabled>>2) & 1)
+        	cf.wlanlogEnabled.checked = 1;
+        else
+        	cf.wlanlogEnabled.checked = 0;
+      <% getIndex("dos_jscomment_start");%>  	
+        if((logEnabled>>3) & 1)
+        	cf.doslogEnabled.checked = 1;
+        else
+        	cf.doslogEnabled.checked = 0;
+		<% getIndex("dos_jscomment_end");%>
+	<% getInfo("mesh_jscomment_start");%>
+	if (isMeshDefined == 1) {
+	        if((logEnabled>>4) & 1)
+	        	cf.meshlogEnabled.checked = 1;
+	        else
+	        	cf.meshlogEnabled.checked = 0;
+	}
+	else {
+		cf.meshlogEnabled.checked = 0;
+		
+	}
+	<% getInfo("mesh_jscomment_end");%>
+
+
+	updateState();
+}
+function clear_log_buffer()
+{
+       document.formSysLog.msg.value="";
+}
+
+function check_ip_addr()
+{ 
+	if(document.formSysLog.rtLogEnabled.checked && document.formSysLog.logEnabled.checked){
+   		if ( document.formSysLog.rtlogServer.value=="")
+			document.formSysLog.rtlogServer.value = '0.0.0.0';
+		if (document.formSysLog.rtlogServer.value!="0.0.0.0"){
+			if ( checkIpAddr(document.formSysLog.rtlogServer, 'Invalid IP address ') == false )
+	    		return false;
+	    }
+	}
+    return true;
+}
+
+</script>
+</head>
+<blockquote>
+<h2><font color="#0000FF"><script>dw(syslog_header)</script></font></h2>
+
+<body onload="init();">
+  <table border=0 width="550" cellspacing=0 cellpadding=0>
+  <tr><font size=2>
+	<script>dw(syslog_header_explain)</script>
+  </tr>
+  <tr><hr size=1 noshade align=top></tr>
+  <form action=/formSysLog.htm method=POST name="formSysLog">
+
+  <tr><td width="200" ><font size=2><b><input type="checkbox" name="logEnabled" value="ON" onClick="updateState()">&nbsp;&nbsp;<script>dw(syslog_enable)</script></b></font>
+  </td></tr><br>
+
+  <table border="0" width=600>
+  <tr><td width="25%">&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="syslogEnabled" value="ON" onClick="updateStateSys()"> <font size=2><b><script>dw(syslog_sys_enable)</script></b></font><br></td>
+      <td width="25%"><input type="checkbox" name="wlanlogEnabled" value="ON" ><font size=2><b><script>dw(syslog_wireless_enable)</script></b></font><br></td> 
+<script>
+	if(<% getIndex("dos_support") %>)
+		document.write("<td width=\"25%\"><input type=\"checkbox\" name=\"doslogEnabled\"  value=\"ON\" ><font size=2><b>"+syslog_dos_enable+"</b></font><br></td>");
+</script>
+      <% getInfo("mesh_comment_start");%>
+      <td width="25%"><input type="checkbox" name="meshlogEnabled"  value="ON" ><font size=2><b><script>dw(syslog_11s_enable)</script></b></font><br></td>
+      <% getInfo("mesh_comment_end");%>
+  </tr>
+  </table>
+
+<div id="remotelog_display">
+   <table border="0" width=600>
+  <tr><td width="40%">&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="rtLogEnabled" value="ON" onClick="updateStateRemote()"> <font size=2><b><script>dw(syslog_rtlog_enable)</script></b></font><br></td>
+   	<td width="60%"><b><font size=2><script>dw(syslog_local_ipaddr)</script></b>&nbsp;&nbsp;
+	<input type="text" name="rtlogServer" value="<% getInfo("rtLogServer"); %>" size="15" maxlength="16"></td>
+  </tr>
+  </table>
+ </div>
+
+   <tr><td height=10> </td> </tr>
+   <tr><td colspan=2><p><input type="submit" name="Apply" onClick="return check_ip_addr()">&nbsp;&nbsp; </td></tr>
+   <script>document.formSysLog.Apply.value=syslog_apply;</script>
+
+  <p>
+  <input type="hidden" value="/syslog.htm" name="submit-url">
+  <textarea rows="15" name="msg" cols="80" wrap="virtual"><% sysLogList(); %></textarea>
+  <script>
+   scrollElementToEnd(document.formSysLog.msg);
+  </script>
+  <p>
+  <input type="button" name="refresh" onClick="javascript: window.location.reload()">
+  <script>document.formSysLog.refresh.value=syslog_refresh;</script>
+  &nbsp;&nbsp; <input type="submit" name="clear" onClick="clear_log_buffer()">
+  <script>document.formSysLog.clear.value=syslog_clear;</script>
+</form>
+</table>
+</body>
+</blockquote>
+</html>
+
+

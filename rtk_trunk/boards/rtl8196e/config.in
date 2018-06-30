@@ -1,0 +1,34 @@
+menu "System Configuration"
+ 
+config RTL_8196E
+        bool "96E GW"
+        help
+          This enables support for Realtek RTL8196E demo board
+
+config WATCHDOG
+        bool "WatchDog Support"
+ 
+config  MIPS16
+        bool "Mips16 Support"
+choice
+prompt "Selected RAM_SIZE"
+default RAM_SIZE_8M
+
+config RAM_SIZE_64M
+	bool "64M"
+
+config RAM_SIZE_32M
+	bool "32M"
+
+config RAM_SIZE_16M
+	bool "16M"
+
+config RAM_SIZE_8M
+	bool "8M"
+
+config RAM_SIZE_4M
+	bool "4M"
+endchoice
+
+endmenu
+

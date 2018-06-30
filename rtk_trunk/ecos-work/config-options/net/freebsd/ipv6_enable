@@ -1,0 +1,3 @@
+cdl_option CYGPKG_NET_INET6 {
+    user_value 1
+};

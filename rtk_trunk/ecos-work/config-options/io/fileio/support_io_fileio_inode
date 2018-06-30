@@ -1,0 +1,3 @@
+cdl_component CYGPKG_IO_FILEIO_INODE {
+		user_value 1
+	}

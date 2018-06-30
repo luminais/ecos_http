@@ -1,0 +1,3 @@
+cdl_option CYGNUM_HAL_RTC_DENOMINATOR {
+    user_value 1000
+};

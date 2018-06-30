@@ -1,0 +1,3 @@
+cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WLAN_8812_EXT_PA_TYPE {
+    user_value Skyworks-5022 
+};

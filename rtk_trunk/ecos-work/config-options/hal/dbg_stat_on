@@ -1,0 +1,3 @@
+cdl_option CYGPKG_HAL_DBG_STAT_SUPPORT {
+    user_value 1
+};

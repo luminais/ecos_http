@@ -1,0 +1,7 @@
+cdl_component CYGIMP_KERNEL_INTERRUPTS_DSRS_LIST {
+    user_value 0
+};
+
+cdl_component CYGIMP_KERNEL_INTERRUPTS_DSRS_TABLE {
+    user_value 1
+};

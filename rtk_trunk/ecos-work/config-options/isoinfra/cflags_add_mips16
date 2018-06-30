@@ -1,0 +1,3 @@
+cdl_option CYGPKG_ISOINFRA_CFLAGS_ADD {
+    user_value -mip16
+};

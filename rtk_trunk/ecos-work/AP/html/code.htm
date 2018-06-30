@@ -1,0 +1,292 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src='<% getLangInfo("lang");%>'></SCRIPT>
+<title>[insert your title here]</title>
+
+<script type="text/javascript" src="mtmcode.js">
+</script>
+
+<script type="text/javascript">
+// Framebuster script to relocate browser when MSIE bookmarks this
+// page instead of the parent frameset.  Set variable relocateURL to
+// the index document of your website (relative URLs are ok):
+var relocateURL = "/";
+
+if(parent.frames.length == 0) {
+  if(document.images) {
+    location.replace(relocateURL);
+  } else {
+    location = relocateURL;
+  }
+}
+</script>
+
+
+
+<script type="text/javascript">
+// Morten's JavaScript Tree Menu
+// version 2.3.2-macfriendly, dated 2002-06-10
+// http://www.treemenu.com/
+
+// Copyright (c) 2001-2002, Morten Wang & contributors
+// All rights reserved.
+
+// This software is released under the BSD License which should accompany
+// it in the file "COPYING".  If you do not have this file you can access
+// the license through the WWW at http://www.treemenu.com/license.txt
+
+// Nearly all user-configurable options are set to their default values.
+// Have a look at the section "Setting options" in the installation guide
+// for description of each option and their possible values.
+
+MTMDefaultTarget = "view";
+
+/******************************************************************************
+* User-configurable list of icons.                                            *
+******************************************************************************/
+
+var MTMIconList = null;
+MTMIconList = new IconList();
+MTMIconList.addIcon(new MTMIcon("menu_link_external.gif", "http://", "pre"));
+MTMIconList.addIcon(new MTMIcon("menu_link_pdf.gif", ".pdf", "post"));
+
+/******************************************************************************
+* User-configurable menu.                                                     *
+******************************************************************************/
+
+// Main menu.
+var menu = null;
+var wlan_num =  <% getIndex("wlan_num"); %> ;
+var wlan_support_92D =  <% getIndex("wlan_support_92D"); %> ;
+var wlan_support_8881A_selective=<% getIndex("wlan_support_8881a_selective"); %>;
+var selective_mode_support=wlan_support_92D||wlan_support_8881A_selective;
+var wlBandMode = <% getIndex("wlanBand2G5GSelect"); %> ;
+menu = new MTMenu();
+
+var isWDSDefined = <% getIndex("isWDSDefined"); %> ;
+var isMeshDefined =  <% getIndex("isMeshDefined"); %> ;
+var isSupportWlanSch = <% getIndex("isSupportWlanSch"); %> ;
+//	P2P_SUPPORT
+var isP2PSupport = <% getIndex("isP2PSupport"); %> ;
+//var is_wan_link="<% getInfo("is_wan_link"); %>"*1;
+
+var wlan1_phyband= "<% getIndex("wlan1_phyband"); %>" ;
+var wlan2_phyband= "<% getIndex("wlan2_phyband"); %>" ;
+var wlan;
+var wlan_name;
+var wlan0;
+var tcpip;
+var firewall;
+
+//var is_cmj="<% getInfo("is_cmj"); %>";
+var is_cmj=0;
+var is_xdg="<% getInfo("is_xdg"); %>"; 
+var ui_mode = <% getInfo("ui_mode"); %> ;
+var isAP = <% getIndex("isPureAP"); %>;
+
+menu.addItem(menu_wizard, 'wizard.htm', '', 'Setup Wizard');
+
+if (is_cmj & ui_mode) {
+	menu.addItem(menu_updateFm, "upload.htm", "", "Update firmware image");
+	menu.addItem(menu_status, "status.htm", "", "Display current status");
+}
+else {
+
+function get_form(page, wlan_id){
+	return '<%getInfo("redirect_form_name")%>?redirect-url='+page+'&wlan_id='+wlan_id ;
+}	
+
+function get_wan_form(page, wan_id){
+	return '<%getInfo("redirect_form_name")%>?redirect-url='+page+'&wan_id='+wan_id ;
+}
+if(isAP==0)
+	menu.addItem(menu_opmode, 'opmode.htm', '', 'Operation Mode');
+	
+
+menu.addItem(menu_wireless);
+wlan = new MTMenu();
+/******** wlan0 interface menu *********/
+if(selective_mode_support && !is_xdg)
+{
+	wlan.addItem('BandMode', 'wlbandmode.htm', '', 'Setup WLAN Band Mode');
+}
+
+for(i=0; i < wlan_num ; i++){
+	wlan_name= "wlan" +(i+1);
+	if(wlan_num == 1)
+		wlan0 = wlan ;
+	else
+	{	
+		if(selective_mode_support)
+		{
+			if(i==0 && wlan1_phyband != "")
+			{						
+				wlan_name=wlan_name+"("+wlan1_phyband+")";
+			}
+			else if(i==1 && wlan2_phyband != "")
+			{
+				wlan_name=wlan_name+"("+wlan2_phyband+")";
+			}
+			else
+			{
+				continue;
+			}
+		}
+		if(wlBandMode == 3) //3:BANDMODESIGNLE		
+			wlan_name = "wlan1";
+		wlan.addItem(wlan_name);
+	 	wlan0= new MTMenu();
+	}
+	wlan0.addItem(menu_basic, get_form("wlbasic.htm",i), "", "Setup wireless basic configuration");
+	wlan0.addItem(menu_advance,get_form("wladvanced.htm",i),"", "Setup wireless advanced configuration");
+//	wlan0.addItem("Security", get_form("wlwpa.htm",i), "", "Setup wireless security");
+	wlan0.addItem(menu_security, get_form("wlsecurity.htm",i), "", "Setup wireless security");
+	var rtl8021x_client_support = <% getIndex("rtl8021x_client_support") %>;
+	if(rtl8021x_client_support)
+	{
+		wlan0.addItem(menu_8021xCert, get_form("rsCertInstall.htm",i), "", "Install 802.1x certificates");
+	}
+	
+	
+	wlan0.addItem(menu_accessControl, get_form("wlactrl.htm",i), "", "Setup access control list for wireless clients");
+	
+	if( isWDSDefined ==1 )
+	wlan0.addItem(menu_wds, get_form("wlwds.htm",i), "", "Setup wireless distribution system");
+	
+	if( isMeshDefined ==1 )
+	wlan0.addItem(menu_mesh, get_form("wlmesh.htm",i), "", "Setup wireless mesh setting");
+	
+	wlan0.addItem(menu_siteSurvey, get_form("wlsurvey.htm",i), "",  "Setup access control list for wireless clients");	
+// for WPS
+//	wlan0.addItem("EasyConfig", get_form("wlautocfg.htm",i), "", "Setup wireless EasyConfig");
+	wlan0.addItem(menu_wps, get_form("wlwps.htm",i), "", "Wi-Fi Protected Setup");
+
+	if(isSupportWlanSch)
+	{
+		wlan0.addItem(menu_schedule, get_form("wlan_schedule.htm",i), "", "Wireles LAN Schedule");
+	}
+	if(wlan_num != 1)
+	wlan.makeLastSubmenu(wlan0);
+}
+//	P2P_SUPPORT
+	if(isP2PSupport == 1)
+		wlan.addItem('Wi-Fi Direct', get_form('wlp2p.htm',0), '', 'Setup Wifi Direct');
+		
+	menu.makeLastSubmenu(wlan);
+
+
+menu.addItem(menu_tcpip);
+tcpip = new MTMenu();
+tcpip.addItem(menu_lan, "tcpiplan.htm", "", "Setup LAN Interface");
+if(isAP == 0)
+{
+	var wan;
+	var wan_num=<% getIndex("wan_num") %>;
+	if(wan_num>1)
+	{
+		for(i=1;i<=wan_num;i++)
+		{
+			tcpip.addItem("wan"+i);
+			wan = new MTMenu()
+			wan.addItem(menu_wan, get_wan_form("tcpipwan.htm",i), "", "Setup WAN Interface");
+			tcpip.makeLastSubmenu(wan);
+		}
+	}else
+	{
+		tcpip.addItem(menu_wan, "tcpipwan.htm", "", "Setup WAN Interface");
+	}
+}
+menu.makeLastSubmenu(tcpip);
+
+/*
+	var wapi_support=<% getIndex("wapi_support");%>;
+var wlan_wapi;
+if(wapi_support)
+{
+	menu.addItem("WAPI");
+	wlan_wapi = new MTMenu();
+	wlan_wapi.addItem("Certification Install", "wlwapiinstallcert.htm", "", "Install Ceritification");
+}
+*/
+
+<% getInfo("IPv6_Menu"); %>
+if(isAP==0)
+{
+	var fw_support=<% getIndex("fw_support") %>;
+	if(fw_support){
+	menu.addItem(menu_fireWall);
+	firewall = new MTMenu();
+	firewall.addItem(menu_portFilter, "portfilter.htm", "", "Setup port filtering");
+	firewall.addItem(menu_ipFilter, "ipfilter.htm", "", "Setup IP filering");
+	firewall.addItem(menu_macFilter, "macfilter.htm", "", "Setup MAC filering");
+	firewall.addItem(menu_portFw, "portfw.htm", "", "Setup port-forwarding");
+	firewall.addItem(menu_urlFilter, "urlfilter.htm", "", "Setup URL filering");
+	//firewall.addItem("Trigger Port", "trigport.htm", "", "Setup trigger port");
+	firewall.addItem(menu_dmz, "dmz.htm", "", "Setup DMZ");
+	var vlan_support = <% getIndex("vlan_support") %>;
+	if(vlan_support)
+	{
+		firewall.addItem(menu_vlan, 'vlan.htm', '', 'Setup VLAN');
+	}
+	var vlan_wan_support = <% getIndex("vlan_wan_support") %>;
+	if(vlan_wan_support)
+	{
+		firewall.addItem('VLAN_WAN', 'vlan_wan.asp', '', 'Setup VLAN WAN TAG');
+	}
+	menu.makeLastSubmenu(firewall);
+
+	var qos_support=<% getIndex("qos_support") %>;
+	if(qos_support)
+	{
+		menu.addItem(menu_qos, 'ip_qos.htm', '', 'Setup QoS');
+	}
+	}
+	var route_support=<% getIndex("route_support") %>;
+	if(route_support)
+	{
+		menu.addItem(menu_routeSetup, "route.htm", "", "Route Setup");
+	}
+
+	var snmp_support = <% getIndex("snmp_support") %>;
+	if(snmp_support)
+	{
+		menu.addItem("SNMP", "snmp.htm", "", "SNMP Setup");
+	}
+}
+menu.addItem(menu_management);
+manage = new MTMenu();
+manage.addItem(menu_status, "status.htm", "", "Display current status");
+manage.addItem(menu_statistics, "stats.htm", "", "Display packet statistics");
+if(isAP==0)
+	manage.addItem(menu_ddns, "ddns.htm", "", "Setup Dynamic DNS");
+
+
+manage.addItem(menu_timeZone, "ntp.htm", "", "Setup Time Zone");
+if(isAP==0)
+{
+	if(<% getIndex("dos_support") %>)
+		manage.addItem(menu_dos, "dos.htm", "", "Setup DoS");
+}
+if(<%getIndex("syslog_support")%>)
+	manage.addItem(menu_log, "syslog.htm", "", "System Log");
+manage.addItem(menu_updateFm, "upload.htm", "", "Update firmware image");
+manage.addItem(menu_setting, "saveconf.htm", "", "Save/reload current settings");
+<% getInfo("cwmp_tr069_menu"); %>
+manage.addItem(menu_psw, "password.htm", "", "Setup access password");
+menu.makeLastSubmenu(manage);
+userName= "<% getInfo("userName"); %>" ;
+if(userName != "")
+        menu.addItem(menu_logout, "logout.htm", "", "Logout");
+
+}//end of if (is_cmj & ui_mode)
+
+
+
+
+</script>
+</head>
+<body onload="MTMStartMenu(true)" bgcolor="#000033" text="#ffffcc" link="yellow" vlink="lime" alink="red">
+</body>
+</html>

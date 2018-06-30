@@ -1,0 +1,13 @@
+说明：
+    1.本文件夹是按键相关的代码，实现代码放在src文件夹中，头文件放在include文件夹中；
+    2.添加一个新按键的步骤(以wifi按键为例)：
+     1)在src文件夹中新增一个wifi_button.c的源文件；
+     2)在wifi_button.c中完成两件事，第一是定义一个全局的按键描述结构wifi_button_desc，并完成初始化，
+     第二是写一个按键处理函数wifi_button_handle函数，用于处理wifi按键按下后所进行的动作；
+     3)在src/common.c的静态全局指针数组button_desc中，添加wifi_button.c中的wifi_button_desc结构；
+     4)在src/Makefile中将wifi_button.c加入进行编译即可。
+    PS：如果需要用功能宏控制起来，则需要在对应的config文件、src/Makefile文件、src/common.c文件中
+    添加相应的宏。
+
+
+Record by zhuhuan on 2016.07.04 

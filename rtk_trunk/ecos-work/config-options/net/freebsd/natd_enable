@@ -1,0 +1,3 @@
+cdl_component CYGPKG_NOT_NET_NATD {
+    user_value 0
+};

@@ -1,0 +1,399 @@
+body {
+  background: #e4e4e4;
+}
+
+.form-actions {
+  padding-top: 10px;
+  margin-top: 18px;
+  margin-bottom: 30px;
+}
+
+.placeholder-content .placeholder-text {
+  line-height: 34px !important;
+}
+
+.logo-wrap {
+  /*height: 30px;*/
+  height: 50px;
+  padding: 0px;
+  margin-bottom: 20px;
+  margin-top: 60px;
+}
+
+.logo-wrap .logo-text {
+  margin-top: 13px;
+  padding-left: 0px;
+  color: #999999;
+}
+
+.logo-wrap .img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.quickSet {
+  /*margin-top:46px;*/
+  min-height: 480px;
+  padding-bottom: 40px;
+  background: #fff;
+  box-shadow: 0 0 12px #ccc;
+}
+
+.quickContent {
+  padding-bottom: 40px;
+  padding: 20px 40px;
+}
+
+.quickContent .quickset-connect-info {
+  color: #999;
+  text-align: left;
+}
+
+.quickContent .control-label {
+  text-align: right;
+  padding-right: 1px;
+  color: #666;
+}
+
+.icon-internet.quickSet-net-icon, .icon-wireless.quickSet-wireless-icon {
+  font-size: 48px;
+  color: #555;
+}
+
+.pic-success {
+  background: url(../img/totalPicture.png) -88px -133px no-repeat;
+  display: inline-block;
+  width: 75px;
+  height: 75px;
+}
+
+.network-config-wrapper, .wireless-config {
+  display: inline-block;
+  width: 465px;
+  text-align: left;
+}
+
+.network-pic-wrapper, .wireless-pic-wrapper {
+  float: left;
+  width: 100px;
+  height: 100px;
+  margin: 10px 0;
+}
+
+.quickset-footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  height: 68px;
+  background: #f2f2f2;
+  border-top: 1px solid #ddd;
+}
+
+#savedWrap .text-warn {
+  font-weight: 700;
+  font-style: normal;
+  font-size: 16px;
+  color: #FF6600;
+}
+
+#inportWanPPPOE .oldDev {
+  position: absolute;
+  left: 124px;
+  top: 37px;
+  z-index: 1;
+}
+
+#inportWanPPPOE .dialog-container {
+  padding: 14px 46px;
+}
+
+#inportWanPPPOE .newDev {
+  position: absolute;
+  left: 368px;
+  top: 83px;
+  z-index: 1;
+}
+
+#inportWanPPPOE img {
+  height: 274px;
+}
+
+@media (max-width: 767px) {
+  .quickSet {
+    margin-top: 15px;
+    padding: 10px;
+    min-height: 460px;
+  }
+  #inportWanPPPOE .dialog-container {
+    height: 400px;
+    overflow-y: auto;
+    padding: 14px 16px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .logo-wrap {
+    /*height:50px;*/
+  }
+  .logo-wrap img {
+    width: 102px;
+    height: 23px;
+  }
+}
+
+@media (max-width: 550px) {
+  .logo-wrap {
+    height: 60px;
+  }
+}
+
+@media (max-width: 900px) {
+  #inportWanPPPOE .oldDev {
+    left: 60px;
+    top: 5px;
+  }
+  #inportWanPPPOE .newDev {
+    left: 220px;
+    top: 50px;
+  }
+  #inportWanPPPOE img {
+    height: 165px;
+  }
+}
+
+@media (max-width: 767px) {
+  #inportWanPPPOE img {
+    height: 135px;
+  }
+  #inportWanPPPOE .newDev {
+    left: 356px;
+    top: 31px;
+  }
+}
+
+@media (max-width: 752px) {
+  #inportWanPPPOE .newDev {
+    left: 305px;
+  }
+}
+
+@media (max-width: 500px) {
+  #inportWanPPPOE .newDev {
+    left: 212px;
+    top: 20px;
+  }
+  #inportWanPPPOE img {
+    height: 105px;
+  }
+}
+
+@media (max-width: 350px) {
+  #inportWanPPPOE .newDev {
+    left: 150px;
+  }
+}
+
+.quickContent header {
+  margin: 10px 0;
+}
+
+.quickContent .net-status {
+  width: 100%;
+  height: auto;
+}
+
+#quickSetStaticWrap .form-group {
+  margin-bottom: 5px;
+}
+
+.quickSet h1 {
+  font-size: 22px;
+  color: #ed7020;
+}
+
+.quickSet h2 {
+  font-size: 18px;
+}
+
+.quickContent .content {
+  padding: 40px 0 20px;
+}
+
+.text-wrap {
+  padding: 20px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.count {
+  color: #666;
+  line-height: 96px;
+  background: #fff;
+}
+
+.icon-check-circled, .icon-warn-circled {
+  font-size: 94px;
+  color: #52d11a;
+  font-weight: 100;
+  line-height: inherit;
+}
+
+#lodding-tips {
+  width: 170px;
+  margin-bottom: 40px;
+  height: 22px;
+}
+
+.img-responsive .icon-warn-circled {
+  color: #f30;
+  margin-bottom: 40px;
+}
+
+.test-tips {
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  left: 50%;
+  margin-left: -150px;
+  top: 100px;
+  z-index: 99;
+  padding: 10px;
+  color: #000;
+  background-color: #ccc;
+  border-radius: 8px;
+}
+
+#wireSuccess {
+  margin-top: 30px;
+  font-style: normal;
+  font-size: 14px;
+  color: #ccc;
+}
+
+#wirelessSuccess {
+  font-weight: 400;
+  font-size: 16px;
+  color: #333333;
+}
+
+@media (max-width: 550px) {
+  .network-config-wrapper, .wireless-config {
+    width: 80%;
+  }
+}
+
+@media (max-width: 480px) {
+  .wireless-config {
+    width: 100%;
+  }
+  .wireless-pic-wrapper, .network-pic-wrapper {
+    float: none;
+    margin: 10px auto;
+  }
+  .logo-text {
+    text-align: center;
+  }
+  .network-config-wrapper {
+    width: 100%;
+  }
+}
+
+.wireless-box {
+  width: 450px;
+  height: 322px;
+  background-color: #fff;
+  border-radius: 5px;
+  margin: 100px auto;
+  position: relative;
+}
+
+.wireless-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 60px;
+  width: 100%;
+  background-color: #f2f2f2;
+  border-top: 1px solid #ddd;
+}
+
+.wireless-footer button {
+  width: 156px;
+  margin: 11px auto;
+  background-color: #58bf14;
+  color: #fff;
+}
+
+.wireless-header {
+  text-align: center;
+  padding-top: 20px;
+  margin-bottom: 40px;
+}
+
+.wireless-content .controls {
+  display: inline-block;
+}
+
+.wireless-content .control-group {
+  margin-bottom: 10px;
+}
+
+.wireless-content .control-label {
+  width: 150px;
+  text-align: right;
+  float: left;
+  position: relative;
+  top: 7px;
+  padding: 0 7px 3px 0;
+}
+
+@media (max-width: 414px) {
+  .wireless-box {
+    width: 100%;
+  }
+  .wireless-footer button {
+    width: 90%;
+  }
+  .wireless-content {
+    width: 60%;
+    margin: 0 auto;
+  }
+  .wireless-content .control-label {
+    text-align: left;
+  }
+  .wireless-header {
+    margin-bottom: 20px;
+  }
+  .wireless-content .has-error .help-block, .wireless-content .control-group {
+    margin-bottom: 0;
+  }
+}
+
+.btn-primary {
+  color: #fff;
+  background: #58bf14;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #61e04d;
+}
+
+.btn-primary:active {
+  background: #009f05;
+}
+
+.longthen {
+  width: 220px;
+}
+
+@media (min-width: 992px) {
+  .lang-en .type-radios {
+    width: 70%;
+  }
+  .lang-en .connection-type {
+    margin-right: -90px;
+    margin-left: -40px;
+  }
+}

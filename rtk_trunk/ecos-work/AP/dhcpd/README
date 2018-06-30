@@ -1,0 +1,72 @@
+This directory includes WIDE version DHCP server.  We confirm that it
+runs on BSD/OS 3.1, NEWS-OS 4.2, SunOS 4.1.4, and FreeBSD 2.2.8.
+
+There are following files in this directory;
+
+	Makefile		general Makefile
+	Makefile.FreeBSD	Makefile for FreeBSD
+	Makefile.bsdos		Makefile for BSD/OS 3.1
+	Makefile.news		Makefile for NEWS-OS
+	Makefile.sunos4		Makefile for SunOS 4.1.4
+	README			This file
+	README.jis		This file (in Japanese)
+	common.h
+	common_subr.c		common subroutines
+	common_subr.h		header file for common subroutines
+	ctime.c
+	database.c		routines to manage databases
+	database.h
+	dhcp.h			Protocol specific header file
+	dhcpdb.pool.5		manual 1 (nroff)
+	dhcpdb.pool.5.jis	manual 1 (in Japanese)
+	dhcpdb.relay.5		manual 2 (nroff)
+	dhcpdb.relay.5.jis	manual 2 (in Japanese)
+	dhcps.8			manual 3 (nroff)
+	dhcps.8.jis		manual 3 (in Japanese)
+	dhcps.c			main routine
+	dhcps.h
+	getmac.c		routine which gets MAC address
+	hash.c			hash routine
+	hash.h
+	interface.c		subroutines concerned with network interface
+
+
+1. How to Compile and Install
+
+Please enter the following command.  The dhcp server named dhcps will
+be created.
+
+   SONY NEWS-OS;		make OSTYPE=news
+   BSD/OS 3.1;			make OSTYPE=bsdos
+   SunOS 4.1.4;			make OSTYPE=sunos4
+   FreeBSD;			make OSTYPE=FreeBSD
+
+Please copy dhcps to appropriate appropriate directory such as
+/usr/etc for SunOS and NEWS-OS, /usr/sbin for BSD/OS and FreeBSD.
+dhcps can be executed from "/etc/rc.local", if you want to do so.
+
+The dhcps prints out error messages to syslog with LOG_LOCAL0
+facility.  Please add following description to syslog.conf if you
+want. (This is optional configuration and isn't required to operate).
+Actual description for each OS may have subtle differences.
+
+	local0.*			/var/log/dhcplog
+
+
+2. Usage
+
+The set of IP addresses managed by the server is called an address
+pool.  And the DHCP client can't communicate with the DHCP server
+which is on another subnet.  The relay agent enables interaction
+between the server and client in such environment.
+
+The server requires two databases; One is /etc/dhcpdb.pool to describe
+the address pool, and other is /etc/dhcpdb.relay to describe
+information about relay agent.  A file "/etc/dhcpdb.bind" (or
+"/var/db/dhcpdb.bind" on BSD/OS and FreeBSD) will be created by the
+server to manage information about address assignments, but basically
+you don't have to edit this file.
+
+After you've written these two configuration files, you can start
+dhcps.  Please refer manual and README included in ../db_sample to
+know more detail about how to use and configure server.

@@ -1,0 +1,3 @@
+cdl_option CYGNUM_NET_THREAD_STACKSIZE {    
+	user_value 16384
+};

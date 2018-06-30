@@ -1,0 +1,3 @@
+cdl_option CYGPKG_NET_MEM_USAGE {
+    user_value 4505600
+};

@@ -1,0 +1,3 @@
+cdl_option CYGDBG_NET_TIMING_STATS {
+    user_value 1
+};

@@ -1,0 +1,3 @@
+cdl_option CYGPKG_RTL_WANIP_SAME_WITH_GWIP_SUPPORT {
+    user_value 1
+};

@@ -1,0 +1,210 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>Wireless Access Control</title>
+<script type="text/javascript" src="util_gw.js"></script>
+<script>
+function addClick()
+{
+  var str = document.formWlAcAdd.mac.value;
+
+  if (document.formWlAcAdd.wlanAcEnabled.selectedIndex == 0)
+	return true;
+
+	// WPS2DOTX  ; 4.2.7
+    wlanMode = <% write(getIndex("wlanMode")); %>;	
+	if(wlanMode==0 || wlanMode==3){
+      if (document.formWlAcAdd.wlanAcEnabled.selectedIndex == 1){	
+	    if(!confirm(wlactrl_apply_explain)){
+		   return false;
+	    }
+     }
+   }
+   
+	
+  if ( str.length == 0)
+  	return true;
+
+  if ( str.length < 12) {
+	alert(wlactrl_apply_mac_short);
+	document.formWlAcAdd.mac.focus();
+	return false;
+  }
+
+  if( !checkMacAddr_ACL(document.formWlAcAdd.mac,"mac address invalid!"))
+    return false;
+
+  for (var i=0; i<str.length; i++) {
+    if ( (str.charAt(i) >= '0' && str.charAt(i) <= '9') ||
+			(str.charAt(i) >= 'a' && str.charAt(i) <= 'f') ||
+			(str.charAt(i) >= 'A' && str.charAt(i) <= 'F') )
+			continue;
+
+	alert(wlactrl_apply_mac_invalid);
+	document.formWlAcAdd.mac.focus();
+	return false;
+  }
+  return true;
+}
+
+function deleteClick()
+{
+  acl_num = <% getIndex("wlanAcNum"); %> ;
+  delNum = 0 ;
+  for(i=1 ; i <= acl_num ; i++){
+  	if(document.formWlAcDel.elements["select"+i].checked)
+  		delNum ++ ;
+  }
+  if(document.formWlAcAdd.wlanAcEnabled.selectedIndex==1 && delNum==acl_num){
+		if ( !confirm(wlactrl_delete_result) )
+			return false;
+  		else if ( !confirm(wlactrl_delete_select) ) 
+			return false;
+  }
+  else
+	return true;
+}
+
+function deleteAllClick()
+{
+   if(document.formWlAcAdd.wlanAcEnabled.selectedIndex==1){
+	if ( !confirm(wlactrl_delete_result) )
+		return false;
+   else if ( !confirm(wlactrl_delete_all) )
+		return false;
+  }
+  else
+	return true;
+}
+function disableDelButton()
+{
+	disableButton(document.formWlAcDel.deleteSelFilterMac);
+	disableButton(document.formWlAcDel.deleteAllFilterMac);
+}
+
+function enableAc()
+{
+  enableTextField(document.formWlAcAdd.mac);
+  enableTextField(document.formWlAcAdd.comment);
+}
+
+function disableAc()
+{
+  disableTextField(document.formWlAcAdd.mac);
+  disableTextField(document.formWlAcAdd.comment);
+}
+
+function updateState(filed)
+{
+  wlanDisabled = <% getIndex("wlanDisabled"); %> ;
+  wlanMode = <% getIndex("wlanMode"); %>;
+  var wlanState="<%getScheduleInfo("wlan_state");%>";
+  if(wlanDisabled || wlanMode == 1 || wlanMode ==2 || wlanState=='Disabled'){
+	disableDelButton();
+	disableButton(document.formWlAcDel.reset);
+	disableButton(document.formWlAcAdd.reset);
+	disableButton(document.formWlAcAdd.addFilterMac);
+  	disableTextField(document.formWlAcAdd.wlanAcEnabled);
+  	disableAc();
+  } 
+  else{
+  if (filed.selectedIndex > 0)
+ 	enableAc();
+  else
+  	disableAc();
+  }
+
+}
+
+function resetForm()
+{
+	document.formWlAcAdd.wlanAcEnabled.selectedIndex = <% getIndex("wlanAcEnabled"); %> ;
+	document.formWlAcAdd.mac.value="";
+	document.formWlAcAdd.comment.value="";
+	
+}
+</script>
+</head>
+
+<body>
+<blockquote>
+<h2><font color="#0000FF">
+
+<script type="text/javascript">
+var wlan_num =  <% getIndex("wlan_num"); %>;
+if (wlan_num > 1) {
+	var wlan_idx_ = <% getIndex("wlan_idx"); %> + 1;
+	dw(wlactrl_morelan_header + wlan_idx_ + "</p>");
+}
+else
+	dw(wlactrl_onelan_header);
+</script>
+</font></h2>
+
+<table border=0 width="500" cellspacing=4 cellpadding=0>
+<tr><font size=2>
+<script>dw(wlactrl_header_explain)</script>
+</font></tr>
+
+<form action=/formWlAc.htm method=POST name="formWlAcAdd">
+<tr><hr size=1 noshade align=top><br></tr>
+
+<!--
+<tr><font size=2><b>
+   <input type="checkbox" name="wlanAcEnabled" value="ON" <% if (getIndex("wlanAcEnabled")) write("checked");
+   %> onclick="updateState()">&nbsp;&nbsp;Enable Wireless Access Control</b>
+</tr>
+-->
+<tr> <font size=2><b>
+   	<script>dw(wlactrl_accmode)</script>&nbsp;&nbsp;&nbsp;&nbsp;
+	<select size="1" name="wlanAcEnabled" onChange="updateState(this)">
+          <option value="0" ><script>dw(wlactrl_accmode_diable)</script></option>
+          <option value="1" selected ><script>dw(wlactrl_accmode_allowlist)</script></option>
+          <option value="2" ><script>dw(wlactrl_accmode_denylist)</script></option>
+        </select></font></b>
+	<script>
+	document.formWlAcAdd.wlanAcEnabled.selectedIndex = <% getIndex("wlanAcEnabled"); %> ;
+	</script>
+</tr>
+<tr><td>
+
+     <p><font size=2><b><script>dw(wlactrl_macaddr)</script></b> <input type="text" name="mac" size="15" maxlength="12">&nbsp;&nbsp;
+   	<b><font size=2><script>dw(wlactrl_comment)</script></b> <input type="text" name="comment" size="16" maxlength="20"></font>
+     </p>
+     <p><input type="submit" name="addFilterMac" onClick="return addClick()">&nbsp;&nbsp;
+     	<script>document.formWlAcAdd.addFilterMac.value=wlactrl_apply;</script>
+        <input type="button" name="reset" onClick="resetForm();">&nbsp;&nbsp;&nbsp;
+        <script>document.formWlAcAdd.reset.value=wlactrl_reset;</script>
+        <input type="hidden" value="/wlactrl.htm" name="submit-url">
+     </p>
+  </form>
+</table>
+<br>
+<form action=/formWlAc.htm method=POST name="formWlAcDel">
+  <table border="0" width=440>
+  <tr><font size=2><b><script>dw(wlactrl_accctrl_list)</script></b></font></tr>
+  <% wlAcList(); %>
+  </table>
+  <br>
+  <input type="submit" name="deleteSelFilterMac" onClick="return deleteClick()">&nbsp;&nbsp;
+  <script>document.formWlAcDel.deleteSelFilterMac.value=wlactrl_delete_select_btn;</script>
+  <input type="submit" name="deleteAllFilterMac" onClick="return deleteAllClick()">&nbsp;&nbsp;&nbsp;
+  <script>document.formWlAcDel.deleteAllFilterMac.value=wlactrl_delete_all_btn;</script>
+  <input type="reset" name="reset">
+  <script>document.formWlAcDel.reset.value=wlactrl_reset;</script>
+  <input type="hidden" value="/wlactrl.htm" name="submit-url">
+ <script>
+	var entryNum = <% getIndex("wlanAcNum"); %>;
+	if ( entryNum == 0 )
+		disableDelButton();
+
+	updateState(document.formWlAcAdd.wlanAcEnabled);
+ </script>
+</form>
+
+</blockquote>
+</body>
+</html>

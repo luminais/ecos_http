@@ -1,0 +1,4 @@
+cdl_component CYGPKG_NET_FREEBSD_PPP_RESERVED_CLUSTER {
+	user_value 1
+}
+

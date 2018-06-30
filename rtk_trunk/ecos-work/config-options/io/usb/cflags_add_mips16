@@ -1,0 +1,3 @@
+cdl_option RTLPKG_IO_USB_HOST_CFLAGS_ADD {
+	user_value "-D_KERNEL -mips16"
+}

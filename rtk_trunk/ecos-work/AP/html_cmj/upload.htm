@@ -1,0 +1,93 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>Firmware Update</title>
+<link href="style_cmj.css" rel="stylesheet" type="text/css">
+<style>
+.on {display:on}
+.off {display:none}
+</style>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+var MWJ_progBar = 0;
+var time=0;
+var delay_time=1000;
+var loop_num=0;
+
+function progress()
+{
+  if (loop_num == 3) {
+	alert(upload_up_failed);
+	return false;
+  }
+  if (time < 1) 
+	time = time + 0.033;
+  else {
+	time = 0;
+	loop_num++;
+  }
+  setTimeout('progress()',delay_time);  
+  myProgBar.setBar(time); 
+}
+
+
+function sendClicked(F)
+{
+  if(document.upload.binary.value == ""){
+      	document.upload.binary.focus();
+  	alert(upload_send_file_empty);
+  	return false;
+  }
+  F.submit();
+  show_div(true, "progress_div");   
+  progress();
+  return true;
+}
+
+</script>
+
+</head>
+<body bgColor="transparent">
+<blockquote>
+<h2><script>dw(upload_header)</script></h2>
+
+<form method="post" action=/formUpload.htm enctype="multipart/form-data" name="upload">
+<table border="0" cellspacing="4" width="500">
+ <tr><font size=2>
+ <script>dw(upload_header_explain)</script>
+ </tr>
+  <tr><hr size=1 noshade align=top></tr>
+
+<tr>
+    <td width="50%"><font size=2><b><script>dw(upload_version)</script></b>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td width="50%"><font size=2><% getInfo("fwVersion"); %></td>
+</tr>
+  <tr>
+      <td width="20%"><font size=2><b><script>dw(upload_file_select)</script></b>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+      <td width="80%"><font size=2><input type="file" name="binary" size=20></td>
+  </tr>
+  </table> 
+    <p> <input type=button name="send" onclick=sendClicked(this.form)>&nbsp;&nbsp;
+    <script>document.upload.send.value=upload_send;</script>
+	<input type="reset" name="reset">
+	<script>document.upload.reset.value=upload_reset;</script>
+	<input type="hidden" value="/upload.htm" name="submit-url">
+    </p>
+ </form> 
+ <script type="text/javascript" language="javascript1.2">
+		var myProgBar = new progressBar(
+			1,         //border thickness
+			'#000000', //border colour
+			'#ffffff', //background colour
+			'#043db2', //bar colour
+			300,       //width of bar (excluding border)
+			15,        //height of bar (excluding border)
+			1          //direction of progress: 1 = right, 2 = down, 3 = left, 4 = up
+		);
+</script>
+ </blockquote>
+</body>
+</html>

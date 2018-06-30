@@ -1,0 +1,3 @@
+cdl_option CYGPKG_NET_SNIPER {
+    user_value 1
+};

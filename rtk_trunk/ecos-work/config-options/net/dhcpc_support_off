@@ -1,0 +1,3 @@
+cdl_component CYGPKG_NET_DHCP {
+    user_value 0
+};

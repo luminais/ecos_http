@@ -1,0 +1,3 @@
+cdl_option CYGIMP_HAL_COMMON_INTERRUPTS_IGNORE_SPURIOUS {
+    user_value 1
+};

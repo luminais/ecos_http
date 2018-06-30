@@ -1,0 +1,3 @@
+cdl_component CYGPKG_NET_IGMPPROXY_KERNEL_MODE {
+    user_value 1
+};

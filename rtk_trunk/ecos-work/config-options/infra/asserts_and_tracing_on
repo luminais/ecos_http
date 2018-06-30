@@ -1,0 +1,3 @@
+cdl_component CYGPKG_INFRA_DEBUG {
+    user_value 1
+};

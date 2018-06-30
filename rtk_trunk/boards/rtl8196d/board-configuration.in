@@ -1,0 +1,11 @@
+choice
+prompt "Selected Board Configuration"
+
+config MODEL_rtl8196d-8194
+	bool "rtl8196d-8194"
+
+config MODEL_rtl8196d-8194-mp
+	bool "rtl8196d-8194-mp"
+
+
+endchoice

@@ -1,0 +1,3 @@
+cdl_component CYGSEM_HAL_IMEM_SUPPORT {
+    user_value 0
+};

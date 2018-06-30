@@ -1,0 +1,3 @@
+cdl_component CYGPKG_TIMER_HZ_1K {
+    user_value 1
+};

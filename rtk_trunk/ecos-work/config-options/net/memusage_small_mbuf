@@ -1,0 +1,11 @@
+cdl_option CYGPKG_NET_MEMPOOL_SIZE {
+    user_value 1310720
+};
+
+cdl_option CYGPKG_NET_MBUFS_SIZE {
+    user_value 524288
+};
+
+cdl_option CYGPKG_NET_CLUSTERS_SIZE {
+    user_value 1838080
+};

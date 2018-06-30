@@ -1,0 +1,3 @@
+cdl_option CYGSEM_HAL_USE_ROM_MONITOR {
+    user_value 0 GDB_stubs
+};

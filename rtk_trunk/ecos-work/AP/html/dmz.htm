@@ -1,0 +1,94 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>DMZ Host</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+function saveClick()
+{
+  if (!document.formDMZ.enabled.checked)
+  	return true;
+
+  if (document.formDMZ.ip.value=="")
+	return true;
+
+  if ( checkIpAddr(document.formDMZ.ip, firewall_ipaddr_invalid) == false )
+	    return false;
+	    
+	var LAN_IP = ipv4_to_unsigned_integer("<% getInfo("ip"); %>");
+	var LAN_MASK = ipv4_to_unsigned_integer("<% getInfo("mask"); %>");			
+
+	var tarIp = ipv4_to_unsigned_integer(document.formDMZ.ip.value);
+
+	if ((tarIp & LAN_MASK) != (LAN_IP & LAN_MASK))
+	{
+		alert(ip_should_in_current_subnet);
+		return false;
+	}
+	if (tarIp == LAN_IP)
+	{
+		alert(ip_should_be_different_from_lanip);
+		return false;
+	}
+    
+
+  return true;
+}
+
+function updateState()
+{
+  if (document.formDMZ.enabled.checked) {
+ 	enableTextField(document.formDMZ.ip);
+  }
+  else {
+ 	disableTextField(document.formDMZ.ip);
+  }
+}
+
+function Load_Setting()
+{
+	if ( <% getIndex("dmzEnabled"); %> )
+		document.formDMZ.enabled.checked = true;
+	updateState();
+}
+</script>
+</head>
+
+<body onload="Load_Setting();">
+<blockquote>
+<h2><font color="#0000FF"><script>dw(dmz_header)</script></font></h2>
+
+<table border=0 width="500" cellspacing=4 cellpadding=0>
+<tr><td><font size=2>
+
+<script>dw(dmz_header_explain)</script>
+
+</font></td></tr>
+
+<tr><td><hr size=1 noshade align=top></td></tr>
+
+<form action=/formDMZ.htm method=POST name="formDMZ">
+<tr><td><font size=2><b>
+   	<input type="checkbox" name="enabled" value="ON" ONCLICK=updateState()>&nbsp;&nbsp;<script>dw(dmz_enable)</script></b>
+    </td>
+</tr>
+<tr><td>
+     <font size=2><b><script>dw(dmz_host_ipaddr)</script></b><input type="text" name="ip" size="15" maxlength="15" value=<% getInfo("dmzHost"); %> ></font>
+</td></tr>
+<tr><td>
+   <br>
+     <input type="submit" value="Apply Changes" name="save" onClick="return saveClick()">&nbsp;&nbsp;
+     <script>document.formDMZ.save.value=firewall_apply;</script>
+        <input type="reset" value="Reset" name="reset">
+        <script>document.formDMZ.reset.value=firewall_reset;</script>
+        <input type="hidden" value="/dmz.htm" name="submit-url">
+</td></tr>
+     <script> updateState(); </script>
+</form>
+</table>
+</blockquote>
+</body>
+</html>

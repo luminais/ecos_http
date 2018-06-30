@@ -1,0 +1,3 @@
+cdl_option CYGFUN_KERNEL_ALL_THREADS_STACK_CHECKING {
+	user_value 1
+};

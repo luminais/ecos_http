@@ -1,0 +1,3 @@
+cdl_component CYGPKG_NET_FAST_THREAD_TICKLE_DEVS {
+    user_value 0
+};

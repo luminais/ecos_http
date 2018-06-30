@@ -1,0 +1,291 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved.-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>LAN Interface Setup </title>
+<% language=javascript %>
+<script type="text/javascript" src="util_gw.js"> </script>
+<SCRIPT>
+var initialDhcp;
+
+function tpcipLanEnableAll()
+{
+	with(document.tcpip)
+	{
+		enableTextField(lan_ip);
+		enableTextField(lan_mask);
+		enableTextField(lan_gateway);
+		enableTextField(dhcpRangeStart);
+		enableTextField(dhcpRangeEnd);
+		enableTextField(domainName);
+		enableTextField(dhcpLeaseTime);
+		enableButton(dhcpClientTbl);
+		enableButton(staticdhcpTbl);
+	}
+}
+function dhcpChange(field)
+{
+	tpcipLanEnableAll();
+	with(document.tcpip)
+	{
+		if(field.value == "disable")
+		{
+			disableTextField(dhcpRangeStart);
+			disableTextField(dhcpRangeEnd);
+			disableButton(dhcpClientTbl );
+			disableTextField(dhcpLeaseTime);
+			disableButton(staticdhcpTbl);
+			//disableTextField(domainName);
+		}
+		else if(field.value == "client")
+		{
+			disableTextField(lan_ip);
+			disableTextField(lan_mask);
+			disableTextField(lan_gateway);
+			disableTextField(dhcpRangeStart);
+			disableTextField(dhcpRangeEnd);
+			disableButton(dhcpClientTbl );
+			disableTextField(dhcpLeaseTime);
+			disableButton(staticdhcpTbl);
+			//disableTextField(domainName);			
+		}
+		else if(field.value == "server" || field.value == "auto")
+		{
+		}
+		else
+		{
+			alert(tcpip_lan_wrong_dhcp_field+field.value);
+		}
+	}	
+}
+
+function resetClick()
+{
+  
+   document.tcpip.reset;
+   location=location;
+}
+
+
+function checkClientRange(start,end)
+{
+  var start_d = getDigit(start,4);
+  start_d += getDigit(start,3)*256;
+  start_d += getDigit(start,2)*256;
+  start_d += getDigit(start,1)*256;
+
+  var end_d = getDigit(end,4);
+  end_d += getDigit(end,3)*256;
+  end_d += getDigit(end,2)*256;
+  end_d += getDigit(end,1)*256;
+
+  if ( start_d < end_d )
+	return true;
+
+  return false;
+}
+
+
+function saveChanges()
+{
+	var form=document.tcpip;
+	var tarIp = ipv4_to_unsigned_integer(form.lan_ip.value);
+	if (!form.lan_ip.disabled && ((tarIp & 0xFF000000) == 0x00000000))
+	{
+		alert(tcpip_check_ip_msg);
+		form.lan_ip.focus();
+		return false;
+	}
+  	if(!form.lan_ip.disabled && !checkIpAddr(form.lan_ip, tcpip_check_ip_msg))	    return false;
+	if(!form.lan_mask.disabled&&!checkIPMask(form.lan_mask))  	return false ;
+	if(!form.lan_gateway.disbaled&&!checkGateway(form.lan_gateway,form.lan_ip,form.lan_mask)) return false;
+
+	if(!form.dhcpRangeStart.disabled && !form.dhcpRangeEnd.disabled)
+	{
+		if(!checkHostIPValid(form.dhcpRangeStart,form.lan_mask,tcpip_lan_start_ip)) 
+			return false;
+		if(!checkHostIPValid(form.dhcpRangeEnd,form.lan_mask,tcpip_lan_end_ip)) 
+			return false;
+		if (!checkSubnet(form.lan_ip.value,form.lan_mask.value,form.dhcpRangeStart.value)) 
+		{
+			alert(tcpip_lan_start_ip +tcpip_lan_ip_alert);
+			form.dhcpRangeStart.value = form.dhcpRangeStart.defaultValue;
+			form.dhcpRangeStart.focus();
+			return false;
+		}
+		if ( !checkSubnet(form.lan_ip.value,form.lan_mask.value,form.dhcpRangeEnd.value)) 
+		{
+			alert(tcpip_lan_end_ip +tcpip_lan_ip_alert);
+			form.dhcpRangeEnd.value = form.dhcpRangeEnd.defaultValue;
+			form.dhcpRangeEnd.focus();
+			return false;
+		}
+		if ( !checkClientRange(form.dhcpRangeStart.value,form.dhcpRangeEnd.value) ) 
+		{
+			alert(tcpip_lan_invalid_rang);
+			form.dhcpRangeStart.focus();
+			return false;
+        }
+	}  
+
+	if(!check_macAddr(form.lan_macAddr)) return false;
+	if(!checkIntSize(form.dhcpLeaseTime,1,10080,tcpip_lan_invalid_rang_value )) return false;
+
+	return true;
+}
+
+
+function dhcpTblClick(url) 
+{
+	if ( document.tcpip.dhcp.value == "server") 
+	{
+		openWindow(url, 'DHCPTbl',600, 400 );
+	}
+}
+
+function staticdhcpTblClick(url) 
+{
+	if ( document.tcpip.dhcp.value == "server")
+	{
+		document.location.href = url;
+	}
+}
+function load_lanSetting()
+{
+	var lanDhcp=<%getIndex("lanDhcpMode")%>;
+
+	var opmode=<% getIndex("wlanMode"); %> ;
+
+	if(lanDhcp==0)
+		document.tcpip.dhcp.value="disable";
+	else if(lanDhcp==1)
+		document.tcpip.dhcp.value="client";
+	else if(lanDhcp==2)
+		document.tcpip.dhcp.value="server";
+	else if(lanDhcp==15)
+		document.tcpip.dhcp.value="auto";
+	else
+	{
+		alert(tcpip_lan_invalid_dhcp_type);
+		document.tcpip.dhcp.value="server";
+	}
+		
+	dhcpChange(document.tcpip.dhcp);
+/*
+	if( opmode > 3 )
+		disableTextField(document.tcpip.stp);
+	else
+	{
+		if(<% getIndex("stp")%>)
+			document.tcpip.stp.value="enabled";
+		else
+			document.tcpip.stp.value="disabled";		
+	}*/
+	if("<%getInfo("netbiosName_enable")%>" == 0)
+		document.getElementById("netbios_name_display").style.display = 'none' ;
+}
+</SCRIPT>
+</head>
+
+<body onload="load_lanSetting();">
+<blockquote>
+<h2><font color="#0000FF"><script>dw(tcpip_lan_header)</script></font></h2>
+
+<form action=/formTcpipSetup.htm method=POST name="tcpip">
+<table border=0 width="500" cellspacing=4 cellpadding=0>
+  <tr><font size=2>
+  <script>dw(tcpip_lan_explain)</script>
+  </tr>
+  <tr><hr size=1 noshade align=top></tr>
+
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_lan_ip)</script></b></td>
+      <td width="70%"><input type="text" name="lan_ip" size="15" maxlength="15" value=<% getInfo("ip-rom"); %>></td>
+  </tr>
+
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_lan_mask)</script></b></td>
+      <td width="70%"><input type="text" name="lan_mask" size="15" maxlength="15" value="<% getInfo("mask-rom"); %>"></td>
+  </tr>
+
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_lan_default_gateway)</script></b></td>
+      <td width="70%"><input type="text" name="lan_gateway" size="15" maxlength="15" value="<% getInfo("gateway-rom"); %>"></td>
+  </tr>
+
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_lan_dhcp)</script></b></td>
+      <td width="70%"><select size="1" name="dhcp" onChange="dhcpChange(this)">
+      	<option value="disable"><script>dw(tcpip_lan_dhcp_disabled)</script></option>
+<script>
+	if(<%getIndex("lan_dhcpc_enable")%>)
+		document.write("<option value=\"client\">"+tcpip_lan_dhcp_client+"</option>");
+</script>
+	 	<option value="server"><script>dw(tcpip_lan_dhcp_server)</script></option>
+	<!-- 	<option value="auto"><script>dw(tcpip_lan_dhcp_auto)</script></option> --> 
+	   </select>
+     </td>
+  </tr>
+
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_lan_dhcp_rang)</script></b></td>
+      <td width="70%"><input type="text" name="dhcpRangeStart" size="12" maxlength="15" value="<% getInfo("dhcpRangeStart"); %>">
+      <font face="Arial" size="5">-</font> <input type="text" name="dhcpRangeEnd" size="12" maxlength="15" value="<% getInfo("dhcpRangeEnd"); %>">&nbsp;
+        <input type="button" value="Show Client" name="dhcpClientTbl" onClick="dhcpTblClick('/dhcptbl.htm')" >
+        <script>document.tcpip.dhcpClientTbl.value = tcpip_show_client;</script>
+      </td>
+  </tr>  
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_lan_dhcp_time)</script></b></td>
+      <td width="70%"><input type="text" name="dhcpLeaseTime" size="6" maxlength="5" value="<% getIndex("dhcpLeaseTime"); %>"> <font size=2>(1 ~ 10080 <script>dw(tcpip_minutes)</script>)</td>
+  </tr>
+<tr>
+
+      <td width="30%"><font size=2><b><script>dw(tcpip_lan_staicdhcp)</script></b></td>
+      <td width="70%">
+				<input type="button" value="Set Static DHCP" name="staticdhcpTbl" onClick="staticdhcpTblClick('/tcpip_staticdhcp.htm')" > 
+				<script>document.tcpip.staticdhcpTbl.value = tcpip_staticdhcp;</script>
+      </td>
+ 
+  </tr>
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_domain)</script></b></td>
+      <td width="70%"><input type="text" name="domainName" size="15" maxlength="30" value="<% getInfo("domainName"); %>"></td>
+  </tr>
+
+   <tbody id="netbios_name_display"> 
+  	<tr>
+       <td  nowrap= "nowrap" width="%30"><font size=2><b><script>dw(tcpip_netbios)</script></b></td>
+       <td  width="%70"><input type="text" name="netbiosName" size="15" maxlength="30" value="<% getInfo("netbiosName"); %>"></td>
+ 	</tr>
+   </tbody>
+<!--
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_802_1d)</script></b></td>
+      <td width="70%"><select size="1" name="stp">
+     	  	<option value="disabled"><script>dw(tcpip_802_1d_disabled)</script></option>
+   	  		<option value="enabled"><script>dw(tcpip_802_1d_enable)</script></option>
+	    </select>
+      </td>
+  </tr>
+-->
+  <tr>
+      <td width="30%"><font size=2><b><script>dw(tcpip_wan_clone_mac)</script></b></td>
+      <td width="70%"><input type="text" name="lan_macAddr" size="15" maxlength="12" value="<% getInfo("bridgeMac"); %>"></td>
+  </tr>
+
+ </table> 
+ 
+  <br>
+      <input type="submit" value="Apply Changes" name="save" onClick="return saveChanges()">&nbsp;&nbsp;
+		<script>document.tcpip.save.value = tcpip_apply;</script>
+      <input type="reset" value="Reset" name="reset" onClick="resetClick()">
+		<script>document.tcpip.reset.value = tcpip_reset;</script>
+      <input type="hidden" value="/tcpiplan.htm" name="submit-url">
+ </form>
+</blockquote>
+</body>
+
+</html>

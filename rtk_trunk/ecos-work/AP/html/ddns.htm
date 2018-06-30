@@ -1,0 +1,168 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>Time Zone Setting</title>
+</head>
+<script>
+
+function disableButton (button,val) {
+  if (document.all || document.getElementById)
+    button.disabled = val;
+  else if (button) {
+    button.oldOnClick = button.onclick;
+    button.onclick = null;
+    button.oldValue = button.value;
+    button.value = 'DISABLED';
+  }
+}
+
+function disableDdnsButton(val)
+{
+	disableButton(document.ddns.ddnsType, val);
+	disableButton(document.ddns.ddnsDomainName, val);
+	disableButton(document.ddns.ddnsUser, val);
+	disableButton(document.ddns.ddnsPassword, val);
+
+}
+
+function updateState()
+{
+	if(document.ddns.ddnsEnabled.checked)
+		disableDdnsButton(false);
+	else
+		disableDdnsButton(true);
+}
+
+function ddns_saveChanges()
+{
+	form = document.ddns ;
+	if(form.ddnsEnabled.checked){
+		if(form.ddnsDomainName.value == ""){
+			alert(ddns_domain_name_empty);
+			form.ddnsDomainName.value = form.ddnsDomainName.defaultValue;
+			form.ddnsDomainName.focus();
+			return false ;
+		}
+		if(form.ddnsUser.value == ""){
+			alert(ddns_user_name_empty);
+			form.ddnsUser.value = form.ddnsUser.defaultValue;
+			form.ddnsUser.focus();
+			return false ;
+		}
+		if(form.ddnsPassword.value == ""){
+			alert(ddns_passwd_empty);
+			form.ddnsPassword.value = form.ddnsPassword.defaultValue;
+			form.ddnsPassword.focus();
+			return false ;
+		}
+	}
+	return true;
+}
+
+function init()
+{
+	//var cf = document.forms[0];
+	var cf = document.ddns;
+	var EnableDDNS = <%getIndex("ddnsEnabled");%>;
+
+    	if(EnableDDNS == 1) 
+        	cf.ddnsEnabled.checked = true;
+        else
+        	cf.ddnsEnabled.checked = false;
+	cf.ddnsType.selectedIndex = <%getIndex("ddnsType");%>;
+	updateState();
+}
+</script>
+
+<body onload="init();">
+<blockquote>
+<h2><font color="#0000FF"><script>dw(ddns_header)</script>&nbsp;</font></h2>
+
+
+<table border=0 width="500" cellspacing=0 cellpadding=0>
+  <tr><font size=2>
+   <script>dw(ddns_header_explain)</script>
+  </tr>
+  <tr><hr size=1 noshade align=top></tr>
+</table>
+<form action=/formDdns.htm method=POST name="ddns">
+<table border="0" width=600>
+
+	<tr><td colspan="2"><font size=2><b>
+		<input type="checkbox" name="ddnsEnabled" 
+		value="ON" ONCLICK=updateState()>&nbsp;&nbsp;<script>dw(ddns_enable)</script></b><br>
+	    </td>
+	</tr>
+	<tr ><td height=10> </td> </tr>
+	<tr>
+	<td width ="20%">
+	<font size=2> <b><script>dw(ddns_serv_provider)</script></b> </font>
+	</td>
+	<td width ="85%">
+		<select name="ddnsType">
+			<option value=0 ><script>dw(ddns_dyndns)</script></option>
+			<option value=1 ><script>dw(ddns_orayddns)</script></option>
+			<option value=2 ><script>dw(ddns_tzo)</script> </option>
+		</select>
+	</td>
+	</tr>
+	<tr><td width="20%"><font size=2> <b><script>dw(ddns_domain_name)</script></b> </font></td>
+	    <td width="85%">
+ 			<font size=2><input type="text" name="ddnsDomainName" size="20" maxlength="50" value=<% getInfo("ddnsDomainName"); %>></font>
+	    </td>
+	</tr>
+	<tr>
+	<td width ="20%">
+	<font size=2> <b><script>dw(ddns_user_name)</script></b> </font>
+	</td>
+	<td width ="85%">
+		<font size=2><input type="text" name="ddnsUser" size="20" maxlength="50" 
+		value="<% getInfo("ddnsUser"); %>"></font>
+	</td>
+	</tr>
+	
+	<tr>
+	<td width ="20%">
+	<font size=2> <b><script>dw(ddns_passwd)</script></b> </font>
+	</td>
+	<td width ="85%">
+		<font size=2><input type="password" name="ddnsPassword" size="20" maxlength="30"
+		value="<% getInfo("ddnsPassword"); %>"></font>
+	</td>
+	</tr>
+	<tr>
+		<td  height =5>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" ><font size=2><i><script>dw(ddns_note)</script>
+	     <br><script>dw(ddns_oray_header)</script>
+			<a href="https://console.oray.com/passport/register.html?fromurl=http%3A%2F%2Fbuy.oray.com%2Fpeanuthull%2Fbuy.html"><script>dw(ddns_here)</script></a> </href>
+             <br><script>dw(ddns_dyn_header)</script>  
+			<a href="https://account.dyn.com/entrance/"><script>dw(ddns_here)</script></a></href></a></herf> </i>
+			<br><script>dw(ddns_tzo_header1)</script> 
+			<a href="http://www.tzo.com/MainPageWebClient/clientsignup.html"><script>dw(ddns_here)</script></a> </href>
+			<br><script>dw(ddns_tzo_header2)</script> 
+            <a href="https://controlpanel.tzo.com/cgi-bin/tzopanel.exe"> 
+            <br><script>dw(ddns_tzo_header3)</script> </a></herf>
+            </font>            
+        </td>
+        
+	</tr>	
+</table>
+  <p>
+  <input type="hidden" value="/ddns.htm" name="submit-url">
+  <input type="submit" value="Apply Change" name="apply" onClick="return ddns_saveChanges()">
+  <script>document.ddns.apply.value=ddns_apply;</script>
+&nbsp;&nbsp;
+  <input type="reset" value="Reset" name="set" >
+  <script>document.ddns.set.value=ddns_reset;</script>
+</form>
+</blockquote>
+</font>
+</body>
+
+</html>

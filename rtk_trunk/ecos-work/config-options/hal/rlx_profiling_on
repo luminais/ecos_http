@@ -1,0 +1,3 @@
+cdl_option CYGPKG_HAL_RLX_PROFILING_SUPPORT {
+    user_value 1
+};

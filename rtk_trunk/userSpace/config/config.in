@@ -1,0 +1,194 @@
+#
+#	$Id: config.in,v 1.3 2010-09-15 11:51:09 Exp $
+#
+
+#define_bool CONFIG_MIPS y
+#define_bool CONFIG_SMP n
+
+mainmenu_name 'Broadcom eCos Platform Software Configuration'
+
+mainmenu_option next_comment
+comment 'Software Module Options'
+	comment 'NAT'
+	bool '  Support NAT' CONFIG_NAT
+	bool '  Support URL Filter' CONFIG_URLFILTER
+
+	comment 'IPV6'
+	bool '  Support IPV6' CONFIG_IPV6
+	
+	comment 'DHCP Client'
+	bool '  DHCP Client' CONFIG_DHCPC
+	if [ "$CONFIG_DHCPC" = "y" ]; then
+		int '  Maximum Number of DHCP Clients' CONFIG_DHCPC_NUM 1
+	fi
+
+	comment 'DHCP Server'
+	bool '  Support DHCP Server' CONFIG_DHCPD
+
+	comment 'PPPoE Client'
+	bool '  Support PPPoE Client' CONFIG_PPPOE
+
+	comment 'L2TP Client'
+	bool '  Support L2TP Client' CONFIG_L2TP
+
+	comment 'PPTP Client'
+	bool '  Support PPTP Client' CONFIG_PPTP
+	
+  	comment 'PPPoE2 Client'
+	bool '  Support PPPoE2 Client For Russia' CONFIG_PPPOE2
+	
+	comment '8021X Client'
+	bool '  Support 8021X Client' CONFIG_8021X
+	
+	comment 'Tenda WLJB'
+	bool '  Support Tenda WLJB' CONFIG_TENDA_WLJB
+	
+	comment 'TENDA MULTI'
+	bool '  Support Tenda MULTI' CONFIG_TENDA_MULTI
+	
+	comment 'TENDA OEM'
+	bool '  Support Tenda OEM' CONFIG_TENDA_OEM
+	
+	comment 'hanguo starcraft'
+	bool '  Support hanguo starcraft' CONFIG_STAR_WARS_ENABLE
+	
+	comment 'rstp iptv(cheng dou)'
+	bool '  Support rstp iptv(cheng dou)' CONFIG_TENDA_CD_RTSP_IPTV
+	
+	if [ "$CONFIG_PPPOE" = "y" -o "$CONFIG_L2TP" = "y" -o "$CONFIG_PPTP" = "y" ]; then
+		comment '  PPP Advanced Configurations'
+		define_bool CONFIG_PPP y
+
+		bool '  Support for MS CHAP' CONFIG_CHAPMS
+		bool '  Support for China XKJS' CONFIG_CHINA_NET_CLIENT
+		bool '  Passive LCP echo mode' CONFIG_LCP_PASSIVE_ECHO_MODE
+		if [ "$CONFIG_LCP_PASSIVE_ECHO_MODE" = "y" ]; then
+			int '    LCP server echo request interval (seconds)' CONFIG_LCP_PASSIVE_INTERVAL 30
+			int '    Maximum LCP server echo fails' CONFIG_LCP_PASSIVE_ECHO_FAILS 5
+		fi
+		int '  LCP echo request interval (seconds)' CONFIG_LCP_ECHO_INTERVAL 30
+		int '  Maximum LCP echo fails' CONFIG_MAX_LCP_ECHO_FAILS 5
+	fi
+
+	comment 'DNS'
+	bool '  Support DNS Masquerade' CONFIG_DNSMASQ
+	if [ "$CONFIG_DNSMASQ" = "y" ]; then
+			int '    Maximum DNS Masquerade Hosts Entries' CONFIG_DNSMASQ_HOSTS_NUM 16
+
+	fi
+	int '  Maximum Number of WAN DNS Servers' CONFIG_AUTO_DNS_NUM 3
+
+	comment 'BCM UPnP library'
+	bool '  Support BCM UPnP library' CONFIG_LIBUPNP
+	if [ "$CONFIG_LIBUPNP" = "y" ]; then
+		if [ "$CONFIG_NAT" = "y" ]; then
+			bool '    BCM UPnP IGD server support' CONFIG_IGD y
+		fi
+		string 	'modelName'  CONFIG_UPNP_modelName		"Wireless-N Router"
+	  string 	'manufacturer'  CONFIG_UPNP_manufacturer	"" 
+	  string 	'link'  CONFIG_UPNP_link	"" 
+		string 	'modelNumber'  CONFIG_UPNP_modelNumber	""
+		string 	'modelDescription'  CONFIG_UPNP_modelDescription	"Wireless-N Broadband Router"
+		bool '    BCM WPS support' CONFIG_WPS y
+	fi
+
+	choice	'Web Server type'		\
+				"Tenda	CONFIG_TENDA_HTTPD			\
+				Broadcom CONFIG_HTTPD"
+		if [ "$CONFIG_TENDA_HTTPD" = "y" ]; then
+				comment 'Tenda Web Server Advanced'
+				string 	'Defalut Page'  CONFIG_DEFAULT_PAGE		"main.html"
+	  		string 	'Web Pages directory'  CONFIG_WEB_DIR	"Web_tenda_cn" 
+				string 	'Defalut web realm(OEM)'  CONFIG_WEB_REALM	"Wireless-N Router" 
+				string 	'Web status version(OEM)'  CONFIG_WEB_VERSION	"cn" 
+				string  'Defalut cfg Profile(OEM)'  CONFIG_Tenda_DEFAULT_PROFILE "defaults_tenda_chs.c"
+				bool		'Webs page in ROM '	CONFIG_WEBS_PAGE_ROM y
+				comment '--------------------------------------------------------'
+		fi
+	comment 'Stream  static'
+	bool '   Support Stream  static'     	CONFIG_STREAM_STATISTIC
+	
+	comment 'Stream Control'
+		bool ' Support stream control' 	CONFIG_TC	
+		if [ "$CONFIG_TC" = "y" ]; then
+			bool '    TC stream static '					CONFIG_TC_STAT
+			bool '    Drop tail arithmetic'				CONFIG_TC_TAIL_DROP	
+			bool '    Modify windows size arithmetic'				CONFIG_TC_WINDOWS			
+			if [ "$CONFIG_TC_WINDOWS" = "y" ]; then
+			bool '       Random drop packets arithmetic' 		CONFIG_TC_RANDOM_DROP
+			fi
+		fi
+
+	comment 'LED Control'
+		bool ' Support LED by tenda code control' 	CONFIG_LED
+		if [ "$CONFIG_LED" = "y" ]; then
+			bool '    System led by tenda code control'     CONFIG_SYS_LED
+			bool '    Wps led by tenda code control' 	CONFIG_WPS_LED
+			bool '    Wireless led by tenda code control'		CONFIG_WL_LED
+			
+		fi
+		
+	comment 'NAT Debug'
+		bool ' Support NAT Debug' 	CONFIG_NAT_DEBUG
+			
+	comment 'Netboot'
+	bool '  Support Netboot' CONFIG_NETBOOT
+
+	comment 'Syslog'
+		int ' Maximun number of syslog entries' CONFIG_SYSLOG_LOG_NUM 512
+		int ' String size of sylog entry' CONFIG_SYSLOG_LOG_SIZE 128
+
+	comment	'Telnet Server'
+	bool '  Support Telnet Server' CONFIG_TELNETD
+#add by 6091@tenda.cn
+	comment 'DDNS'
+	bool '  Support DDNS' CONFIG_DDNS
+	comment 'A5'
+	bool ' Support A5' CONFIG_A5
+#add by zh 2015-03-16	
+	comment 'BATCH_UPGRADE'
+	bool ' Support BATCH UPGRADE' CONFIG_BATCH_UPGRADE
+#add by zh 2015-526	
+	comment 'TENDA_HTTPD_UCD_MULTI_EN'
+	bool ' Support TENDA HTTPD UCD MULTI_EN' CONFIG_TENDA_HTTPD_UCD_MULTI_EN	
+#add by ll
+	comment 'AL_SECURITY'
+	bool ' Support AL_SECURITY' CONFIG_AL_SECURITY
+	comment 'CONFIG_ALINKGW'
+	bool ' Support CONFIG_ALINKGW' CONFIG_ALINKGW
+	comment 'CONFIG_ALINKGW_V2'
+	bool ' Support CONFIG_ALINKGW_V2' CONFIG_ALINKGW_V2
+	common 'Httpd ucd'
+		bool ' Support CONFIG_TENDA_HTTPD_UCD' 	CONFIG_TENDA_HTTPD_UCD
+	common 'Httpd v3'
+		bool ' Support CONFIG_TENDA_HTTPD_V3' 	CONFIG_TENDA_HTTPD_V3
+	common 'Httpd normal'
+		bool ' Support CONFIG_TENDA_HTTPD_NORMAL' 	CONFIG_TENDA_HTTPD_NORMAL
+#add by hongtao@tenda.cn
+	comment 'AUTO_CONN'
+	bool '  Support AUTO_CONN' CONFIG_AUTO_CONN
+endmenu
+
+mainmenu_option next_comment
+comment 'Internal Software Module Options'
+	comment 'Utilities'
+	bool '  Support Utilities' CONFIG_UTILS
+	comment 'WL_CMD'
+	bool '  Support WL CMD' CONFIG_WL_CMD
+endmenu
+
+mainmenu_option next_comment
+comment 'HQW ADD Module Options'
+	comment 'restart check'
+	bool '  Support restart check' CONFIG_RESTART_CHECK
+	comment 'pppoe auto mtu'
+	bool '  Support pppoe auto to set mtu' CONFIG_PPPOE_AUTO_MTU
+	comment 'support gb2312'
+	bool '  Support gb2312' CONFIG_SUPPORT_GB2312
+	comment 'support tcp auto mtu'
+	bool '  Support tcp auto mtu' CONFIG_TCP_AUTO_MTU
+	comment 'support apclient dhcp'
+	bool '  Support apclient dhcp' CONFIG_APCLIENT_DHCPC
+	comment 'support ease debug'
+	bool '  Support ease debug' CONFIG_EASE_DEBUG
+endmenu

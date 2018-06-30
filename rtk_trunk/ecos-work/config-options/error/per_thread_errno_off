@@ -1,0 +1,3 @@
+cdl_option CYGSEM_ERROR_PER_THREAD_ERRNO {
+    user_value 0
+};

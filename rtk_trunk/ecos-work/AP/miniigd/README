@@ -1,0 +1,20 @@
+MiniUPnP project
+webpage: http://miniupnp.free.fr/
+contact: miniupnp@free.fr
+
+This directory contain the miniUPnP daemon software.
+This software is subject to the conditions detailed in
+the LICENCE file provided with this distribution.
+
+
+The miniUPnP daemon is an UPnP IGD (internet gateway device)
+which provide NAT traversal services to any UPnP enabled client on
+the network.
+See http://www.upnp.org/ for more details on UPnP.
+
+Read the INSTALL files for instructions to compile and install.
+
+Report bugs to miniupnp@free.fr
+
+Thomas Bernard
+

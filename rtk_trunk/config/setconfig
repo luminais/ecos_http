@@ -1,0 +1,258 @@
+#!/bin/sh
+#############################################################################
+#
+#	This script gets called in two ways,  the first is to set the
+#	default config up.  The second "final" pass is to save any settings
+#	back to the boards directory for permanent inclusion.
+#
+#	Copyright (C) 2001       Lineo    <davidm@snapgear.com>
+#	Copyright (C) 2001-2002  SnapGear <davidm@snapgear.com>
+#
+#############################################################################
+#
+# Some basic starting points
+#
+
+CONFIG=.config
+if [ -f ./.oldconfig ]
+then
+	. ./.oldconfig
+fi
+
+PASS="$1"
+BOARD=""
+MODEL=""
+ECOS_SUFFIX=""
+
+ECOSDIR="ecos-work"
+BOARDDIR=""
+DEFECOSCONF=""
+
+#############################################################################
+#
+# this code closely matches that in genconfig,  it has to !
+#
+get_model()
+{
+        MODEL="`grep '^CONFIG_MODEL_.*=y' ${CONFIG}`"
+        if [ -z "${MODEL}" ]; then
+                return 1
+        fi
+        MODEL=${MODEL##CONFIG_MODEL_}
+        MODEL=${MODEL%%=y}
+        return 0
+}
+
+get_rsdk()
+{
+	RSDK="`grep '^CONFIG_RSDK_.*=y' ${CONFIG}`"
+	if [ -z "${RSDK}" ]; then
+		return 1
+	fi
+	RSDK=${RSDK##CONFIG_RSDK_}
+	RSDK=${RSDK%%=y}
+	return 0
+}
+
+get_board()
+{
+	BOARD="`grep '^CONFIG_BOARD_.*=y' ${CONFIG}`"
+	if [ -z "${BOARD}" ]; then
+		return 1
+	fi
+	BOARD=${BOARD##CONFIG_BOARD_}
+	BOARD=${BOARD%%=y}
+	return 0
+}
+
+var_isset() # because of make evironment inheritance,  we must look in the file
+{
+	if grep "$1=y" $CONFIG > /dev/null
+	then
+		return 0
+	fi
+	return 1
+}
+
+#
+# remove line containing $1 append line $2 to file in $3
+#
+replace_line()
+{
+	TMPR="/tmp/setconfig.$$"
+	if [ -f "$3" ]
+	then
+		cat "$3" | grep -v "$1" > "$TMPR"
+	else
+		touch "$TMPR"
+	fi
+	echo "$2" >> "$TMPR"
+	cp "$TMPR" "$3"
+	rm -f "$TMPR"
+}
+
+fix_conf_files()
+{
+	#
+	# add some bits for convienence, must be done after each stage
+	#
+
+	#replace_line CONFIG_LINUXDIR= "CONFIG_LINUXDIR=$LINUXDIR" .config
+	replace_line CONFIG_BOARDDIR= "CONFIG_BOARDDIR=$BOARDDIR" .config
+	#replace_line CONFIG_BZBOXDIR= "CONFIG_BZBOXDIR=$BZBOXDIR" .config
+	replace_line CONFIG_RSDKDIR= "CONFIG_RSDKDIR=$RSDKDIR" .config
+	replace_line CONFIG_MODEL= "CONFIG_MODEL=$MODEL" .config
+	#replace_line CONFIG_ROUTER= "CONFIG_ROUTER=$ROUTER" .config
+
+	#replace_line OLD_LINUXDIR= "OLD_LINUXDIR=\"$LINUXDIR\"" ./.oldconfig
+	replace_line OLD_BOARDDIR= "OLD_BOARDDIR=\"$BOARDDIR\"" .oldconfig
+	#replace_line OLD_BZBOXDIR= "OLD_BZBOXDIR=\"$BZBOXDIR\"" ./.oldconfig
+	replace_line OLD_RSDKDIR= "OLD_RSDKDIR=\"$RSDKDIR\"" .oldconfig
+	replace_line OLD_MODEL= "OLD_MODEL=\"$MODEL\"" .oldconfig
+	#replace_line OLD_ROUTER= "OLD_ROUTER=\"$ROUTER\"" ./.oldconfig
+}
+
+#############################################################################
+#
+# board version
+#
+
+# get_board defines BOARD for us
+if get_board; then
+	BOARDDIR="boards/${BOARD}"
+else
+	echo "ERROR: unknown board configuration." >&2
+	exit 1
+fi
+
+if [ ! -d ${BOARDDIR} ]; then
+	echo "ERROR: missing board directory ${BOARDDIR}." >&2
+	exit 1
+fi
+
+#############################################################################
+#
+# toolchain version
+#
+
+# get_rsdk defines RSDK for us
+if get_rsdk; then
+	RSDKDIR="gnutools/${RSDK}"
+else
+	echo "ERROR: unknown RSDK configuration." >&2
+	exit 1
+fi
+#
+if [ ! -d ${RSDKDIR} ]; then
+	echo "ERROR: missing RSDK directory ${RSDKDIR}." >&2
+	exit 1
+fi
+
+#############################################################################
+#
+# image model (board configuration)
+#
+
+#get model define model for us
+if get_model; then
+	ECOS_SUFFIX="${MODEL}"
+fi
+MODELECOSCONFIG="boards/${BOARD}/defconfig-${ECOS_SUFFIX}"
+
+if ! var_isset CONFIG_MCONF_SAVE; then
+
+if [ ! -f ${MODELECOSCONFIG} ]; then
+	echo "${MODELECOSCONFIG} not exist. Use boards/${BOARD}/config.ecos." >&2
+	USERS_SUFFIX=""
+fi
+
+fi
+
+#if [ ! -d $BOARDDIR/etc ] || [ -L $BOARDDIR/etc ]; then
+#	rm -f $BOARDDIR/etc
+#	if [ -d $BOARDDIR/etc.${MODEL} ]; then
+#		ln -s etc.${MODEL} $BOARDDIR/etc
+#	else
+#		echo "$BOARDDIR/etc.${MODEL} not exist. Use $BOARDDIR/etc.default." >&2
+#		ln -s etc.default target/etc
+#	fi
+#fi
+
+#############################################################################
+#
+# Now install the configs,  careful not dump on them unless they asked us to
+#
+
+#export PATH=`pwd`/$RSDKDIR/bin:$PATH
+#CLEAN="0"
+
+if [ "$PASS" != "final" ]; then
+    rm -f target
+    rm -f image
+    ln -s $BOARDDIR target
+    mkdir -p target/image
+    ln -s target/image image
+
+	#
+	# if the user touches any important settings then force a clean
+	# otherwise bad things can happen in the tree
+	#
+	if [ "$OLD_BOARDDIR$OLD_RSDKDIR$OLD_MODEL" != \
+         "$BOARDDIR$RSDKDIR$MODEL" ]; then
+        	CLEAN="1"
+		rm -f ${ECOSDIR}/.config
+	fi
+    fix_conf_files
+
+    # once before the oldconfig stuff is run
+	if [ ! -f $ECOSDIR/.config ] || var_isset CONFIG_MCONF_LOAD; then
+		if [ -f "$BOARDDIR/defconfig-${ECOS_SUFFIX}" ]
+		then
+			cp "$BOARDDIR/defconfig-${ECOS_SUFFIX}" $ECOSDIR/.config
+		else
+			echo; echo; echo; echo
+			echo "******************************* NOTICE ************************************"
+			echo "$BOARDDIR/defconfig-${ECOS_SUFFIX} not found for $BOARD." 
+			echo "******************************* NOTICE ************************************"
+			exit 1
+			
+		fi
+		make -C $ECOSDIR oldconfig
+	if [ "$CLEAN" = "1" ]; then
+        echo; echo
+		echo "**** cleaning tree for old settings ****"
+		echo; echo
+		make clean
+	fi
+	fi
+fi
+
+#############################################################################
+#
+# The override config option is always turned off when we are done so that
+# someone doesn't get all upset that they lost their config files.
+#
+# Always add the BOARD dir for the build to work
+#
+
+if [ "$PASS" = "final" ]; then
+
+	fix_conf_files
+
+	if var_isset CONFIG_MCONF_LOAD; then
+		sed 's/^\(CONFIG_MCONF_LOAD\)=y/# \1 is not set/' < .config > .config.tmp
+		cp .config.tmp .config
+		rm -f .config.tmp
+	fi
+
+	if var_isset CONFIG_MCONF_SAVE; then
+		cp $ECOSDIR/.config "$BOARDDIR/defconfig-${ECOS_SUFFIX}"
+
+		sed 's/^\(CONFIG_MCONF_SAVE\)=y/# \1 is not set/' < .config > .config.tmp
+		cp .config.tmp .config
+		rm -f .config.tmp
+	fi
+fi
+
+#############################################################################
+exit 0

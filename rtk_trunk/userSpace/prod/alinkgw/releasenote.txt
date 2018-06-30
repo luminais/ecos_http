@@ -1,0 +1,24 @@
+1、文件、目录说明
+Md5sum                                                                  
+include/
+	ali_ns_network.h				//阿里安全查询、回调接口定义
+	alinkgw_api.h					//alinkgw sdk接口定义
+	json-c/							//json-c库头文件目录
+src/
+	sample.c						//alinkgw sdk接口使用范例源码
+ECOS_1V8_1.11.2_svn_0129_1526.trx	//固件demo（沙箱环境）
+obj-alinkgw_sdk.o  					//alinkgw sdk目标文件
+obj-cyassl.o  						//cyassl库目标文件
+obj-json-c.o  						//json-c库目标文件
+obj-sample.o						//daemo线程目标文件
+
+2、更新内容
+         a.支持alinkgw_api.h中所有接口；
+         b.阿里安全接口该版本暂不支持；
+
+3、注意事项
+         a、路由器连上网后，请确保ntp能同步到时间，否则ssl ca检查会不通过，目前我手上的ecos sdk不支持ntp，在sdk入口增加了手动设置系统时间为2015-01-29 14:00:00。
+		 b、业务层线程初始化流程请参考sample.c。
+		 c、调试阶段请不要使用现网key和secret，沙箱环境apk会通过旺旺发出。
+		 d、ecos平台阿里安全查询实现将改为在线查询，需要业务层定义查询结果反馈回调函数，业务开发同学请提前了解下接口定义。
+		 e、属性注册时属性类型需与协议中定义一致，目前根据属性值定义了三种类型；

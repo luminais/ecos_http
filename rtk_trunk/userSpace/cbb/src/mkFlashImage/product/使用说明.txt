@@ -1,0 +1,11 @@
+在envram的配置参数的最后两行一定要加上flash大小的配置参数（具体看F9）
+sdram_config=0x103	#0x103 :2X16   0x203:1X8
+flash_size=2		#1:1M	2:2M
+
+产品目录的命令应该与.config文件中定义的CONFIG_FLASH_NVRAM_DIR一样
+列子：
+    在targets\F9\F9_user中定义了
+	CONFIG_FLASH_NVRAM_DIR="F9"
+    所以在本目录中应该声明一个F9的目录用于存放envram.txt nvram.txt文件
+
+boot.bin需要放在mkFlashImage目录下

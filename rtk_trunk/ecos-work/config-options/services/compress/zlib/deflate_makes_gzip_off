@@ -1,0 +1,3 @@
+cdl_option CYGSEM_COMPRESS_ZLIB_DEFLATE_MAKES_GZIP {
+    user_value 0
+};

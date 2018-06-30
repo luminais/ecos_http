@@ -1,0 +1,4 @@
+cdl_option CYGPKG_PPP_CFLAGS_ADD {
+    user_value "-D__ECOS -DCHAPMS -mips16"
+    #user_value "-D__ECOS -mips16"
+};

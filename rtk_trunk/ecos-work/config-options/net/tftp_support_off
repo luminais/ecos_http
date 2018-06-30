@@ -1,0 +1,3 @@
+cdl_component CYGPKG_NET_TFTP {
+    user_value 0
+};

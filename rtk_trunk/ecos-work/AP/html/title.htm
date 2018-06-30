@@ -1,0 +1,48 @@
+
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src='<% getLangInfo("lang");%>'></SCRIPT>
+<title>Realtek WLAN AP WebServer</title>
+<% getIndex("no-cache"); %>
+<script>
+
+function select_language()
+{
+	
+		document.langSelForm.submit();
+}
+function titleOnload()
+{
+	if(!<%getIndex("multi_language_support")%>) return;
+	document.langSelForm.languageSel.value=<%getIndex("languageType")%>;
+	window.parent.frames[1].location.reload();
+	window.parent.frames[2].location.reload();
+	window.parent.frames[3].location.reload();
+}
+</script>
+</head>
+<body bgcolor="#ffffff" onload="titleOnload()">
+<script>
+if(<%getIndex("multi_language_support")%>)
+{
+	document.write("<form action=/formLangSel.htm method=POST name=\"langSelForm\">");
+}
+</script>
+<img src="graphics/topbar.gif" width="739" height="60" border="0" align="middle"> 
+<script>
+if(<%getIndex("multi_language_support")%>)
+{
+	document.write("\
+	<b>"+language_sel+"</b>\
+	<select name=\"languageSel\" onChange=\"select_language();\">\
+	<option value=<%getIndex("multi_language_en")%>>"+language_en+"</option>\
+	<option value=<%getIndex("multi_language_sc")%>>"+language_sc+"</option>\
+	</select>\
+	<input type=\"hidden\" value=\"/title.htm\" name=\"submit-url\">\
+	</form>")
+}
+</script>
+</body>
+</html>

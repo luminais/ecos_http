@@ -1,0 +1,3 @@
+cdl_option CYGIMP_HAL_COMMON_INTERRUPTS_USE_INTERRUPT_STACK {
+    user_value 1
+};

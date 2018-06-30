@@ -1,0 +1,2 @@
+InternetGatewayDevice.DeviceSummary 5 1
+

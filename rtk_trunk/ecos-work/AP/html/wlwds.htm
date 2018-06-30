@@ -1,0 +1,300 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>WDS Settings</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+function addClick()
+{
+  var str = document.formWlWdsAdd.mac.value;
+
+  if (!document.formWlWdsAdd.wlanWdsEnabled.checked)
+	return true;
+
+  if ( str.length == 0)
+  	return true;
+
+  if ( str.length < 12) {
+	alert(wlwds_macaddr_nocomplete);
+	document.formWlWdsAdd.mac.focus();
+	return false;
+  }
+
+  for (var i=0; i<str.length; i++) {
+    if ( (str.charAt(i) >= '0' && str.charAt(i) <= '9') ||
+			(str.charAt(i) >= 'a' && str.charAt(i) <= 'f') ||
+			(str.charAt(i) >= 'A' && str.charAt(i) <= 'F') )
+			continue;
+
+	alert(wlwds_macaddr_invalid);
+	document.formWlWdsAdd.mac.focus();
+	return false;
+  }
+  if(!check_AllFF_Mac(document.formWlWdsAdd.mac)){
+	document.formWlWdsAdd.mac.focus();
+  	return false;
+  }
+  if(!check_All00_Mac(document.formWlWdsAdd.mac)){
+ 	document.formWlWdsAdd.mac.focus();
+  	return false;
+  }
+
+  return true;
+}
+
+
+function deleteClick()
+{
+  if ( !confirm(wlwds_delete_chick) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function deleteAllClick()
+{
+   if ( !confirm(wlwds_delete_allchick) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function disableDelButton()
+{
+	disableButton(document.formWlWdsDel.deleteSelWdsMac);
+	disableButton(document.formWlWdsDel.deleteAllWdsMac);
+}
+
+function enableWds()
+{
+  enableTextField(document.formWlWdsAdd.mac);
+  enableTextField(document.formWlWdsAdd.comment);
+  enableButton(document.formWlWdsAdd.showWep);
+  enableButton(document.formWlWdsAdd.showAp);
+}
+
+function disableWds()
+{
+  disableTextField(document.formWlWdsAdd.mac);
+  disableTextField(document.formWlWdsAdd.comment);
+  
+  	disableButton(document.formWlWdsAdd.showWep);
+  	disableButton(document.formWlWdsAdd.showAp);
+}
+
+function updateState()
+{
+  var wlanDisabled = <% getIndex("wlanDisabled"); %> ;
+  var wlanMode = <% getIndex("wlanMode"); %>;
+  var wdstxrate = document.getElementById("wds_txrate");
+  var wds_txrate = document.formWlWdsAdd.txRate;
+//  if(wlanDisabled || wlanMode == 0 || wlanMode ==1){
+  if(wlanDisabled || (wlanMode != 2 && wlanMode !=3) ){
+	disableWds();
+	disableTextField(document.formWlWdsAdd.wlanWdsEnabled);
+	disableButton(document.formWlWdsAdd.reset);
+	disableButton(document.formWlWdsAdd.addWdsMac);
+	disableButton(document.formWlWdsDel.reset);
+	disableWds();
+	disableDelButton();
+	wds_txrate.disabled = true;
+	//wdstxrate.disabled = true;
+
+  }else{
+	  if (document.formWlWdsAdd.wlanWdsEnabled.checked){
+	 	enableWds();
+	 	wds_txrate.disabled = false;
+		//wdstxrate.disabled = false;
+	  }else{
+	  	disableWds();
+	  	wds_txrate.disabled = true;
+		//wdstxrate.disabled = true;
+	  }
+}
+}
+
+function showApClick(url)
+{
+  if (document.formWlWdsAdd.wlanWdsEnabled.checked)
+	openWindow(url, 'showWdsStatistics',620,440 );
+}
+
+function showWepClick(url)
+{
+  if (document.formWlWdsAdd.wlanWdsEnabled.checked)
+ 	{
+		//openWindow(url, 'showWdsWep',620,340 );
+		document.location.href = url;
+	}
+}
+
+function Load_Setting()
+{
+	if ( <% getIndex("wlanWdsEnabled"); %> ) {
+		document.formWlWdsAdd.wlanWdsEnabled.checked = true;
+		updateState();
+	}
+}
+</script>
+</head>
+<body onload="Load_Setting();">
+<blockquote>
+<h2><font color="#0000FF">
+	<script type="text/javascript">
+	var wlan_num =  <% getIndex("wlan_num"); %>;
+	if (wlan_num > 1) {
+		var wlan_idx_ = <% getIndex("wlan_idx"); %> + 1;
+		dw(wlwds_morelan_header + wlan_idx_ + "</p>");
+	}
+	else
+		dw(wlwds_onelan_header);
+	</script>
+</font></h2>
+<table border=0 width="500" cellspacing=4 cellpadding=0>
+<tr><font size=2>
+<script>dw(wlwds_header_explain)</script>
+</font></tr>
+
+<form action=/formWlWds.htm method=POST name="formWlWdsAdd">
+<tr><hr size=1 noshade align=top><br></tr>
+
+<tr><font size=2><b>
+   <input type="checkbox" name="wlanWdsEnabled" value="ON" onclick="updateState()">&nbsp;&nbsp;<script>dw(wlwds_enable)</script>
+</b></tr>
+   <!--
+<tr><font size=2><b>Add WDS AP:&nbsp;&nbsp;&nbsp;&nbsp</b></tr>  
+-->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+ <tr>
+ <td align="left" width="13%" class=""><font size=2><b><script>dw(wlwds_mac_addr)</script></td>
+ <td width="87%">
+ <input type="text" id="mac" name="mac" size="15" maxlength="12" value=""> 
+ </b>
+ </td>
+ </tr>
+ <tr id="wds_txrate">
+ <td width="13%"><font size=2><b><script>dw(wlwds_data_rate)</script></b></td>
+ <td width="87%"><font size=2><select size="1" name="txRate" onChange=""> 
+  <SCRIPT>
+	band = <% getIndex("band"); %>;
+	auto = <% getIndex("rateAdaptiveEnabled") %>;
+	txrate = <% getIndex("fixTxRate"); %>;
+	rf_num = <% getIndex("rf_used"); %>;
+
+	rate_mask = [15,1,1,1,1,2,2,2,2,2,2,2,2,4,4,4,4,4,4,4,4,8,8,8,8,8,8,8,8];
+	rate_name =[wlwds_rate_auto,"1M","2M","5.5M","11M","6M","9M","12M","18M","24M","36M","48M","54M", "MCS0", "MCS1"
+				, "MCS2", "MCS3", "MCS4", "MCS5", "MCS6", "MCS7", "MCS8", "MCS9", "MCS10", "MCS11", "MCS12", "MCS13", "MCS14", "MCS15"];
+	vht_rate_name=["NSS1-MCS0","NSS1-MCS1","NSS1-MCS2","NSS1-MCS3","NSS1-MCS4",
+		"NSS1-MCS5","NSS1-MCS6","NSS1-MCS7","NSS1-MCS8","NSS1-MCS9",
+		"NSS2-MCS0","NSS2-MCS1","NSS2-MCS2","NSS2-MCS3","NSS2-MCS4",
+		"NSS2-MCS5","NSS2-MCS6","NSS2-MCS7","NSS2-MCS8","NSS2-MCS9"];
+	var mask=0;
+	var defidx=0;
+	var idx, i, rate;
+	var vht_num;
+	var option_num = 0;
+	if (auto)
+		txrate=0;
+	if (band & 1)
+		mask |= 1;
+	if ((band&2) || (band&4))
+		mask |= 2;
+	if (band & 8) {
+		if (rf_num == 2)
+			mask |= 12;	
+		else
+			mask |= 4;
+	}	
+	document.write('<option value="' + 0 + '">' + rate_name[0] + '\n');
+	for (idx=1, i=1; i<=28; i++) {
+		if (rate_mask[i] & mask) {
+			rate = (1 << (i-1));
+		 	if(txrate == 0)
+            	defidx = 0;
+			 else if (txrate == rate)
+				defidx = idx;
+			document.write('<option value="' + i + '">' + rate_name[i] + '\n');
+			idx++;
+		}
+	}
+	bound = <% getIndex("ChannelBonding"); %>;
+	if(band & 64){
+		if(rf_num==1)
+			vht_num = 9;
+		else
+			vht_num = 19; 
+		for (idx=30, i=0; i<=vht_num; i++) {
+		
+				rate = ((1 << 31) + i);
+				
+				if (txrate == rate)
+				{		
+					if(vht_num == 19)
+						defidx = idx-5;
+					else
+						defidx = idx-5-8;
+				}
+				if(bound!=0 || (i!=9 && i!=19))//no MCS9 when 20M
+					document.write('<option value="' + (i+30) + '">' + vht_rate_name[i] + '\n');
+				idx++;
+		}
+	}
+	document.formWlWdsAdd.elements["txRate"].selectedIndex=defidx;
+ </SCRIPT>
+ </select>
+ </td>
+ </tr>  
+ <tr>
+ <td align="left" width="13%" class=""><font size=2><b><script>dw(wlwds_comment)</script></b></td>
+ <td width="87%">
+ <input type="text" id="comment" name="comment" size="16" maxlength="20" value="">
+ </font>
+ </td>
+ </tr>
+ </table>
+
+
+<p><input type="submit" name="addWdsMac" onClick="return addClick()">&nbsp;&nbsp;
+	<script>document.formWlWdsAdd.addWdsMac.value=wlwds_apply;</script>
+   <input type="reset" name="reset">&nbsp;&nbsp;
+   <script>document.formWlWdsAdd.reset.value=wlwds_reset;</script>
+   <input type="hidden" value="/wlwds.htm" name="submit-url">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+   <font size=2><input type="button" name="showWep" onClick="showWepClick('/wlwdsenp.htm')">&nbsp;&nbsp
+   <script>document.formWlWdsAdd.showWep.value=wlwds_set_secu;</script>
+   <font size=2><input type="button" name="showAp" onClick="showApClick('/wlwdstbl.htm')">&nbsp;&nbsp
+   <script>document.formWlWdsAdd.showAp.value=wlwd_show_stat;</script>
+</p></tr>
+</form>
+</table>
+
+<form action=/formWlWds.htm method=POST name="formWlWdsDel">
+  <table border=0 width=440>
+  <tr><font size=2><b><script>dw(wlwds_wdsap_list)</script></b></font></tr>
+  <% wlWdsList(); %>
+  </table>
+  <br>
+  <input type="submit" name="deleteSelWdsMac" onClick="return deleteClick()">&nbsp;&nbsp;
+  <script>document.formWlWdsDel.deleteSelWdsMac.value=wlwds_delete_select;</script>
+  <input type="submit" name="deleteAllWdsMac" onClick="return deleteAllClick()">&nbsp;&nbsp;&nbsp;
+  <script>document.formWlWdsDel.deleteAllWdsMac.value=wlwds_delete_all;</script>
+  <input type="reset" name="reset">
+  <script>document.formWlWdsDel.reset.value=wlwds_reset;</script>
+  <input type="hidden" value="/wlwds.htm" name="submit-url">
+ <script>
+	var entryNum = <% getIndex("wlanWdsNum"); %>;
+	if ( entryNum == 0 )
+		disableDelButton();
+
+	updateState();
+ </script>
+</form>
+
+</blockquote>
+</body>
+</html>

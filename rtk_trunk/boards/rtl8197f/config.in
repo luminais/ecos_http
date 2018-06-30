@@ -1,0 +1,49 @@
+menu "System Configuration"
+ 
+config RTL_8197F
+        bool "97F GW"
+        help
+          This enables support for Realtek RTL8197F demo board
+
+choice
+prompt "IC Name"
+default RTL_8197FS
+
+config RTL_8197FS
+	bool "8197FS"
+
+config RTL_8197FN
+	bool "8197FN"
+
+config RTL_8197FB
+	bool "8197FB"
+endchoice
+
+config WATCHDOG
+        bool "WatchDog Support"
+ 
+config  MIPS16
+        bool "Mips16 Support"
+
+config ECOS_AP
+	bool "pure ap mode"
+
+choice
+prompt "Selected RAM_SIZE"
+default RAM_SIZE_16M
+
+config RAM_SIZE_64M
+	bool "64M"
+
+config RAM_SIZE_32M
+	bool "32M"
+
+config RAM_SIZE_16M
+	bool "16M"
+
+config RAM_SIZE_8M
+	bool "8M"
+endchoice
+
+endmenu
+

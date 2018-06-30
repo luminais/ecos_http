@@ -1,0 +1,3 @@
+cdl_option CYGDBG_NET_SHOW_MBUFS {
+    user_value 1
+};

@@ -1,0 +1,3 @@
+cdl_option CYGNUM_HAL_RTC_DIV_FACTOR {
+    user_value 100
+};

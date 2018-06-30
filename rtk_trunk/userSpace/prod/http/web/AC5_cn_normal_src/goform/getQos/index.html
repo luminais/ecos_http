@@ -1,0 +1,108 @@
+{
+	"localhost": {
+		"localhost": "192.168.0.1",
+		"lanMask": "255.255.255.0"
+	},
+	"wifiRelay": {
+		"wifiRelayType": "disabled"
+	},
+	"wifiBasicCfg": {
+		"wifiEn": "true",
+		"wifiEn_5g": "true"
+	},
+	"wifiGuest": {
+		"guestEn": "true"
+	},
+	"guestList": [
+		{
+			"qosListHostname": "Guest",
+			"qosListRemark": "Guest",
+			"qosListConnectType": "wifi",
+			"qosListIP":"192.168.0.12",
+			"qosListMac": "C8:3A:35:CC:AF:39",
+			"qosListManufacturer":"apple",
+			"qosListDownSpeed": "7",
+			"qosListUpSpeed": "24",
+			"qosListDownLimit": "5",
+			"qosListUpLimit": "28",
+			"qosListConnectTime":"342",
+			"qosListAccess": "true",
+			"qosListType":"normal"
+		}
+	],
+	"onlineList":[
+	{
+		"qosListHostname": "taiji",
+		"qosListRemark": "taiji",
+		"qosListConnectType": "wifi",
+		"qosListIP":"192.168.0.2",
+		"qosListMac": "C8:3A:35:DD:AF:39",
+		"qosListManufacturer":"nokia",
+		"qosListDownSpeed": "7",
+		"qosListUpSpeed": "24",
+		"qosListDownLimit": "5",
+		"qosListUpLimit": "28",
+		"qosListConnectTime":"12345",
+		"qosListAccess": "true",
+		"qosListType":"normal"
+	},{
+		"qosListHostname": "zhenggengde",
+		"qosListRemark": "zhenggengde",
+		"qosListConnectType": "wifi",
+		"qosListIP":"192.168.1.28",
+		"qosListMac": "C8:3A:35:DD:AF:39",
+		"qosListManufacturer":"nokia",
+		"qosListDownSpeed": "8",
+		"qosListUpSpeed": "25",
+		"qosListDownLimit": "45",
+		"qosListUpLimit": "23",
+		"qosListConnectTime":"12345",
+		"qosListAccess": "",
+		"qosListType":"guest"
+	},
+	{
+		"qosListHostname": "windy",
+		"qosListRemark": "windy",
+		"qosListConnectType": "wifi",
+		"qosListIP":"192.168.0.1",
+		"qosListMac": "C8:3A:35:DD:AF:39",
+		"qosListManufacturer":"xiaomi",
+		"qosListDownSpeed": "9",
+		"qosListUpSpeed": "26",
+		"qosListDownLimit": "13",
+		"qosListUpLimit": "50",
+		"qosListConnectTime":"12345",
+		"qosListAccess": "true",
+		"qosListType":"normal"
+	},
+	{
+		"qosListHostname": "dapei",
+		"qosListRemark": "dapei",
+		"qosListConnectType": "wire",
+		"qosListIP":"192.168.1.16",
+		"qosListMac": "C8:3A:35:DD:AF:39",
+		"qosListManufacturer":"xiaomi",
+		"qosListDownSpeed": "10",
+		"qosListUpSpeed": "27",
+		"qosListDownLimit": "7",
+		"qosListUpLimit": "9",
+		"qosListConnectTime":"12345",
+		"qosListAccess": "true",
+		"qosListType":"guest"
+	}],
+	
+	"macFilter": {
+		"curFilterMode": "deny",
+		"macFilterList":[{
+			"hostname": "Unknown",
+			"remark": "",
+			"mac":"b0:83:fe:b7:d1:ab",
+			"filterMode":"deny"
+		},{
+			"hostname": "Unknown",
+			"remark": "testpass",
+			"mac":"a4:83:fe:b7:d1:ab",
+			"filterMode":"pass"
+		}]
+	}
+}

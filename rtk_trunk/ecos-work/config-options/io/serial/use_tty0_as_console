@@ -1,0 +1,15 @@
+cdl_component CYGPKG_IO_SERIAL_HALDIAG {
+    user_value 0
+};
+
+cdl_option CYGDAT_IO_SERIAL_TTY_CONSOLE {
+    user_value "\"/dev/tty0\""
+};
+
+cdl_component CYGPKG_IO_SERIAL_TTY_TTYDIAG {
+    user_value 0
+};
+
+cdl_component CYGPKG_IO_SERIAL_TTY_TTY0 {
+    user_value 1
+};

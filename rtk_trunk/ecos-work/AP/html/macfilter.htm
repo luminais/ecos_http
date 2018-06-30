@@ -1,0 +1,143 @@
+<html>
+<!-- Copyright (c) Realtek Semiconductor Corp., 2003. All Rights Reserved. -->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=<% getLangInfo("charset");%>">
+<SCRIPT language=Javascript src="<% getLangInfo("lang");%>"></SCRIPT>
+<% getIndex("no-cache"); %>
+<title>MAC Filtering</title>
+<script type="text/javascript" src="util_gw.js"> </script>
+<script>
+function addClick()
+{
+  if (!document.formFilterAdd.enabled.checked)
+  	return true;
+
+  if (document.formFilterAdd.mac.value=="" && document.formFilterAdd.comment.value=="" )
+	return true;
+
+  var str = document.formFilterAdd.mac.value;
+  if ( str.length < 12) {
+	alert(macfilter_macaddr_nocomplete);
+	document.formFilterAdd.mac.focus();
+	return false;
+  }
+
+  if( !checkMacAddr_ACL(document.formFilterAdd.mac,"mac address invalid!"))
+    return false;
+
+  for (var i=0; i<str.length; i++) {
+    if ( (str.charAt(i) >= '0' && str.charAt(i) <= '9') ||
+			(str.charAt(i) >= 'a' && str.charAt(i) <= 'f') ||
+			(str.charAt(i) >= 'A' && str.charAt(i) <= 'F') )
+			continue;
+
+	alert(macfilter_macaddr_nohex);
+	document.formFilterAdd.mac.focus();
+	return false;
+  }
+  return true;
+}
+
+
+function deleteClick()
+{
+  if ( !confirm(firewall_delete_selectconfm) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function deleteAllClick()
+{
+   if ( !confirm(firewall_delete_allconfm) ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function disableDelButton()
+{
+	disableButton(document.formFilterDel.deleteSelFilterMac);
+	disableButton(document.formFilterDel.deleteAllFilterMac);
+}
+
+function updateState()
+{
+  if (document.formFilterAdd.enabled.checked) {
+ 	enableTextField(document.formFilterAdd.mac);
+	enableTextField(document.formFilterAdd.comment);
+  }
+  else {
+ 	disableTextField(document.formFilterAdd.mac);
+	disableTextField(document.formFilterAdd.comment);
+  }
+}
+
+function Load_Setting()
+{
+	if ( <% getIndex("macFilterEnabled"); %> )
+		document.formFilterAdd.enabled.checked = true;
+	else
+		document.formFilterAdd.enabled.checked = false;
+	updateState();
+}
+</script>
+</head>
+
+<body onload="Load_Setting();">
+<blockquote>
+<h2><font color="#0000FF"><script>dw(macfilter_header)</script></font></h2>
+
+<table border=0 width="500" cellspacing=4 cellpadding=0>
+<tr><td><font size=2>
+<script>dw(macfilter_header_explain)</script>
+</font></td></tr>
+
+<tr><td><hr size=1 noshade align=top></td></tr>
+
+<form action=/formFilter.htm method=POST name="formFilterAdd">
+<tr><td><font size=2><b>
+	<input type="checkbox" name="enabled" value="ON" ONCLICK=updateState()>&nbsp;&nbsp;<script>dw(macfilter_enable)</script></b><br>
+    </td>
+</tr>
+
+<tr><td>
+     <p><font size=2><b><script>dw(macfilter_macaddr)</script></b> <input type="text" name="mac" size="15" maxlength="12">&nbsp;&nbsp;
+   	<b><font size=2><script>dw(firewall_comm)</script></b> <input type="text" name="comment" size="16" maxlength="20"></font>
+     </p>
+     <p><input type="submit" name="addFilterMac" onClick="return addClick()">&nbsp;&nbsp;
+     	<script>document.formFilterAdd.addFilterMac.value=firewall_apply;</script>
+        <input type="reset" name="reset">
+        <script>document.formFilterAdd.reset.value=firewall_reset;</script>
+        <input type="hidden" value="/macfilter.htm" name="submit-url">
+     </p>
+  </td><tr>
+  <script> updateState(); </script>
+</form>
+</table>
+
+<br>
+<form action=/formFilter.htm method=POST name="formFilterDel">
+  <table border="0" width=500>
+  <tr><font size=2><b><script>dw(firewall_filtertbl)</script></b></font></tr>
+  <% macFilterList(); %>
+  </table>
+  <br>
+  <input type="submit" name="deleteSelFilterMac" onClick="return deleteClick()">&nbsp;&nbsp;
+  <script>document.formFilterDel.deleteSelFilterMac.value=firewall_delete_select;</script>
+  <input type="submit" name="deleteAllFilterMac" onClick="return deleteAllClick()">&nbsp;&nbsp;&nbsp;
+  <script>document.formFilterDel.deleteAllFilterMac.value=firewall_delete_all;</script>
+  <input type="reset" name="reset">
+  <script>document.formFilterDel.reset.value=firewall_reset;</script>
+  <input type="hidden" value="/macfilter.htm" name="submit-url">
+ <script>
+	if ( <% getIndex("macFilterNum"); %> == 0 )
+		disableDelButton();
+ </script>
+</form>
+
+</blockquote>
+</body>
+</html>

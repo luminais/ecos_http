@@ -1,0 +1,3 @@
+cdl_option CYGPKG_LIBC_STRING_CFLAGS_ADD {
+    user_value -mips16
+};

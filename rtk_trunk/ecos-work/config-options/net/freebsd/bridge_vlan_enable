@@ -1,0 +1,3 @@
+cdl_option CYGPKG_RTL_BRIDGE_VLAN {
+    user_value 1
+};

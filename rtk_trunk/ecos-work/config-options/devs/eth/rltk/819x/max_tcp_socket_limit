@@ -1,0 +1,3 @@
+cdl_option CYG_TCP_MAX_SOCKET_LIMITS {
+    user_value 1/2
+};

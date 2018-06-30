@@ -1,0 +1,1 @@
+make app-clean && make app && make image

@@ -1,0 +1,1033 @@
+@charset "UTF-8";
+/*页面组件*/
+html, body {
+  height: 100%;
+}
+
+.control-label {
+  color: #666;
+}
+
+.index-body {
+  background-color: #d7d7d7;
+  overflow-y: scroll;
+}
+
+.masthead {
+  min-width: 320px;
+  height: 40px;
+  margin-bottom: 25px;
+  margin-bottom: 20\0;
+  background: #ed7020;
+}
+
+.main-content {
+  background: #f2f2f2;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+
+#nav-menu {
+  border-radius: 5px;
+}
+
+.nav-content {
+  padding: 30px 0;
+  width: 100%;
+}
+
+.nav-content .nav-des {
+  font-size: 15px;
+  padding-left: 4px;
+}
+
+@media (max-width: 767px) {
+  .main-content, .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  nav > li > a {
+    padding: 10px 0 10px 30px;
+  }
+  #nav-menu {
+    display: none;
+    min-height: 100px !important;
+    position: absolute;
+    width: 240px;
+    top: 45px;
+    z-index: 1000;
+    right: -240px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+  #nav-menu.nav-menu-push {
+    display: block;
+    right: 0;
+  }
+  .nav-content {
+    padding: 0;
+  }
+}
+
+#nav > * {
+  margin-left: -15px;
+  margin-right: -15px;
+  padding: 0;
+  background: #e3e3e3;
+}
+
+.nav > li:first-child {
+  border-top: 1px solid #d7d7d7;
+}
+
+.nav > li {
+  border-bottom: 1px solid #d7d7d7;
+}
+
+.nav > li > a {
+  padding: 13px 0 13px 45px;
+  color: #666;
+}
+
+.lang-en .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-en .navbar.col-lg-2, .lang-en .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-en .main-content.col-lg-10, .lang-en .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-de .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-de .navbar.col-lg-2, .lang-de .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-de .main-content.col-lg-10, .lang-de .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-es .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-es .navbar.col-lg-2, .lang-es .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-es .main-content.col-lg-10, .lang-es .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-fr .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-fr .navbar.col-lg-2, .lang-fr .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-fr .main-content.col-lg-10, .lang-fr .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-hu .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-hu .navbar.col-lg-2, .lang-hu .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-hu .main-content.col-lg-10, .lang-hu .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-it .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-it .navbar.col-lg-2, .lang-it .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-it .main-content.col-lg-10, .lang-it .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-pl .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-pl .navbar.col-lg-2, .lang-pl .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-pl .main-content.col-lg-10, .lang-pl .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-ro .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-ro .navbar.col-lg-2, .lang-ro .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-ro .main-content.col-lg-10, .lang-ro .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-ra .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-ra .navbar.col-lg-2, .lang-ra .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-ra .main-content.col-lg-10, .lang-ra .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-tr .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-tr .navbar.col-lg-2, .lang-tr .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-tr .main-content.col-lg-10, .lang-tr .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-ru .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-ru .navbar.col-lg-2, .lang-ru .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-ru .main-content.col-lg-10, .lang-ru .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+.lang-pt .nav > li > a {
+  padding-left: 2em;
+}
+
+@media (min-width: 1200px) {
+  .lang-pt .navbar.col-lg-2, .lang-pt .nav-footer-icon.col-lg-2 {
+    width: 20%;
+  }
+  .lang-pt .main-content.col-lg-10, .lang-pt .main-footer.col-lg-10 {
+    width: 80%;
+  }
+}
+
+@media (min-width: 992px) {
+  .lang-en #statusWAN .col-md-4 {
+    width: 50%;
+  }
+  .lang-en #statusWAN .col-md-4.mgr100 {
+    margin-right: 0;
+  }
+}
+
+.nav > li > a.active, .nav > li > a:hover {
+  margin-right: -1px;
+  background-color: #f2f2f2;
+  color: #ed7020;
+  font-weight: 400;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+  text-decoration: none;
+  color: #ed7020;
+}
+
+.main-footer {
+  padding-right: 35px;
+  height: 50px;
+  line-height: 50px;
+  text-align: right;
+  background-color: #f2f2f2;
+  border-top: 1px solid #ccc;
+  border-radius: 0 0 5px 5px;
+}
+
+#form-massage {
+  position: fixed;
+  top: 120px;
+  left: 50%;
+  margin-left: -119px;
+  width: 222px;
+  padding: 28px 8px;
+  color: #fff;
+  font-size: 14px;
+  z-index: 9999;
+  text-align: center;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #666;
+  opacity: .9;
+  filter: alpha(opacity=90);
+}
+
+#statistic small, #statistic p {
+  color: #999;
+  font-size: 14px;
+  padding-left: 5px;
+}
+
+.file {
+  position: relative;
+  /* background: #D0EEFF; */
+  /* border: 1px solid #99D3F5; */
+  border-radius: 4px;
+  overflow: hidden;
+  /* color: #1E88C7; */
+  text-decoration: none;
+  text-indent: 0;
+  line-height: 20px;
+}
+
+.file:hover {
+  color: #999;
+}
+
+.bottom-line {
+  height: 13px;
+  border-bottom: 1px solid #ccc;
+}
+
+.pic {
+  font-size: 46px;
+}
+
+.pic-wan .icon-cancel {
+  top: 20px;
+  font-weight: bold;
+}
+
+.pic-success {
+  background: url(../img/totalPicture.png) -88px -136px no-repeat;
+  display: inline-block;
+  width: 75px;
+  height: 69px;
+}
+
+#connectStatus {
+  position: relative;
+  display: block;
+}
+
+.ico-small {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.signal {
+  background: url(../img/wifi_strength.png) 0 no-repeat;
+  width: 20px;
+  height: 20px;
+}
+
+.signal_4 {
+  background-position: 0 7px;
+}
+
+.signal_3 {
+  background-position: -21px 7px;
+}
+
+.signal_2 {
+  background-position: -42px 7px;
+}
+
+.signal_1 {
+  background-position: -63px 7px;
+}
+
+.picture {
+  background: url(../img/totalPicture.png) 0 no-repeat;
+  display: inline-block;
+}
+
+.picture.pic-upgrade {
+  background-position: -87px 6px;
+  width: 71px;
+  height: 73px;
+}
+
+.picture.pic-net {
+  background-position: 0px -88px;
+  width: 84px;
+  height: 84px;
+}
+
+.picture.pic-router {
+  background-position: 0px -281px;
+  width: 78px;
+  height: 84px;
+}
+
+.picture.pic-wisp {
+  background-position: 0px 5px;
+  width: 84px;
+  height: 84px;
+}
+
+.picture.pic-preRouter {
+  background-position: 0px -375px;
+  width: 78px;
+  height: 84px;
+}
+
+.picture.pic-device {
+  background-position: 1px -186px;
+  width: 81px;
+  height: 84px;
+}
+
+.picture.pic-reboot {
+  background-position: -87px -70px;
+  width: 71px;
+  height: 65px;
+}
+
+.picture.pic-ok {
+  background-position: -95px -140px;
+  width: 71px;
+  height: 73px;
+}
+
+.picture.pic-wifiExtend {
+  background-position: -89px -212px;
+  width: 57px;
+  height: 22px;
+}
+
+.pic-error {
+  background: url(../img/pic-error.png) -9px no-repeat;
+  position: relative;
+  top: 4px;
+}
+
+.picture.pic-add {
+  background-position: -83px -260px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.picture.pic-del {
+  background-position: -83px -295px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.picture.pic-download {
+  background-position: -83px -332px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-upload {
+  background-position: -83px -363px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-parental-control {
+  background-position: -83px -425px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-parental-control.active {
+  background-position: -83px -232px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-power-save {
+  background-position: -135px -233px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-power-save.active {
+  background-position: -109px -233px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-status {
+  background-position: -135px -345px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-status.active {
+  background-position: -109px -345px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-network {
+  background-position: -135px -258px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-network.active {
+  background-position: -109px -258px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-wifi {
+  background-position: -135px -370px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-wifi.active {
+  background-position: -109px -370px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-user {
+  background-position: -135px -426px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-user.active {
+  background-position: -109px -426px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-netCtrl {
+  background-position: -135px -285px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-netCtrl.active {
+  background-position: -109px -285px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-time {
+  background-position: -135px -285px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-time.active {
+  background-position: -109px -285px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-adv {
+  background-position: -135px -316px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-adv.active {
+  background-position: -109px -316px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-sys {
+  background-position: -135px -396px;
+  width: 26px;
+  height: 26px;
+}
+
+.picture.pic-sys.active {
+  background-position: -109px -396px;
+  width: 26px;
+  height: 26px;
+}
+
+.nav-footer-icon {
+  padding-top: 15px;
+  background: #e3e3e3;
+  height: 50px;
+}
+
+.nav-icon {
+  font-size: 20px;
+  color: #333;
+}
+
+.nav-icon:hover, .nav-icon:focus {
+  color: #4463b1;
+  text-decoration: none;
+}
+
+.nav-href-wrap {
+  width: auto;
+  float: left;
+  margin: 0 5px;
+}
+
+.nav-href {
+  font-size: 13px;
+  color: #999999;
+  cursor: pointer;
+}
+
+.nav-href:hover, .nav-href:active {
+  color: #ed7020;
+}
+
+.navbar-login {
+  margin-top: 5px;
+}
+
+.nav-lang {
+  background: #ed7020;
+  border: 0px;
+  float: right;
+  margin-top: 6px;
+  color: #fff;
+  width: auto;
+}
+
+.nav-lang .lang, .nav-lang .caret {
+  color: #fff;
+}
+
+.nav-lang:focus {
+  border: 0px;
+}
+
+.nav-lang .dropdown-menu {
+  min-width: 90px;
+}
+
+#selectLang {
+  /*margin-left: 20px;*/
+  /*display: inline-block;*/
+  float: left;
+  margin-left: 70px;
+}
+
+#loginout, #appManage, #selectLang {
+  cursor: pointer;
+}
+
+.loginout {
+  float: right;
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 1px solid #fff;
+}
+
+.nav-icon-weixin {
+  position: absolute;
+  top: -120px;
+  width: 120px;
+  left: -38px;
+}
+
+#statistic fieldset:hover {
+  border-color: #ed7020;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  #statistic h1 {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 767px) {
+  #statistic h1 {
+    font-size: 20px;
+  }
+  .col-sm-4.col-md-3 + .col-sm-4.col-md-3 {
+    margin-top: 12px;
+  }
+  .table-responsive.form-group {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  #statistic h1 {
+    font-size: 15px;
+  }
+  #statistic .ico-text {
+    font-size: 11px;
+  }
+}
+
+/*.span-fixed {
+	  max-width: 200px;
+}*/
+@media (max-width: 320px) {
+  #wifiScanTbody .span-fixed {
+    max-width: 90px;
+  }
+}
+
+@media (min-width: 360px) {
+  #wifiScanTbody .span-fixed {
+    max-width: 140px;
+  }
+}
+
+@media (min-width: 768px) {
+  #wifiScanTbody .span-fixed {
+    max-width: 50px;
+  }
+}
+
+@media (min-width: 1200px) {
+  #wifiScanTbody .span-fixed {
+    max-width: 200px;
+  }
+}
+
+@media (min-width: 1200px) {
+  fieldset .table-responsive {
+    overflow-x: visible;
+  }
+}
+
+form .legend {
+  margin-bottom: 4px;
+}
+
+.wifi-tips {
+  position: absolute;
+  top: 3px;
+  left: 109px;
+  padding: 5px;
+  color: #f00;
+  background: #fff;
+  border: 1px solid #eee;
+}
+
+@media (min-width: 768px) {
+  .main-container .navbar-default {
+    background-color: #d7d7d7;
+    border: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .help-inline .wifi-tips {
+    position: static;
+  }
+}
+
+#attachedDevices .input-medium {
+  width: 120px;
+}
+
+#attachedDevices div, #controlsDevices div, #qosListAccess .deviceName div, #guestList div {
+  padding-left: 0;
+}
+
+#qosList td,
+#onlineList td,
+#guestList td {
+  padding: 18px 8px;
+}
+
+@media (max-width: 767px) {
+  .control-gap {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  .hidden-max-xs {
+    display: none !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .hidden-max-sm {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1199px) {
+  .hidden-max-md {
+    display: none !important;
+  }
+}
+
+.save-overlay {
+  position: fixed;
+  z-index: 3000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  background-color: #ffffff;
+}
+
+.test-tips {
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  left: 50%;
+  margin-left: -150px;
+  top: 100px;
+  z-index: 99;
+  padding: 10px;
+  color: #000;
+  background-color: #ccc;
+  border-radius: 8px;
+}
+
+@media (min-width: 1200px) {
+  .container #routerNameContainer {
+    margin-top: 40px;
+    margin-left: 100px;
+  }
+  .container #routerNameContainer .routerName {
+    position: relative;
+    right: 140px;
+    text-align: right;
+  }
+}
+
+#setRelayWrapper #inport.synchroing {
+  background: #ccc;
+  color: #999;
+  border: 1px solid #bbb;
+  cursor: not-allowed;
+}
+
+.lang-ko body {
+  font-family: "dotum";
+}
+
+#selectLang .dropdown-menu li:nth-child(3) {
+  font-family: "dotum";
+}
+
+.icon-check-circled {
+  font-size: 94px;
+  color: #52d11a;
+  font-weight: 100;
+  line-height: inherit;
+}
+
+#appDianoseWrapper {
+  padding-top: 20px;
+}
+
+#appDianoseWrapper ul {
+  margin-top: 10px;
+}
+
+#appDianoseWrapper ul li {
+  margin: 5px 0;
+}
+
+.connect-ui img.connect-error {
+  margin-left: 30px;
+}
+
+@media (max-width: 1199px) {
+  .connect-ui img.connect-error {
+    margin-left: 18px;
+  }
+}
+
+@media (max-width: 991px) {
+  .connect-ui {
+    margin-top: 19px;
+  }
+  .connect-ui img {
+    margin-left: 10px;
+  }
+  .connect-ui.bottom-line {
+    margin-left: 10px;
+  }
+}
+
+table tbody tr {
+  border-top: 1px solid #eee;
+}
+
+.btn-primary {
+  color: #fff;
+  background: #58bf14;
+  border: 1px solid #58bf14;
+}
+
+.btn-primary:hover {
+  background: #61e04d;
+}
+
+.btn-primary:active {
+  background: #009f05;
+}
+
+#wan-connect-status {
+  margin-left: 28px;
+}
+
+@media (max-width: 500px) {
+  #wan-connect-status {
+    margin-left: 0px;
+  }
+}
+
+.mgr100 {
+  margin-right: 100px;
+}
+
+.hide-foreign {
+  display: none;
+}
+
+.lang-cn .hide-foreign {
+  display: inline-block;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.help-out {
+  margin-left: 90px;
+}
+
+.lang-hu .help-out {
+  margin-left: 120px;
+}
+
+.app {
+  width: 97px;
+  height: auto;
+  float: left;
+}
+
+.top40 {
+  height: 116px;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+/*.lang-en {
+  .top40 {
+    padding:3px 10px;
+  }
+}*/
+.lang-cn .top40, .lang-zh .top40 {
+  padding: 30px 10px;
+}
+
+.or {
+  text-align: center;
+  padding-top: 40px;
+  font-size: 18px;
+  color: #999;
+}
+
+#iptvHead {
+  background: #f6f6f6;
+  border: 1px solid #e4e4e4;
+  height: 41px;
+}
+
+.iptvBody, #emptyVlan {
+  border: 1px solid #e4e4e4;
+  border-top: none;
+  height: 41px;
+}
+
+#emptyVlan {
+  color: #CCC;
+}
+
+#iptvHead > th, .iptvBody > th {
+  text-align: center;
+}
+
+#wifiScanTbody tr, .selectSSID {
+  cursor: pointer;
+}
+
+#tendaApp {
+  padding-bottom: 20px;
+}
+
+.toggle-on-icon {
+  background: url(../img/on.png) 0 no-repeat;
+  width: 40px;
+  height: 27px;
+  margin: 0 auto;
+}
+
+.toggle-off-icon {
+  background: url(../img/off.png) 0 no-repeat;
+  width: 40px;
+  height: 27px;
+  margin: 0 auto;
+}
+
+#onlineList .toggle-on-icon, #onlineList .toggle-off-icon {
+  margin: 0;
+}
+
+#urlFilterWrap, #customVLAN {
+  padding-bottom: 20px;
+}
+
+@media (min-width: 1200px) {
+  #guestList div.guest-device {
+    width: 17%;
+  }
+}

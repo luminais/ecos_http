@@ -1,0 +1,3062 @@
+/*
+ *      Header file of AP mib
+ *      Authors: David Hsu	<davidhsu@realtek.com.tw>
+ *
+ *      $Id: apmib.h,v 1.54 2009/09/15 02:12:24 bradhuang Exp $
+ *
+ */
+
+
+#ifndef INCLUDE_APMIB_H
+#define INCLUDE_APMIB_H
+
+#include <sys/param.h>
+
+#if BYTE_ORDER == LITTLE_ENDIAN
+#define _LITTLE_ENDIAN_
+#define DWORD_SWAP(v) ( (((v&0xff)<<24)&0xff000000) | ((((v>>8)&0xff)<<16)&0xff0000) | \
+				((((v>>16)&0xff)<<8)&0xff00) | (((v>>24)&0xff)&0xff) )
+#define WORD_SWAP(v) ((unsigned short)(((v>>8)&0xff) | ((v<<8)&0xff00)))
+#elif BYTE_ORDER == BIG_ENDIAN
+#define _BIG_ENDIAN_
+#define DWORD_SWAP(v) (v)
+#define WORD_SWAP(v) (v)
+#else
+#warning "Endian is not defined!!!"
+#define DWORD_SWAP(v) (v)
+#define WORD_SWAP(v) (v)
+#endif /* _LITTLE_ENDIAN_ */
+
+/* Forrest, 2007.11.07.
+ * If you want to let APMIB adopt shared memory mechanism, define it to 1.
+ * Or define it to 0 will go back to original local copy mechanism.
+ * Note:
+ *   1. I only use shared memory for HW Configuration (pHwSetting), Default
+ *      Configuration (pMibDef) and Current Configuration (pMib). There is
+ *      no shared memory for each linkchain now.
+ *   2. Because uClibc does not support POSIX inter-process semaphore, I have
+ *      to use SYSTEM V semaphore and shared memory. So if you want to adopt
+ *      shared memory mechanism, you must go to turn on CONFIG_SYSVIPC
+ *      kernel config to support it.
+ */
+
+#if defined(CONFIG_DOMAIN_NAME_QUERY_SUPPORT)
+//#define LOGDEBUG_ENABLED
+#endif
+
+#if defined(CONFIG_RTL_VAP_SUPPORT)
+#define MBSSID
+#endif
+//#define CONFIG_RTL_92D_SUPPORT
+//hf
+//#define CONFIG_RTL_BT_CLIENT
+
+#define COMPRESS_MIB_SETTING
+#define MIB_TLV
+#define MIB_EXT
+
+#ifdef KLD_ENABLED
+#define WEB_PAGE_CFG_FILE	("gateway_settings.gws")
+#endif
+
+
+#ifdef MIB_TLV
+#define MIB_TABLE_LIST 0x8000
+#else
+#define MIB_TABLE_LIST 0x0
+#endif
+//#ifdef HOME_GATEWAY
+//#define GW_QOS_ENGINE
+//#endif
+#ifdef ENABLE_QOS // thru makefile
+	#ifndef QOS_BY_BANDWIDTH
+		#define GW_QOS_ENGINE
+	#endif
+#endif
+
+#define RTL_IPFILTER_SUPPORT_IP_RANGE 1
+
+#if defined(CONFIG_RTL_92D_SUPPORT)||defined(CONFIG_RTL_DUAL_PCIESLOT_BIWLAN) || defined(CONFIG_CUTE_MAHJONG_SELECTABLE)
+#define NUM_WLAN_INTERFACE		2	// number of wlan interface supported
+#else
+#define NUM_WLAN_INTERFACE		1	// number of wlan interface supported
+#endif
+
+#define NUM_WLAN_MULTIPLE_SSID	8	// number of wlan ssid support
+#define NUM_WAN_INTERFACE  4 //add for test
+#ifdef MBSSID 
+#define NUM_VWLAN		4	// number of virtual wlan interface supported
+#else
+#define NUM_VWLAN		0
+#endif
+#if defined(UNIVERSAL_REPEATER)
+#define NUM_VWLAN_INTERFACE		NUM_VWLAN+1
+#define CONFIG_SMART_REPEATER
+#else
+#define NUM_VWLAN_INTERFACE		NUM_VWLAN
+#endif
+#ifdef KLD_ENABLED
+#define MAX_STATIC_ROUTE_NUM 32
+#endif
+
+//#ifdef CONFIG_CWMP_TR069
+#if defined(HAVE_TR069)
+/* Keith add for tr069 --start */
+#undef mib_get
+#undef mib_set
+#undef mib_update
+
+#define mib_get(S, T)  apmib_get(S, T)
+#define mib_set(S, T)  apmib_set(S, T)
+#define mib_update(S)  apmib_update(S)
+#define LANDEVNAME2BR0(a) do{ if(a && (strncmp(a, "eth0", 4)==0||strncmp(a, "wlan0", 5)==0||strncmp(a, "usb0", 4)==0)) strcpy(a, "br0"); }while(0)
+/* Keith add for tr069 --end */
+
+#define CONFIG_APP_TR069
+#define TIME_ZONE
+#define WLAN_SUPPORT
+#ifdef MBSSID
+#define WLAN_MBSSID
+#endif
+#ifdef UNIVERSAL_REPEATER
+#define WLAN_REPEATER
+#endif
+#define MAC_FILTER
+#define ENABLE_WPAAES_WPA2TKIP
+
+//#endif //#ifdef CONFIG_CWMP_TR069
+#endif
+
+// WLAN MIB id
+#define MIB_WLAN_SSID			1
+#define MIB_WLAN_CHANNEL		2
+#define MIB_WLAN_WEP			3
+#define MIB_WLAN_WEP64_KEY1		4
+#define MIB_WLAN_WEP64_KEY2		5
+#define MIB_WLAN_WEP64_KEY3		6
+#define MIB_WLAN_WEP64_KEY4		7
+#define MIB_WLAN_WEP128_KEY1		8
+#define MIB_WLAN_WEP128_KEY2		9
+#define MIB_WLAN_WEP128_KEY3		10
+#define MIB_WLAN_WEP128_KEY4		11
+#define MIB_WLAN_WEP_KEY_TYPE		12
+#define MIB_WLAN_WEP_DEFAULT_KEY	13
+#define MIB_WLAN_FRAG_THRESHOLD		14
+#define MIB_WLAN_SUPPORTED_RATES		15
+#define MIB_WLAN_BEACON_INTERVAL	16
+#define MIB_WLAN_PREAMBLE_TYPE		17
+#define MIB_WLAN_BASIC_RATES		18
+#define MIB_WLAN_RTS_THRESHOLD		19
+#define MIB_WLAN_AUTH_TYPE		20
+#define MIB_WLAN_HIDDEN_SSID		21
+#define MIB_WLAN_WLAN_DISABLED		22
+#define MIB_ELAN_MAC_ADDR		23
+#define MIB_WLAN_WLAN_MAC_ADDR		24
+#define MIB_WLAN_ENCRYPT		25
+#define MIB_WLAN_ENABLE_SUPP_NONWPA	26
+#define MIB_WLAN_SUPP_NONWPA		27
+#define MIB_WLAN_WPA_AUTH		28
+#define MIB_WLAN_WPA_CIPHER_SUITE	29
+#define MIB_WLAN_WPA_PSK		30
+#define MIB_WLAN_WPA_GROUP_REKEY_TIME	31
+#define MIB_WLAN_RS_IP			32
+#define MIB_WLAN_RS_PORT		33
+#define MIB_WLAN_RS_PASSWORD		34
+#define MIB_WLAN_ENABLE_1X		35
+#define MIB_WLAN_PSK_FORMAT		36
+#define MIB_WLAN_WPA2_PRE_AUTH		37
+#define MIB_WLAN_WPA2_CIPHER_SUITE	38
+#define MIB_WLAN_ACCOUNT_RS_ENABLED	39
+#define MIB_WLAN_ACCOUNT_RS_IP		40
+#define MIB_WLAN_ACCOUNT_RS_PORT	41
+#define MIB_WLAN_ACCOUNT_RS_PASSWORD	42
+#define MIB_WLAN_ACCOUNT_RS_UPDATE_ENABLED	43
+#define MIB_WLAN_ACCOUNT_RS_UPDATE_DELAY	44
+#define MIB_WLAN_MAC_AUTH_ENABLED	45
+#define MIB_WLAN_RS_MAXRETRY		46
+#define MIB_WLAN_RS_INTERVAL_TIME	47
+#define MIB_WLAN_ACCOUNT_RS_MAXRETRY	48
+#define MIB_WLAN_ACCOUNT_RS_INTERVAL_TIME 49
+
+#define MIB_WLAN_INACTIVITY_TIME	50
+#define MIB_WLAN_RATE_ADAPTIVE_ENABLED	51
+#define MIB_WLAN_MACAC_ENABLED		52
+#define MIB_WLAN_MACAC_NUM			53
+#define MIB_WLAN_MACAC_ADDR			((MIB_WLAN_MACAC_NUM+1)|MIB_TABLE_LIST)
+#define MIB_WLAN_AC_ADDR_ADD		((MIB_WLAN_MACAC_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_WLAN_AC_ADDR_DEL		((MIB_WLAN_MACAC_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_WLAN_AC_ADDR_DELALL		((MIB_WLAN_MACAC_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_WLAN_DTIM_PERIOD		58
+#define MIB_WLAN_MODE			59
+#define MIB_WLAN_NETWORK_TYPE		60
+#define MIB_WLAN_DEFAULT_SSID		61	// used while configured as Ad-hoc and no any other Ad-hoc could be joined
+						// it will use this default SSID to start BSS
+#define MIB_WLAN_IAPP_DISABLED		62
+#define MIB_WLAN_WDS_ENABLED		63
+#define MIB_WLAN_WDS_NUM		64
+#define MIB_WLAN_WDS			((MIB_WLAN_WDS_NUM+1)|MIB_TABLE_LIST)
+#define MIB_WLAN_WDS_ADD		((MIB_WLAN_WDS_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_WLAN_WDS_DEL		((MIB_WLAN_WDS_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_WLAN_WDS_DELALL		((MIB_WLAN_WDS_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_WLAN_WDS_ENCRYPT		69
+#define MIB_WLAN_WDS_WEP_FORMAT		70
+#define MIB_WLAN_WDS_WEP_KEY		71
+#define MIB_WLAN_WDS_PSK_FORMAT		72
+#define MIB_WLAN_WDS_PSK		73
+#define MIB_WLAN_BAND			74
+#define MIB_WLAN_FIX_RATE		75
+#define MIB_WLAN_BLOCK_RELAY		76
+#define MIB_WLAN_MACCLONE_ENABLED	77
+#define MIB_WLAN_PROTECTION_DISABLED 	78
+#ifdef TLS_CLIENT
+//sc_yang for client mode TLS
+#define MIB_CERTROOT_TBL_NUM			79
+#define MIB_CERTROOT_TBL			((MIB_CERTROOT_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_CERTROOT_ADD			((MIB_CERTROOT_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)	
+#define MIB_CERTROOT_DEL			((MIB_CERTROOT_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_CERTROOT_DELALL			((MIB_CERTROOT_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_CERTUSER_TBL_NUM			84
+#define MIB_CERTUSER_TBL			((MIB_CERTUSER_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_CERTUSER_ADD			((MIB_CERTUSER_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)	
+#define MIB_CERTUSER_DEL			((MIB_CERTUSER_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_CERTUSER_DELALL			((MIB_CERTUSER_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#endif
+
+// for WMM
+#define MIB_WLAN_WMM_ENABLED 89
+
+#ifdef WLAN_EASY_CONFIG
+#define MIB_WLAN_EASYCFG_ENABLED	90
+#define MIB_WLAN_EASYCFG_MODE		91
+#define MIB_WLAN_EASYCFG_SSID		92
+#define MIB_WLAN_EASYCFG_KEY		93
+#define MIB_WLAN_EASYCFG_ALG_REQ	94
+#define MIB_WLAN_EASYCFG_ALG_SUPP	95
+#define MIB_WLAN_EASYCFG_DIGEST		96
+#define MIB_WLAN_EASYCFG_ROLE		97
+#define MIB_WLAN_EASYCFG_SCAN_SSID	98
+#define MIB_WLAN_EASYCFG_WLAN_MODE	99
+#endif // WLAN_EASY_CONFIG
+
+#ifdef MIB_TLV
+#define MIB_ROOT	(100|MIB_TABLE_LIST)
+#define MIB_WLAN_ROOT	(101|MIB_TABLE_LIST)
+#endif
+
+#define MIB_WAN_MAC_ADDR		100
+#define MIB_WAN_IP_ADDR			101
+#define MIB_WAN_SUBNET_MASK		102
+#define MIB_WAN_DEFAULT_GATEWAY		103
+#define MIB_WAN_DHCP			104
+#define MIB_DNS_MODE		105
+#define MIB_PPP_USER_NAME			106
+#define MIB_PPP_PASSWORD		107
+#define MIB_PPP_IDLE_TIME		108
+#define MIB_PPP_CONNECT_TYPE		109
+
+//#if	1//def HOME_GATEWAY
+#ifdef 	HOME_GATEWAY
+
+#define MIB_PORTFW_ENABLED		110
+#define MIB_PORTFW_TBL_NUM			111
+#define MIB_PORTFW_TBL			((MIB_PORTFW_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_PORTFW_ADD			((MIB_PORTFW_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_PORTFW_DEL			((MIB_PORTFW_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_PORTFW_MOD                  ((MIB_PORTFW_TBL_NUM+3)|MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+#define MIB_PORTFW_DELALL		((MIB_PORTFW_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_IPFILTER_ENABLED		116
+#define MIB_IPFILTER_TBL_NUM		117
+#define MIB_IPFILTER_TBL		((MIB_IPFILTER_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_IPFILTER_ADD		((MIB_IPFILTER_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_IPFILTER_DEL		((MIB_IPFILTER_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_IPFILTER_DELALL		((MIB_IPFILTER_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_MACFILTER_ENABLED		122
+#define MIB_MACFILTER_TBL_NUM		123
+#define MIB_MACFILTER_TBL			((MIB_MACFILTER_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_MACFILTER_ADD		((MIB_MACFILTER_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_MACFILTER_DEL		((MIB_MACFILTER_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_MACFILTER_DELALL		((MIB_MACFILTER_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_PORTFILTER_ENABLED		128
+#define MIB_PORTFILTER_TBL_NUM		129
+#define MIB_PORTFILTER_TBL			((MIB_PORTFILTER_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_PORTFILTER_ADD		((MIB_PORTFILTER_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_PORTFILTER_DEL		((MIB_PORTFILTER_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_PORTFILTER_DELALL		((MIB_PORTFILTER_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_TRIGGERPORT_ENABLED		134
+#define MIB_TRIGGERPORT_TBL_NUM		135
+#define MIB_TRIGGERPORT_TBL			((MIB_TRIGGERPORT_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_TRIGGERPORT_ADD		((MIB_TRIGGERPORT_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_TRIGGERPORT_DEL		((MIB_TRIGGERPORT_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_TRIGGERPORT_DELALL		((MIB_TRIGGERPORT_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_DMZ_ENABLED			140
+#define MIB_DMZ_HOST			141
+#define MIB_UPNP_ENABLED		142
+#define MIB_UPNP_IGD_NAME		143
+#define MIB_PPP_MTU_SIZE		144
+#define MIB_PPTP_IP_ADDR			145
+#define MIB_PPTP_SUBNET_MASK		146
+#define MIB_PPTP_SERVER_IP_ADDR		147
+#define MIB_PPTP_USER_NAME			148
+#define MIB_PPTP_PASSWORD		149
+#define MIB_PPTP_MTU_SIZE		150
+
+#if defined(HAVE_TR069)
+#if defined(CONFIG_RTL_8196B)
+#define ROOT_HEADER         ((char *)"r6br")
+#elif defined(CONFIG_RTL_8196C) || defined(CONFIG_RTL_8198) || defined(CONFIG_RTL_819XD) || defined(CONFIG_RTL_8196E) || defined(CONFIG_RTL_8198B) || defined(CONFIG_RTL_8197F)
+#define ROOT_HEADER         ((char *)"r6cr")
+#else
+#define ROOT_HEADER         ((char *)"root")
+#endif //#if defined(CONFIG_RTL_8196B)
+
+#endif
+#define MIB_PPTP_SECURITY_ENABLED 	156
+#define MIB_FIXED_IP_MTU_SIZE	157
+#define MIB_DHCP_MTU_SIZE		158
+#define MIB_PPTP_MPPC_ENABLED	159
+
+#ifdef VPN_SUPPORT
+#define MIB_IPSECTUNNEL_ENABLED		160
+#define MIB_IPSECTUNNEL_TBL_NUM		161
+#define MIB_IPSECTUNNEL_TBL		((MIB_IPSECTUNNEL_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_IPSECTUNNEL_ADD		((MIB_IPSECTUNNEL_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_IPSECTUNNEL_DEL		((MIB_IPSECTUNNEL_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_IPSECTUNNEL_DELALL		((MIB_IPSECTUNNEL_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_IPSEC_NATT_ENABLED		167
+#define MIB_IPSEC_RSA_FILE 		168
+#endif
+#endif // HOME_GATEWAY
+#define MIB_NTP_ENABLED 		151
+#define MIB_NTP_SERVER_ID 		152
+#define MIB_NTP_TIMEZONE 		153
+#define MIB_NTP_SERVER_IP1		154
+#define MIB_NTP_SERVER_IP2		155
+
+#define MIB_IP_ADDR			170
+#define MIB_SUBNET_MASK			171
+#define MIB_DEFAULT_GATEWAY		172
+#define MIB_DHCP			173
+#define MIB_DHCP_CLIENT_START		174
+#define MIB_DHCP_CLIENT_END		175
+#define MIB_DHCP_LEASE_TIME		169
+#define MIB_DNS1			176
+#define MIB_DNS2			177
+#define MIB_DNS3			178
+#define MIB_STP_ENABLED			179
+#define MIB_SUPER_NAME			180
+#define MIB_SUPER_PASSWORD		181
+#define MIB_USER_NAME			182
+#define	MIB_USER_PASSWORD		183
+#define MIB_SCRLOG_ENABLED			184
+#define MIB_AUTO_DISCOVERY_ENABLED	185
+#define MIB_DEVICE_NAME			186
+
+#ifdef HAVE_NBSERVER
+#define MIB_NETBIOS_NAME		199
+#endif
+
+
+//#if	1//def HOME_GATEWAY
+#ifdef 	HOME_GATEWAY
+#define MIB_DDNS_ENABLED		187
+#define MIB_DDNS_TYPE			188
+#define MIB_DDNS_DOMAIN_NAME		189
+#define MIB_DDNS_USER			190
+#define MIB_DDNS_PASSWORD		191
+#endif
+#define MIB_OP_MODE			192
+#define MIB_WISP_WAN_ID			193
+
+//#if	1//def HOME_GATEWAY
+#ifdef 	HOME_GATEWAY
+#define	MIB_WEB_WAN_ACCESS_ENABLED		194
+#if defined(CONFIG_RTL_WEB_WAN_ACCESS_PORT)
+#define	MIB_WEB_WAN_ACCESS_PORT		    256
+#endif
+#define	MIB_PING_WAN_ACCESS_ENABLED		195
+#define MIB_HOST_NAME			197
+#endif
+
+#define MIB_DOMAIN_NAME			198
+
+
+
+
+
+#ifdef MIB_TLV
+#define MIB_TABLE_LIST 0x8000
+#define MIB_ID_MASK (0x8000-1)
+#define MIB_HW_ROOT	(200|MIB_TABLE_LIST)
+#define MIB_HW_WLAN_ROOT	(201|MIB_TABLE_LIST)
+#define MIB_ADD_TBL_ENTRY 		0x10000
+#define MIB_DEL_TBL_ENTRY 		0x20000
+#define MIB_MOD_TBL_ENTRY 		0x100000
+#define MIB_DELALL_TBL_ENTRY 	        0x40000
+#define MIB_WLAN_TBL  			0x80000
+#endif // #ifdef MIB_TLV
+
+
+#ifdef MIB_EXT
+/*---index1-index2-extflag(bit24)------*/
+#define MIB_EXT_BASE_OFFSET     24
+#define MIB_EXT_INDEX1_BITS      2
+#define MIB_EXT_INDEX2_BITS      3
+#define MIB_EXT_INDEX2_OFFSET (MIB_EXT_BASE_OFFSET+1)
+#define MIB_EXT_INDEX1_OFFSET (MIB_EXT_INDEX2_OFFSET+MIB_EXT_INDEX2_BITS)
+#define MIB_EXT_INDEX1_MAX     ((1<<MIB_EXT_INDEX1_BITS)-1)
+#define MIB_EXT_INDEX2_MAX     ((1<<MIB_EXT_INDEX2_BITS)-1)
+#define MIB_EXT_FLAG_MASK 	     (1<<MIB_EXT_BASE_OFFSET)
+#define MIB_EXT_INDEX1_MASK    ( MIB_EXT_INDEX1_MAX << MIB_EXT_INDEX1_OFFSET)
+#define MIB_EXT_INDEX2_MASK    ( MIB_EXT_INDEX2_MAX << MIB_EXT_INDEX2_OFFSET)
+#define MIB_EXT_ALL_MAK            (MIB_EXT_FLAG_MASK | MIB_EXT_INDEX1_MASK | MIB_EXT_INDEX2_MASK)
+#endif
+// Hardware setting MIB
+#define MIB_HW_BOARD_VER		200
+#define MIB_HW_NIC0_ADDR		201
+#define MIB_HW_NIC1_ADDR		202
+#define MIB_HW_WLAN_ADDR		203
+#define MIB_HW_REG_DOMAIN		204
+#define MIB_HW_RF_TYPE			205
+#define MIB_HW_TX_POWER_CCK		206
+#define MIB_HW_TX_POWER_OFDM		207
+#define MIB_HW_ANT_DIVERSITY		208
+#define MIB_HW_TX_ANT			209
+#define MIB_HW_CCA_MODE			210
+#define MIB_HW_PHY_TYPE			211
+#define MIB_HW_LED_TYPE			212
+#define MIB_HW_INIT_GAIN		213
+
+#ifdef TLS_CLIENT
+#define MIB_ROOT_IDX			214
+#define MIB_USER_IDX			215
+#endif
+
+//#ifdef ROUTE_SUPPORT
+#if defined(HAVE_TR069)
+#define MIB_STATICROUTE_ENABLE                  1776
+#define MIB_STATICROUTE_TYPE                            1777
+#define MIB_STATICROUTE_SRCADDR                 1778
+#define MIB_STATICROUTE_SRCNETMASK              1779
+#define MIB_STATICROUTE_IFACEINDEX              1780
+#define MIB_STATICROUTE_INSTANCENUM     1781
+#define MIB_STATICROUTE_FLAGS                   1782
+#endif
+#define MIB_STATICROUTE_ENABLED         216
+#define MIB_STATICROUTE_TBL_NUM         217
+#define MIB_STATICROUTE_TBL             ((MIB_STATICROUTE_TBL_NUM+1)|MIB_TABLE_LIST) /*218*/
+#define MIB_STATICROUTE_ADD             ((MIB_STATICROUTE_TBL_NUM+2) | MIB_ADD_TBL_ENTRY)
+#define MIB_STATICROUTE_DEL             ((MIB_STATICROUTE_TBL_NUM+3) | MIB_DEL_TBL_ENTRY)
+#define MIB_STATICROUTE_MOD             ((MIB_STATICROUTE_TBL_NUM+3) | MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+#define MIB_STATICROUTE_DELALL          ((MIB_STATICROUTE_TBL_NUM+4) | MIB_DELALL_TBL_ENTRY)/*221*/
+#define MIB_DYNAMICROUTE_ENABLED 222
+#define MIB_RIP_ENABLED			 223
+//#ifdef ROUTE6D_SUPPORT
+#define MIB_RIP6_ENABLED			224
+//#endif
+#if defined(HAVE_TR069)
+typedef enum {
+	ENCRYPT_WPA_TKIP = 2,
+	ENCRYPT_WPA_AES = 3,
+	ENCRYPT_WPA2_AES = 4,
+	ENCRYPT_WPA2_TKIP = 5,
+} WPAENCRYPT_T;
+#define MIB_WLAN_FUNC_OFF       		1463
+#endif
+//#endif
+#define MIB_LAN_DHCP_CONFIGURABLE               1749
+
+#define MIB_REMOTELOG_ENABLED 		227
+#define MIB_REMOTELOG_SERVER		228
+
+//#if	1//def HOME_GATEWAY
+#ifdef 	HOME_GATEWAY
+#ifdef DOS_SUPPORT
+#define MIB_DOS_ENABLED 			229
+#define MIB_DOS_SYSSYN_FLOOD 		230
+#define MIB_DOS_SYSFIN_FLOOD 		231
+#define MIB_DOS_SYSUDP_FLOOD 		232
+#define MIB_DOS_SYSICMP_FLOOD 	233
+#define MIB_DOS_PIPSYN_FLOOD 		234
+#define MIB_DOS_PIPFIN_FLOOD 		235
+#define MIB_DOS_PIPUDP_FLOOD 		236
+#define MIB_DOS_PIPICMP_FLOOD 		237
+#define MIB_DOS_BLOCK_TIME 		238
+#endif
+#define MIB_URLFILTER_ENABLED		239
+#define MIB_URLFILTER_TBL_NUM			240
+#define MIB_URLFILTER_TBL			((MIB_URLFILTER_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_URLFILTER_ADD			((MIB_URLFILTER_TBL_NUM+2) | MIB_ADD_TBL_ENTRY)
+#define MIB_URLFILTER_DEL			((MIB_URLFILTER_TBL_NUM+3) | MIB_DEL_TBL_ENTRY)
+#define MIB_URLFILTER_DELALL		        ((MIB_URLFILTER_TBL_NUM+4)| MIB_DELALL_TBL_ENTRY)
+
+#define MIB_VPN_PASSTHRU_IPSEC_ENABLED	245
+#define MIB_VPN_PASSTHRU_PPTP_ENABLED	246
+#define MIB_VPN_PASSTHRU_L2TP_ENABLED	247
+
+#ifdef CONFIG_RTL_NETSNIPER_SUPPORT
+#define MIB_NET_SNIPER_ENABLED		    387
+#endif
+#endif
+
+#define MIB_CUSTOM_PASSTHRU_ENABLED		386
+
+//#ifdef SNMP_SUPPORT Keith remove
+#define MIB_SNMP_RO_COMMUNITY           248
+#define MIB_SNMP_RW_COMMUNITY           249
+//#endif Keith remove
+//#ifdef UNIVERSAL_REPEATER
+#define MIB_REPEATER_ENABLED1		250
+#define MIB_REPEATER_SSID1		251
+#define MIB_REPEATER_ENABLED2		252
+#define MIB_REPEATER_SSID2		253
+//#endif
+
+// added by rock /////////////////////////////////////////
+#ifdef VOIP_SUPPORT
+#define MIB_VOIP_CFG			254
+#endif // VOIP_SUPPORT
+
+#define MIB_WIFI_SPECIFIC		260
+
+//#if	1//def HOME_GATEWAY
+#ifdef 	HOME_GATEWAY
+#define MIB_PPP_SERVICE_NAME			261
+#endif
+
+#define MIB_WLAN_TURBO_MODE			262
+#define MIB_WLAN_RFPOWER_SCALE		263
+
+#define MIB_WSC_INTF_INDEX				264
+
+//#ifdef WIFI_SIMPLE_CONFIG
+#define MIB_WLAN_WSC_DISABLE 		270
+#define MIB_WLAN_WSC_METHOD			271
+#define MIB_WLAN_WSC_CONFIGURED		272
+#define MIB_HW_WSC_PIN				273
+#define MIB_WLAN_WSC_AUTH			274
+#define MIB_WLAN_WSC_ENC				275
+#define MIB_WLAN_WSC_MANUAL_ENABLED 	276
+#define MIB_WLAN_WSC_PSK				277
+#define MIB_WLAN_WSC_SSID			278
+#define MIB_WLAN_WSC_UPNP_ENABLED	279
+#define MIB_WLAN_WSC_REGISTRAR_ENABLED 	280
+#define MIB_WLAN_WSC_CONFIGBYEXTREG 	281
+//#endif
+//Brad addd
+#define MIB_DAYLIGHT_SAVE		282
+#define MIB_IGMP_PROXY_DISABLED		283
+//Brad add for 11N
+#define MIB_WLAN_CHANNEL_BONDING 284
+#define MIB_WLAN_CONTROL_SIDEBAND 285
+#define MIB_WLAN_AGGREGATION 286
+#define MIB_WLAN_SHORT_GI 287
+//Brad define 
+#define MIB_WLAN_WEP64_KEY		288
+#define MIB_WLAN_WEP128_KEY		289
+
+#define MIB_HW_11N_XCAP			290
+#define MIB_HW_11N_RXIMR		291
+#define MIB_DHCPRSVDIP_ENABLED		292
+#define MIB_DHCPRSVDIP_TBL_NUM		293
+#define MIB_DHCPRSVDIP_TBL			((MIB_DHCPRSVDIP_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_DHCPRSVDIP_ADD       	((MIB_DHCPRSVDIP_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_DHCPRSVDIP_DEL        	((MIB_DHCPRSVDIP_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_DHCPRSVDIP_DELALL		((MIB_DHCPRSVDIP_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_DHCPRSVDIP_MOD		((MIB_DHCPRSVDIP_TBL_NUM+3)|MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+
+#define MIB_HW_11N_LOFDMPWD    298
+#define MIB_HW_11N_ANTPWD_B     299
+#define MIB_HW_11N_ANTPWD_C     300
+#define MIB_HW_11N_ANTPWD_D     301
+#define MIB_HW_11N_THER_RFIC        302
+#define MIB_HW_WLAN_ADDR1		303
+#define MIB_HW_WLAN_ADDR2		304
+#define MIB_HW_WLAN_ADDR3		305
+#define MIB_HW_WLAN_ADDR4		306
+
+// GW_QOS_ENGINE
+#define MIB_QOS_ENABLED		       307
+#define MIB_QOS_AUTO_UPLINK_SPEED      308
+#define MIB_QOS_MANUAL_UPLINK_SPEED    309
+#define MIB_QOS_RULE_TBL_NUM	       310
+#define MIB_QOS_RULE_TBL		      ((MIB_QOS_RULE_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_QOS_ADD		       		((MIB_QOS_RULE_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_QOS_DEL		            ((MIB_QOS_RULE_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_QOS_DELALL		        ((MIB_QOS_RULE_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_QOS_MODE		    318
+
+#define MIB_WLAN_ACCESS			315
+#define MIB_WLAN_PRIORITY		316
+
+#define MIB_START_MP	317
+
+/*Reserve 318~320 for qos use
+#define MIB_QOS_MODE		    318
+*/
+
+#define MIB_SYSTIME_YEAR	321
+#define MIB_SYSTIME_MON	322
+#define MIB_SYSTIME_DAY		323
+#define MIB_SYSTIME_HOUR	324
+#define MIB_SYSTIME_MIN		325
+#define MIB_SYSTIME_SEC		326
+
+#define MIB_PPPOE_DHCP_ENABLED	327
+
+/* # keith: add l2tp support. 20080515 */
+#define MIB_L2TP_IP_ADDR					331
+#define MIB_L2TP_SUBNET_MASK			332
+#define MIB_L2TP_SERVER_IP_ADDR			333
+#define MIB_L2TP_USER_NAME				334
+#define MIB_L2TP_PASSWORD			335
+#define MIB_L2TP_MTU_SIZE			336
+#define MIB_L2TP_CONNECTION_TYPE	337
+#define MIB_L2TP_IDLE_TIME 			338
+
+// Patch for our router under another router to dial up l2tp
+#define MIB_L2TP_DEFAULT_GW		339
+
+// Patch for our router under another router to dial up pptp
+#define MIB_PPTP_DEFAULT_GW	340
+#define MIB_PPTP_WAN_IP_DYNAMIC 	341
+#ifdef CONFIG_GET_SERVER_IP_BY_DOMAIN
+#define MIB_PPTP_SERVER_DOMAIN	342
+#define MIB_PPTP_GET_SERV_BY_DOMAIN 343
+#endif
+
+#ifdef CONFIG_IPV6
+#define MIB_IPV6_ID                        390
+#define MIB_IPV6_RADVD_PARAM 		(MIB_IPV6_ID)
+#define MIB_IPV6_DNSV6_PARAM 		(MIB_IPV6_ID+1)
+#define MIB_IPV6_DHCPV6S_PARAM 		(MIB_IPV6_ID+2)
+#define MIB_IPV6_ADDR_PARAM 		(MIB_IPV6_ID+3)
+#define MIB_IPV6_TUNNEL_PARAM 		(MIB_IPV6_ID+4)
+#define MIB_IPV6_DHCPV6C_PARAM 		(MIB_IPV6_ID+5)
+#define MIB_IPV6_ADDR6_PARAM 		(MIB_IPV6_ID+6)
+#define MIB_IPV6_ADDR_LAN_PARAM 	(MIB_IPV6_ID+7)
+#define MIB_IPV6_ADDR_WAN_PARAM 	(MIB_IPV6_ID+8)
+#define MIB_IPV6_ADDR_GW_PARAM		(MIB_IPV6_ID+9)
+#define MIB_IPV6_ADDR_PFEFIX_PARAM	(MIB_IPV6_ID+10)
+#define MIB_IPV6_ADDR_DNS_PARAM		(MIB_IPV6_ID+11)
+#define MIB_IPV6_ORIGIN_TYPE		(MIB_IPV6_ID+12)
+#define MIB_IPV6_LINK_TYPE			(MIB_IPV6_ID+13)
+#define MIB_IPV6_WAN_ENABLE			(MIB_IPV6_ID+14)
+#define MIB_IPV6_DNS_AUTO			(MIB_IPV6_ID+15)
+#define MIB_MLD_PROXY_DISABLED		(MIB_IPV6_ID+16)
+#ifdef CONFIG_IPV6_WAN_RA
+#define MIB_IPV6_RADVD_PARAM_WAN 	(MIB_IPV6_ID+17)
+#endif
+
+typedef enum IPV6_ORIGIN_T_
+{
+	IPV6_ORIGIN_AUTO =0,
+	IPV6_ORIGIN_DHCP =1,
+	IPV6_ORIGIN_STATIC =2,
+	IPV6_ORIGIN_NONE =3
+} IPV6_ORIGIN_T;
+
+typedef enum IPV6_LINKTYPE_T_
+{
+	IPV6_LINKTYPE_IP=0,
+	IPV6_LINKTYPE_PPP=1
+}IPV6_LINKTYPE_T;
+
+#endif
+
+#define MIB_WEB_LANGUAGE 410
+typedef enum {ENGLISH=0,SIMPLE_CHINESE=1,JAPAN,KOREA,TRADITION_CHAIN} LANGUAGE_TYPE_T;
+// SNMP, Forrest added, 2007.10.25.
+#ifdef CONFIG_SNMP
+#define MIB_SNMP_ENABLED		435
+#define MIB_SNMP_NAME			436
+#define MIB_SNMP_LOCATION		437
+#define MIB_SNMP_CONTACT		438
+#define MIB_SNMP_RWCOMMUNITY	439
+#define MIB_SNMP_ROCOMMUNITY	440
+#define MIB_SNMP_TRAP_RECEIVER1	441
+#define MIB_SNMP_TRAP_RECEIVER2	442
+#define MIB_SNMP_TRAP_RECEIVER3	443
+#endif
+
+#define MIB_WLAN_TX_BEAMFORMING	450
+#define MIB_WLAN_COUNTRY_STRING 451
+
+
+/* # keith: add l2tp support. 20080515 */
+#ifdef CONFIG_GET_SERVER_IP_BY_DOMAIN
+#define MIB_L2TP_GET_SERV_BY_DOMAIN 499
+#define MIB_L2TP_SERVER_DOMAIN		500
+#endif
+#define MIB_L2TP_WAN_IP_DYNAMIC		501
+#define MIB_L2TP_GATEWAY		502
+//SCHEDULE
+
+#define MIB_WLAN_SCHEDULE_ENABLED	503
+#define MIB_WLAN_SCHEDULE_TBL_NUM	504
+#define MIB_WLAN_SCHEDULE_TBL		((MIB_WLAN_SCHEDULE_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_WLAN_SCHEDULE_ADD		((MIB_WLAN_SCHEDULE_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_WLAN_SCHEDULE_DEL		((MIB_WLAN_SCHEDULE_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_WLAN_SCHEDULE_MOD                   ((MIB_WLAN_SCHEDULE_TBL_NUM+3)|MIB_DEL_TBL_ENTRY| MIB_MOD_TBL_ENTRY)
+
+#define MIB_WLAN_SCHEDULE_DELALL	((MIB_WLAN_SCHEDULE_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+
+
+#define MIB_PPTP_CONNECTION_TYPE	509
+#define MIB_PPTP_IDLE_TIME 			510
+
+
+//NewAdd For rtl8196B
+#define MIB_HW_WLAN_ADDR5		511
+#define MIB_HW_WLAN_ADDR6		512
+#define MIB_HW_WLAN_ADDR7		513
+
+#define MIB_HW_TX_POWER_OFDM_1S 514
+#define MIB_HW_TX_POWER_OFDM_2S 515
+#define MIB_HW_11N_LOFDMPWDA    516
+#define MIB_HW_11N_LOFDMPWDB    517
+#define MIB_HW_11N_TSSI1     518
+#define MIB_HW_11N_TSSI2     519
+#define MIB_HW_11N_THER 520
+#define MIB_HW_11N_TRSWITCH 521        //MIB_HW_11N_ESERVED1->MIB_HW_11N_TRSWITCH
+#define MIB_HW_11N_TRSWPAPE_C9 522
+#define MIB_HW_11N_TRSWPAPE_CC 523
+#define MIB_HW_11N_TARGET_PWR 524
+#define MIB_HW_11N_PA_TYPE 525
+#ifdef CONFIG_RTL_8881A_SELECTIVE
+#define MIB_HW_11N_THER_2 526
+#define MIB_HW_11N_XCAP_2 527
+#else
+#define MIB_HW_11N_THER2 526
+#define MIB_HW_11N_RESERVED7 527
+#endif
+#define MIB_HW_11N_RESERVED8 528
+
+/*-----end-----*/
+
+// SNMP maximum length of fields, Forrest added, 2007.10.25.
+#ifdef CONFIG_SNMP
+#define MAX_SNMP_NAME_LEN		64
+#define MAX_SNMP_LOCATION_LEN		64
+#define MAX_SNMP_CONTACT_LEN		64
+#define MAX_SNMP_COMMUNITY_LEN          64
+#endif
+
+#ifdef CONFIG_RTL_SIMPLE_CONFIG
+#define MAX_SC_DEVICE_NAME	64
+#endif
+
+//=========add for MESH=========
+//#ifdef CONFIG_RTK_MESH Keith remove
+#define MIB_WLAN_MESH_ENABLE    644	//new feature:Mesh enable/disable
+#define MIB_WLAN_MESH_ROOT_ENABLE   551
+#define MIB_WLAN_MESH_ID			554
+#define MIB_WLAN_MESH_MAX_NEIGHTBOR	555
+#define MIB_WLAN_MESH_ENCRYPT		559
+#define MIB_WLAN_MESH_PSK_FORMAT	560
+#define MIB_WLAN_MESH_WPA_PSK		561
+#define MIB_WLAN_MESH_WPA_AUTH		562
+#define MIB_WLAN_MESH_WPA2_CIPHER_SUITE	563
+
+//#ifdef _MESH_ACL_ENABLE_ Keith remove
+#define MIB_WLAN_MESH_ACL_ENABLED		580
+#define MIB_WLAN_MESH_ACL_NUM			581
+#define MIB_WLAN_MESH_ACL_ADDR			((MIB_WLAN_MESH_ACL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_WLAN_MESH_ACL_ADDR_ADD		((MIB_WLAN_MESH_ACL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_WLAN_MESH_ACL_ADDR_DEL		((MIB_WLAN_MESH_ACL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_WLAN_MESH_ACL_ADDR_DELALL	((MIB_WLAN_MESH_ACL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+//#endif Keith remove
+
+//#ifdef 	_11s_TEST_MODE_	 Keith remove
+#define MIB_WLAN_MESH_TEST_PARAM1		600
+#define MIB_WLAN_MESH_TEST_PARAM2		601
+#define MIB_WLAN_MESH_TEST_PARAM3		602
+#define MIB_WLAN_MESH_TEST_PARAM4		603
+#define MIB_WLAN_MESH_TEST_PARAM5		604
+#define MIB_WLAN_MESH_TEST_PARAM6		605
+#define MIB_WLAN_MESH_TEST_PARAM7		606
+#define MIB_WLAN_MESH_TEST_PARAM8		607
+#define MIB_WLAN_MESH_TEST_PARAM9		608
+#define MIB_WLAN_MESH_TEST_PARAMA		609
+#define MIB_WLAN_MESH_TEST_PARAMB		610
+#define MIB_WLAN_MESH_TEST_PARAMC		611
+#define MIB_WLAN_MESH_TEST_PARAMD		612
+#define MIB_WLAN_MESH_TEST_PARAME		613
+#define MIB_WLAN_MESH_TEST_PARAMF		614
+#define MIB_WLAN_MESH_TEST_PARAMSTR1		615
+
+//#endif Keith remove
+//#endif // CONFIG_RTK_MESH Keith remove
+//=========add for MESH=========
+
+#define MIB_VLANCONFIG_ENABLED		616
+#define MIB_VLANCONFIG_TBL_NUM		617
+#define MIB_VLANCONFIG_TBL			((MIB_VLANCONFIG_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_VLANCONFIG_ADD       	((MIB_VLANCONFIG_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_VLANCONFIG_DEL        	((MIB_VLANCONFIG_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_VLANCONFIG_DELALL		((MIB_VLANCONFIG_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+
+//#ifdef CONFIG_RTL_WAPI_SUPPORT Keith remove
+//WAPI start from 630
+#define MIB_WLAN_WAPI_PSK   				630
+#define MIB_WLAN_WAPI_PSKLEN   			631
+#define MIB_WLAN_WAPI_PSK_FORMAT		632
+#define MIB_WLAN_WAPI_AUTH				633
+#define MIB_WLAN_WAPI_ASIPADDR    			634
+#define MIB_WLAN_WAPI_SEARCHINFO    635
+#define MIB_WLAN_WAPI_SEARCHINDEX    636
+#define MIB_WLAN_WAPI_MCASTREKEY    637
+#define MIB_WLAN_WAPI_MCAST_TIME    638
+#define MIB_WLAN_WAPI_MCAST_PACKETS    639
+#define MIB_WLAN_WAPI_UCASTREKEY    640
+#define MIB_WLAN_WAPI_UCAST_TIME    641
+#define MIB_WLAN_WAPI_UCAST_PACKETS    642
+#define MIB_WLAN_WAPI_CA_INIT                 643
+
+#define MIB_NAT_ENABLED 645
+#define MIB_WLAN_STBC_ENABLED 646
+#define MIB_WLAN_COEXIST_ENABLED 647
+#define MIB_WLAN_LDPC_ENABLED 648
+#define MIB_SAMBA_ENABLED 650
+
+
+//#ifdef CONFIG_RTL_WAPI_SUPPORT Keith remove
+#define CERTS_DATABASE  "/var/myca/index.txt"
+#define ONE_DAY_SECONDS 86400
+#define USER_NAME_LEN 32
+typedef struct _CertsDbEntry_ {
+        unsigned char userName[USER_NAME_LEN];  //user name of this user cert
+        unsigned long serial;                   //serial of this cert
+        unsigned short validDays;               //total valid days of this cert
+        unsigned short validDaysLeft;           //the left valid days of this cert
+        unsigned char certType;                 //0(default): X.509; others: reserved
+        unsigned char certStatus;               //0(default): valid; 1: expired; 2: revoked
+} CERTS_DB_ENTRY_T, *CERTS_DB_ENTRY_Tp;
+//#endif Keith remove
+//WAPI END
+
+// GW_QOS_ENGINE
+#define MIB_QOS_AUTO_DOWNLINK_SPEED      651
+#define MIB_QOS_MANUAL_DOWNLINK_SPEED      652
+#define MIB_MIB_VER 655
+
+//11n onoff TKIP
+#define MIB_WLAN_11N_ONOFF_TKIP		660
+
+
+#ifdef CONFIG_RTL_8881A_SELECTIVE
+#define MIB_WLAN_CHANNEL_2			661
+#define MIB_WLAN_CHANNEL_BONDING_2	662
+#define MIB_WLAN_CONTROL_SIDEBAND_2	663
+#define MIB_WLAN_SUPPORTED_RATES_2	664
+#define MIB_WLAN_BASIC_RATES_2		665
+#define MIB_WLAN_COEXIST_ENABLED_2	666
+#endif
+
+#ifdef CONFIG_RTL_BT_CLIENT
+#define MIB_BT_UPLOAD_DIR	680
+#define MIB_BT_DOWNLOAD_DIR 681
+#define MIB_BT_TOTAL_ULIMIT 682
+#define MIB_BT_TOTAL_DLIMIT 683
+#define MIB_BT_REFRESH_TIME 684
+#define MIB_BT_ENABLED 685
+#endif
+//#define PPP_POWEROFF_DISCONNECT
+#ifdef PPP_POWEROFF_DISCONNECT
+#define MIB_PPP_SESSION_NUM	940
+#define MIB_PPP_SERVER_MAC	941
+#endif
+
+#define MIB_WLAN_ACK_TIMEOUT	686
+
+#ifdef HAVE_HS2_SUPPORT
+#define MIB_WLAN_HS2_ENABLE    687
+#endif
+
+#define MIB_WLAN_STA_NUM 688
+
+
+typedef enum { IP_BRIDGE=0, IP_ROUTE=1, IP_PPP=2} CMODE_T; //WANIface Mode Not the Method of getting IP address
+
+/*+++++added by Jack for Tr-069 configuration+++++*/
+#if defined(HAVE_TR069)
+#define MAX_WAN_NAME_LEN                                40      // E8 WAN connection name
+// resv | media | ppp | vc
+#define MAX_VC_NUM                                      8
+#define MAX_PPP_NUM                                     8
+#define PHY_INTF(x)                             (x | 0xff00)/*physical interface*/
+#define VC_INDEX(x)                             (x & 0x0ff)
+#define ETH_INDEX(x)                            (x & 0x0ff)
+#define PPP_INDEX(x)                            ((x  >> 8) & 0x0ff)
+#define MEDIA_INDEX(x)                          ((x >> 16) & 0x0ff)
+#define TO_IFINDEX(x,y,z)                       ((x<<16) | (y<<8) | z)
+#define DUMMY_VC_INDEX                          0xff
+#define DUMMY_PPP_INDEX                         0xff
+#define DUMMY_IFINDEX                           0xffff
+#define NA_PPP                  0xefff
+#define NA_VC                   0xffff
+#define MAX_POE_PER_VC          5
+#define STR_LEN_64    64
+
+typedef enum { MEDIA_ATM, MEDIA_ETH } MEDIA_TYPE_T;
+typedef enum { APPTYPE_TR069_INTERNET, APPTYPE_INTERNET, APPTYPE_TR069,
+                 APPTYPE_OTHER, APPTYPE_VOICE, APPTYPE_TR069_VOICE,
+                 APPTYPE_VOICE_INTERNET, APPTYPE_TR069_VOICE_INTERNET } APPTYPE_T;
+typedef enum { PPP_AUTH_AUTO=0, PPP_AUTH_PAP, PPP_AUTH_CHAP, PPP_AUTH_NONE } PPP_AUTH_T;
+
+#undef mib_get
+#undef mib_set
+#undef mib_update
+#define mib_get(S, T)  _apmib_get(S, T)
+#define mib_set(S, T)  _apmib_set(S, T)
+#define mib_update(S)  _apmib_update(S)
+
+#define ALIASNAME_VC   "vc" 
+#define ALIASNAME_BR   "br" 
+#define ALIASNAME_NAS  "nas"
+#define ALIASNAME_DSL  "dsl"
+#define ALIASNAME_ETH  "eth"
+#define ALIASNAME_WLAN "wlan"
+#define ALIASNAME_PPP  "ppp"
+#define ALIASNAME_MWNAS  "nas0_"
+#define ALIASNAME_ETH0DOT  "eth0."
+#if defined(_PRMT_TR143_)
+#define RTL_DEV_NAME_NUM(name,num)	name#num
+
+#define ALIASNAME_VC0   RTL_DEV_NAME_NUM(ALIASNAME_VC,0)//"vc0" 
+#define ALIASNAME_BR0   RTL_DEV_NAME_NUM(ALIASNAME_BR,0)//"br0" 
+#define ALIASNAME_WLAN0  RTL_DEV_NAME_NUM(ALIASNAME_WLAN,0)//"wlan0"
+#define ALIASNAME_WLAN1  RTL_DEV_NAME_NUM(ALIASNAME_WLAN,1)//"wlan1"
+#define ALIASNAME_NAS0  RTL_DEV_NAME_NUM(ALIASNAME_NAS,0)//nas0
+#define ALIASNAME_DSL0  RTL_DEV_NAME_NUM(ALIASNAME_DSL,0)//dsl0
+#define ALIASNAME_ETH0  RTL_DEV_NAME_NUM(ALIASNAME_ETH,0)//eth0
+#define ALIASNAME_ETH1  RTL_DEV_NAME_NUM(ALIASNAME_ETH,1)//eth1
+#define ALIASNAME_PPP0  RTL_DEV_NAME_NUM(ALIASNAME_PPP,0)//ppp0
+
+#define ALIASNAME_VAP   "-vap" //must include '-' at fast
+#define ALIASNAME_WLAN0_VAP  RTL_DEV_NAME_NUM(ALIASNAME_WLAN0,-vap)//"wlan0-vap"
+#define ALIASNAME_WLAN1_VAP  RTL_DEV_NAME_NUM(ALIASNAME_WLAN1,-vap)//"wlan1-vap"
+#define ALIASNAME_WLAN0__VAP  RTL_DEV_NAME_NUM(ALIASNAME_WLAN0,_vap)//"wlan0_vap"
+#define ALIASNAME_WLAN0__VAP0  RTL_DEV_NAME_NUM(ALIASNAME_WLAN0__VAP,0)//"wlan0_vap0"
+#define ALIASNAME_WLAN0__VAP1  RTL_DEV_NAME_NUM(ALIASNAME_WLAN0__VAP,1)//"wlan0_vap1"
+#define ALIASNAME_WLAN0__VAP2  RTL_DEV_NAME_NUM(ALIASNAME_WLAN0__VAP,2)//"wlan0_vap2"
+#define ALIASNAME_WLAN0__VAP3  RTL_DEV_NAME_NUM(ALIASNAME_WLAN0__VAP,3)//"wlan0_vap3"
+
+#define ALIASNAME_WLAN0_VAP0  RTL_DEV_NAME_NUM(ALIASNAME_WLAN0_VAP,0)//"wlan0-vap0"
+#define ALIASNAME_WLAN0_VAP1  RTL_DEV_NAME_NUM(ALIASNAME_WLAN0_VAP,1)//"wlan0-vap1"
+#define ALIASNAME_WLAN0_VAP2  RTL_DEV_NAME_NUM(ALIASNAME_WLAN0_VAP,2)//"wlan0-vap2"
+#define ALIASNAME_WLAN0_VAP3  RTL_DEV_NAME_NUM(ALIASNAME_WLAN0_VAP,3)//"wlan0-vap3"
+
+#define ALIASNAME_WLAN1_VAP0  RTL_DEV_NAME_NUM(ALIASNAME_WLAN1_VAP,0)//"wlan0-vap0"
+#define ALIASNAME_WLAN1_VAP1  RTL_DEV_NAME_NUM(ALIASNAME_WLAN1_VAP,1)//"wlan0-vap0"
+#define ALIASNAME_WLAN1_VAP2  RTL_DEV_NAME_NUM(ALIASNAME_WLAN1_VAP,2)//"wlan0-vap0"
+#define ALIASNAME_WLAN1_VAP3  RTL_DEV_NAME_NUM(ALIASNAME_WLAN1_VAP,3)//"wlan0-vap0"
+
+#define ALIASNAME_ETH0DOT2  RTL_DEV_NAME_NUM(ALIASNAME_ETH0DOT,2)
+#define ALIASNAME_ETH0DOT3  RTL_DEV_NAME_NUM(ALIASNAME_ETH0DOT,3)
+#define ALIASNAME_ETH0DOT4  RTL_DEV_NAME_NUM(ALIASNAME_ETH0DOT,4)
+#define ALIASNAME_ETH0DOT5  RTL_DEV_NAME_NUM(ALIASNAME_ETH0DOT,5)
+
+#define ALIASNAME_ETH0_SW  RTL_DEV_NAME_NUM(ALIASNAME_ETH0,_sw)
+#define ALIASNAME_ETH0_SW0  RTL_DEV_NAME_NUM(ALIASNAME_ETH0_SW,0)
+#define ALIASNAME_ETH0_SW1  RTL_DEV_NAME_NUM(ALIASNAME_ETH0_SW,1)
+#define ALIASNAME_ETH0_SW2  RTL_DEV_NAME_NUM(ALIASNAME_ETH0_SW,2)
+#define ALIASNAME_ETH0_SW3 RTL_DEV_NAME_NUM(ALIASNAME_ETH0_SW,3)
+
+#define ALIASNAME_BR00  RTL_DEV_NAME_NUM(ALIASNAME_BR0,:0)
+#define ALIASNAME_BR01  RTL_DEV_NAME_NUM(ALIASNAME_BR0,:1)
+
+typedef enum
+{
+	ITF_ALL=0,
+	ITF_WAN,	//wan pppx or vcx
+	ITF_LAN,	//br0
+
+	ITF_ETH0,	//eth0
+	ITF_ETH0_SW0,	//eth0_sw0
+	ITF_ETH0_SW1,	//eth0_sw1
+	ITF_ETH0_SW2,	//eth0_sw2
+	ITF_ETH0_SW3,	//eth0_sw3
+	
+	ITF_WLAN0,	//wlan0
+	ITF_WLAN0_VAP0,	//wlan0-vap0
+	ITF_WLAN0_VAP1,	//wlan0-vap1
+	ITF_WLAN0_VAP2,	//wlan0-vap2
+	ITF_WLAN0_VAP3,	//wlan0-vap3
+	
+	ITF_WLAN1,	//wlan0
+	ITF_WLAN1_VAP0,	//wlan0-vap0
+	ITF_WLAN1_VAP1,	//wlan0-vap1
+	ITF_WLAN1_VAP2,	//wlan0-vap2
+	ITF_WLAN1_VAP3,	//wlan0-vap3
+	
+	ITF_USB0,	//usb0
+	
+	ITF_END		//last one
+} ITF_T;
+extern char *strItf[];
+#endif //_PRMT_TR143_
+
+#define CWMP_ID						700 //The value of CWMP_ID is ON or OFF tr069
+#define MIB_CWMP_NOTIFY_LIST                            CWMP_ID + 84
+#define MIB_CWMP_ACS_URL_OLD                    	CWMP_ID + 85                    //069
+#define MIB_CWMP_PROVISIONINGCODE			CWMP_ID + 1	//069
+#define MIB_CWMP_ACS_URL				CWMP_ID + 2			//069
+#define MIB_CWMP_ACS_USERNAME				CWMP_ID + 3		//069
+#define MIB_CWMP_ACS_PASSWORD				CWMP_ID + 4		//069
+#define MIB_CWMP_ENABLED                        	CWMP_ID + 0
+#define MIB_CWMP_INFORM_ENABLE				CWMP_ID + 5		//069
+#define MIB_CWMP_INFORM_INTERVAL				CWMP_ID + 6		//069
+#define MIB_CWMP_INFORM_TIME				CWMP_ID + 7
+#define MIB_CWMP_CONREQ_USERNAME				CWMP_ID + 8
+#define MIB_CWMP_CONREQ_PASSWORD				CWMP_ID + 9
+#define MIB_CWMP_ACS_UPGRADESMANAGED			CWMP_ID + 10	//069
+#define MIB_CWMP_LAN_CONFIGPASSWD			CWMP_ID + 11
+#define MIB_CWMP_SERIALNUMBER				CWMP_ID + 12		//069
+#define MIB_CWMP_DHCP_SERVERCONF			CWMP_ID + 13
+#define MIB_CWMP_LAN_IPIFENABLE				CWMP_ID + 14
+#define MIB_CWMP_LAN_ETHIFENABLE			CWMP_ID + 15
+#define MIB_CWMP_WLAN_BASICENCRY			CWMP_ID + 16
+#define MIB_CWMP_WLAN_WPAENCRY				CWMP_ID + 17
+#define MIB_CWMP_DL_COMMANDKEY				CWMP_ID + 18
+#define MIB_CWMP_DL_STARTTIME				CWMP_ID + 19
+#define MIB_CWMP_DL_COMPLETETIME				CWMP_ID + 20
+#define MIB_CWMP_DL_FAULTCODE				CWMP_ID + 21
+#define MIB_CWMP_INFORM_EVENTCODE				CWMP_ID + 22
+#define MIB_CWMP_RB_COMMANDKEY				CWMP_ID + 23
+#define MIB_CWMP_ACS_PARAMETERKEY			CWMP_ID + 24
+#define MIB_CWMP_CERT_PASSWORD				CWMP_ID + 25
+#define MIB_CWMP_FLAG					CWMP_ID + 26
+#define MIB_CWMP_SI_COMMANDKEY				CWMP_ID + 27	/*ScheduleInform's commandkey*/
+
+#ifdef _PRMT_USERINTERFACE_						/*InternetGatewayDevice.UserInterface.*/
+#define MIB_UIF_PW_REQUIRED					CWMP_ID + 28 	/*PasswordRequired*/
+#define MIB_UIF_PW_USER_SEL					CWMP_ID + 29	/*PasswordUserSelectable*/
+#define MIB_UIF_UPGRADE					CWMP_ID + 30	/*UpgradeAvailable*/
+#define MIB_UIF_WARRANTYDATE				CWMP_ID + 31	/*WarrantyDate*/
+#define MIB_UIF_AUTOUPDATESERVER				CWMP_ID + 32	/*AutoUpdateServer*/
+#define MIB_UIF_USERUPDATESERVER				CWMP_ID + 33	/*UserUpdateServer*/
+#endif /*_PRMT_USERINTERFACE_*/
+
+#define MIB_CWMP_ACS_KICKURL				CWMP_ID + 74
+#define MIB_CWMP_ACS_DOWNLOADURL				CWMP_ID + 75
+#define MIB_CWMP_CONREQ_PORT				CWMP_ID + 76 /*port for connection request*/
+#define MIB_CWMP_CONREQ_PATH				CWMP_ID + 77 /*path for connection request*/
+#define MIB_CWMP_FLAG2					CWMP_ID + 78 
+
+//#ifdef _PRMT_TR143_
+#define MIB_TR143_UDPECHO_ENABLE				CWMP_ID + 79
+#define MIB_TR143_UDPECHO_ITFTYPE				CWMP_ID + 80
+#define MIB_TR143_UDPECHO_SRCIP				CWMP_ID + 81
+#define MIB_TR143_UDPECHO_PORT				CWMP_ID + 82
+#define MIB_TR143_UDPECHO_PLUS				CWMP_ID + 83
+//#endif //_PRMT_TR143_
+#define MIB_CWMP_USERINFO_RESULT                        CWMP_ID + 92
+#define MIB_CWMP_NEED_REBOOT                            CWMP_ID + 93
+#define MIB_CWMP_PERSISTENT_DATA                        CWMP_ID + 97
+#define MIB_CWMP_PARAMETERKEY                   	CWMP_ID + 109
+#define MIB_CWMP_PPPCON_INSTNUM                 	CWMP_ID + 110
+#define MIB_CWMP_IPCON_INSTNUM                  	CWMP_ID + 111
+#define MIB_CWMP_PPPCON_CREATED                 	CWMP_ID + 112
+#define MIB_CWMP_IPCON_CREATED                  	CWMP_ID + 113
+
+#define MIB_CWMP_WLANCONF_ENABLED               1784                                    
+#define MIB_CWMP_WLANCONF_TBL_NUM               1785
+#define MIB_CWMP_WLANCONF_TBL                   ((MIB_CWMP_WLANCONF_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_CWMP_WLANCONF_ADD           	((MIB_CWMP_WLANCONF_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_CWMP_WLANCONF_DEL           	((MIB_CWMP_WLANCONF_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_CWMP_WLANCONF_MOD                   ((MIB_CWMP_WLANCONF_TBL_NUM+3)|MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY) //brucehou
+#define MIB_CWMP_WLANCONF_DELALL                ((MIB_CWMP_WLANCONF_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MAX_CWMP_WLANCONF_NUM                   12
+
+#define MIB_CWMP_WLANCONF_INSTANCENUM           1790
+#define MIB_CWMP_WLANCONF_ROOT_IDX              1791
+#define MIB_CWMP_WLANCONF_VWLAN_IDX             1792
+#define MIB_CWMP_WLANCONF_ISCONFIGURED          1793
+#define MIB_CWMP_WLANCONF_RFBAND                1794
+
+#define MIB_CWMP_PPPOE_DISABLED			CWMP_ID+114
+#define MIB_CWMP_DHCP_DISABLED			CWMP_ID+115
+
+#define MIB_CWMP_MIB_END				CWMP_ID + 200	/* Reserve 200 mib for tr069*/
+#endif /*CONFIG_CWMP_TR069*/
+
+#ifdef CONFIG_RTL_VLAN_SUPPORT
+#define MIB_VLAN_ENABLED	950
+
+#define MIB_VLAN_TBL_NUM	951
+#define MIB_VLAN_TBL		((MIB_VLAN_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_VLAN_ADD       	((MIB_VLAN_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_VLAN_DEL        ((MIB_VLAN_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_VLAN_MOD        ((MIB_VLAN_TBL_NUM+3)|MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+#define MIB_VLAN_DELALL		((MIB_VLAN_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MAX_VLAN_NUM	32
+#define MIB_VLAN_ID	956
+#define MIB_CURRENT_VLAN_ID 957
+#ifdef CONFIG_RTL_BRIDGE_VLAN_SUPPORT
+#define MIB_VLAN_FORWARD_RULE 958
+#define MIB_CURRENT_VLAN_FORWARD_RULE 959
+#endif
+//#define MIB_VLAN_PRIORITY 957
+//#define MIB_VLAN_CFI 958
+
+#define MIB_NETIFACE_TBL_NUM	969
+#define MIB_NETIFACE_TBL		((MIB_NETIFACE_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_NETIFACE_ADD       	((MIB_NETIFACE_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_NETIFACE_DEL        ((MIB_NETIFACE_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_NETIFACE_MOD		((MIB_NETIFACE_TBL_NUM+3)| MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+#define MIB_NETIFACE_DELALL		((MIB_NETIFACE_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MAX_NETIFACE_NUM	32
+#define MIB_NETIF_ENABLE 974
+#define MIB_NETIF_ID 975
+#define MIB_NETIF_NAME 976
+#define MIB_NETIF_PREVID 977
+#define MIB_NETIF_PRIORITY 978
+#define MIB_NETIF_CFI 979
+
+#define MIB_VLAN_NETIF_BIND_TBL_NUM 	980
+#define MIB_VLAN_NETIF_BIND_TBL		((MIB_VLAN_NETIF_BIND_TBL_NUM+1)|MIB_TABLE_LIST)
+#define MIB_VLAN_NETIF_BIND_ADD      ((MIB_VLAN_NETIF_BIND_TBL_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_VLAN_NETIF_BIND_DEL      ((MIB_VLAN_NETIF_BIND_TBL_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_VLAN_NETIF_BIND_DELALL	((MIB_VLAN_NETIF_BIND_TBL_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MAX_VLAN_NETIF_BIND_NUM		256
+#define MIB_BIND_VLAN_ID	986
+#define MIB_BIND_NETIF_ID	987
+#define MIB_BIND_TAGGED	988
+#endif
+
+#define MIB_TEST_DATA		10000
+
+#define MIB_DHCPRSVDIP_IPADDR		1001
+#define MIB_DHCPRSVDIP_MACADDR		1002
+#define MIB_DHCPRSVDIP_HOSTNAME		1003
+
+#define MIB_SCHEDULE_TEXT		1011
+#define MIB_SCHEDULE_ECO		1012
+#define MIB_SCHEDULE_FTIME		1013
+#define MIB_SCHEDULE_TTIME		1014
+#define MIB_SCHEDULE_DAY		1015
+
+#define MIB_PORTFW_IPADDR		1021
+#define MIB_PORTFW_FROMPORT		1022
+#define MIB_PORTFW_TOPORT		1023
+#define MIB_PORTFW_PROTOTYPE		1024
+#define MIB_PORTFW_COMMENT		1025
+#ifdef KLD_ENABLED
+#define MIB_PORTFW_INDEX            4540
+#define MIB_PORTFW_ENTRY_ENABLED    4541
+#define MIB_PORTFW_SCHEDULE_RULE    4542
+#define MIB_PORTFW_PRIVATE_FROM_PORT    4543
+#define MIB_PORTFW_PRIVATE_TO_PORT      4544
+#define MIB_PORTFW_INBOUND_FILTER_RULE  4545
+#endif
+
+//add by cairui
+#define MIB_PORTFW_SVRPORT		1026
+#define MIB_PORTFW_SVRNAME		1027
+#define MIB_PORTFW_WANIFACE_ID		1029
+
+#define MIB_IPFILTER_IPADDR		1031
+#define MIB_IPFILTER_PROTOTYPE		1032
+#define MIB_IPFILTER_COMMENT		1033
+#define MIB_IPFILTER_IP6ADDR        1034
+#define MIB_IPFILTER_IP_VERSION     1035
+#define MIB_IPFILTER_IPADDR_END		1036
+
+#define MIB_PORTFILTER_FROMPORT		1041
+#define MIB_PORTFILTER_TOPORT		1042
+#define MIB_PORTFILTER_PROTOTYPE		1043
+#define MIB_PORTFILTER_COMMENT		1044
+#define MIB_PORTFILTER_IPVERSION    1045
+
+#define MIB_MACFILTER_MACADDR		1051
+#define MIB_MACFILTER_COMMENT		1052
+#ifdef KLD_ENABLED
+#define MIB_MACFILTER_SCHEDULE_RULE 1053
+#define MIB_MACFILTER_ITEM_INDEX    1054
+#define MIB_MACFILTER_ITEM_ENABLED  1055
+#endif
+
+#define MIB_TRIGGERPORT_TRI_FROMPORT		1061
+#define MIB_TRIGGERPORT_TRI_TOPORT	1062
+#define MIB_TRIGGERPORT_TRI_PROTOTYPE		1063
+#define MIB_TRIGGERPORT_INC_FROMPORT	1064
+#define MIB_TRIGGERPORT_INC_TOPORT	1065
+#define MIB_TRIGGERPORT_INC_PROTOTYPE		1066
+#define MIB_TRIGGERPORT_COMMENT	1067
+
+#define MIB_URLFILTER_URLADDR	1071
+#ifdef KLD_ENABLED
+#define MIB_URLFILTER_INDEX		1072		
+#define MIB_URLFILTER_ENABLED_SUB	1073
+#define MIB_URLFILTER_SCHERULE		1074
+#endif
+
+#define MIB_VLANCONFIG_ENTRY_ENABLED	1081
+#define MIB_VLANCONFIG_NETIFACE	1082
+#define MIB_VLANCONFIG_TAGGED	1083
+#define MIB_VLANCONFIG_UNTAGGED	1084
+#define MIB_VLANCONFIG_PRIORITY	1085
+#define MIB_VLANCONFIG_CFI	1086
+#define MIB_VLANCONFIG_GROUPID	1087
+#define MIB_VLANCONFIG_VLANID	1088
+
+#define MIB_STATICROUTE_DSTADDR	1091
+#define MIB_STATICROUTE_NETMASK	1092
+#define MIB_STATICROUTE_GATEWAY	1093
+#define MIB_STATICROUTE_INTERFACE	1094
+#define MIB_STATICROUTE_METRIC	1095
+#ifdef KLD_ENABLED
+#define MIB_STATICROUTE_NAME 1096
+#define MIB_STATICROUTE_ENABLE_SUB 1097
+#endif
+
+#define MIB_IPSECTUNNEL_TUNNELID	1101
+#define MIB_IPSECTUNNEL_AUTHTYPE	1102
+#define MIB_IPSECTUNNEL_LCTYPE	1103
+#define MIB_IPSECTUNNEL_LC_IPADDR	1104
+#define MIB_IPSECTUNNEL_LC_MASKLEN	1105
+#define MIB_IPSECTUNNEL_RTTYPE	1106
+#define MIB_IPSECTUNNEL_RT_IPADDR	1107
+#define MIB_IPSECTUNNEL_RT_MASKLEN	1108
+#define MIB_IPSECTUNNEL_RT_GWADDR	1109
+#define MIB_IPSECTUNNEL_KEYMODE	1110
+#define MIB_IPSECTUNNEL_ESPAH	1111
+#define MIB_IPSECTUNNEL_ESPENCR	1112
+#define MIB_IPSECTUNNEL_ESPAUTH	1113
+#define MIB_IPSECTUNNEL_AHAUTH	1114
+#define MIB_IPSECTUNNEL_CONTYPE	1115
+#define MIB_IPSECTUNNEL_PSKEY	1116
+#define MIB_IPSECTUNNEL_RSAKEY	1117
+#define MIB_IPSECTUNNEL_SPI	1118
+#define MIB_IPSECTUNNEL_ENCRKEY	1119
+#define MIB_IPSECTUNNEL_AUTHKEY	1120
+#define MIB_IPSECTUNNEL_ENABLE	1121
+#define MIB_IPSECTUNNEL_CONNNAME	1122
+#define MIB_IPSECTUNNEL_LCIDTYPE	1123
+#define MIB_IPSECTUNNEL_RTIDTYPE	1124
+#define MIB_IPSECTUNNEL_LCID	1125
+#define MIB_IPSECTUNNEL_RTID	1126
+#define MIB_IPSECTUNNEL_IKELIFETIME	1127
+#define MIB_IPSECTUNNEL_IKEENCR	1128
+#define MIB_IPSECTUNNEL_IKEAUTH	1129
+#define MIB_IPSECTUNNEL_IKEKEYGROUP	1130
+#define MIB_IPSECTUNNEL_IPSECLIFETIME	1131
+#define MIB_IPSECTUNNEL_IPSECPFS	1132
+
+#define MIB_CERTROOT_COMMENT	1151
+
+#define MIB_CERTUSER_COMMENT	1161
+#define MIB_CERTROOT_PASS	1162
+
+#define MIB_QOS_ENTRY_NAME 1171
+#define MIB_QOS_ENTRY_ENABLED 1172
+#define MIB_QOS_PRIORITY 1173
+#define MIB_QOS_PROTOCOL 1174
+#define MIB_QOS_LOCAL_IP_START 1175
+#define MIB_QOS_LOCAL_IP_END 1176
+#define MIB_QOS_LOCAL_PORT_START 1177
+#define MIB_QOS_LOCAL_PORT_END 1178
+#define MIB_QOS_REMOTE_IP_START 1179
+#define MIB_QOS_REMOTE_IP_END 1180
+#define MIB_QOS_REMOTE_PORT_START 1181
+#define MIB_QOS_REMOTE_PORT_END 1182
+
+#define MIB_IPQOS_ENTRY_NAME 1191
+#define MIB_IPQOS_ENABLED 1192
+#define MIB_IPQOS_MAC 1193
+#define MIB_IPQOS_MODE 1194
+#define MIB_IPQOS_LOCAL_IP_START 1195
+#define MIB_IPQOS_LOCAL_IP_END 1196
+#define MIB_IPQOS_BANDWIDTH 1197
+#define MIB_IPQOS_BANDWIDTH_DOWNLINK 1198
+#define MIB_IPQOS_PORT_START 1199
+#define MIB_IPQOS_PORT_END 1200
+#define MIB_IPQOS_PROTOCOL 1205
+#define MIB_IPQOS_WEIGHT	1206
+#define MIB_IPQOS_SCHERULE	1207
+#define MIB_IPQOS_PRIORITY  1208
+
+
+#define MIB_MECH_ACL_MACADDR 1201
+#define MIB_MECH_ACL_COMMENT 1202
+/*reserver 1205~1210 for qos
+#define MIB_IPQOS_PROTOCOL 1205
+#define MIB_IPQOS_WEIGHT	1206
+*/
+#define MIB_WLAN_ACL_ADDR_MACADDR 1211
+#define MIB_WLAN_ACL_ADDR_COMMENT 1212
+
+#define MIB_WLAN_WDS_MACADDR 1221
+#define MIB_WLAN_WDS_FIXEDTXRATE 1222
+#define MIB_WLAN_WDS_COMMENT 1223
+
+
+//#ifdef CONFIG_RTL_FLASH_DUAL_IMAGE_ENABLE
+#define MIB_DUALBANK_ENABLED			1300
+#define MIB_WLAN_PHY_BAND_SELECT			1301
+#define MIB_WLAN_MAC_PHY_MODE			1302
+#define MIB_WLAN_BAND2G5G_SELECT			1303
+//#endif
+
+#ifdef HAVE_TWINKLE_RSSI
+#define MIB_WLAN_SC_GOOD_RSSI_THRESHOLD			1350
+#define MIB_WLAN_SC_NORMAL_RSSI_THRESHOLD		1351
+#define MIB_WLAN_SC_POOR_RSSI_THRESHOLD			1352
+#endif
+
+/* USB3G */
+#define MIB_USB3G_USER              1400
+#define MIB_USB3G_PASS              1401
+#define MIB_USB3G_PIN               1402
+#define MIB_USB3G_APN               1403
+#define MIB_USB3G_DIALNUM           1404
+#define MIB_USB3G_CONN_TYPE         1405
+#define MIB_USB3G_IDLE_TIME         1406
+#define MIB_USB3G_MTU_SIZE          1407
+
+/* CONFIG_CUTE_MAHJONG */
+#define MIB_WAN_DETECT				1410
+#define MIB_UPGRADE_KIT				1411
+
+
+#define MIB_WAN_OLD_DHCP				1420
+
+#if defined(CONFIG_RTL_SIMPLE_CONFIG)
+#define MIB_WLAN_SC_ENABLED				1480
+#define MIB_WLAN_SC_SAVE_PROFILE			1481
+//#define MIB_HW_SC_PIN						1482
+//#define MIB_HW_SC_DEFAULT_PIN				1483
+#define MIB_WLAN_SC_SYNC_PROFILE			1484
+#define MIB_WLAN_SC_PASSWD				1485
+#define MIB_SC_DEVICE_NAME					1486
+#define MIB_SC_DEVICE_TYPE					1487
+#define MIB_WLAN_SC_PIN_ENABLED				1488
+#endif
+
+#ifdef WLAN_PROFILE
+#define WLAN_PROFILE_ID							2100
+#define MIB_PROFILE_ENABLED1					(WLAN_PROFILE_ID+0)
+#define MIB_PROFILE_NUM1						(WLAN_PROFILE_ID+1)
+#define MIB_PROFILE_TBL1						((WLAN_PROFILE_ID+2)|MIB_TABLE_LIST)
+#define MIB_PROFILE_ADD1						((WLAN_PROFILE_ID+3)|MIB_ADD_TBL_ENTRY)
+#define MIB_PROFILE_DEL1						((WLAN_PROFILE_ID+4)|MIB_DEL_TBL_ENTRY)
+#define MIB_PROFILE_MOD1			                      ((WLAN_PROFILE_ID+4) | MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+#define MIB_PROFILE_DELALL1						((WLAN_PROFILE_ID+5)|MIB_DELALL_TBL_ENTRY)
+#define MIB_PROFILE_SSID						(WLAN_PROFILE_ID+6)
+#define MIB_PROFILE_ENC							(WLAN_PROFILE_ID+7)
+#define MIB_PROFILE_AUTH						(WLAN_PROFILE_ID+8)
+#define MIB_PROFILE_WPA_CIPHER					(WLAN_PROFILE_ID+9)
+#define MIB_PROFILE_WPA_PSK						(WLAN_PROFILE_ID+10)
+#define MIB_PROFILE_WEP_DEFAULT_KEY				(WLAN_PROFILE_ID+11)
+#define MIB_PROFILE_WEP_KEY1					(WLAN_PROFILE_ID+12)
+#define MIB_PROFILE_WEP_KEY2					(WLAN_PROFILE_ID+13)
+#define MIB_PROFILE_WEP_KEY3					(WLAN_PROFILE_ID+14)
+#define MIB_PROFILE_WEP_KEY4					(WLAN_PROFILE_ID+15)
+#define MIB_PROFILE_ENABLED2					(WLAN_PROFILE_ID+16)
+#define MIB_PROFILE_WEP_KEY_TYPE					(WLAN_PROFILE_ID+17)
+#define MIB_PROFILE_PSK_FORMAT					(WLAN_PROFILE_ID+18)
+#define MIB_PROFILE_NUM2						(WLAN_PROFILE_ID+19)
+#define MIB_PROFILE_TBL2						((WLAN_PROFILE_ID+20)|MIB_TABLE_LIST)
+#define MIB_PROFILE_ADD2						((WLAN_PROFILE_ID+21)|MIB_ADD_TBL_ENTRY)
+#define MIB_PROFILE_DEL2						((WLAN_PROFILE_ID+22)|MIB_DEL_TBL_ENTRY)
+#define MIB_PROFILE_MOD2			                      ((WLAN_PROFILE_ID+22) | MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+#define MIB_PROFILE_DELALL2						((WLAN_PROFILE_ID+23)|MIB_DELALL_TBL_ENTRY)
+
+#define MAX_WLAN_PROFILE_NUM	5
+#define PROFILE_BOTTOM_UP
+
+#endif // WLAN_PROFILE
+
+#ifdef CONFIG_RTL_NETSNIPER_WANTYPE_SUPPORT
+#define MIB_PPP_ENCRYPT_USER_NAME     1600
+#define MIB_DHCP_PLUS_USER_NAME      1601
+#define MIB_DHCP_PLUS_PASS_WORD      1602
+#endif
+
+#ifdef KLD_ENABLED
+#define MAX_VIRTUAL_SERVER_NUM 24
+#define MAX_PORT_FW_NUM 24
+#define MAX_URL_FILTER_NUM 24
+
+#define MAX_MAC_FILTER_NUM 24
+#define MAX_PORT_TRIGGER_NUM 24
+#define MAX_DHCPC_HOST_NAME_LEN 60
+#define MAX_PPPOE_SERVICE_NAME_LEN 64
+#define MAX_NAME_LEN_SUPER_LONG		104
+
+//winfred_wang Add Here
+#define MAX_MODEL_NAME_LEN					10
+#define MAX_SMTP_NAME_LEN					10
+#define MAX_SMTP_PASSWORD_LEN				10
+#define MAX_SMTP_SERVER_LEN					10
+#define MAX_LOG_SEND_FROM_LEN				20
+#define MAX_LOG_SEND_TO_LEN					20
+#define MAX_EMAIL_SUBJECT_LEN				10
+#define MAX_EMAIL_LOG_SCHEDULE_NAME_LEN		20
+#define MAX_PPPOEDIAL_SCHE_LEN				20
+#define MAX_PPTPDIAL_SCHE_LEN				20
+#define MAX_L2TPDIAL_SCHE_LEN				20
+#define MAX_FIREWALL_RULE_NUM 				50
+#define MAX_DOMAINFILTER_NUM				10
+#define MAX_WLAN_GUEST_RS_PWD1_LEN			10
+#define	MAX_LOCKCLIENT_NUM					10
+
+
+
+//#define	MIB_REMOTE_ACCESS_ENABLED		3194
+
+#define MIB_WEB_LOGIN_TIMEOUT		3281
+#define MIB_REMOTE_ACCESS_PORT		3283
+
+#define MIB_WAN_IP_DYNAMIC		3314
+
+#define MIB_REMOTE_ACCESS_IP_START	3319
+
+#define MIB_USER_LAST_IPADDR			3378
+#define MIB_USER_LAST_TIME		3379
+#define MIB_USER_AUTH_FLAG		3900
+
+#define MIB_PPPOE_WAN_IP_DYNAMIC	3403
+#define MIB_PPTP_WAN_IP_DYNAMIC		3404
+#define MIB_PPTP_GATEWAY		4407
+
+#define MIB_PPPOE_IP			3406
+#define MIB_PPTP_SECURITY_LENGTH 3384
+
+
+//SCHEDULE
+#define MIB_SCHEDULE_ENABLED		3521
+#define MIB_WAN_TRAFFIC_SHAPING 	3635
+
+#define MIB_SCHEDULE_NUM			3522
+#define MIB_SCHEDULE				((MIB_SCHEDULE_NUM+1)|MIB_TABLE_LIST)
+#define MIB_SCHEDULE_ADD			((MIB_SCHEDULE_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_SCHEDULE_DEL			((MIB_SCHEDULE_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_SCHEDULE_DELALL			((MIB_SCHEDULE_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_SCHEDULE_MOD			((MIB_SCHEDULE_NUM+3)|MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+
+//VIRTUAL SERVER
+#define MIB_VIRTUALSERV_ENABLED		MIB_PORTFW_ENABLED
+#define MIB_VIRTUALSERV_NUM			MIB_PORTFW_TBL_NUM
+#define MIB_VIRTUALSERV				MIB_PORTFW_TBL
+#define MIB_VIRTUALSERV_ADD			MIB_PORTFW_ADD
+#define MIB_VIRTUALSERV_DEL			MIB_PORTFW_DEL
+#define MIB_VIRTUALSERV_DELALL		MIB_PORTFW_DELALL
+
+#define MIB_DHCPD_BROADCAST			3546
+#define MIB_LAN_NETBIOS_NAME 3636
+#define MIB_DNSRELAY_ENABLED 3553
+#define MIB_NETBIOS_ANNOUNCE 3547
+#define MIB_NETBIOS_SOURCE 3548
+#define MIB_NETBOIS_SCOPE 3549
+#define MIB_NETBIOS_NODE_TYPE 3550
+#define MIB_PRI_WINS_IP 3551
+#define MIB_DHCPRSVDIP_USED		3385
+#define MIB_DHCPRSVDIP_INDEX	3386
+#define MIB_IP_MAC_BINDING	       3660 
+#define MIB_SEC_WINS_IP 3552
+#define MIB_WAN_FORCE_SPEED		3570
+#define MIB_PING_WAN_INBOUND		3196
+#define MIB_WLAN_ENHANCE_MODE	       3658
+
+//VIRTUAL SERVER
+#define MIB_VIRTUALSERV_INDEX		MIB_PORTFW_INDEX
+#define MIB_VIRTUALSERV_IPADDR		MIB_PORTFW_IPADDR
+#define MIB_VIRTUALSERV_INBOUND_FROM_PORT		MIB_PORTFW_FROMPORT
+#define MIB_VIRTUALSERV_INBOUND_TO_PORT		MIB_PORTFW_TOPORT
+#define MIB_VIRTUALSERV_PRIVATE_FROM_PORT		MIB_PORTFW_PRIVATE_FROM_PORT
+#define MIB_VIRTUALSERV_PRIVATE_TO_PORT		MIB_PORTFW_PRIVATE_TO_PORT
+#define MIB_VIRTUALSERV_PROTOTYPE		MIB_PORTFW_PROTOTYPE
+#define MIB_VIRTUALSERV_SCHEDULE_RULE		MIB_PORTFW_SCHEDULE_RULE
+#define MIB_VIRTUALSERV_INBOUND_FILTER_RULE		MIB_PORTFW_INBOUND_FILTER_RULE
+#define MIB_VIRTUALSERV_ITEM_ENABLED		MIB_PORTFW_ENTRY_ENABLED
+#define MIB_VIRTUALSERV_COMMENT		MIB_PORTFW_COMMENT
+
+//#ifdef  WIFI_SIMPLE_CONFIG
+#define MIB_WLAN_WSC_LOCKED 			3083
+//#endif
+
+//Domain Filter
+#define MIB_DOMAINFILTER_INDEX		4604
+#define MIB_DOMAINFILTER_ENABLED	4605
+#define MIB_DOMAINFILTER_ADDR		4606
+#define MIB_DOMAINFILTER_SCHERULE	4607
+
+//FIREWALLRULE
+#define MIB_FIREWALLRULE_SRC_STARTADDR	4608
+#define MIB_FIREWALLRULE_SRC_ENDADDR	4609
+#define MIB_FIREWALLRULE_DST_STARTADDR	4610
+#define MIB_FIREWALLRULE_DST_ENDADDR	4611
+#define MIB_FIREWALLRULE_SCHERULE		4612
+#define MIB_FIREWALLRULE_COMMENT		4613
+#define MIB_FIREWALLRULE_FROMPORT		4614
+#define MIB_FIREWALLRULE_TOPORT			4615
+#define MIB_FIREWALLRULE_SRC_INTERFACE	4616
+#define MIB_FIREWALLRULE_DST_INTERFACE	4617
+#define MIB_FIREWALLRULE_PROTOTYPE		4618
+#define MIB_FIREWALLRULE_ACTION			4619
+#define MIB_FIREWALLRULE_INDEX_ID		4620
+#define MIB_FIREWALLRULE_ENTRY_ENABLED		4621
+
+//qosrule
+#define	MIB_IPQOS_INDEX					4622
+
+//lock_client
+#define MIB_LOCK_CLIENT_MACADDR			4623
+
+#define MIB_DL_START_HOUR 		3575
+#define MIB_DL_END_HOUR   		3576
+#define MIB_DAYLIGHT_SAVING		3578
+#define MIB_DL_START_MONTH		3339
+#define MIB_DL_SAVE_OFFSET 		3574
+#define MIB_DL_START_DAY 		3380
+#define MIB_DL_END_MONTH 		3381
+#define MIB_DL_END_DAY 			3382
+#define MIB_DL_START_WEEK 		3456
+#define MIB_DL_END_WEEK 		3457
+
+#define MIB_WAN_TRAFFIC_SHAPING 3635
+#define MIB_IGMPPROXY_DISABLED	3401
+#define MIB_PPPOE_DNS_MODE		3656
+#define MIB_WAN_DNS_MODE		3105
+
+//Time.asp
+#define MIB_TIME_YEAR			3461
+#define MIB_TIME_MONTH			3462
+#define MIB_TIME_DAY			3463
+#define MIB_TIME_HOUR			3464
+#define MIB_TIME_MIN			3465
+#define MIB_TIME_SEC			3466
+#define MIB_NTP_TIMEZONE_IDX	3160
+#define MIB_DL_START_DATE		3458
+#define MIB_DL_END_DATE			3459
+
+//Email.asp
+#define MIB_SMTP_USERNAME		3349
+#define MIB_SMTP_AUTH_ENABLED	3348
+#define MIB_SMTP_PASSWORD		3350
+#define MIB_SMTP_SERVER			3351
+#define MIB_LOG_SEND_FROM		3352
+#define MIB_LOG_SEND_TO			3353
+#define MIB_EMAIL_SUBJECT	    3659
+#define MIB_LOG_ENABLED			3184
+
+#define MIB_EMAIL_NOTIFICATION  3571
+#define MIB_EMAIL_LOG_SCHEDULE_NAME 3572
+#define MIB_EMAIL_LOG_SCHEDULE  3573
+#define MIB_EMAIL_LOG_FULL		3402
+
+//DDNS.asp
+#define MIB_DDNS_TIMEOUT       3577
+#define MIB_MODEL_NUM		   3398
+
+//Schedule.asp
+#define MIB_WLAN_SCHEDULE_SELECT_IDX	3079
+#define MIB_PPPOE_DIAL_SCUEDULE			3653
+#define MIB_PPTP_DIAL_SCUEDULE			3654
+#define MIB_L2TP_DIAL_SCUEDULE			3655
+#define MIB_WLAN_GUEST_SCHEDULE_ID 		3617			
+
+#define MIB_DOMAINFILTER_NUM			3367
+#define MIB_DOMAINFILTER				((MIB_DOMAINFILTER_NUM+1)|MIB_TABLE_LIST)
+#define MIB_DOMAINFILTER_ADD			((MIB_DOMAINFILTER_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_DOMAINFILTER_DEL			((MIB_DOMAINFILTER_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_DOMAINFILTER_DELALL			((MIB_DOMAINFILTER_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_DOMAINFILTER_MOD			((MIB_DOMAINFILTER_NUM+3)|MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+
+#define MIB_QOS_RULE_NUM				MIB_QOS_RULE_TBL_NUM
+#define MIB_QOS_RULE					MIB_QOS_RULE_TBL
+#define MIB_QOS_RULE_ADD				MIB_QOS_ADD
+#define MIB_QOS_RULE_DEL				MIB_QOS_DEL
+#define MIB_QOS_RULE_DELALL				MIB_QOS_DELALL
+#define MIB_QOS_RULE_MOD				((MIB_QOS_RULE_TBL_NUM+3)|MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+
+#define MIB_FIREWALLRULE_NUM			3373
+#define MIB_FIREWALLRULE_ENABLED        3374
+#define MIB_FIREWALLRULE				((MIB_FIREWALLRULE_NUM+1)|MIB_TABLE_LIST)
+#define MIB_FIREWALLRULE_ADD			((MIB_FIREWALLRULE_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_FIREWALLRULE_DEL			((MIB_FIREWALLRULE_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_FIREWALLRULE_DELALL			((MIB_FIREWALLRULE_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_FIREWALLRULE_MOD			((MIB_FIREWALLRULE_NUM+3)|MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+
+#define MIB_TRIGGERPORT_NUM				MIB_TRIGGERPORT_TBL_NUM
+#define MIB_TRIGGERPORT					MIB_TRIGGERPORT_TBL
+
+//Guest_ZONE.asp
+#define MIB_WLAN_GUEST_ENCRYPT 			3637
+#define MIB_WLAN_GUEST_WEP_KEY_TYPE 	3634
+#define MIB_WLAN_GUEST_DEFAULT_KEY 		3615
+#define MIB_WLAN_GUEST_WEP 				3612
+#define MIB_WLAN_GUEST_WEP64_KEY1		3613
+#define MIB_WLAN_GUEST_WEP64_KEY2 		3642
+#define MIB_WLAN_GUEST_WEP64_KEY3 		3643
+#define MIB_WLAN_GUEST_WEP64_KEY4 		3644
+#define MIB_WLAN_GUEST_WEP128_KEY1 		3614
+#define MIB_WLAN_GUEST_WEP128_KEY2		3645
+#define MIB_WLAN_GUEST_WEP128_KEY3 		3646
+#define MIB_WLAN_GUEST_WEP128_KEY4 		3647
+
+#define MIB_WLAN_GUEST_ZONE_ENABLED 	3608
+#define MIB_WLAN_GUEST_ZONE_PORTLIST 	3638
+#define MIB_WLAN_GUEST_ZONE_WLANENABLE 	3639
+#define MIB_WLAN_GUEST_SSID 			3609
+#define MIB_WLAN_GUEST_WPA_AUTH 		3618
+#define MIB_WLAN_GUEST_AUTH_TYPE 		3616
+#define MIB_WLAN_GUEST_WPA_CIPHER 		3619
+#define MIB_WLAN_GUEST_WPA2_CIPHER 		3620
+#define MIB_WLAN_GUEST_WPA_PSK	 		3621
+#define MIB_WLAN_GUEST_RS_IP_ADDR1 		3624
+#define MIB_WLAN_GUEST_RS_PORT1 		3625
+#define MIB_WLAN_GUEST_RS_PWD1 			3626
+#define MIB_WLAN_GUEST_ZONE_LOCK_CLIENTLIST 3641
+#define MIB_WLAN_GUEST_ROUTE_ZONE 		3610
+#define MIB_WLAN_GUEST_ZONE_ISOLATION 	3640
+#define MIB_WLAN_GUEST_ENABLE_1X 		3630
+
+#define MIB_LOCK_CLIENT_NUM				3648
+#define MIB_LOCK_CLIENT					((MIB_LOCK_CLIENT_NUM+1)|MIB_TABLE_LIST)
+#define MIB_LOCK_CLIENT_ADD				((MIB_LOCK_CLIENT_NUM+2)|MIB_ADD_TBL_ENTRY)
+#define MIB_LOCK_CLIENT_DEL				((MIB_LOCK_CLIENT_NUM+3)|MIB_DEL_TBL_ENTRY)
+#define MIB_LOCK_CLIENT_DELALL			((MIB_LOCK_CLIENT_NUM+4)|MIB_DELALL_TBL_ENTRY)
+#define MIB_LOCK_CLIENT_MOD				((MIB_LOCK_CLIENT_NUM+3)|MIB_DEL_TBL_ENTRY | MIB_MOD_TBL_ENTRY)
+
+//dualband guest_zone.asp
+#define MIB_WLAN_GUEST_ZONE_ENABLED2 	5000
+#define MIB_WLAN_GUEST_SCHEDULE_ID2		5001
+#define MIB_WLAN_GUEST_ZONE_PORTLIST2	5002
+#define MIB_WLAN_GUEST_ZONE_WLANENABLE2	5003
+#define MIB_WLAN_GUEST_SSID2			5004
+#define MIB_WLAN_GUEST_ENCRYPT2			5005
+#define MIB_WLAN_GUEST_WPA_AUTH2		5006
+#define MIB_WLAN_GUEST_AUTH_TYPE2		5007
+#define MIB_WLAN_GUEST_WEP2				5008
+#define MIB_WLAN_GUEST_DEFAULT_KEY2		5009
+#define MIB_WLAN_GUEST_WEP_KEY_TYPE2	5010
+#define MIB_WLAN_GUEST_WPA_CIPHER2		5011
+#define MIB_WLAN_GUEST_WPA2_CIPHER2		5012
+#define MIB_WLAN_GUEST_WPA_PSK2			5013
+#define MIB_WLAN_GUEST_RS_IP_ADDR12		5014
+#define MIB_WLAN_GUEST_RS_PORT12		5015
+#define MIB_WLAN_GUEST_RS_PWD12			5016
+
+#define MIB_WLAN_GUEST_WEP64_KEY12		5017
+#define MIB_WLAN_GUEST_WEP64_KEY22		5018
+#define MIB_WLAN_GUEST_WEP64_KEY32		5019
+#define MIB_WLAN_GUEST_WEP64_KEY42		5020
+#define MIB_WLAN_GUEST_WEP128_KEY12		5021
+#define MIB_WLAN_GUEST_WEP128_KEY22		5022
+#define MIB_WLAN_GUEST_WEP128_KEY32		5023
+#define MIB_WLAN_GUEST_WEP128_KEY42		5024
+
+//wizard-wireless.asp
+#define MIB_WLAN_REAUTH_TIME	3081
+#define MIB_WLAN_RS_IP1			3032
+#define MIB_WLAN_RS_PORT1		3033
+#define MIB_WLAN_RS_PASSWORD1	3034
+#define MIB_WLAN_ENABLE_MAC_AUTH1	3045
+#define MIB_WLAN_RS_IP2 3345
+#define MIB_WLAN_RS_PORT2 3346
+#define MIB_WLAN_RS_PASSWORD2	3347
+#define MIB_WLAN_ENABLE_MAC_AUTH2 3082
+
+#define MIB_TRIGGERPORT_INDEX   3500
+#define MIB_TRIGGERPORT_ENTRY_ENABLED 3501
+#define MIB_TRIGGERPORT_SCHEDULE_RULE 3502
+#define MIB_TRIGGERPORT_TRI_PORTRNG 3503
+#define MIB_TRIGGERPORT_INC_PORTRNG 3504
+
+//firewall.asp
+typedef enum { FW_PROTO_ALL=1, FW_PROTO_TCP=2, FW_PROTO_UDP=3, FW_PROTO_ICMP=4 } FIREWALL_PROTO_T;
+#define MIB_ANTI_SPOOFING		       3657
+#define MIB_SPIFIREWALL_ENABLED        3700
+#define MIB_RTSP_ALG_ENABLED           3701
+#define MIB_SIP_ALG_ENABLED            3702
+#define MIB_FTP_ALG_ENABLED            3703
+#define MIB_TFTP_ALG_ENABLED            3704
+#define MIB_PPTP_ALG_ENABLED            3705
+#define MIB_L2TP_ALG_ENABLED            3706
+#define MIB_H323_ALG_ENABLED            3707
+//wireless.asp
+#define MIB_WLAN_WEPKEY_CHECK  		3460
+#define MIB_WLAN_WSC_PIN				3303
+#define MIB_WLAN_RF_POWER		3263
+#define MIB_WLAN_CHAN_NUM		3002
+
+#define MIB_WLAN_AUTO_SCAN			3080
+
+
+#endif
+
+#if defined(HAVE_TR069)
+/* define the len of the entities */
+#define CWMP_PROVISION_CODE_LEN	64
+#define CWMP_ACS_URL_LEN	256
+#define CWMP_ACS_USERNAME_LEN	256
+#define CWMP_ACS_PASSWD_LEN	256
+#define CWMP_CONREQ_USERNAME_LEN	256
+#define CWMP_CONREQ_PASSWD_LEN	256
+#define CWMP_LANCONF_PASSWD_LEN	64
+#define CWMP_SERIALNUMBER_LEN	64
+#define CWMP_COMMAND_KEY_LEN	32
+#define CWMP_CERT_PASSWD_LEN	64
+#define CWMP_NOTIFY_LIST_LEN (2) //No limitation in spec
+/* define the cwmp_flag */
+#define CWMP_FLAG_DEBUG_MSG	0x01
+#define CWMP_FLAG_CERT_AUTH      0x02
+#define CWMP_FLAG_SENDGETRPC    0x04
+#define CWMP_FLAG_SKIPMREBOOT   0x08
+#define CWMP_FLAG_DELAY         	0x10
+#define CWMP_FLAG_AUTORUN          0x20
+
+///* define the len of the entities */
+//#define CWMP_PROVISION_CODE_LEN	32 //64 in spec
+//#define CWMP_ACS_URL_LEN	64 //256 in spec
+//#define CWMP_ACS_USERNAME_LEN	32 //256 in spec
+//#define CWMP_ACS_PASSWD_LEN	32 //256 in spec
+//#define CWMP_CONREQ_USERNAME_LEN	32 //256 in spec
+//#define CWMP_CONREQ_PASSWD_LEN	32 //256 in spec
+#define CONN_REQ_PATH_LEN	32 //32 in spec
+#define CWMP_KICK_URL 32 //64 in spec
+#define CWMP_DOWNLOAD_URL 32 //64 in spec
+//#define CWMP_LANCONF_PASSWD_LEN	64
+//#define CWMP_SERIALNUMBER_LEN	64
+#define CWMP_COMMAND_KEY_LEN	32
+//#define CWMP_CERT_PASSWD_LEN	32 //64 in spec
+#define IP_ADDR_LEN 4
+/* define the cwmp_flag */
+#define CWMP_FLAG_DEBUG_MSG	0x01
+#define CWMP_FLAG_CERT_AUTH      0x02
+#define CWMP_FLAG_SENDGETRPC    0x04
+#define CWMP_FLAG_SKIPMREBOOT   0x08
+#define CWMP_FLAG_DELAY         	0x10
+#define CWMP_FLAG_AUTORUN          0x20
+#define CWMP_FLAG_CTINFORMEXT	0x40
+#define CWMP_FLAG_SELFREBOOT    0x80
+/*flag for CWMP_FLAG2 setting*/
+#define CWMP_FLAG2_DIS_CONREQ_AUTH		0x01  /*disable connection request authentication*/
+#define CWMP_FLAG2_DEFAULT_WANIP_IN_INFORM	0x02  /*bring the default wan ip in the inform*/
+
+/*action type for applying new values*/
+#define CWMP_NONE		0
+#define CWMP_START		1
+#define CWMP_STOP		2
+#define CWMP_RESTART		3
+
+/*EC_xxxxx event must consist with those defined in cwmp_rpc.h*/
+#define EC_X_CT_COM_ACCOUNT	0x10000	/*X_CT-COM_ACCOUNTCHANGE*/
+
+#endif /*CONFIG_CWMP_TR069*/
+
+#if defined(CONFIG_RTL_8196C) || defined(CONFIG_RTL_8198) || defined(CONFIG_RTL_819XD) || defined(CONFIG_RTL_8196E) || defined(CONFIG_RTL_8881A) || defined(CONFIG_RTL_8197F)
+/*new add since new platform rtl8196c*/
+#define MIB_HW_TX_POWER_CCK_A 901
+#define MIB_HW_TX_POWER_CCK_B 902
+#define MIB_HW_TX_POWER_HT40_1S_A 903
+#define MIB_HW_TX_POWER_HT40_1S_B 904
+#define MIB_HW_TX_POWER_DIFF_HT40_2S 905
+#define MIB_HW_TX_POWER_DIFF_HT20 906
+#define MIB_HW_TX_POWER_DIFF_OFDM 907
+#define MIB_HW_11N_RESERVED9 908
+#define MIB_HW_11N_RESERVED10 909
+#define MIB_HW_TX_POWER_5G_HT40_1S_A 910
+#define MIB_HW_TX_POWER_5G_HT40_1S_B 911
+#define MIB_HW_TX_POWER_DIFF_5G_HT40_2S 912
+#define MIB_HW_TX_POWER_DIFF_5G_HT20 913
+#define MIB_HW_TX_POWER_DIFF_5G_OFDM 914
+/*new add end*/
+#endif
+
+#if defined(CONFIG_WLAN_HAL_8814AE)
+#define MIB_HW_TX_POWER_CCK_C 2336
+#define MIB_HW_TX_POWER_CCK_D 2337
+#define MIB_HW_TX_POWER_HT40_1S_C 2338
+#define MIB_HW_TX_POWER_HT40_1S_D 2339
+#define MIB_HW_TX_POWER_5G_HT40_1S_C 2340
+#define MIB_HW_TX_POWER_5G_HT40_1S_D 2341
+#endif
+
+#if defined(CONFIG_RTL_8812_SUPPORT) || defined(CONFIG_WLAN_HAL_8814AE)
+#define MIB_HW_TX_POWER_DIFF_20BW1S_OFDM1T_A		2200		
+#define MIB_HW_TX_POWER_DIFF_40BW2S_20BW2S_A		2201
+#define MIB_HW_TX_POWER_DIFF_OFDM2T_CCK2T_A			2202
+#define MIB_HW_TX_POWER_DIFF_40BW3S_20BW3S_A		2203
+#define MIB_HW_TX_POWER_DIFF_OFDM3T_CCK3T_A			2204
+#define MIB_HW_TX_POWER_DIFF_40BW4S_20BW4S_A		2205
+#define MIB_HW_TX_POWER_DIFF_OFDM4T_CCK4T_A			2206
+
+#define MIB_HW_TX_POWER_DIFF_5G_20BW1S_OFDM1T_A		2207
+#define MIB_HW_TX_POWER_DIFF_5G_40BW2S_20BW2S_A		2208
+#define MIB_HW_TX_POWER_DIFF_5G_40BW3S_20BW3S_A		2209
+#define MIB_HW_TX_POWER_DIFF_5G_40BW4S_20BW4S_A		2210
+#define MIB_HW_TX_POWER_DIFF_5G_RSVD_OFDM4T_A		2211
+#define MIB_HW_TX_POWER_DIFF_5G_80BW1S_160BW1S_A	2212
+#define MIB_HW_TX_POWER_DIFF_5G_80BW2S_160BW2S_A	2213
+#define MIB_HW_TX_POWER_DIFF_5G_80BW3S_160BW3S_A	2214
+#define MIB_HW_TX_POWER_DIFF_5G_80BW4S_160BW4S_A	2215
+
+
+#define MIB_HW_TX_POWER_DIFF_20BW1S_OFDM1T_B		2220		
+#define MIB_HW_TX_POWER_DIFF_40BW2S_20BW2S_B		2221
+#define MIB_HW_TX_POWER_DIFF_OFDM2T_CCK2T_B			2222
+#define MIB_HW_TX_POWER_DIFF_40BW3S_20BW3S_B		2223
+#define MIB_HW_TX_POWER_DIFF_OFDM3T_CCK3T_B			2224
+#define MIB_HW_TX_POWER_DIFF_40BW4S_20BW4S_B		2225
+#define MIB_HW_TX_POWER_DIFF_OFDM4T_CCK4T_B			2226
+
+#define MIB_HW_TX_POWER_DIFF_5G_20BW1S_OFDM1T_B		2227
+#define MIB_HW_TX_POWER_DIFF_5G_40BW2S_20BW2S_B		2228
+#define MIB_HW_TX_POWER_DIFF_5G_40BW3S_20BW3S_B		2229
+#define MIB_HW_TX_POWER_DIFF_5G_40BW4S_20BW4S_B		2230
+#define MIB_HW_TX_POWER_DIFF_5G_RSVD_OFDM4T_B		2231
+#define MIB_HW_TX_POWER_DIFF_5G_80BW1S_160BW1S_B	2232
+#define MIB_HW_TX_POWER_DIFF_5G_80BW2S_160BW2S_B	2233
+#define MIB_HW_TX_POWER_DIFF_5G_80BW3S_160BW3S_B	2234
+#define MIB_HW_TX_POWER_DIFF_5G_80BW4S_160BW4S_B	2235
+#endif
+#if defined(CONFIG_WLAN_HAL_8814AE)
+#define MIB_HW_TX_POWER_DIFF_20BW1S_OFDM1T_C		2300
+#define MIB_HW_TX_POWER_DIFF_40BW2S_20BW2S_C		2301
+#define MIB_HW_TX_POWER_DIFF_OFDM2T_CCK2T_C			2302
+#define MIB_HW_TX_POWER_DIFF_40BW3S_20BW3S_C		2303
+#define MIB_HW_TX_POWER_DIFF_OFDM3T_CCK3T_C			2304
+#define MIB_HW_TX_POWER_DIFF_40BW4S_20BW4S_C		2305
+#define MIB_HW_TX_POWER_DIFF_OFDM4T_CCK4T_C			2306
+
+#define MIB_HW_TX_POWER_DIFF_5G_20BW1S_OFDM1T_C		2307
+#define MIB_HW_TX_POWER_DIFF_5G_40BW2S_20BW2S_C		2308
+#define MIB_HW_TX_POWER_DIFF_5G_40BW3S_20BW3S_C		2309
+#define MIB_HW_TX_POWER_DIFF_5G_40BW4S_20BW4S_C		2310
+#define MIB_HW_TX_POWER_DIFF_5G_RSVD_OFDM4T_C		2311
+#define MIB_HW_TX_POWER_DIFF_5G_80BW1S_160BW1S_C	2312
+#define MIB_HW_TX_POWER_DIFF_5G_80BW2S_160BW2S_C	2313
+#define MIB_HW_TX_POWER_DIFF_5G_80BW3S_160BW3S_C	2314
+#define MIB_HW_TX_POWER_DIFF_5G_80BW4S_160BW4S_C	2315
+
+#define MIB_HW_TX_POWER_DIFF_20BW1S_OFDM1T_D		2320
+#define MIB_HW_TX_POWER_DIFF_40BW2S_20BW2S_D		2321
+#define MIB_HW_TX_POWER_DIFF_OFDM2T_CCK2T_D			2322
+#define MIB_HW_TX_POWER_DIFF_40BW3S_20BW3S_D		2323
+#define MIB_HW_TX_POWER_DIFF_OFDM3T_CCK3T_D			2324
+#define MIB_HW_TX_POWER_DIFF_40BW4S_20BW4S_D		2325
+#define MIB_HW_TX_POWER_DIFF_OFDM4T_CCK4T_D			2326
+
+#define MIB_HW_TX_POWER_DIFF_5G_20BW1S_OFDM1T_D		2327
+#define MIB_HW_TX_POWER_DIFF_5G_40BW2S_20BW2S_D		2328
+#define MIB_HW_TX_POWER_DIFF_5G_40BW3S_20BW3S_D		2329
+#define MIB_HW_TX_POWER_DIFF_5G_40BW4S_20BW4S_D		2330
+#define MIB_HW_TX_POWER_DIFF_5G_RSVD_OFDM4T_D		2331
+#define MIB_HW_TX_POWER_DIFF_5G_80BW1S_160BW1S_D	2332
+#define MIB_HW_TX_POWER_DIFF_5G_80BW2S_160BW2S_D	2333
+#define MIB_HW_TX_POWER_DIFF_5G_80BW3S_160BW3S_D	2334
+#define MIB_HW_TX_POWER_DIFF_5G_80BW4S_160BW4S_D	2335
+#endif
+// MIB value and constant
+#ifdef CONFIG_IPV6
+#define IFNAMESIZE 32
+#define MAX_PREFIX_NUM 2
+#define RR_MAX_NUM 2
+#define NAMSIZE 32
+#define MAX_DNAME_SIZE 128
+#endif
+#define MAX_SSID_LEN			33
+#define WEP64_KEY_LEN			5
+#define WEP128_KEY_LEN			13
+#define MAX_NAME_LEN			31
+#define COMMENT_LEN			21
+#define MAX_CCK_CHAN_NUM		14
+#define MAX_OFDM_CHAN_NUM		162
+#define MAX_SERVER_DOMAIN_LEN	32
+#define MAX_2G_CHANNEL_NUM_MIB		14
+#define MAX_5G_CHANNEL_NUM_MIB		196
+
+#if defined(CONFIG_RTL_8812_SUPPORT) || defined(CONFIG_WLAN_HAL_8814AE)
+#define MAX_5G_DIFF_NUM		14
+#endif
+
+#define MIN_PSK_LEN			8
+#define MAX_PSK_LEN			64
+#define MAX_RS_PASS_LEN			65
+#define MAX_DOMAIN_LEN			51
+#define MAX_NAME_LEN_LONG		129
+
+#define TX_RATE_1M			0x01
+#define TX_RATE_2M			0x02
+#define TX_RATE_5M			0x04
+#define TX_RATE_11M			0x08
+
+#define TX_RATE_6M			0x10
+#define TX_RATE_9M			0x20
+#define TX_RATE_12M			0x40
+#define TX_RATE_18M			0x80
+#define TX_RATE_24M			0x100
+#define TX_RATE_36M			0x200
+#define TX_RATE_48M			0x400
+#define TX_RATE_54M			0x800
+
+#define MAX_WLAN_AC_NUM			20
+
+//#if defined(CONFIG_RTK_MESH) && defined(_MESH_ACL_ENABLE_) Keith remove
+#define MAX_MESH_ACL_NUM	MAX_WLAN_AC_NUM
+//#endif Keith remove
+
+#define MAX_CERTROOT_NUM			5
+#define MAX_CERTUSER_NUM			5	
+//#if	1//def HOME_GATEWAY
+#ifdef 	HOME_GATEWAY
+#define MAX_FILTER_NUM			20
+#define MAX_URLFILTER_NUM		8
+#ifdef VPN_SUPPORT
+#define MAX_TUNNEL_NUM			10
+#define MAX_RSA_FILE_LEN		2048
+#define MAX_RSA_KEY_LEN			380
+#define MAX_ENCRKEY_LEN			49
+#define MAX_AUTHKEY_LEN			41
+#define MAX_SPI_LEN			5
+#endif
+#define MAX_QOS_RULE_NUM		10
+#endif
+#define MAX_ROUTE_NUM			10
+
+#ifdef KLD_ENABLED
+#define MAX_DHCP_RSVD_IP_NUM 24
+#else
+#define MAX_DHCP_RSVD_IP_NUM 20
+#endif
+#ifdef KLD_ENABLED
+#define MAX_DOMAIN_BLOCKING_NUM 24
+#endif
+#define MAXFNAME			60
+
+//#ifdef CONFIG_RTL8196B_GW_8M
+//#define MAX_WDS_NUM			4
+//#else
+#define MAX_WDS_NUM			8
+//#endif
+
+#ifdef WLAN_EASY_CONFIG
+#define MAX_ACF_KEY_LEN			64
+#define MAX_ACF_DIGEST_LEN		32
+#endif
+
+//#ifdef SNMP_SUPPORT Keith remove
+#define MAX_SNMP_COMMUNITY_LEN                  64
+//#endif Keith remove
+
+//#ifdef WIFI_SIMPLE_CONFIG
+#define PIN_LEN					8
+//#endif
+
+#define IFNAMSIZE       16
+#define MAX_IFACE_VLAN_CONFIG 10 /* no wds and vxd*/
+/*Brad add for schedule*/
+#ifndef KLD_ENABLED
+#define MAX_SCHEDULE_NUM 3
+#else
+#define MAX_SCHEDULE_NUM	32+2
+#endif
+/* # keith: add l2tp support. 20080515 */
+#define MAX_PPTP_HOST_NAME_LEN 64
+#ifdef CONFIG_RTL_8197F
+#define FLASH_BASE_ADDR		0xb0000000
+#else
+#define FLASH_BASE_ADDR     		0xbd000000
+#endif
+#define FLASH_DEVICE_NAME		("/dev/mtdblock0")
+#define FLASH_DEVICE_NAME1		("/dev/mtdblock1")
+
+
+#ifdef ECOS_HW_SETTING_OFFSET
+#define HW_SETTING_OFFSET		ECOS_HW_SETTING_OFFSET
+#else
+#define HW_SETTING_OFFSET		0x6000
+#endif
+
+#ifdef ECOS_DEFAULT_SETTING_OFFSET
+#define DEFAULT_SETTING_OFFSET	ECOS_DEFAULT_SETTING_OFFSET
+#else
+#define DEFAULT_SETTING_OFFSET		0x8000
+#endif
+
+#ifdef ECOS_CURRENT_SETTING_OFFSET
+#define CURRENT_SETTING_OFFSET	ECOS_CURRENT_SETTING_OFFSET
+#else
+#define CURRENT_SETTING_OFFSET		0xc000
+#endif
+
+//modified by winfred_wang
+#ifdef ECOS_WEB_PAGES_OFFSET
+#define WEB_PAGE_OFFSET			ECOS_WEB_PAGES_OFFSET
+#else
+#define WEB_PAGE_OFFSET			0x10000
+#endif
+
+#ifdef JFFS2_SUPPORT
+#ifdef ECOS_IMAGE_OFFSET
+#define CODE_IMAGE_OFFSET		(ECOS_IMAGE_OFFSET+0x14000)
+#else
+#define CODE_IMAGE_OFFSET		0x54000
+#endif
+#else
+#ifdef ECOS_IMAGE_OFFSET
+#define CODE_IMAGE_OFFSET		ECOS_IMAGE_OFFSET
+#else
+#define CODE_IMAGE_OFFSET		0x40000
+#endif
+#endif
+
+#ifdef HOME_GATEWAY
+	#define CERT_PAGE_OFFSET	0x3f0000
+#else
+	#define CERT_PAGE_OFFSET	0x1f0000
+#endif
+
+#define HW_SETTING_SECTOR_LEN           (0x8000-0x6000)
+#define DEFAULT_SETTING_SECTOR_LEN      (0xc000-0x8000)
+#define CURRENT_SETTING_SECTOR_LEN      (0x10000-0xc000)
+
+
+#ifndef WIN32
+#define __PACK__		__attribute__ ((packed))
+#else
+#define __PACK__
+#endif
+
+
+/* Config/fw image file header */
+
+typedef enum { HW_SETTING=1, DEFAULT_SETTING=2, CURRENT_SETTING=4 } CONFIG_DATA_T;
+
+#if defined(CONFIG_RTL_8196C) || defined(CONFIG_RTL_8198)|| defined(CONFIG_RTL_819XD) || defined(CONFIG_RTL_8196E) || defined(CONFIG_RTL_8881A) || defined(CONFIG_RTL_8197F)
+// update tag
+#define HW_SETTING_HEADER_TAG		((char *)"H6")
+#if (defined(HOME_GATEWAY) && defined(VPN_SUPPORT))
+#define DEFAULT_SETTING_HEADER_TAG	((char *)"6V")
+#elif (defined(HOME_GATEWAY))
+#define DEFAULT_SETTING_HEADER_TAG	((char *)"6G")
+#else
+// TODO: it's 6A previously. But strangly always stay in 6G in flash. Modify it temporarily
+#define DEFAULT_SETTING_HEADER_TAG	((char *)"6G")
+#endif
+#if (defined(HOME_GATEWAY) && defined(VPN_SUPPORT))
+#define CURRENT_SETTING_HEADER_TAG	((char *)"6v")
+#elif (defined(HOME_GATEWAY))
+#define CURRENT_SETTING_HEADER_TAG	((char *)"6g")
+#else
+// TODO: it's 6a previously. But strangly always stay in 6g in flash. Modify it temporarily
+#define CURRENT_SETTING_HEADER_TAG	((char *)"6g")
+#endif
+// force tag
+#define HW_SETTING_HEADER_FORCE_TAG	((char *)"Hf")
+#define DEFAULT_SETTING_HEADER_FORCE_TAG ((char *)"Df")
+#define CURRENT_SETTING_HEADER_FORCE_TAG ((char *)"Cf")
+// upgrade
+#define HW_SETTING_HEADER_UPGRADE_TAG	((char *)"Hu")
+#define DEFAULT_SETTING_HEADER_UPGRADE_TAG ((char *)"Du")
+#define CURRENT_SETTING_HEADER_UPGRADE_TAG ((char *)"Cu")
+#endif
+
+#define TAG_LEN				2
+
+#if defined(CONFIG_RTL_8196C) || defined(CONFIG_RTL_8198) || defined(CONFIG_RTL_819XD) || defined(CONFIG_RTL_8196E) || defined(CONFIG_RTL_8881A) || defined(CONFIG_RTL_8197F)
+#define HW_SETTING_VER			1	// hw setting version
+#define DEFAULT_SETTING_VER		1	// default setting version
+#define CURRENT_SETTING_VER		DEFAULT_SETTING_VER // current setting version
+#endif
+
+#if defined(CONFIG_RTL_8196C) || defined(CONFIG_RTL_8198) || defined(CONFIG_RTL_819XD) || defined(CONFIG_RTL_8196E) || defined(CONFIG_RTL_8881A) || defined(CONFIG_RTL_8197F)
+#define FW_HEADER_WITH_ROOT	((char *)"cr6c")
+#define FW_HEADER			((char *)"cs6c")
+#endif
+#ifdef JFFS2_SUPPORT
+#define WEB_HEADER ((char *)"jw6c")
+#else
+#if defined(CONFIG_RTL_8196C) || defined(CONFIG_RTL_8198) || defined(CONFIG_RTL_819XD) || defined(CONFIG_RTL_8196E) || defined(CONFIG_RTL_8881A) || defined(CONFIG_RTL_8197F)
+#if (defined(HOME_GATEWAY) && defined(VPN_SUPPORT))
+#define WEB_HEADER			((char *)"w6cv")
+#elif (defined(HOME_GATEWAY))
+#define WEB_HEADER			((char *)"w6cg")
+#else
+#define WEB_HEADER			((char *)"w6ca")
+#endif
+#endif
+#endif
+/*
+#if defined(CONFIG_RTL_8196C) || defined(CONFIG_RTL_8198)
+#define ROOT_HEADER			((char *)"r6cr")
+#endif
+*/
+
+#define CERT_HEADER			((char *)"cert")
+#define BOOT_HEADER			((char *)"boot")
+#define ALL_HEADER			((char *)"allp")
+#define SIGNATURE_LEN			4
+
+/* wlan driver ioctl id */
+#define SIOCGIWRTLSTAINFO   		0x8B30	// get station table information
+#define SIOCGIWRTLSTANUM		0x8B31	// get the number of stations in table
+#define SIOCGIWRTLSCANREQ		0x8B33	// scan request
+#define SIOCGIWRTLGETBSSDB		0x8B34	// get bss data base
+#define SIOCGIWRTLJOINREQ		0x8B35	// join request
+#define SIOCGIWRTLJOINREQSTATUS		0x8B36	// get status of join request
+#define SIOCGIWRTLGETBSSINFO		0x8B37	// get currnet bss info
+#define SIOCGIWRTLGETWDSINFO		0x8B38
+#define SIOCGMISCDATA	0x8B48	// get misc data
+
+//=========add for MESH=========
+//#ifdef CONFIG_RTK_MESH Keith remove
+// by GANTOE for site survey 2008/12/26 
+#define SIOCJOINMESH 0x8B94 
+#define SIOCCHECKMESHLINK 0x8B95
+#define RTL8190_IOCTL_GET_MIB	0x89f2
+#define SIOCMESHNEIGHBORTABLEINFO 0x8B99 
+#define SIOCMESHROUTETABLEINFO    0x8B9A 
+#define SIOCMESHPORTALTABLEINFO   0x8B9B 
+#define SIOCMESHPROXYTABLEINFO	  0x8B9C
+#define SIOCMESHROOTINFO	  	  0x8B9D
+
+//#endif Keith remove
+//=========add for MESH=========
+
+#define MAX_STA_NUM			64	// max support sta number
+
+/* flag of sta info */
+#define STA_INFO_FLAG_AUTH_OPEN     	0x01
+#define STA_INFO_FLAG_AUTH_WEP      	0x02
+#define STA_INFO_FLAG_ASOC          	0x04
+#define STA_INFO_FLAG_ASLEEP        	0x08
+
+// bit value for hw board id
+#if 0
+// Old code and no longer used
+#define ETH_PHY_TYPE			1
+#define BOOT_PORT_SELECT		2
+#define USE_ETH0_WAN			4
+#endif
+#define WLAN_RF_2T2R			1
+
+//#ifdef WIFI_SIMPLE_CONFIG
+enum { WSC_AUTH_OPEN=1, WSC_AUTH_WPAPSK=2, WSC_AUTH_SHARED=4, WSC_AUTH_WPA=8, WSC_AUTH_WPA2=0x10, WSC_AUTH_WPA2PSK=0x20, WSC_AUTH_WPA2PSKMIXED=0x22 };
+enum { WSC_ENCRYPT_NONE=1, WSC_ENCRYPT_WEP=2, WSC_ENCRYPT_TKIP=4, WSC_ENCRYPT_AES=8, WSC_ENCRYPT_TKIPAES=12 };
+
+enum { 
+	CONFIG_METHOD_ETH=0x2, 
+	CONFIG_METHOD_PIN=0x4, 
+	CONFIG_METHOD_DISPLAY=0x8  ,		
+	CONFIG_METHOD_PBC=0x80, 
+	CONFIG_METHOD_KEYPAD=0x100,
+	CONFIG_METHOD_VIRTUAL_PBC=0x280	,
+	CONFIG_METHOD_PHYSICAL_PBC=0x480,
+	CONFIG_METHOD_VIRTUAL_PIN=0x2008,
+	CONFIG_METHOD_PHYSICAL_PIN=0x4008
+};
+
+enum { CONFIG_BY_INTERNAL_REGISTRAR=1, CONFIG_BY_EXTERNAL_REGISTRAR=2};
+//#endif
+
+
+#if defined(CONFIG_DYNAMIC_WAN_IP)
+typedef enum { L2TP_PPTP_DYNAMIC_IP=0, L2TP_PPTP_STATIC_IP } L2TP_PPTP_IP_TYPE_T;
+#endif
+
+typedef enum { ENCRYPT_DISABLED=0, ENCRYPT_WEP=1, ENCRYPT_WPA=2, ENCRYPT_WPA2=4, ENCRYPT_WPA2_MIXED=6 ,ENCRYPT_WAPI=7} ENCRYPT_T;
+typedef enum { WDS_ENCRYPT_DISABLED=0, WDS_ENCRYPT_WEP64=1, WDS_ENCRYPT_WEP128=2, WDS_ENCRYPT_TKIP=3, WDS_ENCRYPT_AES=4} WDS_ENCRYPT_T;
+typedef enum { SUPP_NONWPA_NONE=0,SUPP_NONWPA_WEP=1,SUPP_NONWPA_1X=2} SUPP_NONWAP_T;
+typedef enum { WPA_AUTH_AUTO=1, WPA_AUTH_PSK=2 } WPA_AUTH_T;
+typedef enum { WAPI_AUTH_AUTO=1, WAPI_AUTH_PSK=2 } WAPI_AUTH_T;
+typedef enum { WPA_CIPHER_TKIP=1, WPA_CIPHER_AES=2, WPA_CIPHER_MIXED=3 } WPA_CIPHER_T;
+typedef enum { WEP_DISABLED=0, WEP64=1, WEP128=2 } WEP_T;
+typedef enum { KEY_ASCII=0, KEY_HEX } KEY_TYPE_T;
+typedef enum { LONG_PREAMBLE=0, SHORT_PREAMBLE=1 } PREAMBLE_T;
+#ifdef CONFIG_RTL_NETSNIPER_WANTYPE_SUPPORT
+#if defined(HAVE_TR069)
+typedef enum { STATIC_IP=0, DHCP_DISABLED=0, DHCP_CLIENT=1, DHCP_SERVER=2, PPPOE=3, PPTP=4, DHCP_RELAY=5, L2TP=6, DHCP_AUTO=15 , USB3G=16, PPPOE_HENAN=20, PPPOE_NANCHANG=21, PPPOE_OTHER1=22, PPPOE_OTHER2=23, DHCP_PLUS=24, DHCP_NONE=99, } DHCP_T;
+#else
+typedef enum { STATIC_IP=0, DHCP_CLIENT=1, DHCP_SERVER=2, PPPOE=3, PPTP=4, L2TP=6, DHCP_AUTO=15 , USB3G=16, PPPOE_HENAN=20, PPPOE_NANCHANG=21, PPPOE_OTHER1=22, PPPOE_OTHER2=23, DHCP_PLUS=24 } DHCP_T;
+#endif
+#else
+#if defined(HAVE_TR069)
+typedef enum { STATIC_IP=0, DHCP_DISABLED=0, DHCP_CLIENT=1, DHCP_SERVER=2, PPPOE=3, PPTP=4, DHCP_RELAY=5, L2TP=6, PPPOE_RU=7, PPTP_RU=8,DHCP_AUTO=15 , USB3G=16, DHCP_NONE=99, } DHCP_T; /* # keith: add l2tp support. 20080515 */
+#else
+typedef enum { STATIC_IP=0, DHCP_CLIENT=1, DHCP_SERVER=2, PPPOE=3, PPTP=4, L2TP=6, PPPOE_RU=7, PPTP_RU=8,DHCP_AUTO=15 , USB3G=16 } DHCP_T; /* # keith: add l2tp support. 20080515 */
+#endif
+#endif
+typedef enum { DHCP_LAN_NONE=0, DHCP_LAN_CLIENT=1, DHCP_LAN_SERVER=2, DHCP_LAN_RELAY=3 } DHCP_TYPE_T; //keith add. LAN SIDE DHCP TYPE
+typedef enum { GATEWAY_MODE=0, BRIDGE_MODE=1, WISP_MODE=2 } OPMODE_T;
+typedef enum { DISABLE_MODE=0, RIP1_MODE=1, RIP2_MODE=2 } RIP_OPMODE_T; 
+typedef enum { FCC=1, IC, ETSI, SPAIN, FRANCE, MKK } REG_DOMAIN_T;
+typedef enum { AUTH_OPEN=0, AUTH_SHARED, AUTH_BOTH } AUTH_TYPE_T;
+typedef enum { DNS_AUTO=0, DNS_MANUAL } DNS_TYPE_T;
+typedef enum { CONTINUOUS=0, CONNECT_ON_DEMAND, MANUAL } PPP_CONNECT_TYPE_T;
+typedef enum { RF_INTERSIL=1, RF_RFMD=2, RF_PHILIP=3, RF_MAXIM=4, RF_GCT=5,
+ 		RF_MAXIM_AG=6, RF_ZEBRA=7, RF_8255=8 } RF_TYPE_T;
+typedef enum { LED_TX_RX=0, LED_LINK_TXRX=1, LED_LINKTXRX=2 } LED_TYPE_T;
+
+//=========add for MESH=========
+#ifdef CONFIG_RTK_MESH
+typedef enum { RANN=0, PREQ=1 } TREEMECH_T;
+#ifdef CONFIG_NEW_MESH_UI
+typedef enum { AP_MODE=0, CLIENT_MODE=1, WDS_MODE=2, AP_WDS_MODE=3, AP_MESH_MODE=4, MESH_MODE=5} WLAN_MODE_T;
+#else
+typedef enum { AP_MODE=0, CLIENT_MODE=1, WDS_MODE=2, AP_WDS_MODE=3, AP_MPP_MODE=4, MPP_MODE=5, MAP_MODE=6, MP_MODE=7	} WLAN_MODE_T;
+#endif
+#else
+typedef enum { AP_MODE=0, CLIENT_MODE=1, WDS_MODE=2, AP_WDS_MODE=3 } WLAN_MODE_T;
+#endif // CONFIG_RTK_MESH
+//=========add for MESH=========
+
+typedef enum { INFRASTRUCTURE=0, ADHOC=1 } NETWORK_TYPE_T;
+typedef enum { BAND_11B=1, BAND_11G=2, BAND_11BG=3, BAND_11A=4, BAND_11N=8,BAND_11AC=64, BAND_5G_11AN=12 } BAND_TYPE_T;
+typedef enum { DISABLED=0, A_MPDU=1, A_MSDU=2, A_MIXED=3} AGGREGATION_MODE_T;	// GANTOE & epopen: DISABLED=0 original is DISABLE=0, Because conflict with ../../auth/include/1x_common.h in AP/net-snmp-5.x.x
+typedef enum { PHYBAND_OFF=0, PHYBAND_2G=1, PHYBAND_5G=2 } PHYBAND_TYPE_T;
+typedef enum { SMACSPHY=0, DMACSPHY=1, DMACDPHY=2 } MACPHYMODE_TYPE_T;
+typedef enum { BANDMODE2G=0, BANDMODE5G=1, BANDMODEBOTH=2, BANDMODESINGLE=3 } WLANBAND2G5GMODE_TYPE_T;
+
+typedef enum {ROOT_AP=0,RPT_CLIENT} WSC_RUNON_IDX;
+//#if	1//def HOME_GATEWAY
+#ifdef 	HOME_GATEWAY
+#ifdef VPN_SUPPORT
+typedef enum { IKE_MODE=0, MANUAL_MODE=1} KEY_MODE_T;
+typedef enum { SINGLE_ADDR=0, SUBNET_ADDR=1, ANY_ADDR=2, NATT_ADDR=3} ADDRESS_MODE_T;
+typedef enum { INITIATOR=0, RESPONDER=1} CONN_TYPE_T;
+typedef enum { MD5_ALGO=0, AUTH_ALGO=1} AUTH_MODE_T;
+typedef enum { ESP_PROTO=0, AH_PROTO=1} IPSEC_PROTO_T;
+typedef enum { TRI_DES_ALGO=0, AES_ALGO=1, NONE_ALGO=2} ENCR_MODE_T;
+// DH1=768 bits, DH2=1024 bits, DH5= 1536
+typedef enum { DH1_GRP=0, DH2_GRP=1, DH5_GRP=2} KEY_GROUP_T;
+#endif // VPN_SUPPORT
+typedef enum { PROTO_BOTH=3, PROTO_TCP=1, PROTO_UDP=2 } PROTO_TYPE_T;
+#endif // HOME_GATEWAY
+#ifdef WLAN_EASY_CONFIG
+enum { MODE_BUTTON=1, MODE_QUESTION=2 };
+enum {
+	ACF_ALGORITHM_WEP64	= 0x01,
+	ACF_ALGORITHM_WEP128	= 0x02,
+	ACF_ALGORITHM_WPA_TKIP	= 0x04,
+	ACF_ALGORITHM_WPA_AES	= 0x08,
+	ACF_ALGORITHM_WPA2_TKIP	= 0x10,
+	ACF_ALGORITHM_WPA2_AES	= 0x20,
+};
+enum {	ROLE_SERVER=1, ROLE_CLIENT=2, ROLE_ADHOC=4};
+#endif // WLAN_EASY_CONFIG
+
+enum {TURBO_AUTO=0, TURBO_ON=1, TURBO_OFF=2};
+
+#ifdef KLD_ENABLED
+typedef enum { DYNDNS=1, DTDNS=2, EASYDNS=3, NOIP=4, ORAY=5}DDNS_SERVICE_T;
+typedef enum { LOG_OPT_SYSACT=0x02, LOG_OPT_DEBUGINFO=0x04, LOG_OPT_ATTACK=0x08, LOG_OPT_DROPPACKET=0x10, LOG_OPT_NOTICS=0x20, LOG_OPT_SYSTEM=0x40 } LOG_OPT_T;
+#endif
+
+/* scramble saved configuration data */
+#define ENCODE_DATA(data,len) { \
+	int i; \
+	for (i=0; i<len; i++) \
+		data[i] = ~ ( data[i] + 0x38); \
+}
+
+#define DECODE_DATA(data,len) { \
+	int i; \
+	for (i=0; i<len; i++) \
+		data[i] = ~data[i] - 0x38;	\
+}
+
+/* Do checksum and verification for configuration data */
+#ifndef WIN32
+static inline unsigned char CHECKSUM(unsigned char *data, int len)
+#else
+__inline unsigned char CHECKSUM(unsigned char *data, int len)
+#endif
+{
+	int i;
+	unsigned char sum=0;
+
+	for (i=0; i<len; i++)
+		sum += data[i];
+
+	sum = ~sum + 1;
+	return sum;
+}
+#ifndef WIN32
+static inline int CHECKSUM_OK(unsigned char *data, int len)
+#else
+__inline int CHECKSUM_OK(unsigned char *data, int len)
+#endif
+{
+	int i;
+	unsigned char sum=0;
+
+	for (i=0; i<len; i++)
+		sum += data[i];
+
+	//diag_printf("[%s:%d]checksum=0x%x, sum=%x\n", __FUNCTION__, __LINE__, data[len-1], sum);
+	if (sum == 0)
+		return 1;
+	else
+		return 0;
+}
+
+/* WLAN sta info structure */
+typedef struct wlan_sta_info {
+	unsigned short	aid;
+	unsigned char	addr[6];
+	unsigned long	tx_packets;
+	unsigned long	rx_packets;
+	unsigned long	expired_time;	// 10 msec unit
+	unsigned short	flag;
+	unsigned char	txOperaRates;
+	unsigned char	rssi;
+	unsigned long	link_time;		// 1 sec unit
+	unsigned long	tx_fail;
+	unsigned long tx_bytes;
+	unsigned long rx_bytes;
+	unsigned char network;
+	unsigned char ht_info;	// bit0: 0=20M mode, 1=40M mode; bit1: 0=longGI, 1=shortGI
+	unsigned char 	resv[6];
+} WLAN_STA_INFO_T, *WLAN_STA_INFO_Tp;
+
+typedef struct wlan_rate{
+unsigned int id;
+unsigned char rate[20];
+}WLAN_RATE_T, *WLAN_RATE_Tp;
+typedef enum { 
+	MCS0=0x80, 
+	MCS1=0x81, 
+	MCS2=0x82,
+	MCS3=0x83,
+	MCS4=0x84,
+	MCS5=0x85,
+	MCS6=0x86,
+	MCS7=0x87,
+	MCS8=0x88,
+	MCS9=0x89,
+	MCS10=0x8a,
+	MCS11=0x8b,
+	MCS12=0x8c,
+	MCS13=0x8d,
+	MCS14=0x8e,
+	MCS15=0x8f
+	} RATE_11N_T;
+
+#ifdef WIN32
+#pragma pack(1)
+#endif
+
+
+//zj: eco featrue
+#define ECO_LEDDIM_MASK		0x08
+#define ECO_TIMER_MASK			0x04
+#define ECO_EVERYDAY_MASK		0x02
+#define ECO_24HOURS_MASK			0x01
+
+#define ECO_DAY_MASK			0x0000007F
+#define ECO_SUNDAY_MASK		0x00000001
+#define ECO_MONDAY_MASK		0x00000002
+#define ECO_TUESDAY_MASK		0x00000004
+#define ECO_WEDNESDAY_MASK	0x00000008
+#define ECO_THURSDAY_MASK		0x00000010
+#define ECO_FRIDAY_MASK		0x00000020
+#define ECO_SATURDAY_MASK		0x00000040
+
+#define SCHEDULE_NAME_LEN		20
+typedef struct schedule_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_SCHEDULE_IMPORT
+#include "mibdef.h"
+#undef MIB_SCHEDULE_IMPORT
+
+#undef MIBDEF
+}__PACK__ SCHEDULE_T, *SCHEDULE_Tp;
+
+
+
+typedef struct macfilter_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_MACFILTER_IMPORT
+#include "mibdef.h"
+#undef MIB_MACFILTER_IMPORT
+
+#undef MIBDEF
+}__PACK__ MACFILTER_T, *MACFILTER_Tp;
+
+#ifdef KLD_ENABLED
+//Schedule.asp
+typedef struct domainfilter_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_DOMAINFILTER_IMPORT
+#include "mibdef.h"
+#undef MIB_DOMAINFILTER_IMPORT
+
+#undef MIBDEF
+} __PACK__ DOMAINFILTER_T, *DOMAINFILTER_Tp;
+
+typedef struct firewallrule_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_FIREWALLRULE_IMPORT
+#include "mibdef.h"
+#undef MIB_FIREWALLRULE_IMPORT
+
+#undef MIBDEF
+}__PACK__ FIREWALLRULE_T, *FIREWALLRULE_Tp;
+
+typedef struct lock_client_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_LOCK_CLIENT_IMPORT
+#include "mibdef.h"
+#undef MIB_LOCK_CLIENT_IMPORT
+
+#undef MIBDEF
+
+} __PACK__ LOCKCLIENT_T, *LOCKCLIENT_Tp;
+
+
+#endif
+
+#ifdef CONFIG_RTL_VLAN_SUPPORT
+typedef struct vlan_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_VLAN_IMPORT
+#include "mibdef.h"
+#undef MIB_VLAN_IMPORT
+
+#undef MIBDEF
+}__PACK__ VLAN_T, *VLAN_Tp;
+typedef struct netiface_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_NETIFACE_IMPORT
+#include "mibdef.h"
+#undef MIB_NETIFACE_IMPORT
+
+#undef MIBDEF
+}__PACK__ NETIFACE_T, *NETIFACE_Tp;
+typedef struct vlan_netif_bind_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_VLAN_NETIF_BIND_IMPORT
+#include "mibdef.h"
+#undef MIB_VLAN_NETIF_BIND_IMPORT
+
+#undef MIBDEF
+}__PACK__ VLAN_NETIF_BIND_T, *VLAN_NETIF_BIND_Tp;
+
+
+
+#endif
+
+
+
+//#if	1//def HOME_GATEWAY
+#ifdef 	HOME_GATEWAY
+typedef struct urlfilter_entry {	
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_URLFILTER_IMPORT
+#include "mibdef.h"
+#undef MIB_URLFILTER_IMPORT
+
+#undef MIBDEF
+}__PACK__ URLFILTER_T, *URLFILTER_Tp;
+
+typedef struct portfw_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_PORTFW_IMPORT
+#include "mibdef.h"
+#undef MIB_PORTFW_IMPORT
+
+#undef MIBDEF
+}__PACK__ PORTFW_T, *PORTFW_Tp;
+
+typedef struct ipfilter_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_IPFILTER_IMPORT
+#include "mibdef.h"
+#undef MIB_IPFILTER_IMPORT
+
+#undef MIBDEF
+}__PACK__ IPFILTER_T, *IPFILTER_Tp;
+
+typedef struct portfilter_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_PORTFILTER_IMPORT
+#include "mibdef.h"
+#undef MIB_PORTFILTER_IMPORT
+
+#undef MIBDEF
+}__PACK__ PORTFILTER_T, *PORTFILTER_Tp;
+
+typedef struct triggerport_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_TRIGGERPORT_IMPORT
+#include "mibdef.h"
+#undef MIB_TRIGGERPORT_IMPORT
+
+#undef MIBDEF
+}__PACK__ TRIGGERPORT_T, *TRIGGERPORT_Tp;
+
+#ifdef GW_QOS_ENGINE
+#define MAX_QOS_NAME_LEN    15
+typedef struct qos_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_QOS_IMPORT
+#include "mibdef.h"
+#undef MIB_QOS_IMPORT
+
+#undef MIBDEF
+}__PACK__ QOS_T, *QOS_Tp;
+#endif
+
+#define MAC_ADDR_LEN    6
+
+#ifdef QOS_BY_BANDWIDTH
+#define QOS_RESTRICT_MIN	0x01
+#define QOS_RESTRICT_MAX	0x02
+#define QOS_RESTRICT_IP		0x04
+#define QOS_RESTRICT_MAC	0x08
+#define QOS_RESTRICT_IPV6	0x10
+#define QOS_RESTRICT_ALL	0x20
+#define QOS_WFQ_SCH			0x40
+#define QOS_SPRIO_SCH		0x80
+
+#define MAX_QOS_NAME_LEN    15
+
+typedef struct qos_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_IPQOS_IMPORT
+#include "mibdef.h"
+#undef MIB_IPQOS_IMPORT
+
+#undef MIBDEF
+}__PACK__ IPQOS_T, *IPQOS_Tp;
+
+#endif
+
+#ifdef VPN_SUPPORT
+typedef struct ipsectunnel_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_IPSECTUNNEL_IMPORT
+#include "mibdef.h"
+#undef MIB_IPSECTUNNEL_IMPORT
+
+#undef MIBDEF
+}__PACK__ IPSECTUNNEL_T, *IPSECTUNNEL_Tp;
+#endif // VPN_SUPPORT
+
+#ifdef CONFIG_IPV6
+#define uint16 unsigned short
+#define uint8 unsigned char
+#define uint32 unsigned int
+/*radvd*/
+struct AdvPrefix {
+        uint16    		Prefix[8];
+        uint8                  PrefixLen;
+        uint8                     AdvOnLinkFlag;
+        uint8                     AdvAutonomousFlag;
+        uint32                AdvValidLifetime;
+        uint32                AdvPreferredLifetime;
+ 
+        /* Mobile IPv6 extensions */
+        uint8                     AdvRouterAddr;
+ 
+        /* 6to4 extensions */
+        char                    if6to4[IFNAMESIZE];
+        uint8                     enabled;
+}__PACK__;
+
+struct Interface {
+	  char                    Name[IFNAMESIZE]; /* interface name */
+        uint32                  MaxRtrAdvInterval;
+        uint32                  MinRtrAdvInterval;
+        uint32                  MinDelayBetweenRAs;
+        uint8                    AdvManagedFlag;
+        uint8                    AdvOtherConfigFlag;
+        uint32                   AdvLinkMTU;
+        uint32			   AdvReachableTime;
+        uint32                  AdvRetransTimer;
+        uint8                   AdvCurHopLimit;
+        uint16                  AdvDefaultLifetime;
+        char                    AdvDefaultPreference[IFNAMESIZE];
+        uint8                       AdvSourceLLAddress;
+        uint8                       UnicastOnly;
+	 struct AdvPrefix prefix[MAX_PREFIX_NUM];
+}__PACK__;
+
+typedef struct radvdCfgParam_s
+{
+	uint8 enabled;
+       /*support br0 only*/
+	struct Interface interface;
+}__PACK__ radvdCfgParam_t, *radvdCfgParam_Tp;
+
+
+/*dnsv6*/
+struct rrResource
+{
+	char domainName[MAX_DNAME_SIZE];
+	uint16 address[8];
+}__PACK__;
+
+typedef struct dnsv6CfgParam_s
+{
+       uint8 enabled;
+	/*default name myrouter*/
+	char routerName[NAMSIZE];
+	struct rrResource rr[RR_MAX_NUM];
+}__PACK__ dnsv6CfgParam_t, *dnsv6CfgParam_Tp;
+
+/*dhcp6s*/
+typedef struct dhcp6sCfgParam_s
+{
+       uint8 	enabled; 
+	 char  	DNSaddr6[48];
+	 char  	addr6PoolS[48];
+ 	 char  	addr6PoolE[48];
+	/*default name interface*/
+	char interfaceNameds[NAMSIZE];
+	
+}__PACK__ dhcp6sCfgParam_t, *dhcp6sCfgParam_Tp;
+
+/*dhcp6pd*/
+typedef struct dhcp6pdCfgParam_s
+{
+	 uint32 sla_len;		/* SLA ID length in bits */
+	 uint32 sla_id;			/* need more than 32bits? */
+	 char 	ifName[NAMSIZE];
+}__PACK__ dhcp6pdCfgParam_t, *dhcp6pdCfgParam_Tp;
+	
+/*dhcp6c*/
+typedef struct dhcp6cCfgParam_s
+{
+    uint8 	enabled;
+	dhcp6pdCfgParam_t	dhcp6pd;	
+	char 	ifName[NAMSIZE];
+}__PACK__ dhcp6cCfgParam_t, *dhcp6cCfgParam_Tp;
+
+
+
+/*IPv6 Addr*/
+typedef struct addrIPv6CfgParam_s
+{
+        int        enabled;      /* 0:off 1:on */
+        int        prefix_len[2];
+        uint16     addrIPv6[2][8];
+}__PACK__ addrIPv6CfgParam_t,*daddrIPv6CfgParam_Tp;
+
+/*IPv6 Addr*/
+typedef struct addr6CfgParam_s
+{
+        int        prefix_len;
+        uint16     addrIPv6[8];
+}__PACK__ addr6CfgParam_t,*addr6CfgParam_Tp;
+
+/*Tunnel*/
+typedef struct tunnelCfgParam_s
+{
+       uint8 	enabled;	
+}__PACK__ tunnelCfgParam_t, *tunnelCfgParam_Tp;
+#endif
+
+#endif // HOME_GATEWAY
+
+#ifdef TLS_CLIENT
+typedef struct certroot_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_CERTROOT_IMPORT
+#include "mibdef.h"
+#undef MIB_CERTROOT_IMPORT
+
+#undef MIBDEF
+}__PACK__ CERTROOT_T, *CERTROOT_Tp;
+typedef struct certUser_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_CERTUSER_IMPORT
+#include "mibdef.h"
+#undef MIB_CERTUSER_IMPORT
+
+#undef MIBDEF
+}__PACK__ CERTUSER_T, *CERTUSER_Tp;
+#endif
+#ifdef HOME_GATEWAY
+#ifdef ROUTE_SUPPORT
+typedef struct staticRoute_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_STATICROUTE_IMPORT
+#include "mibdef.h"
+#undef MIB_STATICROUTE_IMPORT
+
+#undef MIBDEF
+}__PACK__ STATICROUTE_T, *STATICROUTE_Tp;
+#endif
+#endif
+
+typedef struct dhcpRsvdIP_entry {	
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_DHCPRSVDIP_IMPORT
+#include "mibdef.h"
+#undef MIB_DHCPRSVDIP_IMPORT
+
+#undef MIBDEF
+}__PACK__ DHCPRSVDIP_T, *DHCPRSVDIP_Tp;
+
+typedef struct wlanwds_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_WDS_IMPORT
+#include "mibdef.h"
+#undef MIB_WDS_IMPORT
+}__PACK__ WDS_T, *WDS_Tp;
+
+#ifdef WLAN_PROFILE
+typedef struct wlan_profile_entry {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_WLAN_PROFILE_IMPORT
+#include "mibdef.h"
+#undef MIB_WLAN_PROFILE_IMPORT
+#undef MIBDEF
+}__PACK__ WLAN_PROFILE_T, *WLAN_PROFILE_Tp;
+#endif
+
+#ifdef HOME_GATEWAY //defined(VLAN_CONFIG_SUPPORTED) Keith modify
+typedef struct vlan_lanconfig_entry {	
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_VLAN_CONFIG_IMPORT
+#include "mibdef.h"
+#undef MIB_VLAN_CONFIG_IMPORT
+
+#undef MIBDEF
+}__PACK__ VLAN_CONFIG_T, *VLAN_CONFIG_Tp;
+#endif
+
+
+typedef struct hw_wlan_setting {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_HW_WLAN_IMPORT
+#include "mibdef.h"
+#undef MIB_HW_WLAN_IMPORT
+
+#undef MIBDEF
+}__PACK__ HW_WLAN_SETTING_T, *HW_WLAN_SETTING_Tp;
+
+typedef struct hw_setting {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_HW_IMPORT
+#include "mibdef.h"
+#undef MIB_HW_IMPORT
+
+#undef MIBDEF
+}__PACK__ HW_SETTING_T, *HW_SETTING_Tp;
+
+typedef struct config_wlan_setting {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+	_ctype _cname _crepeat;
+
+#define MIB_CONFIG_WLAN_SETTING_IMPORT
+#include "mibdef.h"
+#undef MIB_CONFIG_WLAN_SETTING_IMPORT
+
+#undef MIBDEF	
+}__PACK__ CONFIG_WLAN_SETTING_T, *CONFIG_WLAN_SETTING_Tp;
+
+#if defined(HAVE_TR069)
+#if defined(WLAN_SUPPORT)
+typedef struct cwmp_wlanconf_entry {
+#define MIBDEF(_ctype, _cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+        _ctype _cname _crepeat;
+#define MIB_CWMP_WLANCONF_IMPORT
+#include "mibdef.h"
+#undef MIB_CWMP_WLANCONF_IMPORT
+#undef MIBDEF           
+}__PACK__ CWMP_WLANCONF_T, *CWMP_WLANCONF_Tp;
+#endif 
+#endif
+typedef struct config_setting {
+#define MIBDEF(_ctype,	_cname, _crepeat, _mib_name, _mib_type, _mib_parents_ctype, _default_value, _next_tbl ) \
+_ctype _cname _crepeat;
+
+#define MIB_IMPORT
+#include "mibdef.h"
+#undef MIB_IMPORT
+
+#undef MIBDEF
+}__PACK__ APMIB_T, *APMIB_Tp;
+
+#ifdef KLD_ENABLED
+
+typedef struct wizard_setting {
+	unsigned char ipAddr[4];
+	unsigned char subnetMask[4];
+	
+	unsigned char dhcp; // DHCP flag, 0 - disabled, 1 - client, 2 - server
+	unsigned char dhcpClientStart[4]; // DHCP client start address
+	unsigned char dhcpClientEnd[4]; // DHCP client end address
+	unsigned char wanIPMode; //Brad Add for wan ip mode
+	unsigned char pppoewanIPMode; //Brad Add for pppoe ip mode
+	unsigned char hostName[MAX_DHCPC_HOST_NAME_LEN]; // wan dhcp client host name 
+	unsigned char wanMacAddr[6]; 
+	unsigned char wanDhcp; 
+	unsigned char wanIpAddr[4];
+	unsigned char wanSubnetMask[4]; 
+	unsigned char wanDefaultGateway[4];
+	
+	
+	unsigned char pppServiceName[MAX_PPPOE_SERVICE_NAME_LEN];
+	unsigned char pppUserName[MAX_NAME_LEN_LONG];
+	unsigned char pppPassword[MAX_NAME_LEN_LONG];
+	unsigned char pppoeipAddr[4];
+	unsigned char pptpwanIPMode; //Brad Add for pptp ip mode
+	unsigned char pptpIpAddr[4]; 
+	unsigned char pptpSubnetMask[4]; 
+	unsigned char pptpServerIpAddr[MAX_PPTP_HOST_NAME_LEN]; 
+	unsigned char pptpGateway[4]; 
+	unsigned char pptpUserName[MAX_NAME_LEN_LONG]; 
+	unsigned char pptpPassword[MAX_NAME_LEN_LONG]; 
+	
+	unsigned char l2tpwanIPMode; //Brad Add for l2tp ip mode
+	unsigned char l2tpIpAddr[4]; 
+	unsigned char l2tpGateway[4];
+	unsigned char l2tpSubnetMask[4];
+	unsigned char l2tpServerIpAddr[MAX_PPTP_HOST_NAME_LEN]; 
+	
+	unsigned char l2tpUserName[MAX_NAME_LEN_LONG]; 
+	unsigned char l2tpPassword[MAX_NAME_LEN_LONG]; 
+	
+	
+	
+	unsigned char adminPassword[MAX_NAME_LEN]; 
+	unsigned char ntp_enabled;
+	unsigned char ntpTimeZone[8]; // ntp  Time Zone 
+	unsigned char ntpTimeZoneIdx ;
+	unsigned int  ntpServerIp1; // ntp  server ip address
+	unsigned char dns1[4], dns2[4], dns3[4];
+	DNS_TYPE_T dnsMode;
+	unsigned char ssid[MAX_SSID_LEN] ; // SSID
+	unsigned char channel;// current channel
+	unsigned char wlanDisabled; // enabled/disabled wlan interface
+	unsigned char wizardSettingChanged;
+	unsigned char wizardWanConnMode;
+}__PACK__ WIZARD_T, *WIZARD_Tp;
+
+#endif
+/* Config file header */
+typedef struct param_header {
+	unsigned char signature[SIGNATURE_LEN];  // Tag + version
+	unsigned short len;
+}__PACK__ PARAM_HEADER_T, *PARAM_HEADER_Tp;
+
+#ifdef MIB_TLV
+typedef struct tlv_param_header {
+	unsigned char signature[SIGNATURE_LEN];  // Tag + version
+	unsigned int len;
+}__PACK__ TLV_PARAM_HEADER_T, *TLV_PARAM_HEADER_Tp;
+#else
+#define TLV_PARAM_HEADER_T PARAM_HEADER_T;
+#define TLV_PARAM_HEADER_Tp PARAM_HEADER_Tp
+#endif
+
+/* Firmware image file header */
+typedef struct img_header {
+	unsigned char signature[SIGNATURE_LEN];
+	unsigned int startAddr;
+	unsigned int burnAddr;
+	unsigned int len;
+}__PACK__ IMG_HEADER_T, *IMG_HEADER_Tp;
+
+/* Web page file header */
+typedef IMG_HEADER_T WEB_HEADER_T;
+typedef IMG_HEADER_Tp WEB_HEADER_Tp;
+#ifdef TLS_CLIENT
+typedef IMG_HEADER_T CERT_HEADER_T;
+typedef IMG_HEADER_Tp CERT_HEADER_Tp;
+#endif
+typedef struct _file_entry {
+	char name[MAXFNAME];
+	unsigned int size_uncomp;
+	unsigned int size;
+	unsigned int offset;
+}__PACK__ FILE_ENTRY_T, *FILE_ENTRY_Tp;
+
+#ifdef COMPRESS_MIB_SETTING
+/* Compress config setting file header */
+#if 0
+#define	COMP_TRACE	fprintf
+#else
+#define COMP_TRACE(...) do {} while(0)
+#endif
+
+#define COMP_SIGNATURE_LEN			6
+#define COMP_HS_SIGNATURE			"COMPHS"
+#define COMP_CS_SIGNATURE			"COMPCS"
+#define COMP_DS_SIGNATURE			"COMPDS"
+typedef struct compress_mib_header {
+	unsigned char signature[COMP_SIGNATURE_LEN];
+	unsigned short compRate;
+	unsigned int compLen;
+}__PACK__ COMPRESS_MIB_HEADER_T, *COMPRESS_MIB_HEADER_Tp;
+
+#endif // #ifdef COMPRESS_MIB_SETTING
+
+#ifdef WIN32
+#pragma pack()
+#endif
+
+//////////////////////////////////////////////////////////
+int _apmib_init_HW(void);
+int _apmib_init(void);
+int _apmib_reinit(void);
+char *_apmib_hwconf(void);
+char *_apmib_csconf(void);
+char *_apmib_dsconf(void);
+int _apmib_get(int id, void *value);
+int _apmib_getDef(int id, void *value);
+int _apmib_set(int id, void *value);
+int _apmib_setDef(int id, void *value);
+int _apmib_update(CONFIG_DATA_T type);
+int _apmib_updateDef(void);
+int _apmib_updateFlash(CONFIG_DATA_T type, char *data, int len, int force, int ver);
+int _update_linkchain(int fmt, void *Entry_old, void *Entry_new, int type_size);
+int _apmib_set_wlanidx(int idx);
+int _apmib_get_wlanidx(void);
+int _apmib_set_vwlanidx(int idx);
+int _apmib_get_vwlanidx(void);
+int _apmib_set_wanidx(int idx);
+int _apmib_get_wanidx(void);
+#ifdef CONFIG_WLANIDX_MUTEX
+unsigned int _apmib_save_idx(void);
+unsigned int _apmib_revert_idx(unsigned int s);
+#else
+int _apmib_save_idx(void);
+int _apmib_revert_idx(void);
+#endif
+
+int _apmib_get_ext(int id, void *value, int idx1, int idx2);
+
+extern APMIB_Tp pMib, pMibDef;
+extern HW_SETTING_Tp pHwSetting;
+extern PARAM_HEADER_T hsHeader, dsHeader, csHeader;
+extern TLV_PARAM_HEADER_T tlvhsHeader, tlvdsHeader, tlvcsHeader;
+#ifdef KLD_ENABLED
+extern WIZARD_T WizMib; // add for TR wizard
+extern WIZARD_Tp pWizMib; // add for TR wizard
+#endif
+//extern int wlan_idx;
+//extern int vwlan_idx;
+#ifdef GW_QOS_ENGINE
+extern void getVal12(char *value, char **p1, char **p2, char **p3, char **p4, char **p5, char **p6, char **p7,
+                                char **p8, char **p9, char **p10, char **p11, char **p12);
+#define QOS_FORMAT 	("%d, %d, %d, %s, %s, %d, %d, %s, %s, %d, %d, %s")
+#endif
+
+#ifdef QOS_BY_BANDWIDTH
+//#define QOS_FORMAT 	("%d, %s, %d, %s, %s, %d, %s")
+#define QOS_FORMAT 	("%d, %02x%02x%02x%02x%02x%02x, %d, %s, %s, %d, %d, %s, %d, %d, %d, %d")
+#endif
+
+int _apmib_sem_lock(void);
+int _apmib_sem_unlock(void);
+
+//#ifdef HAVE_APMIB
+#define apmib_init_HW _apmib_init_HW
+#define apmib_init  _apmib_init
+#define apmib_reinit _apmib_reinit
+#define apmib_hwconf _apmib_hwconf
+#define apmib_csconf _apmib_csconf
+#define apmib_dsconf _apmib_dsconf
+#ifdef MIB_EXT
+#define apmib_get(a,b)   _apmib_get_ext((a),(b),(-1),(-1))
+#define apmib_get_ext   _apmib_get_ext
+#define apmib_getDef(a,b) _apmib_getDef_ext((a),(b),(-1),(-1))
+#define apmib_getDef_ext _apmib_getDef_ext
+#define apmib_set(a,b)    _apmib_set_ext((a),(b),(-1),(-1))
+#define apmib_set_ext    _apmib_set_ext
+#define apmib_setDef(a,b) _apmib_setDef_ext((a),(b),(-1),(-1))
+#define apmib_setDef_ext _apmib_setDef_ext
+#else
+#define apmib_get   _apmib_get
+#define apmib_getDef _apmib_getDef
+#define apmib_set    _apmib_set
+#define apmib_setDef _apmib_setDef
+#endif
+#define apmib_update _apmib_update
+#define apmib_updateDef _apmib_updateDef
+#define apmib_updateFlash _apmib_updateFlash
+#define update_linkchain _update_linkchain
+#define apmib_sem_lock _apmib_sem_lock
+#define apmib_sem_unlock _apmib_sem_unlock
+
+#define apmib_set_wlanidx _apmib_set_wlanidx
+#define apmib_get_wlanidx _apmib_get_wlanidx
+#define apmib_set_vwlanidx _apmib_set_vwlanidx
+#define apmib_get_vwlanidx _apmib_get_vwlanidx
+#define apmib_set_wanidx _apmib_set_wanidx
+#define apmib_get_wanidx _apmib_get_wanidx
+#define apmib_save_idx _apmib_save_idx
+#define apmib_revert_idx _apmib_revert_idx
+//#else
+
+//#endif
+
+int save_cs_to_file(void);
+
+#ifdef CONFIG_RTL_ULINKER
+static int __inline__ ulinker_wlan_mib_copy(CONFIG_WLAN_SETTING_T* dst, CONFIG_WLAN_SETTING_T* src)
+{
+
+#if CONFIG_APMIB_SHARED_MEMORY == 1
+	if (apmib_sem_lock() != 0) return -1;
+#endif
+
+	memcpy(dst, src, sizeof(CONFIG_WLAN_SETTING_T));
+
+#if CONFIG_APMIB_SHARED_MEMORY == 1
+	if (apmib_sem_unlock() != 0) return -1;
+#endif
+
+	return 0;
+}
+
+#endif
+#endif // INCLUDE_APMIB_H

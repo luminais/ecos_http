@@ -1,0 +1,430 @@
+<section class="container-fluid">
+  <form id="wireless" class="form-horizontal">
+
+<h2 class="legend">WiFi Name and Password</h2>
+<fieldset>
+  <!-- 双频优选 -->
+  <div id="doubleBandWrap" class="none" style="margin-bottom: 30px;">
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="enDoubleBand">Preferred Band</label>
+      <div class="col-sm-4">
+          <label class="radio-inline" for="enDoubleBand">
+            <input type="radio" id="enDoubleBand" name="doubleBandUnityEnable" value="true">Enable</label>
+          <label class="radio-inline" for="disDoubleBand">
+            <input type="radio" id="disDoubleBand" name="doubleBandUnityEnable" value="false">Disable</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label"></label>
+      <div class="col-sm-8 col-md-9 help-block">With this function enabled, the router has the same SSID both on 2.4 GHz and 5 GHz bands, and ensures that the WiFi devices are automatically connected to the WiFi network with stronger signals.</div>
+    </div>
+  </div>
+
+  <!--双频优选无线开关-->
+  <div class="form-group band-double-show none">
+    <label class="col-sm-4 col-md-3 control-label" for="wifiTotalEn">WiFi Network</label>
+    <div class="col-sm-4">
+        <label class="radio-inline" for="enableTotal">
+          <input type="radio" id="enableTotal" name="wifiTotalEn" value="true">Enable</label>
+        <label class="radio-inline" for="disableTotal">
+          <input type="radio" id="disableTotal" name="wifiTotalEn" value="false">Disable</label>
+    </div>
+  </div> 
+
+  <!-- 2.4G -->
+  <div class="form-group band-double">
+    <label class="col-sm-4 col-md-3 control-label" for="enable24">2.4 GHz Network</label>
+    <div class="col-sm-4">
+        <label class="radio-inline" for="enable24">
+          <input type="radio" id="enable24" name="wifiEn" value="true">Enable</label>
+        <label class="radio-inline" for="disable24">
+          <input type="radio" id="disable24" name="wifiEn" value="false">Disable</label>
+    </div>
+  </div> 
+  <div class="wifiWrap_24">
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="wifiSSID">WiFi Name</label>
+      <div class="col-sm-4">
+        <input type="text" name="wifiSSID" id="wifiSSID" class="form-control validatebox" maxlength="32" required="required" data-options='{"type":"ssid"}'>
+      </div>
+      <div class="col-sm-4 col-md-5 help-inline">
+        <label class="checkbox-inline">
+          <input type="checkbox" name="wifiHideSSID" id="wifiHideSSID" value="true">Hide WiFi</label>
+        <!-- <label class="radio-inline" style="padding-left:0px">(<span id="helpTips" class="icon-help-circled"></span>)</label> -->
+        <label class="radio-inline" style="padding-left:0px">(<span id="helpTips">?</span>)</label>
+        <div style="position:relative;">
+          <div id="hideSSIDTips" class="wifi-tips none">
+            <span>If a WiFi network is hidden, wireless devices cannot detect the signal of the network.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label">Security Mode</label>
+      <div class="col-sm-4">
+        <select id="wifiSecurityMode" class="form-control">
+          <option value="NONE">None</option>
+          <option value="WPA/AES">WPA-PSK</option>
+          <option value="WPA2/AES">WPA2-PSK</option>
+          <option value="WPAWPA2/AES">WPA/WPA2-PSK Mixed</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="wifiPwd">WiFi Password</label>
+      <div class="col-sm-4">
+        <input type="password" name="wifiPwd" id="wifiPwd" class="form-control validatebox" required maxlength="63" data-options='{"type":"ssidPasword","args":[8, 63]}'>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5G -->
+  <div class="form-group band-double" style="margin-top: 30px;">
+    <label class="col-sm-4 col-md-3 control-label" for="enable5">5 GHz Network</label>
+    <div class="col-sm-4">
+        <label class="radio-inline" for="enable5">
+          <input type="radio" id="enable5" name="wifiEn_5G" value="true">Enable</label>
+        <label class="radio-inline" for="disable5">
+          <input type="radio" id="disable5" name="wifiEn_5G" value="false">Disable</label>
+    </div>
+  </div> 
+  <div class="wifiWrap_5 band-double">
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="wifiSSID_5G">WiFi Name</label>
+      <div class="col-sm-4">
+        <input type="text" name="wifiSSID_5G" id="wifiSSID_5G" class="form-control validatebox" maxlength="32" required="required" data-options='{"type":"ssid"}'>
+      </div>
+      <div class="col-sm-4 col-md-5 help-inline">
+        <label class="checkbox-inline">
+          <input type="checkbox" name="wifiHideSSID_5G" id="wifiHideSSID_5G" value="true">Hide WiFi</label>
+        <!-- <label class="radio-inline" style="padding-left:0px">(<span id="helpTips5" class="icon-help-circled"></span>)</label> -->
+        <label class="radio-inline" style="padding-left:0px">(<span id="helpTips5">?</span>)</label>
+        <div style="position:relative;">
+          <div id="hideSSIDTips5" class="wifi-tips none">
+            <span>If a WiFi network is hidden, wireless devices cannot detect the signal of the network.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label">Security Mode</label>
+      <div class="col-sm-4">
+        <select id="wifiSecurityMode_5G" class="form-control">
+          <option value="NONE">None</option>
+          <option value="WPA/AES">WPA-PSK</option>
+          <option value="WPA2/AES">WPA2-PSK</option>
+          <option value="WPAWPA2/AES">WPA/WPA2-PSK Mixed</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="wifiPwd_5G">WiFi Password</label>
+      <div class="col-sm-4">
+        <input type="password" name="wifiPwd_5G" id="wifiPwd_5G" class="form-control validatebox" required maxlength="63" data-options='{"type":"ssidPasword","args":[8, 63]}'>
+      </div>
+    </div>
+  </div>
+</fieldset>
+<!--End Wi-Fi Name and Password-->
+      <div id="allWifiContentWrap">
+        <div id="wifiGuestWrap">
+          <h2 class="legend">Guest Network</h2>
+<fieldset>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="guestEnable">Guest Network</label>
+    <div class="col-sm-4">
+        <label class="radio-inline" for="guestEnable">
+          <input type="radio" id="guestEnable" name="guestEn" value="true">Enable</label>
+        <label class="radio-inline" for="guestDisable">
+          <input type="radio" id="guestDisable" name="guestEn" value="false">Disable</label>
+    </div>
+  </div> 
+  <div id="wifiGuestContent" class="none">
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="guestSSID">2.4 GHz WiFi Name</label>
+      <div class="col-sm-4">
+        <input type="text" name="guestSSID" id="guestSSID" class="form-control validatebox" maxlength="32" required="required" data-options='{"type":"ssid"}'>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="guestSSID_5G">5 GHz WiFi Name</label>
+      <div class="col-sm-4">
+        <input type="text" name="guestSSID_5G" id="guestSSID_5G" class="form-control validatebox" maxlength="32" required="required" data-options='{"type":"ssid"}'>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label" for="guestPwd">Guest Network Password</label>
+      <div class="col-sm-4">
+        <input type="password" name="guestPwd" id="guestPwd" class="form-control validatebox" maxlength="63" data-options='{"type":"ssidPasword","args":[8, 63]}'>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label">Validity</label>
+      <div class="col-sm-4">
+        <select id="guestValidTime" class="form-control">
+          <option value="4">4 hours</option>
+          <option value="8">8 hours</option>
+          <option value="always">Always</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label">Shared Bandwidth for Guests</label>
+      <div class="col-sm-4">
+        <span id="shareSpeed" class="dropdown validatebox" required="required" maxlength="4"></span>
+      </div>
+      <div class="col-sm-4 col-md-5 help-inline">
+        <span class="help-block">Mbps</span>
+      </div>
+    </div>
+
+  </div>
+</fieldset>
+<!--End guest network-->
+        </div>
+        <div id="wifiSignalWrap" class="none">
+        <h2 class="legend">WiFi Signal Strength</h2>
+<fieldset>
+    <div id="wifiSignal" class="wifiWrap_24" style="margin-bottom: 30px;">
+        <div class="form-group">
+            <label class="col-sm-4 col-md-3 control-label" for="wifiPowerHigh">2.4 GHz Signal Strength</label>
+            <div class="col-sm-8">
+                <label id="wifiPowerHighWrap" class="radio-inline none" for="wifiPowerHigh">
+                    <input type="radio" id="wifiPowerHigh" name="wifiPower" value="high" /> High </label>
+                <label id="wifiPowerNormalWrap" class="radio-inline none" for="wifiPowerNormal">
+                    <input type="radio" id="wifiPowerNormal" name="wifiPower" value="normal" /> Medium </label>
+                <label id="wifiPowerLowerWrap" class="radio-inline none" for="wifiPowerLower">
+                    <input type="radio" id="wifiPowerLower" name="wifiPower" value="low" /> Low </label>
+            </div>
+        </div>
+    </div>
+    <div id="wifiSignal5" class="wifiWrap_5">
+        <div class="form-group">
+            <label class="col-sm-4 col-md-3 control-label" for="wifiPowerHigh5">5 GHz Signal Strength</label>
+            <div class="col-sm-8">
+                <label id="wifiPowerHighWrap5" class="radio-inline none" for="wifiPowerHigh5">
+                    <input type="radio" id="wifiPowerHigh5" name="wifiPower_5G" value="high" /> High </label>
+                <label id="wifiPowerNormalWrap5" class="radio-inline none" for="wifiPowerNormal5">
+                    <input type="radio" id="wifiPowerNormal5" name="wifiPower_5G" value="normal" /> Medium </label>
+                <label id="wifiPowerLowerWrap5" class="radio-inline none" for="wifiPowerLower5">
+                    <input type="radio" id="wifiPowerLower5" name="wifiPower_5G" value="low" /> Low </label>
+            </div>
+        </div>
+    </div>
+</fieldset>
+</div>
+<!--End Wi-Fi Signal Strength-->
+        <div id="wifiScheduleWrap" class="none">
+          <h2 class="legend">WiFi Schedule</h2>
+<fieldset>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wifiTimeEnable">WiFi Schedule</label>
+    <div class="col-sm-8">
+      <label class="radio-inline" for="wifiTimeEnable">
+        <input type="radio" id="wifiTimeEnable" name="wifiTimeEn" value="true" />
+        Enable </label>
+      <label class="radio-inline" for="wifiTimeDisable">
+        <input type="radio" id="wifiTimeDisable" name="wifiTimeEn" value="false" />
+        Disable </label>
+    </div>
+  </div>
+  <!--Show when Wi-Fi Schedule is Enabled-->
+  <div id="wifiScheduleCfg" class="none">
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label">Turn WiFi Off At</label>
+      <div class="col-sm-8 col-md-9">
+        <select id="startHour" class="form-control input-mini">
+          <!-- Leave for js or tpl to create-->
+          <option value="00">00</option>
+        </select>
+       <span>&nbsp;:&nbsp;</span>
+        <select id="startMin" class="form-control input-mini">
+          <!-- Leave for js or tpl to create-->
+          <option value="00">00</option>
+        </select>
+       <span>&nbsp;~&nbsp;</span>
+        <select id="endHour" class="form-control input-mini">
+          <!-- Leave for js or tpl to create-->
+          <option value="00">00</option>
+        </select>
+       <span>&nbsp;:&nbsp;</span>
+        <select id="endMin" class="form-control input-mini">
+          <!-- Leave for js or tpl to create-->
+          <option value="00">00</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 col-md-3 control-label">Turn WiFi Off On</label>
+      <div class="col-sm-8 col-md-9">
+        <label class="checkbox-inline" for="day0">
+          <input type="checkbox" id="day0" value="ALL">Everyday</label>
+        <label class="checkbox-inline" for="day1">
+          <input type="checkbox" id="day1" value="Mon">Mon.</label>
+        <label class="checkbox-inline" for="day2">
+          <input type="checkbox" id="day2" value="Tue">Tue.</label>
+        <label class="checkbox-inline" for="day3">
+          <input type="checkbox" id="day3" value="Wed">Wed.</label>
+        <br class="visible-xs">
+        <label class="checkbox-inline" for="day4">
+          <input type="checkbox" id="day4" value="Thu">Thu.</label>
+        <label class="checkbox-inline" for="day5">
+          <input type="checkbox" id="day5" value="Fri">Fri.</label>
+        <label class="checkbox-inline" for="day6">
+          <input type="checkbox" id="day6" value="Sat">Sat.</label>
+        <label class="checkbox-inline" for="day7">
+          <input type="checkbox" id="day7" value="Sun">Sun.</label>
+      </div>
+    </div>
+  </div>
+</fieldset>
+<!--End Wi-Fi Schedule-->
+        </div>
+        <div id="wifiParamWrap">
+          <h2 class="legend">Wireless Parameters</h2>
+<fieldset>
+    <!-- 2.4G -->
+    <div class="wifiWrap_24" style="margin-bottom: 30px;">
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label">2.4 GHz Network</label>
+        <div class="col-sm-4"></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="wifiMode">Network Mode</label>
+        <div class="col-sm-4">
+          <select id="wifiMode" name="wifiMode" class="form-control">
+            <option value="bgn">11b/g/n</option>
+            <option value="bg">11b/g</option>
+            <option value="g">11g</option>
+            <option value="b">11b</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="wifiChannel">Wireless Channel</label>
+        <div class="col-sm-4"> 
+          <!--此部分JS应控制最大长度-->
+          <select id="wifiChannel" name="wifiChannel" class="form-control"> </select>
+        </div>
+        <div class="col-sm-4 col-md-5 help-block cur-channel">Current Channel:<span id="wifiChannelCurrent"></span> </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="wifiBandwidth">Wireless Bandwidth</label>
+        <div class="col-sm-4">
+          <select id="wifiBandwidth" name="wifiBandwidth" class="form-control" >
+            <option value="Auto">Auto</option>
+            <option value="20">20MHz</option>
+            <option value="40">40MHz</option>
+          </select>
+        </div>
+        <div class="col-sm-4 col-md-5 help-block cur-bandWidth">Current bandwidth:<span id="wifiBandwidthCurrent">20 MHz</span></div>
+      </div>
+    </div>
+
+    <!-- 5G -->
+    <div class="wifiWrap_5">
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label">5 GHz Network</label>
+        <div class="col-sm-4"></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="wifiMode5">Network Mode</label>
+        <div class="col-sm-4">
+          <select id="wifiMode_5G" name="wifiMode_5G" class="form-control">
+            <option value="ac">11a/n/ac</option>
+            <option value="ac_only">11ac</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="wifiChannel5">Wireless Channel</label>
+        <div class="col-sm-4"> 
+          <!--此部分JS应控制最大长度-->
+          <select id="wifiChannel_5G" name="wifiChannel_5G" class="form-control"> </select>
+        </div>
+        <div class="col-sm-4 col-md-5 help-block cur-channel">Current Channel:<span id="wifiChannelCurrent_5G"></span> </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-3 control-label" for="wifiBandwidth5">Wireless Bandwidth</label>
+        <div class="col-sm-4">
+          <select id="wifiBandwidth_5G" name="wifiBandwidth_5G" class="form-control" >
+            <option value="Auto">Auto</option>
+            <option value="20">20MHz</option>
+            <option value="40">40MHz</option>
+            <option value="40">80MHz</option>
+          </select>
+        </div>
+        <div class="col-sm-4 col-md-5 help-block cur-bandWidth">Current bandwidth:<span id="wifiBandwidthCurrent_5G"></span></div>
+      </div>
+    </div>
+
+    <!-- 抗干扰 -->
+    <div class="form-group none" id="wifiAntijamWrap">
+      <label class="col-sm-4 col-md-3 control-label" for="wifiAntijamEn">Anti-interference</label>
+      <div class="col-sm-8">
+        <label class="checkbox-inline" for="wifiAntijamEn">
+          <input type="checkbox" id="wifiAntijamEn" name="wifiAntijamEn" value="true">Enable<span class="help-block" style="display:inline; margin-left:10px;">If there are many wireless networks nearby, you can enable this function to improve the anti-interference capability of the router.</span></label>
+      </div>
+    </div>
+</fieldset>
+<!--End Wireless Parameters-->
+        </div>
+        <div id="wifiBeaformingWrap">
+    <h2 class="legend">Beamforming</h2>
+    <fieldset>
+        <div class="form-group">
+            <label class="col-sm-4 col-md-3 control-label" for="beaformingEnable">Beamforming</label>
+            <div class="col-sm-8">
+                <label class="radio-inline" for="beaformingEnable">
+                    <input type="radio" id="beaformingEnable" name="wifiBeaformingEn" value="true" /> Enable
+                </label>
+                <label class="radio-inline" for="beaformingDisable">
+                    <input type="radio" id="beaformingDisable" name="wifiBeaformingEn" value="false" /> Disable
+                </label>
+            </div>
+        </div>
+    </fieldset>
+</div>
+        <div id="wpsWrap" class="none">
+
+              <div id="wps">
+    <h2 class="legend">WPS</h2>
+    <fieldset>
+        <div class="form-group">
+            <label class="col-sm-4 col-md-3 control-label" for="wpsEnable">WPS</label>
+            <div class="col-sm-8">
+                <label class="radio-inline" for="wpsEnable">
+                    <input type="radio" id="wpsEnable" name="wpsEn" value="true" /> Enable
+                </label>
+                <label class="radio-inline" for="wpsDisable">
+                    <input type="radio" id="wpsDisable" name="wpsEn" value="false" /> Disable
+                </label>
+            </div>
+        </div>
+        <div id="wpsCfg">
+            <div class="form-group">
+                <label class="col-sm-4 col-md-3 control-label" for="wpsPBC">PBC Mode</label>
+                <div class="col-sm-2">
+                    <button type="button" id="wpsPBC" class="btn">PBC</button>
+                </div>
+                <div class="col-sm-6 col-md-7 col-lg-7 help-block">
+                    Click this button or press the WPS/RESET button.
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 col-md-3 control-label">PIN Mode</label>
+                <div class="col-sm-2 form-control-static">
+                 <span>PIN:</span>
+                   <span id="wpsPIN"></span>
+                </div>
+                <div class="col-sm-5 col-md-6 col-lg-7 help-block">
+                    Enter this PIN on the device to be connected.
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+        </div>
+      </div>
+  </form>
+</section>

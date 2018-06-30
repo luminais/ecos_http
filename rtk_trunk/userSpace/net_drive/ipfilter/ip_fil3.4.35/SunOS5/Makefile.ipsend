@@ -1,0 +1,71 @@
+OBJ=.
+BITS=32
+OBJS=$(OBJ)/ipsend.o $(OBJ)/ip.o $(OBJ)/ipsopt.o $(OBJ)/y.tab.o $(OBJ)/lex.yy.o
+IPFTO=$(OBJ)/ipft_ef.o $(OBJ)/ipft_hx.o $(OBJ)/ipft_pc.o $(OBJ)/ipft_sn.o \
+    $(OBJ)/ipft_td.o $(OBJ)/ipft_tx.o
+ROBJS=$(OBJ)/ipresend.o $(OBJ)/ip.o $(OBJ)/resend.o $(IPFTO) \
+    $(OBJ)/inet_addr.o $(OBJ)/opt.o
+TOBJS=$(OBJ)/iptest.o $(OBJ)/iptests.o $(OBJ)/ip.o
+UNIXOBJS=$(OBJ)/dlcommon.o $(OBJ)/sdlpi.o $(OBJ)/arp.o
+LIBS=-lsocket -lnsl
+
+CC=gcc
+CFLAGS=-g -I$$(TOP) -Dsolaris
+
+all build dlpi sunos5 : $(OBJ)/ipsend $(OBJ)/ipresend $(OBJ)/iptest
+
+.c.o:
+	$(CC) $(DEBUG) $(CFLAGS) -c $< -o $@
+
+$(OBJ)/y.tab.o: $(TOP)/iplang/iplang_y.y
+	@if [ "x$$OBJ" != "x" -a "x$$OBJ" != "x." ] ; then \
+		(cd $(TOP)/iplang; $(MAKE) ../SunOS5/$(CPUDIR)/$@ 'DESTDIR=../SunOS5/$(CPUDIR)/$(OBJ)' 'CFLAGS=$(CFLAGS)' 'OBJ=') ; \
+	else \
+		(cd $(TOP)/iplang; $(MAKE) ../SunOS5/$(CPUDIR)/$@ 'DESTDIR=../SunOS5/$(CPUDIR)' 'CFLAGS=$(CFLAGS)' 'OBJ=') ; \
+	fi
+
+$(OBJ)/lex.yy.o: $(TOP)/iplang/iplang_l.l
+	@if [ "x$$OBJ" != "x" -a "x$$OBJ" != "x." ] ; then \
+		(cd $(TOP)/iplang; $(MAKE) ../SunOS5/$(CPUDIR)/$@ 'DESTDIR=../SunOS5/$(CPUDIR)/$(OBJ)' 'CFLAGS=$(CFLAGS)' 'OBJ='); \
+	else \
+		(cd $(TOP)/iplang; $(MAKE) ../SunOS5/$(CPUDIR)/$@ 'DESTDIR=../SunOS5/$(CPUDIR)' 'CFLAGS=$(CFLAGS)' 'OBJ=') ; \
+	fi
+
+$(OBJ)/ipsend: $(OBJS) $(UNIXOBJS)
+	$(CC) $(DEBUG) $(OBJS) $(UNIXOBJS) -o $@ $(LIBS) -ll
+
+$(OBJ)/ipresend: $(ROBJS) $(UNIXOBJS)
+	$(CC) $(DEBUG) $(ROBJS) $(UNIXOBJS) -o $@ $(LIBS)
+
+$(OBJ)/iptest: $(TOBJS) $(UNIXOBJS)
+	$(CC) $(DEBUG) $(TOBJS) $(UNIXOBJS) -o $@ $(LIBS)
+
+clean:
+	rm -rf *.o core a.out ipsend ipresend iptest
+
+$(OBJ)/ipsend.o: $(TOP)/ipsend/ipsend.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipsend/ipsend.c -o $@
+$(OBJ)/ipsopt.o: $(TOP)/ipsend/ipsopt.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipsend/ipsopt.c -o $@
+$(OBJ)/ipresend.o: $(TOP)/ipsend/ipresend.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipsend/ipresend.c -o $@
+$(OBJ)/ip.o: $(TOP)/ipsend/ip.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipsend/ip.c -o $@
+$(OBJ)/resend.o: $(TOP)/ipsend/resend.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipsend/resend.c -o $@
+$(OBJ)/ipft_sn.o: $(TOP)/ipft_sn.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipft_sn.c -o $@
+$(OBJ)/ipft_pc.o: $(TOP)/ipft_pc.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipft_pc.c -o $@
+$(OBJ)/iptest.o: $(TOP)/ipsend/iptest.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipsend/iptest.c -o $@
+$(OBJ)/iptests.o: $(TOP)/ipsend/iptests.c
+	$(CC) $(DEBUG) $(CFLAGS) -Dsolaris -c $(TOP)/ipsend/iptests.c -o $@
+$(OBJ)/sock.o: $(TOP)/ipsend/sock.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipsend/sock.c -o $@
+$(OBJ)/arp.o: $(TOP)/ipsend/arp.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipsend/arp.c -o $@
+$(OBJ)/dlcommon.o: $(TOP)/ipsend/dlcommon.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipsend/dlcommon.c -o $@
+$(OBJ)/sdlpi.o: $(TOP)/ipsend/sdlpi.c
+	$(CC) $(DEBUG) $(CFLAGS) -c $(TOP)/ipsend/sdlpi.c -o $@

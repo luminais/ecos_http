@@ -1,0 +1,134 @@
+<section class="container-fluid">
+  <form class="form-horizontal">
+  <h2 class="legend">Operating Mode</h2>
+  <fieldset>
+    <div class ="form-group">
+      <div class="col-xs-12 col-sm-10 col-md-9">
+        <label class="radio-inline" for="norepeat">
+          <input type="radio" id="norepeat" name="wifiRelayType" value="disabled">Router</label>
+        <br class="visible-xs">
+        <label class="radio-inline" for="wisp">
+          <input type="radio" id="wisp" name="wifiRelayType" value="wisp">WISP</label>
+        <br class="visible-xs">
+        <label class="radio-inline" for="clientap">
+          <input type="radio" id="clientap" name="wifiRelayType" value="client+ap">Universal Repeater</label>
+        <br class="visible-xs">
+        <label class="radio-inline" for="ap">
+          <input type="radio" id="ap" name="wifiRelayType" value="ap">AP</label>
+      </div>
+    </div>
+    <div id="modeIntro">
+      <div class="form-group">
+        <div class="col-sm-12 help-block none" id="routerInfo">In this mode, the router connects to an ISP in a wired manner and meanwhile provides WiFi signals, enabling clients to wirelessly access the internet.</div>
+        <div class="col-sm-12 help-block none" id="wispInfo">In this mode, the router extends the WiFi signals of ISPs like CMCC, China Unicom, and ChinaNet.</div>
+        <div class="col-sm-12 help-block none" id="clientApInfo">In this mode, the router can extend any WiFi signals.</div>
+        <div class="col-sm-12 help-block none" id="apInfo">In this mode, the router functions as an AP, which is often used for wireless network coverage in hotels and SMEs.</div>
+      </div>
+    </div>
+  </fieldset>
+</form>
+</section>
+<section class="container-fluid" id="wanCfgWrapper">
+  <form class="form-horizontal">
+    <h2 class="legend">Internet Connection</h2>
+    <fieldset>
+      <div class="form-group connection-type" style="margin-bottom: 4px;">
+  <label class="col-sm-4 col-md-3 control-label">Connection Type</label>
+  <div class="col-sm-8 type-radios">
+    <label class="radio-inline r-block" for="adsl">
+      <input type="radio" id="adsl" name="wanType" value="pppoe" />PPPoE</label>
+    <label class="radio-inline r-block" for="dhcp">
+      <input type="radio" id="dhcp" name="wanType" value="dhcp">Dynamic IP Address</label>
+    <label class="radio-inline r-block" for="static">
+      <input type="radio" id="static" name="wanType" value="static">Static IP Address</label>
+  </div>
+</div>
+      <div id="wan">
+        <div id="pppoe-set" class="connect-type none">
+  <div class="form-group" style="margin-bottom: 4px;">
+    <label class="col-sm-4 col-md-3 control-label" for="wanPPPoEUser"></label>
+    <div class="col-sm-8 help-block">This type is applicable if you have a user name and password for setting up a broadband dial-up connection.</div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wanPPPoEUser">User Name</label>
+    <div class="col-sm-5 col-md-4">
+      <input type="text" id="wanPPPoEUser" class="form-control validatebox" name="wanPPPoEUser" required="required" data-options='{"type": "ascii"}' maxLength="128"  />
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label" for="wanPPPoEPwd">Password</label>
+    <div class="col-sm-5 col-md-4">
+      <input type="password" id="wanPPPoEPwd" class="form-control validatebox" name="wanPPPoEPwd" required="required" data-options='{"type": "ascii"}'  maxLength="128"/>
+    </div>
+  </div>
+</div>
+        <div id="dhcp-set" class="connect-type none">
+<div class="form-group" style="margin-bottom: 4px;">
+    <label class="col-sm-4 col-md-3 control-label"></label>
+    <div class="col-sm-8 help-block">This type is applicable if no account or static IP address is required for setting up an internet connection.</div>
+  </div>
+</div>
+        <div id="static-set" class="connect-type none">
+  <div class="form-group" style="margin-bottom: 4px;">
+    <label class="col-sm-4 col-md-3 control-label"></label>
+    <div class="col-sm-8 help-block">This type is applicable if a static IP address is required for setting up an internet connection.</div>
+  </div>
+  <p class="col-sm-offset-3 help-block"></p>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">IP Address</label>
+    <div class="col-sm-7 col-md-6 col-lg-5"> <span id="wanIP" name="wanIP" class="textboxs-ip validatebox" required="required" data-options='{"type": "ip"}'></span> </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Subnet Mask</label>
+    <div class="col-sm-7 col-md-6 col-lg-5"> <span id="wanMask" name="wanMask" class="textboxs-mask validatebox" required="required" data-options='{"type": "mask"}'></span> </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Default Gateway</label>
+    <div class="col-sm-7 col-md-6 col-lg-5"> <span id="wanGateway" name="wanGateway" class="textboxs-ip validatebox" required="required" data-options='{"type": "ip"}'></span> </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Preferred DNS</label>
+    <div class="col-sm-7 col-md-6 col-lg-5"> <span id="wanDns1" name="wanDns1" class="textboxs-ip validatebox" required="required" data-options='{"type": "ip"}'></span> </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Alternate DNS</label>
+    <div class="col-sm-7 col-md-6 col-lg-5"> <span id="wanDns2" name="wanDns2" class="textboxs-ip validatebox" data-options='{"type": "ip"}'></span>
+    <span class="help-block" style="display: inline-block;">(Optional)</span>
+    </div>
+  </div>
+</div>
+      </div>  
+<div id="connectInfo" class="none">
+  <div class="form-group">
+    <label class="col-sm-4 col-md-3 control-label">Connection Status</label>
+    <div class="col-sm-8 form-control-static"> <span id="wanConnectStatus" class="text-success"></span> </div>
+  </div>
+</div>
+    </fieldset>
+  </form>
+</section>
+<section id="apConfigWrapper" class="container-fluid">
+    <div id="wifiScan" class="none">
+  <form class="form-horizontal">
+    <h2 class="legend">Select WiFi Network<i id="refreshTable" class="ico icon-refresh text-primary" style="margin-left:6px;"></i><img id="loading" class="img-loading none" alt="Loading..." src="img/loading.gif"></h2>
+    <fieldset>
+    <div class="table-responsive form-group">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>WiFi Name</th>
+          <th class="hidden-xs">MAC Address</th>
+          <th class="hidden-xs">Channel</th>
+          <th class="hidden-xs">Security Mode</th>
+          <th>Strength</th>
+        </tr>
+      </thead>
+      <tbody id="wifiScanTbody">
+      </tbody>
+    </table>
+  </div>
+  </fieldset>
+</form>
+  </div>
+</section>

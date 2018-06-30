@@ -1,0 +1,3 @@
+cdl_option CYGPKG_NAT_LOOPBACK {
+    user_value 1
+};
