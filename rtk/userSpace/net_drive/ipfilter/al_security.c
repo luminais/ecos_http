@@ -692,6 +692,11 @@ int al_security_handle_hook(struct ifnet *ifp, char *head, struct mbuf *m)
 		return PK_PASS;
 	}
 
+	if (m->m_len < sizeof (struct ip))
+	{
+		return PK_PASS ;
+	}
+
 	iph = mtod(m, struct ip *);
 	
 	if(iph == NULL)
@@ -699,11 +704,21 @@ int al_security_handle_hook(struct ifnet *ifp, char *head, struct mbuf *m)
 		return PK_PASS ;
 	}
 
+	if (iph->ip_v != 4 ||
+	    iph->ip_hl != sizeof(struct ip)/4 ||
+	    m->m_pkthdr.len < ntohs(iph->ip_len) ||
+	    (iph->ip_off & htons(0x3fff)) != 0 ||
+	    iph->ip_ttl < 0)
+	{
+		return PK_PASS ;
+	}
+
+
 	get_packet_mac(head , src_mac);
 
 	
 #if 0
-	printf("the packet is: \n");
+	printf("the packet len is %d: \n" , m->m_pkthdr.len);
 	int i = 0 ;
 	char * test =  (char*)iph ;
 	for(i = 0  ; i < m->m_pkthdr.len ; i++ )
@@ -716,6 +731,11 @@ int al_security_handle_hook(struct ifnet *ifp, char *head, struct mbuf *m)
 	//handlen dns
 	if(iph->ip_p == IPPROTO_UDP)
 	{
+		if (m->m_len < sizeof(struct ip) + sizeof(struct udphdr))
+		{
+			return PK_PASS ;
+		}
+
 		udph = (struct udphdr *)((char *)iph + (iph->ip_hl << 2));
 
 		if(udph == NULL)
@@ -752,6 +772,11 @@ int al_security_handle_hook(struct ifnet *ifp, char *head, struct mbuf *m)
 		tcph = (struct tcphdr *)((char *)iph + (iph->ip_hl << 2));
 
 		if(tcph == NULL)
+		{
+			return PK_PASS ;
+		}
+
+		if (m->m_len < (iph->ip_hl << 2) + (tcph->th_off<<2))
 		{
 			return PK_PASS ;
 		}

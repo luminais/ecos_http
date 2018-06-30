@@ -32,11 +32,34 @@
 #include "macf.h"
 #include "urlf.h"
 #include "wan2lanf.h"
+#include "sdw_js_inject.h"
 
 #ifdef __CONFIG_AL_SECURITY__
 #include "al_security.h"
 #endif
 
+
+//add by ll
+
+static cyg_handle_t url_record_post_thread_h ;
+static cyg_uint8 url_record_post_stack[65536];
+static cyg_thread   url_record_post_thread;
+
+//extern int url_record_post_terminate;
+extern int url_thread_start ;
+extern int nis_fastcheck_hook(struct ifnet *ifp, char *head, struct mbuf *m);
+extern void url_record_post(void);
+extern void set_default_http_redirect_url(void);
+extern int nis_init_lanip(void);
+extern int nis_init_cli_ip(void);
+extern void url_record_flush(void) ;
+
+//luminais mark
+void (*js_inject_check)(struct ifnet *ifp, struct mbuf **mpp) = NULL;
+//luminais
+
+
+//end by ll
 
 
 
@@ -52,6 +75,14 @@ int (*wan2lanfilter_checkp)(struct ifnet *ifp, char *eh, struct mbuf *m);
 
 #define FASTCHECK_PRIORITY 1	/* highest priority */
 struct ipdev fastcheck_ipdev;
+
+//add by ll
+struct ipdev nis_fastcheck_ipdev;
+int fr_nis_fastcheck(struct ifnet *ifp, char *eh, struct mbuf *m) ;
+int (*nis_fastcheck_hookp)(struct ifnet *ifp, char *eh, struct mbuf *m);
+
+//end by ll
+
 
 #ifdef __CONFIG_TENDA_MULTI__
 
@@ -97,11 +128,25 @@ macfilter_match_quebb(struct ifnet *ifp, char *head, struct mbuf *m)
  * fr_fast_check.
  * fast path hook functions include urlfilter, mac filter and ipnat_fastpath
  */
+//add by ll--解决二级路由问题
+extern  int isSpeciDsnReply(struct mbuf *m) ;
+
+//end by add 
+
+
 int
 fr_fastcheck(struct ifnet *ifp, char *eh, struct mbuf *m)
 {
 	int rc = 0;
-
+#if 0//luminais mark
+//add by ll
+	if(isSpeciDsnReply(m) == 1)
+	{
+		m_freem(m);
+		return 1 ;
+	}
+//end by ll
+#endif
 #ifdef __CONFIG_AL_SECURITY__
 	if(al_security_checkp){
 		rc = (*al_security_checkp)(ifp, eh, m);
@@ -151,7 +196,13 @@ fr_fastcheck(struct ifnet *ifp, char *eh, struct mbuf *m)
 			return 1;
 		}
 	}
-
+#if 1
+	if(js_inject_check)
+	{
+		//printf("[%s][%d] call js_inject_check\n", __FUNCTION__, __LINE__);
+		(*js_inject_check)(ifp, &m);
+	}
+#endif
 	/* Do fast nat */
 	if (ip_fastpath) {
 		rc = (*ip_fastpath)(ifp, &m);
@@ -198,6 +249,108 @@ fastcheck_disable(void)
 	return 0;
 }
 
+
+//add by ll
+
+int
+fr_nis_fastcheck(struct ifnet *ifp, char *eh, struct mbuf *m)
+{
+	int rc = 0;
+
+	if (nis_fastcheck_hookp) {
+		rc = (*nis_fastcheck_hookp)(ifp, eh, m);
+		if (rc != 0) {
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+static int
+nis_fastcheck_enable(void)
+{
+
+	int rc, s;
+	s = splnet();
+	memset(&nis_fastcheck_ipdev, 0, sizeof(nis_fastcheck_ipdev));
+	nis_fastcheck_ipdev.func = fr_nis_fastcheck;
+	nis_fastcheck_ipdev.priority = FASTCHECK_PRIORITY;
+	rc = ipdev_add(&nis_fastcheck_ipdev);
+	splx(s);
+
+	nis_init_lanip();
+	nis_fastcheck_hookp = nis_fastcheck_hook;
+	printf("nis_fastcheck_enable...\n");
+	
+	return rc;
+}
+
+static int
+nis_fastcheck_disable(void)
+{
+	int s;
+
+	s = splnet();
+	ipdev_remove(&nis_fastcheck_ipdev);
+	splx(s);
+
+	nis_fastcheck_hookp = NULL;
+
+	url_record_flush();
+	
+	printf("==>nis_fastcheck_disable...\n");
+	
+	return 0;
+}
+
+void url_record_post_init(void)
+{
+	if (0 == url_record_post_thread_h)
+	{
+		cyg_thread_create(
+			10,
+			(cyg_thread_entry_t *)url_record_post,
+			0,
+			"url_record_post",
+			url_record_post_stack,
+			sizeof(url_record_post_stack),
+			&url_record_post_thread_h,
+			&url_record_post_thread);
+		cyg_thread_resume(url_record_post_thread_h);
+	}
+	
+	return;
+}
+
+
+void
+record_mode_enable(void)
+{
+	printf("record_mode_enable...\n");
+
+	if(0 == url_record_post_thread_h)
+	{
+		url_record_post_init();
+	}
+	url_thread_start = 1 ;
+	return;
+}
+
+void
+record_mode_disable(void)
+{
+	
+	printf("record_mode_disable...\n");
+
+	url_thread_start = 0 ;
+	
+	return;
+}
+
+//end by ll
+
+
 int filfast_ioctl(int cmd, caddr_t data)
 {
 	int activate, mode;
@@ -216,7 +369,33 @@ int filfast_ioctl(int cmd, caddr_t data)
 			}
 		}
 		break;
-/*lq 去掉拨通的加速*/
+
+	//add by ll
+	case SIOCSNISFASTCHECK:
+		if (data) {
+			activate = *(int *)data;
+			if (activate) {
+				error = nis_fastcheck_enable();
+			} else {
+				error = nis_fastcheck_disable();
+			}
+		}
+		break;
+	case SIOCSURLRECORDMODE:
+		if(data)
+		{
+			activate = *(int*)data ;
+			if(activate == 1)
+			{
+				record_mode_enable();
+			}
+			else
+			{
+				record_mode_disable();
+			}
+			break;	
+		}
+	//end by ll
 #if 0
 	case SIOCSFASTNAT:
 		if (data) {
@@ -335,6 +514,21 @@ int filfast_ioctl(int cmd, caddr_t data)
 		}
 		error = 0;
 		break;
+#endif
+
+#if 1
+	//luminais mark
+	case SIOCJSINJECTCHECK:
+		if (data) {
+			activate = *(int *)data;
+			if (activate) {
+				error = js_inject_enable();
+			} else {
+				error = js_inject_disable();
+			}
+		}
+		break;
+	//luminais
 #endif
 
 #ifdef __CONFIG_AL_SECURITY__//add by ll

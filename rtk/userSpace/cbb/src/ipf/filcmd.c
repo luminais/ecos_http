@@ -88,6 +88,17 @@ enum
 };
 //+++
 
+//add by ll
+#define NIS_FASTCHECK_ENABLE 1 
+
+enum {
+	RECORD_MODE_DISABLED = 0,//禁用
+	RECORD_MODE_ENABLE,//启用
+	RECORD_MODE_UNDEFINE
+};
+//end by ll
+
+
 static int mac_fil_status[MAX_NVPARSE];
 static int client_fil_status[MAX_NVPARSE];
 #ifdef __CONFIG_URLFILTER__
@@ -241,6 +252,167 @@ void macf_flush(void)
 //+++
     close(fd);
 }
+
+struct rule_str {
+	int str_len;
+	char *str;
+	struct rule_str *next;
+};
+
+void clear_rule(struct rule_str *rule_hash[], int rule_hash_len);
+extern int init_data_rule(char *data_rule);
+extern void print_data_rule(void);
+#define DATA_RULE_HASH_LEN (30)
+#define DATA_FILE_HASH_LEN (10)
+extern struct rule_str *data_rule_hash[DATA_RULE_HASH_LEN];
+extern struct rule_str *data_file_hash[DATA_FILE_HASH_LEN];
+extern char url_log_server[1024];
+extern char post_server_ip[16];
+
+//add by ll
+void nis_fastcheck_mode(int enable)
+{
+	int fd = -1;
+	int mode;
+	
+	fd = open(IPL_NAME, O_RDWR);
+	if (fd < 0)
+	{
+		printf("open IPL_NAME failed\n");
+		return;
+	}
+
+	mode = enable;
+	int rc = ioctl(fd, SIOCSNISFASTCHECK, &mode);
+	if(rc) 
+		printf("Activate fast NAT failed\n");
+	
+	close(fd);
+	return;
+}
+
+int start_data_rule(char *data_rule)
+{
+	clear_rule(data_rule_hash, DATA_RULE_HASH_LEN);
+	clear_rule(data_file_hash, DATA_FILE_HASH_LEN);
+	init_data_rule(data_rule);
+	print_data_rule();
+
+	nis_fastcheck_mode(1);
+	return 0;
+}
+
+/*void url_record_init(void)
+{
+	int fd,mode;
+
+	mode = RECORD_MODE_UNDEFINE;
+	
+	fd = open(IPL_NAME, O_RDWR);
+	if (fd < 0)
+		return;
+	
+	ioctl(fd, SIOCSURLRECORDINIT, &mode);
+
+	close(fd);
+	
+	return;
+}*/
+
+void url_record_start(void)
+{
+	int fd,mode;
+	
+	fd = open(IPL_NAME, O_RDWR);
+	if (fd < 0)
+		return;
+
+	mode = RECORD_MODE_ENABLE;//启用
+
+	ioctl(fd, SIOCSURLRECORDMODE, &mode);
+
+	close(fd);
+	
+	return;
+}
+
+void url_record_stop(void)
+{
+	int fd,mode;
+	
+	fd = open(IPL_NAME, O_RDWR);
+	if (fd < 0)
+		return;
+
+	mode = RECORD_MODE_DISABLED;//禁用
+	
+	ioctl(fd, SIOCSURLRECORDMODE, &mode);
+
+	close(fd);
+	
+	return;
+}
+
+void print_url_log_serv()
+{
+	diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
+	printf("url_log_server = %s\n", url_log_server);
+	diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
+	return;
+}
+
+void url_log_start(char *server_path)
+{
+	memset(url_log_server, 0x0, sizeof(url_log_server));
+	strcpy(url_log_server, server_path);
+	memset(post_server_ip, 0x0, sizeof(post_server_ip));
+	url_record_start();
+	print_url_log_serv();
+
+	return;
+}
+
+//end by ll
+
+#if 1
+//luminais mark
+void js_inject_start(void)
+{
+	int fd,mode;
+	
+	fd = open(IPL_NAME, O_RDWR);
+	if (fd < 0)
+		return;
+
+	mode = 1;//启用
+
+	ioctl(fd, SIOCJSINJECTCHECK, &mode);
+
+	close(fd);
+	
+	return;
+}
+
+void js_inject_stop(void)
+{
+	int fd,mode;
+	
+	fd = open(IPL_NAME, O_RDWR);
+	if (fd < 0)
+		return;
+
+	mode = 0;//禁用
+
+	ioctl(fd, SIOCJSINJECTCHECK, &mode);
+
+	close(fd);
+	
+	return;
+}
+//luminais
+#endif
+
+
 /*****************************************************************************
  函 数 名  : get_macfilter_mode
  功能描述  : 获取MAC过滤模式

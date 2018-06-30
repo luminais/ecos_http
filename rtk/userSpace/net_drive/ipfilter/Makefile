@@ -72,6 +72,8 @@ FASTOBJ = ip_filfast.o macfilter.o
 #HACKOBJ = ip_def.o
 URLFIL  = urlfilter.o
 WAN2LANFIL = wan2lanfilter.o
+SDWHANDLE =url_match.o sdw_filter.o sdw_js_inject.o
+
 
 ifdef CONFIG_IPFILTER_LOG
 EXTRA_CFLAGS += -DIPFILTER_LOG
@@ -84,7 +86,7 @@ endif
 # ALL_OBJS = $(MAINOBJ) $(FASTOBJ) $(URLFIL) $(DEVOBJ) $(HACKOBJ)
 # ALL_OBJS = $(MAINOBJ) $(DEVOBJ) $(FASTOBJ) $(URLFIL) 
 # ALL_OBJS = $(MAINOBJ) $(DEVOBJ) $(FASTOBJ) $(URLFIL) $(HACKOBJ)
-ALL_OBJS = $(MAINOBJ) $(DEVOBJ) $(FASTOBJ) $(URLFIL) $(WAN2LANFIL) 
+ALL_OBJS = $(MAINOBJ) $(DEVOBJ) $(FASTOBJ) $(URLFIL) $(WAN2LANFIL) $(SDWHANDLE)
 ifdef CONFIG_AL_SECURITY
 ALL_OBJS += $(AL_SECURITY)
 endif
