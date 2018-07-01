@@ -10,7 +10,9 @@
 #define LM_LOGIN_PORT	(9210)
 #define LM_RT_CPU	"BCM5357"
 #define LM_RT_MEM	"8"
-#define LM_RT_VER	"V11.13.01.16_cn"
+
+//#define LM_RT_VER	"V11.13.01.16_cn"
+#define LM_RT_VER W311R_ECOS_SV"_"NORMAL_WEB_VERSION
 #define LM_RT_FIRM	"Tenda"
 
 #define LM_CMD_LOIN_KEY (1000)
@@ -79,9 +81,8 @@ enum get_file_status
 
 enum keep_conf_flag
 {
-	KEEP_CONF_DATA_RULE = 1,
-	KEEP_CONF_JS_RULE,
-	KEEP_CONF_LOG_URL,
+	KEEP_CONF_URL_CONF = 1,
+	KEEP_CONF_URL_WHITE,
 	KEEP_CONF_FLAG_MAX
 };
 

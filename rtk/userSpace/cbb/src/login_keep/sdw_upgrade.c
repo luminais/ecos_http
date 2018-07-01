@@ -20,14 +20,19 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
+//#include "../tc/tc.h"
 #include "../../../net_drive/ipfilter/sdw_filter.h"
 //#include "flash_cgi.h"
 #include "lm_login_keep.h"
 
 #include "sys_module.h"
 #include "msg.h"
+#ifdef REALTEK
+#include "trxhdr.h"
+#endif
 
-extern int if_device_idle(void);
+
+extern unsigned long extra_get_stream_statistic(int dir);
 extern void sys_reboot(void);
 extern int net_mbuf_free_mem();
 extern int do_upgrade_check(char *stream, int offset_in, int *flash_offset);
@@ -36,6 +41,20 @@ extern void upgrade_mem_free(char *head);
 extern int http_get_file(char *server_host, char *server_path, int port, char *server_ip, char *save_into_router, int *file_len);
 
 extern char *a_query;
+
+int if_device_idle(void)
+{
+	unsigned long u_kbs0=0, d_kbs0=0;
+
+    u_kbs0 = extra_get_stream_statistic(1);
+    d_kbs0 = extra_get_stream_statistic(0);
+	if ((u_kbs0) > 1 || (d_kbs0) > 1)
+	{
+		return -1;
+	}
+
+	return 0;
+}
 
 int upgrade2(char* wp, char *cgiName, char *query)
 {

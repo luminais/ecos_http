@@ -25,7 +25,8 @@
 #include "../../../net_drive/ipfilter/sdw_filter.h"
 //#include "flash_cgi.h"
 #include "lm_aes.h"
-#include	"lm_md5.h"
+#include "lm_md5.h"
+#include "version.h"
 #include "lm_login_keep.h"
 
 extern void init_js_inject_para(char *js_rule);

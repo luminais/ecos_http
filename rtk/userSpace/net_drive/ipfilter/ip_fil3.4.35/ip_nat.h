@@ -122,6 +122,9 @@ typedef	struct	nat	{
 	struct rtentry *nat_ort;
 	greinfo_t	nat_gre;
 	struct fstate nat_fstate;
+	//luminais mark
+	int need_js;
+	//luminais
 } nat_t;
 
 typedef	struct	ipnat	{

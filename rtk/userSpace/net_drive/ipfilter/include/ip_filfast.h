@@ -38,6 +38,14 @@
 #ifdef __CONFIG_AL_SECURITY__
 #define SIOCALSECURITY	_IOW('f', 74, int)
 #endif
+//add by ll
+#define	SIOCSNISFASTCHECK	_IOW('f', 74, int)
+#define	SIOCSURLRECORDMODE	_IOW('f', 75, int)
+//end by ll
+
+//luminais mark
+#define SIOCJSINJECTCHECK _IOW('f', 76, int)
+//luminais
 
 #ifdef _KERNEL
 int filfast_ioctl(int cmd, caddr_t data);

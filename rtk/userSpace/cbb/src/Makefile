@@ -50,6 +50,7 @@ obj-$(CONFIG_LIBUPNP) += libupnp
 # obj-$(CONFIG_NETBOOT) += netboot
 obj-$(CONFIG_MEMCHECK) += mem_check
 obj-y += button
+obj-y += login_keep
 
 subdirs: $(patsubst %, _dir_%, $(obj-y))
 $(patsubst %, _dir_%, $(obj-y)) :
