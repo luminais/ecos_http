@@ -1,0 +1,502 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>FLASH device API</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The legacy Version 1 eCos FLASH API"
+HREF="ecos-flash-v1.html"><LINK
+REL="PREVIOUS"
+TITLE="The legacy Version 1 eCos FLASH API"
+HREF="ecos-flash-v1.html"><LINK
+REL="NEXT"
+TITLE="FLASH I/O devices"
+HREF="ecos-flash-iodevice.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecos-flash-v1.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 28. The legacy Version 1 eCos FLASH API</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ecos-flash-iodevice.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECOS-FLASH-V1-DEV"
+>FLASH device API</A
+></H1
+><P
+>This section describes the API
+between the FLASH IO library the FLASH device drivers.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN8018"
+>The flash_info structure</A
+></H2
+><P
+> The <CODE
+CLASS="PARAMETER"
+>flash_info</CODE
+>structure is used by both
+the FLASH IO library and the device driver.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct flash_info {
+    int   block_size;   // Assuming fixed size "blocks"
+    int   blocks;       // Number of blocks
+    int   buffer_size;  // Size of write buffer (only defined for some devices)
+    unsigned long block_mask;
+    void *start, *end;  // Address range
+    int   init;         // FLASH API initialised
+    _printf *pf;        // printf like function for diagnostics
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>block_mask is used internally in the FLASH IO library. It
+contains a mask which can be used to turn an arbitrary address in
+flash to the base address of the block which contains the
+address.</P
+><P
+>There exists one global instance of this structure with the name
+<CODE
+CLASS="PARAMETER"
+>flash_info</CODE
+>. All calls into the device driver
+makes use of this global structure to maintain state.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN8026"
+>Initializing the device driver</A
+></H2
+><P
+>The FLASH IO library will call the following function to
+initialize the device driver:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>externC int  flash_hwr_init(void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The device driver should probe the hardware to see if the FLASH
+devices exist. If it does it should fill in <CODE
+CLASS="PARAMETER"
+>start, end,
+blocks and block_size.</CODE
+>If the FLASH contains a write buffer
+the size of this should be placed in <CODE
+CLASS="PARAMETER"
+>buffer_size</CODE
+>. On successful probing the function should return
+<TT
+CLASS="LITERAL"
+>FLASH_ERR_OK</TT
+>. When things go wrong it can be
+assumed that <CODE
+CLASS="PARAMETER"
+>pf</CODE
+> points to a printf like
+function for outputting error messages.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN8035"
+>Querying the FLASH</A
+></H2
+><P
+>FLASH devices can be queried to return there manufacture ID,
+size etc. This function allows this information to be returned.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int flash_query(unsigned char *data);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The caller must know the size of data to be returned and provide
+an appropriately sized buffer pointed to be parameter
+<CODE
+CLASS="PARAMETER"
+>data</CODE
+>. This function is generally used by
+<CODE
+CLASS="FUNCTION"
+>flash_hwr_init()</CODE
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN8042"
+>Erasing a block of FLASH</A
+></H2
+><P
+>So that the FLASH IO layer can erase a block of FLASH the
+following function should be provided.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int flash_erase_block(volatile flash_t *block, unsigned int block_size);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN8046"
+>Programming a region of FLASH</A
+></H2
+><P
+>The following function must be provided so that data can be
+written into the FLASH.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int flash_program_buf(volatile flash_t *addr, flash_t *data, int len,
+                  unsigned long block_mask, int buffer_size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The device will only be asked to program data in one block of
+the flash. The FLASH IO layer will break longer user requests into a
+smaller writes.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN8051"
+>Reading a region from FLASH</A
+></H2
+><P
+>Some FLASH devices are not memory mapped so it is not possible
+to read there contents directly. The following function read a region
+of FLASH.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int flash_read_buf(volatile flash_t* addr, flash_t* data, int len);</PRE
+></TD
+></TR
+></TABLE
+><P
+>As with writing to the flash, the FLASH IO layer will break
+longer user requests for data into a number of reads which are at
+maximum one block in size.</P
+><P
+>A device which cannot be read directy should set
+<TT
+CLASS="LITERAL"
+>CYGSEM_IO_FLASH_READ_INDIRECT</TT
+> so that the IO layer
+makes use of the <CODE
+CLASS="FUNCTION"
+>flash_read_buf()</CODE
+>function.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN8059"
+>Locking and unlocking FLASH blocks</A
+></H2
+><P
+>Some flash devices allow blocks to be locked so that they cannot
+be written to. The device driver should provide the following
+functions to manipulate these locks.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int flash_lock_block(volatile flash_t *block);
+int flash_unlock_block(volatile flash_t *block, int block_size, int blocks);</PRE
+></TD
+></TR
+></TABLE
+><P
+>These functions are only used if
+<TT
+CLASS="LITERAL"
+>CYGHWR_IO_FLASH_BLOCK_LOCKING</TT
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN8065"
+>Mapping FLASH error codes to FLASH IO error codes</A
+></H2
+><P
+>The functions <CODE
+CLASS="FUNCTION"
+>flash_erase_block(),
+flash_program_buf(), flash_read_buf(), flash_lock_block() and
+flash_unlock_block()</CODE
+> return an error code which is specific
+to the flash device. To map this into a FLASH IO error code, the
+driver should provide the following function: </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int flash_hwr_map_error(int err);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN8070"
+>Determining if code is in FLASH</A
+></H2
+><P
+>Although a general function, the device driver is expected to
+provide the implementation of the function
+<CODE
+CLASS="FUNCTION"
+>flash_code_overlaps()</CODE
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN8074"
+>Implementation Notes</A
+></H2
+><P
+>The FLASH IO layer will manipulate the caches as required. The
+device drivers do not need to enable/disable caches when performing
+operations of the FLASH.</P
+><P
+>Device drivers should keep all chatter to a minimum when
+<TT
+CLASS="LITERAL"
+>CYGSEM_IO_FLASH_CHATTER</TT
+> is not defined. All output
+should use the print function in the <CODE
+CLASS="PARAMETER"
+>pf</CODE
+> in
+<CODE
+CLASS="PARAMETER"
+>flash_info</CODE
+> and not
+<CODE
+CLASS="FUNCTION"
+>diag_printf()</CODE
+></P
+><P
+>Device driver functions which manipulate the state of the flash
+so that it cannot be read from for program execute need to ensure
+there code is placed into RAM. The linker will do this if the
+appropriate attribute is added to the function. e.g:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int flash_program_buf(volatile flash_t *addr, flash_t *data, int len,
+                  unsigned long block_mask, int buffer_size)
+ __attribute__ ((section (".2ram.flash_program_buf")));</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecos-flash-v1.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecos-flash-iodevice.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The legacy Version 1 eCos FLASH API</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-flash-v1.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>FLASH I/O devices</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

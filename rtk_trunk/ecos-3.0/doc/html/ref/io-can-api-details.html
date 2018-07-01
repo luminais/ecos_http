@@ -1,0 +1,860 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>API Details</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="CAN driver details"
+HREF="io-can-driver-details.html"><LINK
+REL="PREVIOUS"
+TITLE="CAN driver details"
+HREF="io-can-driver-details.html"><LINK
+REL="NEXT"
+TITLE="Runtime Configuration"
+HREF="io-can-runtime-cfg.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-can-driver-details.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 32. CAN driver details</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-can-runtime-cfg.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="IO-CAN-API-DETAILS"
+>API Details</A
+></H1
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN9070"
+>cyg_io_write</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>cyg_io_write(handle, buf, len)</PRE
+></TD
+></TR
+></TABLE
+><P
+>To transmit a message an application must fill a <SPAN
+CLASS="TYPE"
+>cyg_can_message</SPAN
+>
+buffer and call <CODE
+CLASS="FUNCTION"
+>cyg_io_write()</CODE
+>.
+This function sends one single CAN message (not a buffer of CAN messages) 
+to a device. The size of data to send is contained in <CODE
+CLASS="PARAMETER"
+>*len</CODE
+> 
+and the actual size sent will be returned in the same place. A pointer to a
+<SPAN
+CLASS="TYPE"
+>cyg_can_message</SPAN
+> is contained in <CODE
+CLASS="PARAMETER"
+>*buf</CODE
+>. 
+The driver maintains a buffer to hold the data. The size of the intermediate
+buffer is configurable within the interface module. The data is not modified 
+at all while it is being buffered. On return, <CODE
+CLASS="PARAMETER"
+>*len</CODE
+> 
+contains the amount of characters actually consumed - that means 
+<CODE
+CLASS="PARAMETER"
+>*len</CODE
+> always contains 
+<CODE
+CLASS="FUNCTION"
+>sizeof(cyg_can_message)</CODE
+>.</P
+><P
+>It is possible to configure the write call to be blocking (default) or 
+non-blocking. Non-blocking mode requires both the configuration option 
+<CODE
+CLASS="VARNAME"
+>CYGOPT_IO_CAN_SUPPORT_NONBLOCKING</CODE
+> to be enabled, and 
+the specific device to be set to non-blocking mode for writes 
+(see <CODE
+CLASS="FUNCTION"
+>cyg_io_set_config()</CODE
+>). In blocking mode, the 
+call will not return until there is space in the buffer and the content 
+of the CAN message has been consumed. In non-blocking mode, if there is 
+no space in buffer for the CAN message, <CODE
+CLASS="VARNAME"
+>-EAGAIN</CODE
+> is 
+returned and the caller must try again.</P
+><P
+>It is possible to configure the write call to be non-blocking with timeout. 
+None-blocking mode with timeout requires the configuration option 
+<CODE
+CLASS="VARNAME"
+>CYGOPT_IO_CAN_SUPPORT_NONBLOCKING</CODE
+> and 
+<CODE
+CLASS="VARNAME"
+>CYGOPT_IO_CAN_SUPPORT_TIMEOUTS</CODE
+> to be enabled, requires 
+the eCos kernel package to be included and the specific device to be set 
+to non-blocking mode for writes (see <CODE
+CLASS="FUNCTION"
+>cyg_io_set_config()</CODE
+>). 
+In non-blocking mode with timeouts, if there is no space in buffer for the 
+CAN message, the driver waits a certain amount of time (the timeout time) 
+for space in the buffer. If there is still no space in buffer after 
+expiration of the timeout time, <CODE
+CLASS="VARNAME"
+>-EINTR</CODE
+> is returned and 
+the caller must try again.</P
+><P
+>If a message was sucessfully sent, the function returns <CODE
+CLASS="VARNAME"
+>ENOERR</CODE
+>.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN9093"
+>CAN Messages</A
+></H2
+><P
+>The CAN driver uses <CODE
+CLASS="STRUCTNAME"
+>cyg_can_message</CODE
+> structures to 
+pass messages between the application and the CAN driver. The type 
+cyg_can_message provides a device independent type of CAN message. 
+Before calling the write function this message should be setup properly.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct can_message
+{
+    cyg_uint32         id;
+    cyg_uint8          data[8];
+    cyg_can_id_type    ext;
+    cyg_can_frame_type rtr;
+    cyg_uint8          dlc;
+} cyg_can_message;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The structure contains the following fields:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint32</SPAN
+> <CODE
+CLASS="VARNAME"
+>id</CODE
+></DT
+><DD
+><P
+>Message ID. This is the ID to be transmitted with the message, or the 
+ID received. If the <CODE
+CLASS="STRUCTFIELD"
+>ext</CODE
+> field is set, then 
+this will contain a 29 bit ID, otherwise it will contain an 11 bit ID.
+          </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint32</SPAN
+> <CODE
+CLASS="VARNAME"
+>data</CODE
+></DT
+><DD
+><P
+>Message data. Only the first <CODE
+CLASS="STRUCTFIELD"
+>dlc</CODE
+> bytes of 
+data are valid. If the <CODE
+CLASS="STRUCTFIELD"
+>rtr</CODE
+> field is set, 
+then the contents of this field are ignored.
+          </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_can_id_type</SPAN
+> <CODE
+CLASS="VARNAME"
+>ext</CODE
+></DT
+><DD
+><P
+>Extended ID. If this field is <CODE
+CLASS="VARNAME"
+>CYGNUM_CAN_ID_EXT</CODE
+> then the 
+<CODE
+CLASS="STRUCTNAME"
+>id</CODE
+> field contains a 29 bit extended ID. If it 
+contains <CODE
+CLASS="VARNAME"
+>CYGNUM_CAN_ID_STD</CODE
+> then the ID is 11 bits.
+          </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_can_frame_type</SPAN
+> <CODE
+CLASS="VARNAME"
+>rtr</CODE
+></DT
+><DD
+><P
+>Remote Transmission Request. If this field contains 
+<CODE
+CLASS="VARNAME"
+>CYGNUM_CAN_FRAME_RTR</CODE
+> then the RTR bit on the message 
+will be set and the <CODE
+CLASS="STRUCTFIELD"
+>data</CODE
+> field will be ignored. 
+If the field contains <CODE
+CLASS="VARNAME"
+>CYGNUM_CAN_FRAME_DATA</CODE
+> then a 
+normal data frame will be send.
+          </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint8</SPAN
+> <CODE
+CLASS="VARNAME"
+>dlc</CODE
+></DT
+><DD
+><P
+>The length of the data carried in the message. This can range from 
+zero to 8. In a message with the <CODE
+CLASS="STRUCTFIELD"
+>rtr</CODE
+> field set, 
+this indicates the size of data being requested.
+          </P
+></DD
+></DL
+></DIV
+><P
+>Example code for sending one single CAN message:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>cyg_can_message tx_msg;
+cyg_uint32      len;
+Cyg_ErrNo       ret;
+
+tx_msg.id  = 0x100;
+tx_msg.ext = CYGNUM_CAN_ID_EXT;
+tx_msg.rtr = CYGNUM_CAN_FRAME_DATA;
+tx_msg.dlc = 1;
+tx_msg.data[0] = 0xF1;
+
+len = sizeof(tx_msg);
+ret = cyg_io_write(hDrvCAN, &amp;tx_msg, &amp;len);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN9142"
+>cyg_io_read</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>cyg_io_read(handle, buf, len)</PRE
+></TD
+></TR
+></TABLE
+><P
+>To receive a message the application calls <CODE
+CLASS="FUNCTION"
+>cyg_can_recv()</CODE
+>.
+This function receives one single event from a device. The desired size 
+of data to receive is contained in <CODE
+CLASS="PARAMETER"
+>*len</CODE
+> and the
+actual size obtained will be returned in the same place. A pointer to 
+a <SPAN
+CLASS="TYPE"
+>cyg_can_event</SPAN
+> is contained in <CODE
+CLASS="PARAMETER"
+>*buf</CODE
+>. 
+No manipulation of the data is performed before being transferred. 
+Again, this buffering is completely configurable. On return, 
+<CODE
+CLASS="PARAMETER"
+>*len</CODE
+> contains <CODE
+CLASS="FUNCTION"
+>sizeof(cyg_can_event)</CODE
+>.</P
+><P
+>    
+It is possible to configure the read call to be blocking (default) or 
+non-blocking. Non-blocking mode requires both the configuration option 
+<CODE
+CLASS="VARNAME"
+>CYGOPT_IO_CAN_SUPPORT_NONBLOCKING</CODE
+> to be enabled, 
+and the specific device to be set to non-blocking mode for reads 
+(see <CODE
+CLASS="FUNCTION"
+>cyg_io_set_config()</CODE
+>). In blocking mode, 
+the call will not return until one single CAN event has been read. 
+In non-blocking mode, if there is no CAN event in buffer, the call 
+returns immediately with <CODE
+CLASS="VARNAME"
+>-EAGAIN</CODE
+> and the caller must 
+try again.</P
+><P
+>It is possible to configure the write call to be non-blocking with timeout. 
+None-blocking mode with timeout requires the configuration option 
+<CODE
+CLASS="VARNAME"
+>CYGOPT_IO_CAN_SUPPORT_NONBLOCKING</CODE
+> and 
+<CODE
+CLASS="VARNAME"
+>CYGOPT_IO_CAN_SUPPORT_TIMEOUTS</CODE
+> to be enabled, 
+requires the eCos kernel package to be included and the specific device 
+to be set to non-blocking mode for reads (see 
+<CODE
+CLASS="FUNCTION"
+>cyg_io_set_config()</CODE
+>). In non-blocking mode with timeouts, 
+if there is no CAN event in receive buffer, the driver waits a certain amount 
+of time (the timeout time) for a CAN event to arrive. If there is still no 
+CAN event in buffer after expiration of the timeout time, <CODE
+CLASS="VARNAME"
+>-EINTR</CODE
+> 
+is returned and the caller must try again.</P
+><P
+>If a event was sucessfully received, the function returns <CODE
+CLASS="VARNAME"
+>ENOERR</CODE
+>.    </P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN9163"
+>CAN Events</A
+></H2
+><P
+>The CAN driver uses <CODE
+CLASS="STRUCTNAME"
+>cyg_can_event</CODE
+> structures to
+pass events from hardware device driver to the generic CAN driver.
+A <CODE
+CLASS="STRUCTNAME"
+>cyg_can_event</CODE
+> provides a generic device 
+independent type for handling CAN events that may occur.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct cyg_can_event_st
+{
+    cyg_uint32      timestamp;
+    cyg_can_message msg;
+    cyg_uint16      flags;
+} cyg_can_event;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The structure contains the following fields:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint32</SPAN
+> <CODE
+CLASS="VARNAME"
+>timestamp</CODE
+></DT
+><DD
+><P
+>If the hardware CAN device driver supports timestamps then this field may 
+contain a timestamp value for an event that occured.
+          </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_can_message</SPAN
+> <CODE
+CLASS="VARNAME"
+>msg</CODE
+></DT
+><DD
+><P
+>CAN message. The msg field contains a CAN message if an RX or TX event
+occured.  If another type of event occured,
+the <CODE
+CLASS="STRUCTFIELD"
+>data</CODE
+> field of
+the <CODE
+CLASS="STRUCTFIELD"
+>msg</CODE
+> may contain additional event
+specific data.
+          </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint16</SPAN
+> <CODE
+CLASS="VARNAME"
+>flags</CODE
+></DT
+><DD
+><P
+>Event flags. The <CODE
+CLASS="VARNAME"
+>flags</CODE
+> field contains 16 bits that 
+indicate which kind of events occured. 
+          </P
+></DD
+></DL
+></DIV
+><P
+>The following events are supported and after receiving an event the 
+application should check the flag field against these values:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum
+{
+  CYGNUM_CAN_EVENT_RX               = 0x0001, // message received
+  CYGNUM_CAN_EVENT_TX               = 0x0002, // message transmitted
+  CYGNUM_CAN_EVENT_WARNING_RX       = 0x0004, // (TEC) reached warning level (&#62;96)
+  CYGNUM_CAN_EVENT_WARNING_TX       = 0x0008, // (REC) reached warning level (&#62;96)
+  CYGNUM_CAN_EVENT_ERR_PASSIVE      = 0x0010, // CAN "error passive" occured
+  CYGNUM_CAN_EVENT_BUS_OFF          = 0x0020, // CAN "bus off" error occured
+  CYGNUM_CAN_EVENT_OVERRUN_RX       = 0x0040, // overrun in RX queue or hardware 
+  CYGNUM_CAN_EVENT_OVERRUN_TX       = 0x0080, // overrun in TX queue occured
+  CYGNUM_CAN_EVENT_CAN_ERR          = 0x0100, // a CAN bit or frame error occured
+  CYGNUM_CAN_EVENT_LEAVING_STANDBY  = 0x0200, // CAN hardware leaves standby
+  CYGNUM_CAN_EVENT_ENTERING_STANDBY = 0x0400, // CAN hardware enters standby
+  CYGNUM_CAN_EVENT_ARBITRATION_LOST = 0x0800, // arbitration lost
+  CYGNUM_CAN_EVENT_FILTER_ERR       = 0x1000, // CAN message filter / acceptance filter error
+  CYGNUM_CAN_EVENT_PHY_FAULT        = 0x2000, // General failure of physical layer 
+  CYGNUM_CAN_EVENT_PHY_H            = 0x4000, // Fault on CAN-H (Low Speed CAN)
+  CYGNUM_CAN_EVENT_PHY_L            = 0x8000, // Fault on CAN-L (Low Speed CAN)
+} cyg_can_event_flags;</PRE
+></TD
+></TR
+></TABLE
+><P
+>Often the flags field will contain only one single set flag. But it is 
+possible that a number of flags is set and so the flag field should always 
+be checked by a receiver. I.e. if the <CODE
+CLASS="VARNAME"
+>CYGNUM_CAN_EVENT_RX</CODE
+> 
+is set then also the <CODE
+CLASS="VARNAME"
+>CYGNUM_CAN_EVENT_OVERRUN_RX</CODE
+> 
+may be set if the received message caused an RX overrun.</P
+><P
+>The internal receive buffers of the CAN device driver are circular buffers. 
+That means that even if the buffers are completely filled new messages 
+will be received. In this case the newest message will always overwrite 
+the oldest message in receive buffer. If this happens the 
+<CODE
+CLASS="VARNAME"
+>CYGNUM_CAN_EVENT_OVERRUN_RX</CODE
+> flag will be set for this 
+new message that caused overwriting of the old one. The 
+<CODE
+CLASS="VARNAME"
+>CYGNUM_CAN_EVENT_OVERRUN_RX</CODE
+> flag will be set also if 
+a overrun occures in hardware message buffers of the CAN device.</P
+><P
+>Example code for receiving one single CAN event:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>cyg_can_event rx_event;
+cyg_uint32    len;
+Cyg_ErrNo     ret;
+
+len = sizeof(rx_event);
+ret = cyg_io_read(hDrvCAN, &amp;rx_event, &amp;len);
+
+if (ENOERR == ret)
+{
+    if (rx_event.flags &amp; CYGNUM_CAN_EVENT_RX)
+    {
+        // handle RX event
+    }
+    
+    if (rx_event.flags &amp; ~CYGNUM_CAN_EVENT_RX)
+    {
+        // handle other events
+    }
+}
+else if (-EINTR == ret)
+{
+    // handle timeout
+}</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN9202"
+>cyg_io_get_config</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>cyg_io_get_config(handle, key, buf, len)</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function is used to obtain run-time configuration about a device. 
+The type of information retrieved is specified by the <CODE
+CLASS="PARAMETER"
+>key</CODE
+>. 
+The data will be returned in the given buffer. The value of 
+<CODE
+CLASS="PARAMETER"
+>*len</CODE
+> should contain the amount of data requested, 
+which must be at least as large as the size appropriate to the selected 
+<CODE
+CLASS="PARAMETER"
+>key</CODE
+>. The actual size of data retrieved is placed 
+in <CODE
+CLASS="PARAMETER"
+>*len</CODE
+>. The appropriate key values are all listed 
+in the file <TT
+CLASS="FILENAME"
+>&lt;cyg/io/config_keys.h&gt;</TT
+>.    </P
+><P
+>The following config keys are currently supported:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_IO_GET_CONFIG_READ_BLOCKING
+CYG_IO_GET_CONFIG_WRITE_BLOCKING
+CYG_IO_GET_CONFIG_CAN_INFO
+CYG_IO_GET_CONFIG_CAN_BUFFER_INFO
+CYG_IO_GET_CONFIG_CAN_MSGBUF_INFO
+CYG_IO_GET_CONFIG_CAN_TIMEOUT
+CYG_IO_GET_CONFIG_CAN_HDI
+CYG_IO_GET_CONFIG_CAN_STATE</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN9213"
+>cyg_io_set_config</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>cyg_io_set_config(handle, key, buf, len)</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function is used to manipulate or change the run-time configuration 
+of a device. The type of information is specified by the <CODE
+CLASS="PARAMETER"
+>key</CODE
+>. 
+The data will be obtained from the given buffer. The value of 
+<CODE
+CLASS="PARAMETER"
+>*len</CODE
+> should contain the amount of data provided, 
+which must match the size appropriate to the selected <CODE
+CLASS="PARAMETER"
+>key</CODE
+>. 
+The appropriate key values are all listed in the file 
+<TT
+CLASS="FILENAME"
+>&lt;cyg/io/config_keys.h&gt;</TT
+>.  </P
+><P
+>The following config keys are currently supported:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_IO_SET_CONFIG_READ_BLOCKING
+CYG_IO_SET_CONFIG_WRITE_BLOCKING
+CYG_IO_SET_CONFIG_CAN_INFO
+CYG_IO_SET_CONFIG_CAN_OUTPUT_DRAIN
+CYG_IO_SET_CONFIG_CAN_OUTPUT_FLUSH
+CYG_IO_SET_CONFIG_CAN_INPUT_FLUSH
+CYG_IO_SET_CONFIG_CAN_TIMEOUT
+CYG_IO_SET_CONFIG_CAN_MSGBUF
+CYG_IO_SET_CONFIG_CAN_MODE
+CYG_IO_SET_CONFIG_CAN_ABORT
+CYG_IO_SET_CONFIG_CAN_CALLBACK</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-can-driver-details.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-can-runtime-cfg.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CAN driver details</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-can-driver-details.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Runtime Configuration</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

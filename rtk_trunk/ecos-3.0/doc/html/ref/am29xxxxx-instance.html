@@ -1,0 +1,1368 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Instantiating an AM29xxxxx Device</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="AMD AM29xxxxx Flash Device Driver"
+HREF="devs-flash-am29xxxxx.html"><LINK
+REL="PREVIOUS"
+TITLE="Overview"
+HREF="am29xxxxx.html"><LINK
+REL="NEXT"
+TITLE="Intel Strata Flash Device Driver"
+HREF="devs-flash-strata.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="am29xxxxx.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="devs-flash-strata.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="AM29XXXXX-INSTANCE"
+></A
+>Instantiating an AM29xxxxx Device</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN20613"
+></A
+><H2
+>Name</H2
+>Instantiating&nbsp;--&nbsp;including the driver in an eCos target</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN20616"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN20617"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/io/am29xxxxx_dev.h&gt;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_am29xxxxx_init_check_devid_XX</CODE
+>(struct cyg_flash_dev* device);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_am29xxxxx_init_cfi_XX</CODE
+>(struct cyg_flash_dev* device);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_am29xxxxx_erase_XX</CODE
+>(struct cyg_flash_dev* device, cyg_flashaddr_t addr);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_am29xxxxx_program_XX</CODE
+>(struct cyg_flash_dev* device, cyg_flashaddr_t addr, const void* data, size_t len);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_at49xxxx_softlock</CODE
+>(struct cyg_flash_dev* device, const cyg_flashaddr_t addr);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_at49xxxx_hardlock</CODE
+>(struct cyg_flash_dev* device, const cyg_flashaddr_t addr);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_at49xxxx_unlock</CODE
+>(struct cyg_flash_dev* device, const cyg_flashaddr_t addr);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>int cyg_am29xxxxx_read_devid_XX</CODE
+>(struct cyg_flash_dev* device);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AM29XXXXX-INSTANCE-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>The AM29xxxxx family contains some hundreds of different flash
+devices, all supporting the same basic set of operations but with
+various common or uncommon extensions. The devices vary in capacity,
+performance, boot block layout, and width. There are also
+platform-specific issues such as how many devices are actually present
+on the board and where they are mapped in the address space. The
+AM29xxxxx driver package cannot know the details of every chip and
+every platform. Instead it is the responsibility of another package,
+usually the platform HAL, to supply the necessary information by
+instantiating some data structures. Two pieces of information are
+especially important: the bus configuration and the boot block layout.
+    </P
+><P
+>Flash devices are typically 8-bits, 16-bits, or 32-bits wide (64-bit
+devices are not yet in common use). Most 16-bit devices will also
+support 8-bit accesses, but not all. Similarly 32-bit devices can be
+accessed 16-bits at a time or 8-bits at a time. A board will have one
+or more of these devices on the bus. For example there may be a single
+16-bit device on a 16-bit bus, or two 16-bit devices on a 32-bit bus.
+The processor's bus logic determines which combinations are possible,
+and there will be a trade off between cost and performance: two 16-bit
+devices in parallel can provide twice the memory bandwidth of a single
+device. The driver supports the following combinations:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>8</DT
+><DD
+><P
+>A single 8-bit flash device on an 8-bit bus.
+        </P
+></DD
+><DT
+>16</DT
+><DD
+><P
+>A single 16-bit flash device on a 16-bit bus.
+        </P
+></DD
+><DT
+>32</DT
+><DD
+><P
+>A single 32-bit flash device on an 32-bit bus.
+        </P
+></DD
+><DT
+>88</DT
+><DD
+><P
+>Two parallel 8-bit devices on an 16-bit bus.
+        </P
+></DD
+><DT
+>8888</DT
+><DD
+><P
+>Four parallel 8-bit devices on a 32-bit bus.
+        </P
+></DD
+><DT
+>1616</DT
+><DD
+><P
+>Two parallel 16-bit devices on a 32-bit bus, with one device providing
+the bottom two bytes of each 32-bit datum and the other device
+providing the top two bytes.
+        </P
+></DD
+><DT
+>16as8</DT
+><DD
+><P
+>A single 16-bit flash device connected to an 8-bit bus.
+        </P
+></DD
+></DL
+></DIV
+><P
+>These configuration all require slightly different code to manipulate
+the hardware. The AM29xxxxx driver package provides separate functions
+for each configuration, for example
+<CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_erase_16</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_program_1616</CODE
+>. 
+    </P
+><DIV
+CLASS="CAUTION"
+><P
+></P
+><TABLE
+CLASS="CAUTION"
+BORDER="1"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="CENTER"
+><B
+>Caution</B
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+><P
+>At the time of writing not all the configurations have been tested.
+    </P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>The second piece of information is the boot block layout. Flash
+devices are subdivided into blocks (also known as sectors - both terms
+are in common use). Some operations such as erase work on a whole
+block at a time, and for most applications a block is the smallest
+unit that gets updated. A typical block size is 64K. It is inefficient
+to use an entire 64K block for small bits of configuration data and
+similar information, so many flash devices also support a number of
+smaller boot blocks. A typical 2MB flash device could have a single
+16K block, followed by two 8K blocks, then a 32K block, and finally 31
+full-size 64K blocks. The boot blocks may appear at the bottom or the
+top of the device. So-called uniform devices do not have boot blocks,
+just full-size ones. The driver needs to know the boot block layout.
+With modern devices it can work this out at run-time, but often it is
+better to provide the information statically.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AM29XXXXX-INSTANCE-EXAMPLE"
+></A
+><H2
+>Example</H2
+><P
+>In most cases flash support is specific to a platform. Even if two
+platforms happen to use the same flash device there are likely to be
+differences such as the location in the address map. Hence there is
+little possibility of re-using the platform-specific code, and this
+code should be placed in the platform HAL rather than in a separate
+package. Typically this involves a separate file and a corresponding
+compile property in the platform HAL's CDL:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>cdl_package CYGPKG_HAL_M68K_ALAIA {
+    &#8230;
+    compile -library=libextras.a alaia_flash.c
+    &#8230;
+}
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The contents of this file will not be accessed directly, only
+indirectly via the generic flash API, so normally it would be removed
+by link-time garbage collection. To avoid this the object file has to
+go into <TT
+CLASS="FILENAME"
+>libextras.a</TT
+>.
+    </P
+><P
+>The actual file <TT
+CLASS="FILENAME"
+>alaia_flash.c</TT
+> will look something like:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#include &lt;pkgconf/system.h&gt;
+#ifdef CYGPKG_DEVS_FLASH_AMD_AM29XXXXX_V2
+
+#include &lt;cyg/io/flash.h&gt;
+#include &lt;cyg/io/flash_dev.h&gt;
+#include &lt;cyg/io/am29xxxxx_dev.h&gt;
+
+static const CYG_FLASH_FUNS(hal_alaia_flash_amd_funs,
+    &amp;cyg_am29xxxxx_init_check_devid_16,
+    &amp;cyg_flash_devfn_query_nop,
+    &amp;cyg_am29xxxxx_erase_16,
+    &amp;cyg_am29xxxxx_program_16,
+    (int (*)(struct cyg_flash_dev*, const cyg_flashaddr_t, void*, size_t))0,
+    &amp;cyg_flash_devfn_lock_nop,
+    &amp;cyg_flash_devfn_unlock_nop);
+
+static const cyg_am29xxxxx_dev hal_alaia_flash_priv = {
+    .devid      = 0x45,
+    .block_info = {
+        { 0x00004000, 1 },
+        { 0x00002000, 2 },
+        { 0x00008000, 1 },
+        { 0x00010000, 63 }
+    }
+};
+
+CYG_FLASH_DRIVER(hal_alaia_flash,
+                 &amp;hal_alaia_flash_amd_funs,
+                 0,
+                 0xFFC00000,
+                 0xFFFFFFFF,
+                 4,
+                 hal_alaia_flash_priv.block_info,
+                 &amp;hal_alaia_flash_priv
+);
+#endif
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The bulk of the file is protected by an <TT
+CLASS="LITERAL"
+>#ifdef</TT
+> for
+the AM29xxxxx flash driver. That driver will only be active if the
+generic flash support is enabled. Without that support there will be
+no way of accessing the device so instantiating the data structures
+would serve no purpose. The rest of the file is split into three
+structure definitions. The first supplies the functions which will be
+used to perform the actual flash accesses, using a macro provided by
+the generic flash code in <TT
+CLASS="FILENAME"
+>cyg/io/flash_dev.h</TT
+>. The relevant ones
+have an <TT
+CLASS="LITERAL"
+>_16</TT
+> suffix, indicating that on this board
+there is a single 16-bit flash device on a 16-bit bus. The second
+provides information specific to AM29xxxxx flash devices.
+The third provides the <CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+>
+structure needed by the generic flash code, which contains pointers to
+the previous two.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AM29XXXXX-INSTANCE-FUNCTIONS"
+></A
+><H2
+>Functions</H2
+><P
+>All eCos flash device drivers must implement a standard interface,
+defined by the generic flash code <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_FLASH</CODE
+>.
+This interface includes a table of seven function pointers for various
+operations: initialization, query, erase, program, read, locking and
+unlocking. The query operation is optional and the generic flash
+support provides a dummy implementation
+<CODE
+CLASS="FUNCTION"
+>cyg_flash_devfn_query_nop</CODE
+>. AM29xxxxx flash
+devices are always directly accessible so there is no need for a
+separate read function. The remaining functions are more complicated.
+    </P
+><P
+>Usually the table can be declared <TT
+CLASS="LITERAL"
+>const</TT
+>. In a ROM
+startup application this avoids both ROM and RAM copies of the table,
+saving a small amount of memory. <TT
+CLASS="LITERAL"
+>const</TT
+> should not
+be used if the table may be modified by a platform-specific
+initialization routine.
+    </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AM29XXXXX-INSTANCE-FUNCTIONS-INIT"
+></A
+><H3
+>Initialization</H3
+><P
+>There is a choice of three main initialization functions. The simplest
+is <CODE
+CLASS="FUNCTION"
+>cyg_flash_devfn_init_nop</CODE
+>, which does nothing.
+It can be used if the <CODE
+CLASS="STRUCTNAME"
+>cyg_am29xxxxx_dev</CODE
+> and
+<CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+> structures are fully
+initialized statically and the flash will just work without special
+effort. This is useful if it is guaranteed that the board will always
+be manufactured using the same flash chip, since the nop function
+involves the smallest code size and run-time overheads.
+      </P
+><P
+>The next step up is
+<CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_init_check_devid_XX</CODE
+>, where
+<TT
+CLASS="LITERAL"
+>XX</TT
+> will be replaced by the suffix appropriate for
+the bus configuration. It is still necessary to provide all the device
+information statically, including the <CODE
+CLASS="STRUCTFIELD"
+>devid</CODE
+>
+field in the <CODE
+CLASS="STRUCTNAME"
+>cyg_am29xxxxx_dev</CODE
+> structure.
+This initialization function will attempt to query the flash device
+and check that the provided device id matches the actual hardware. If
+there is a mismatch the device will be marked uninitialized and
+subsequent attempts to manipulate the flash will fail.
+      </P
+><P
+>If the board may end up being manufactured with any of a number of
+different flash chips then the driver can perform run-time
+initialization, using a <CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_init_cfi_XX</CODE
+>
+function. This queries the flash device as per the Common Flash Memory
+Interface Specification, supported by all current devices (although
+not necessarily by older devices). The
+<CODE
+CLASS="STRUCTFIELD"
+>block_info</CODE
+> field in the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_am29xxxxx_dev</CODE
+> structure and the
+<CODE
+CLASS="STRUCTFIELD"
+>end</CODE
+> and
+<CODE
+CLASS="STRUCTFIELD"
+>num_block_infos</CODE
+> fields in the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+> structure will be filled in.
+It is still necessary to supply the <CODE
+CLASS="STRUCTFIELD"
+>start</CODE
+>
+field statically since otherwise the driver will not know how to
+access the flash device. The main disadvantage of using CFI is that it
+increases the code size.
+      </P
+><DIV
+CLASS="CAUTION"
+><P
+></P
+><TABLE
+CLASS="CAUTION"
+BORDER="1"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="CENTER"
+><B
+>Caution</B
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+><P
+>If CFI is used then the <CODE
+CLASS="STRUCTNAME"
+>cyg_am29xxxxx_dev</CODE
+>
+structure must not be declared <TT
+CLASS="LITERAL"
+>const</TT
+>. The CFI code
+will attempt to update the structure and will fail if the structure is
+held in read-only memory. This would leave the flash driver
+non-functional.
+      </P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>A final option is to use a platform-specific initialization function.
+This may be useful if the board may be manufactured with one of a
+small number of different flash devices and the platform HAL needs to
+adapt to this. The AM29xxxxx driver provides a utility function to
+read the device id, <CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_read_devid_XX</CODE
+>:
+      </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>static int
+alaia_flash_init(struct cyg_flash_dev* dev)
+{
+    int devid = cyg_am29xxxxx_read_devid_1616(dev);
+    switch(devid) {
+        case 0x0042 :
+          &#8230;
+        case 0x0084 :
+          &#8230;
+        default:
+          return CYG_FLASH_ERR_DRV_WRONG_PART;
+    }
+}
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>There are many other possible uses for a platform-specific
+initialization function. For example initial prototype boards might
+have only supported 8-bit access to a 16-bit flash device rather than
+16-bit access, but this problem was fixed in the next revision. The
+platform-specific initialization function can figure out which model
+board it is running on and replace the default
+<TT
+CLASS="LITERAL"
+>16as8</TT
+> functions with faster <TT
+CLASS="LITERAL"
+>16</TT
+>
+ones.
+      </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AM29XXXXX-INSTANCE-FUNCTIONS-ERASE-PROGRAM"
+></A
+><H3
+>Erase and Program</H3
+><P
+>The AM29xxxxx driver provides erase and program functions appropriate
+for the various bus configurations. On most targets these can be used
+directly. On some targets it may be necessary to do some extra work
+before and after the erase and program operations. For example if the
+hardware has an MMU then the part of the address map containing the
+flash may have been set to read-only, in an attempt to catch spurious
+memory accesses. Erasing or programming the flash requires
+write-access, so the MMU settings have to be changed temporarily. As
+another example some flash device may require a higher voltage to be
+applied during an erase or program operation. or a higher voltage may
+be desirable to make the operation proceed faster. A typical
+platform-specific erase function would look like this:
+      </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>static int
+alaia_flash_erase(struct cyg_flash_dev* dev, cyg_flashaddr_t addr)
+{
+    int result;
+    &#8230;  // Set up the hardware for an erase
+    result = cyg_am29xxxxx_erase_32(dev, addr);
+    &#8230;  // Revert the hardware change
+    return result;
+}
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>There are two configurations which affect the erase and program
+functions, and which a platform HAL may wish to change:
+<CODE
+CLASS="VARNAME"
+>CYGNUM_DEVS_FLASH_AMD_AM29XXXXX_V2_ERASE_TIMEOUT</CODE
+>
+and
+<CODE
+CLASS="VARNAME"
+>CYGNUM_DEVS_FLASH_AMD_AM29XXXXX_V2_PROGRAM_TIMEOUT</CODE
+>.
+The erase and program operations both involve polling for completion,
+and these timeout impose an upper bound on the polling loop. Normally
+these operations should never take anywhere close to the timeout
+period, so a timeout indicates a catastrophic failure that should
+really be handled by a watchdog reset. A reset is particularly
+appropriate because there will be no clean way of aborting the flash
+operation. The main reason for the timeouts is to help with debugging
+when porting to new hardware. If there is a valid reason why a
+particular platform needs different timeouts then the platform HAL's
+CDL can require appropriate values for these options.
+      </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AM29XXXXX-INSTANCE-FUNCTIONS-LOCKING"
+></A
+><H3
+>Locking</H3
+><P
+>There is no single way of implementing the block lock and unlock
+operations on all AM29xxxxx devices. If these operations are supported at
+all then usually they involve manipulating the voltages on certain
+pins. This would not be able to be handled by generic driver code since it requires
+knowing how these pins can be manipulated via the processor's GPIO
+lines. Therefore the AM29xxxxx driver does not usually provide lock and unlock
+functions, and instead the generic dummy functions
+<CODE
+CLASS="FUNCTION"
+>cyg_flash_devfn_lock_nop</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_flash_devfn_unlock_nop</CODE
+> should be used. An <A
+HREF="am29xxxxx-instance.html#AM29XXXXX-AT49XXXX-LOCKING"
+>exception</A
+> exists for
+the AT49xxxx family of devices which are sufficiently AMD
+compatible in other respects. Otherwise, if a
+platform does provide a way of implementing the locking then this can
+be handled by platform-specific functions.
+      </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>static int
+alaia_lock(struct cyg_flash_dev* dev, const cyg_flashaddr_t addr)
+{
+    &#8230;
+}
+
+static int
+alaia_unlock(struct cyg_flash_dev* dev, const cyg_flashaddr_t addr)
+{
+    &#8230;
+}
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>If real locking functions are implemented then the platform HAL's CDL
+script should implement the CDL interface
+<CODE
+CLASS="VARNAME"
+>CYGHWR_IO_FLASH_BLOCK_LOCKING</CODE
+>. Otherwise the
+generic flash package may believe that none of the flash drivers in the
+system provide locking functionality and disable the interface functions.
+      </P
+><DIV
+CLASS="REFSECT3"
+><A
+NAME="AM29XXXXX-AT49XXXX-LOCKING"
+></A
+><H4
+>AT49xxxx locking</H4
+><P
+>As locking is standardised across the AT49xxxx family of AMD AM29xxxxx
+compatible Flash parts, a method supporting this is included within this
+driver. <CODE
+CLASS="FUNCTION"
+>cyg_at49xxxx_softlock_XX</CODE
+> provides a means of
+locking a Flash sector such that it may be subsequently unlocked.
+<CODE
+CLASS="FUNCTION"
+>cyg_at49xxxx_hardlock_XX</CODE
+> locks a sector such that
+it cannot be unlocked until after reset or a power cycle.
+<CODE
+CLASS="FUNCTION"
+>cyg_at49xxxx_unlock_XX</CODE
+> unlocks a sector that has
+previously been softlocked. At power on or Flash device reset, all sectors
+default to being softlocked.
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AM29XXXXX-INSTANCE-FUNCTIONS-OTHER"
+></A
+><H3
+>Other</H3
+><P
+>The driver provides a set of functions
+<CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_read_devid_XX</CODE
+>, one per supported
+bus configuration. These functions take a single argument, a pointer
+to the <CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+> structure, and return
+the chip's device id. For older devices this id is a single byte. For
+more recent devices the id is a 3-byte value, 0x7E followed by a
+further two bytes that actually identify the device.
+<CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_read_devid_XX</CODE
+> is usually called
+only from inside a platform-specific driver initialization routine,
+allowing the platform HAL to adapt to the actual device present on the
+board.
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AM29XXXXX-INSTANCE-DEVPRIV"
+></A
+><H2
+>Device-Specific Structure</H2
+><P
+>The <CODE
+CLASS="STRUCTNAME"
+>cyg_am29xxxxx_dev</CODE
+> structure provides
+information specific to AM29xxxxx flash devices, as opposed to the
+more generic flash information which goes into the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+> structure. There are only two
+fields: <CODE
+CLASS="STRUCTFIELD"
+>devid</CODE
+> and
+<CODE
+CLASS="STRUCTFIELD"
+>block_info</CODE
+>.
+    </P
+><P
+><CODE
+CLASS="STRUCTFIELD"
+>devid</CODE
+> is only needed if the driver's
+initialization function is set to
+<CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_init_check_devid_XX</CODE
+>. That function
+will extract the actual device info from the flash chip and compare it
+with the <CODE
+CLASS="STRUCTFIELD"
+>devid</CODE
+> field. If there is a
+mismatch then subsequent operations on the device will fail.
+    </P
+><P
+>The <CODE
+CLASS="STRUCTFIELD"
+>block_info</CODE
+> field consists of one or
+more pairs of the block size in bytes and the number of blocks of that
+size. The order must match the actual hardware device since the flash
+code will use the table to determine the start and end locations of
+each block. The table can be initialized in one of three ways:
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>If the driver initialization function is set to
+<CODE
+CLASS="FUNCTION"
+>cyg_flash_devfn_init_nop</CODE
+> or
+<CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_init_check_devid_XX</CODE
+> then the block
+information should be provided statically. This is appropriate if the
+board will also be manufactured using the same flash chip.
+      </P
+></LI
+><LI
+><P
+>If <CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_init_cfi_XX</CODE
+> is used then this
+will fill in the block info table. Hence there is no need for static
+initialization.
+      </P
+></LI
+><LI
+><P
+>If a platform-specific initialization function is used then either
+this should fill in the block info table, or the info should be
+provided statically.
+      </P
+></LI
+></OL
+><P
+>The size of the <CODE
+CLASS="STRUCTFIELD"
+>block_info</CODE
+> table is
+determined by the configuration option
+<CODE
+CLASS="VARNAME"
+>CYGNUM_DEVS_FLASH_AMD_AM29XXXXX_V2_ERASE_REGIONS</CODE
+>.
+This has a default value of 4, which should suffice for nearly all
+AM29xxxxx flash devices. If more entries are needed then the platform
+HAL's CDL script should require a larger value.
+    </P
+><P
+>If the <CODE
+CLASS="STRUCTNAME"
+>cyg_am29xxxxx_dev</CODE
+> structure is
+statically initialized then it can be <TT
+CLASS="LITERAL"
+>const</TT
+>. This
+saves a small amount of memory in ROM startup applications. If the
+structure is updated at run-time, either by
+<CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_init_cfi_XX</CODE
+> or by a
+platform-specific initialization routine, then it cannot be
+<TT
+CLASS="LITERAL"
+>const</TT
+>.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AM29XXXXX-INSTANCE-FLASH"
+></A
+><H2
+>Flash Structure</H2
+><P
+>Internally the generic flash code works in terms of
+<CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+> structures, and the platform
+HAL should define one of these. The structure should be placed in the
+<TT
+CLASS="LITERAL"
+>cyg_flashdev</TT
+> table. The following fields need to be
+provided:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>funs</CODE
+></DT
+><DD
+><P
+>This should point at the table of functions.
+        </P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>start</CODE
+></DT
+><DD
+><P
+>The base address of the flash in the address map. On
+some board the flash may be mapped into memory several times, for
+example it may appear in both cached and uncached parts of the address
+space. The <CODE
+CLASS="STRUCTFIELD"
+>start</CODE
+> field should correspond to
+the cached address.
+        </P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>end</CODE
+></DT
+><DD
+><P
+>The address of the last byte in the flash. It can
+either be statically initialized, or
+<CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_init_cfi_XX</CODE
+> will calculate
+its value at run-time.
+        </P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>num_block_infos</CODE
+></DT
+><DD
+><P
+>This should be the number of entries in the
+<CODE
+CLASS="STRUCTFIELD"
+>block_info</CODE
+> table. It can either be
+statically initialized or it will be filled in by
+<CODE
+CLASS="FUNCTION"
+>cyg_am29xxxxx_init_cfi_XX</CODE
+>.
+        </P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>block_info</CODE
+></DT
+><DD
+><P
+>The table with the block information is held in the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_am29xxxxx_dev</CODE
+> structure, so this field
+should just point into that structure.
+        </P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>priv</CODE
+></DT
+><DD
+><P
+>This field is reserved for use by the device driver. For the AM29xxxxx
+driver it should point at the appropriate
+<CODE
+CLASS="STRUCTNAME"
+>cyg_am29xxxxx_dev</CODE
+> structure. 
+        </P
+></DD
+></DL
+></DIV
+><P
+>The <CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+> structure contains a number
+of other fields which are manipulated only by the generic flash code.
+Some of these fields will be updated at run-time so the structure
+cannot be declared <TT
+CLASS="LITERAL"
+>const</TT
+>.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AM29XXXXX-INSTANCE-SERIAL"
+></A
+><H2
+>Multiple Devices</H2
+><P
+>A board may have several flash devices in parallel, for example two
+16-bit devices on a 32-bit bus. It may also have several such banks
+to increase the total amount of flash. If each device provides 2MB,
+there could be one bank of 2 parallel flash devices at 0xFF800000 and
+another bank at 0xFFC00000, giving a total of 8MB. This setup can be
+described in several ways. One approach is to define two
+<CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+> structures. The table of
+function pointers can usually be shared, as can the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_am29xxxxx_dev</CODE
+> structure. Another approach
+is to define a single <CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+>
+structure but with a larger <CODE
+CLASS="STRUCTFIELD"
+>block_info</CODE
+>
+table, covering the blocks in both banks of devices. The second
+approach makes more efficient use of memory.
+    </P
+><P
+>Many variations are possible, for example a small slow flash device
+may be used for initial bootstrap and holding the configuration data,
+while there is also a much larger and faster device to hold a file
+system. Such variations are usually best described by separate
+<CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+> structures.
+    </P
+><P
+>If more than one <CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+> structure is
+instantiated then the platform HAL's CDL script should implement the
+CDL interface <CODE
+CLASS="VARNAME"
+>CYGHWR_IO_FLASH_DEVICE</CODE
+> once for every
+device past the first. Otherwise the generic code may default to the
+case of a single flash device and optimize for that.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AM29XXXXX-INSTANCE-PLATFORM"
+></A
+><H2
+>Platform-Specific Macros</H2
+><P
+>The AM29xxxxx driver source code includes the header files
+<TT
+CLASS="FILENAME"
+>cyg/hal/hal_arch.h</TT
+> and
+<TT
+CLASS="FILENAME"
+>cyg/hal/hal_io.h</TT
+>, and hence
+indirectly the corresponding platform header files (if defined).
+Optionally these headers can define macros which are used inside the
+driver, thus giving the HAL limited control over how the driver works.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AM29XXXXX-INSTANCE-CACHE"
+></A
+><H2
+>Cache Management</H2
+><P
+>By default the AM29xxxxx driver assumes that the flash can be accessed
+uncached, and it will use the HAL
+<CODE
+CLASS="FUNCTION"
+>CYGARC_UNCACHED_ADDRESS</CODE
+> macro to map the cached
+address in the <CODE
+CLASS="STRUCTFIELD"
+>start</CODE
+> field of the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_flash_dev</CODE
+> structure into an uncached
+address. If for any reason this HAL macro is inappropriate for the
+flash then an alternative macro
+<CODE
+CLASS="FUNCTION"
+>HAL_AM29XXXXX_UNCACHED_ADDRESS</CODE
+> can be defined
+instead. However fixing the
+<CODE
+CLASS="FUNCTION"
+>CYGARC_UNCACHED_ADDRESS</CODE
+> macro is normally the
+better solution.
+    </P
+><P
+>If there is no way of bypassing the cache then the platform HAL should
+implement the CDL interface
+<CODE
+CLASS="VARNAME"
+>CYGHWR_DEVS_FLASH_AMD_AM29XXXXX_V2_CACHED_ONLY</CODE
+>. The flash
+driver will now disable and re-enable the cache as required. For
+example a program operation will involve the following:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    AM29_INTSCACHE_STATE;
+    AM29_INTSCACHE_BEGIN();
+    while ( ! finished ) {
+        program data
+    }
+    AM29_INTSCACHE_END();
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The default implementations of these INTSCACHE macros are as follows:
+<CODE
+CLASS="VARNAME"
+>STATE</CODE
+> defines any local variables that may be
+needed, e.g. to save the current interrupt state;
+<CODE
+CLASS="FUNCTION"
+>BEGIN</CODE
+> disables interrupts, synchronizes the data
+caches, disables it, and invalidates the current contents;
+<CODE
+CLASS="FUNCTION"
+>END</CODE
+> re-enables the cache and then
+interrupts. The cache is only disabled when interrupts are disabled,
+so there is no possibility of an interrupt handler running or a
+context switch occurring while the cache is disabled, potentially
+leaving the system running very slowly. The data cache synchronization
+ensures that there are no dirty cache lines, so when the cache is
+disabled the low-level flash write code will not see stale data in
+memory. The invalidate ensures that at the end of the operation
+higher-level code will not pick up stale cache contents instead of the
+newly written flash data.
+    </P
+><P
+>Some implementations of the HAL cache macros may not provide the exact
+semantics required by the flash driver. For example
+<CODE
+CLASS="FUNCTION"
+>HAL_DCACHE_DISABLE</CODE
+> may have an unwanted side
+effect, or it may do more work than is needed here. The driver will
+check for alternative macros
+<CODE
+CLASS="FUNCTION"
+>HAL_AM29XXXXX_INTSCACHE_STATE</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>HAL_AM29XXXXX_INTSCACHE_BEGIN</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>HAL_AM29XXXXX_INTSCACHE_END</CODE
+>, using these instead of
+the defaults.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="am29xxxxx.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="devs-flash-strata.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Overview</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="devs-flash-am29xxxxx.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Intel Strata Flash Device Driver</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

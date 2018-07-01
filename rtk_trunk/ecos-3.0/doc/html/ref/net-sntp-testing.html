@@ -1,0 +1,193 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>The SNTP test program</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The SNTP Client"
+HREF="net-sntp.html"><LINK
+REL="PREVIOUS"
+TITLE="Warning: timestamp wrap around"
+HREF="net-sntp-warning.html"><LINK
+REL="NEXT"
+TITLE="Another Tiny HTTP Server for eCos"
+HREF="athttpd.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="net-sntp-warning.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 64. The SNTP Client</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="athttpd.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="NET-SNTP-TESTING"
+>The SNTP test program</A
+></H1
+><P
+>The SNTP package contains a simple test program. Testing an SNTP
+client is not easy, so the test program should be considered as more a
+proof of concept. It shows that an NTP packet has been received,
+and is accurate to within a few days. </P
+><P
+>The test program starts the network interfaces using the standard
+call. It then starts the SNTP thread. A loop is then entered printing
+the current system time every second for two minutes. When the client
+receives an NTP packet the time will jump from 1970 to hopefully the
+present day. Once the two minutes have expired, two simple tests are
+made. If the time is still less than 5 minutes since 00:00:00
+01/01/1970 the test fails. This indicates no NTP messages have
+been received. Check that the server is actually sending packet, using
+the correct port (123), correct IPv6 multicast address, and at a
+sufficiently frequent rate that the
+target has a chance to receive a message within the 2 minute
+interval. If all this is correct, assume the target is broken. </P
+><P
+>The second test is that the current system time is compared with the
+build time as reported by the CPP macro __DATE__. If the build date is
+in the future relative to the system time, the test fails. If the
+build date is more than 90 days in the past relative to the system
+time the test also fails. If such failures are seen, use walk-clock
+time to verify the time printed during the test. If this seems correct
+check the build date for the test. This is printed at startup. If all
+else fails check that the computer used to build the test has the
+correct time. </P
+><P
+>If SNTP unicast mode is enabled, the above tests are run twice.  The
+first time, the SNTP client is configured with NTP server addresses
+from DHCP.  The second time, unicast mode is disabled and only
+multicasts are listened for.  Note that the unicast test is partially
+bogus in the sense that any multicast packet received will also make
+the unicast test pass.  To reduce the chance of this happening the
+test will wait for a sorter time for replies. This is not ideal, but
+it is the best that can be done with an automated test.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="net-sntp-warning.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="athttpd.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Warning: timestamp wrap around</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-sntp.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Another Tiny HTTP Server for <SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

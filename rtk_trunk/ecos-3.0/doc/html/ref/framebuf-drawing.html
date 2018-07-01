@@ -1,0 +1,921 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Framebuffer Drawing Primitives</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Framebuffer Support"
+HREF="io-framebuf.html"><LINK
+REL="PREVIOUS"
+TITLE="Framebuffer Colours"
+HREF="framebuf-colour.html"><LINK
+REL="NEXT"
+TITLE="Framebuffer Pixel Manipulation"
+HREF="framebuf-iterating.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="framebuf-colour.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="framebuf-iterating.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FRAMEBUF-DRAWING"
+></A
+>Framebuffer Drawing Primitives</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN10679"
+></A
+><H2
+>Name</H2
+>Drawing Primitives&nbsp;--&nbsp;updating the display</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN10682"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN10683"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/io/framebuf.h&gt;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_write_pixel</CODE
+>(cyg_fb* fbdev, cyg_ucount16 x, cyg_ucount16 y, cyg_fb_colour colour);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_fb_colour cyg_fb_read_pixel</CODE
+>(cyg_fb* fbdev, cyg_ucount16 x, cyg_ucount16 y);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_write_hline</CODE
+>(cyg_fb* fbdev, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 len, cyg_fb_colour colour);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_write_vline</CODE
+>(cyg_fb* fbdev, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 len, cyg_fb_colour colour);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_fill_block</CODE
+>(cyg_fb* fbdev, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 width, cyg_ucount16 height, cyg_fb_colour colour);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_write_block</CODE
+>(cyg_fb* fbdev, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 width, cyg_ucount16 height, const void* data, cyg_ucount16 offset, cyg_ucount16 stride);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_read_block</CODE
+>(cyg_fb* fbdev, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 width, cyg_ucount16 height, void* data, cyg_ucount16 offset, cyg_ucount16 stride);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_move_block</CODE
+>(cyg_fb* fbdev, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 width, cyg_ucount16 height, cyg_ucount16 new_x, cyg_ucount16 new_y);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_fb_synch</CODE
+>(cyg_fb* fbdev, cyg_ucount16 when);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_WRITE_PIXEL</CODE
+>(FRAMEBUF, cyg_ucount16 x, cyg_ucount16 y, cyg_fb_colour colour);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_fb_colour CYG_FB_READ_PIXEL</CODE
+>(FRAMEBUF, cyg_ucount16 x, cyg_ucount16 y);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_WRITE_HLINE</CODE
+>(FRAMEBUF, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 len, cyg_fb_colour colour);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_WRITE_VLINE</CODE
+>(FRAMEBUF, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 len, cyg_fb_colour colour);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_FILL_BLOCK</CODE
+>(FRAMEBUF, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 width, cyg_ucount16 height, cyg_fb_colour colour);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_WRITE_BLOCK</CODE
+>(FRAMEBUF, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 width, cyg_ucount16 height, const void* data, cyg_ucount16 offset, cyg_ucount16 stride);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_READ_BLOCK</CODE
+>(FRAMEBUF, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 width, cyg_ucount16 height, void* data, cyg_ucount16 offset, cyg_ucount16 stride);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_MOVE_BLOCK</CODE
+>(FRAMEBUF, cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 width, cyg_ucount16 height, cyg_ucount16 new_x, cyg_ucount16 new_y);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_SYNCH</CODE
+>(FRAMEBUF, cyg_ucount16 when);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-DRAWING-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>The eCos framebuffer infrastructure defines a small number of drawing
+primitives. These are not intended to provide full graphical
+functionality like multiple windows, drawing text in arbitrary fonts,
+or anything like that. Instead they provide building blocks for
+higher-level graphical toolkits. The available primitives are:
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Manipulating individual pixels.
+      </P
+></LI
+><LI
+><P
+>Drawing horizontal and vertical lines.
+      </P
+></LI
+><LI
+><P
+>Block fills.
+      </P
+></LI
+><LI
+><P
+>Moving blocks between the framebuffer and main memory.
+      </P
+></LI
+><LI
+><P
+>Moving blocks within the framebuffer.
+      </P
+></LI
+><LI
+><P
+>For double-buffered devices, synchronizing the framebuffer contents
+with the actual display.
+      </P
+></LI
+></OL
+><P
+>There are two versions for each primitive: a macro and a function. The
+macro can be used if the desired framebuffer device is known at
+compile-time. Its first argument should be a framebuffer identifier,
+for example <TT
+CLASS="LITERAL"
+>320x240x16</TT
+>, and must be one of the
+entries in the configuration option
+<CODE
+CLASS="VARNAME"
+>CYGDAT_IO_FRAMEBUF_DEVICES</CODE
+>. In the examples below
+it is assumed that <CODE
+CLASS="VARNAME"
+>FRAMEBUF</CODE
+> has been
+<TT
+CLASS="LITERAL"
+>#define</TT
+>'d to a suitable identifier. The function
+can be used if the desired framebuffer device is selected at
+run-time. Its first argument should be a pointer to the appropriate
+<CODE
+CLASS="STRUCTNAME"
+>cyg_fb</CODE
+> structure.
+    </P
+><P
+>The pixel, line, and block fill primitives take a
+<SPAN
+CLASS="TYPE"
+>cyg_fb_colour</SPAN
+> argument. For details of colour handling
+see <A
+HREF="framebuf-colour.html"
+>Framebuffer Colours</A
+>. This argument should have no
+more bits set than are appropriate for the display depth. For example
+on a 4bpp only the bottom four bits of the colour may be set,
+otherwise the behaviour is undefined.
+    </P
+><P
+>None of the primitives will perform any run-time error checking,
+except possibly for some assertions in a debug build. If higher-level
+code provides invalid arguments, for example trying to write a block
+which extends past the right hand side of the screen, then the
+system's behaviour is undefined. It is the responsibility of
+higher-level code to perform clipping to the screen boundaries.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-DRAWING-PIXELS"
+></A
+><H2
+>Manipulating Individual Pixels</H2
+><P
+>The primitives for manipulating individual pixels are very simple: a
+pixel can be written or read back. The following example shows one way
+of drawing a diagonal line:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void
+draw_diagonal(cyg_fb* fb,
+              cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 len,
+              cyg_fb_colour colour)
+{
+    while ( len-- ) {
+        cyg_fb_write_pixel(fb, x++, y++, colour);
+    }
+}
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The next example shows how to draw a horizontal XOR line on a 1bpp
+display.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void
+draw_horz_xor(cyg_ucount16 x, cyg_ucount16 y, cyg_ucount16 len)
+{
+    cyg_fb_colour colour;
+    while ( len--) {
+        colour = CYG_FB_READ_PIXEL(FRAMEBUF, x, y);
+        CYG_FB_WRITE_PIXEL(FRAMEBUF, x++, y, colour ^ 0x01);
+    }
+}
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The pixel macros should normally be avoided. Determining the correct
+location within framebuffer memory corresponding to a set of
+coordinates for each pixel is a comparatively expensive operation.
+Instead there is direct support for <A
+HREF="framebuf-iterating.html"
+>iterating</A
+> over parts of the
+display, avoiding unnecessary overheads.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-DRAWING-LINES"
+></A
+><H2
+>Drawing Simple Lines</H2
+><P
+>Higher-level graphics code often needs to draw single-pixel horizontal
+and vertical lines. If the application involves multiple windows then
+these will usually have thin borders around them. Widgets such as
+buttons and scrollbars also often have thin borders. 
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_fb_draw_hline</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_DRAW_HLINE</CODE
+> draw a horizontal line of the
+specified <CODE
+CLASS="PARAMETER"
+>colour</CODE
+>, starting at the
+<CODE
+CLASS="PARAMETER"
+>x</CODE
+> and <CODE
+CLASS="PARAMETER"
+>y</CODE
+> coordinates and
+extending to the right (increasing x) for a total of
+<CODE
+CLASS="PARAMETER"
+>len</CODE
+> pixels. A 50 pixel line starting at
+(100,100) will end at (149,100).
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_fb_draw_vline</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_DRAW_VLINE</CODE
+> take the same arguments, but
+the line extends down (increasing y).
+    </P
+><P
+>These primitives do not directly support drawing lines more than one
+pixel thick, but <A
+HREF="framebuf-drawing.html#FRAMEBUF-DRAWING-FILL"
+>block
+fills</A
+> can be used to achieve those. There is no generic support
+for drawing arbitrary lines, instead that is left to higher-level
+graphics toolkits.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-DRAWING-FILL"
+></A
+><H2
+>Block Fills</H2
+><P
+>Filling a rectangular part of the screen with a solid colour is
+another common requirement for higher-level code. The simplest example
+is during initialization, to set the display's whole background to a
+known value. Block fills are also often used when creating new windows
+or drawing the bulk of a simple button or scrollbar widget.
+<CODE
+CLASS="FUNCTION"
+>cyg_fb_fill_block</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_FILL_BLOCK</CODE
+> provide this functionality.
+    </P
+><P
+>The <CODE
+CLASS="PARAMETER"
+>x</CODE
+> and <CODE
+CLASS="PARAMETER"
+>y</CODE
+> arguments
+specify the top-left corner of the block to be filled. The
+<CODE
+CLASS="PARAMETER"
+>width</CODE
+> and <CODE
+CLASS="PARAMETER"
+>height</CODE
+>
+arguments specify the number of pixels affected, a total of
+<TT
+CLASS="LITERAL"
+>width&nbsp;*&nbsp;height</TT
+>. The following example
+illustrates part of the process for initializing a framebuffer,
+assumed here to have a writeable palette with default settings.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int
+display_init(void)
+{
+    int result = CYG_FB_ON(FRAMEBUF);
+    if ( result ) {
+        return result;
+    }
+    CYG_FB_FILL_BLOCK(FRAMEBUF, 0, 0,
+                      CYG_FB_WIDTH(FRAMEBUF), CYG_FB_HEIGHT(FRAMEBUF),
+                      CYG_FB_DEFAULT_PALETTE_WHITE);
+    &#8230;
+}
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-DRAWING-BLOCK-TRANSFERS"
+></A
+><H2
+>Copying Blocks between the Framebuffer and Main Memory</H2
+><P
+>The block transfer primitives serve two main purposes: drawing images.
+and saving parts of the current display to be restored later. For
+simple linear framebuffers the primitives just implement copy
+operations, with no data conversion of any sort. For non-linear ones
+the primitives act as if the framebuffer memory was linear. For
+example, consider a 2bpp display where the two bits for a single pixel
+are split over two separate bytes in framebuffer memory, or two
+planes. For a block write operation the source data should still be
+organized with four full pixels per byte, as for a linear framebuffer
+of the same depth. and the block write primitive will distribute the
+bits over the framebuffer memory as required. Similarly a block read
+will combine the appropriate bits from different locations in
+framebuffer memory and the resulting memory block will have four full
+pixels per byte.
+    </P
+><P
+>Because the block transfer primitives perform no data conversion, if
+they are to be used for rendering images then those images should be
+pre-formatted appropriately for the framebuffer device. For small
+images this would normally happen on the host-side as part of the
+application build process. For larger images it will usually be better
+to store them in a compressed format and decompress them at run-time,
+trading off memory for cpu cycles.
+    </P
+><P
+>The <CODE
+CLASS="PARAMETER"
+>x</CODE
+> and <CODE
+CLASS="PARAMETER"
+>y</CODE
+> arguments
+specify the top-left corner of the block to be transferred, and the
+<CODE
+CLASS="PARAMETER"
+>width</CODE
+> and <CODE
+CLASS="PARAMETER"
+>height</CODE
+>
+arguments determine the size. The <CODE
+CLASS="PARAMETER"
+>data</CODE
+>,
+<CODE
+CLASS="PARAMETER"
+>offset</CODE
+> and <CODE
+CLASS="PARAMETER"
+>stride</CODE
+>
+arguments determine the location and layout of the block in main
+memory:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="PARAMETER"
+>data</CODE
+></DT
+><DD
+><P
+>The source or destination for the transfer. For 1bpp, 2bpp and 4bpp
+devices the data will be packed in accordance with the framebuffer
+device's endianness as per the <TT
+CLASS="LITERAL"
+>CYG_FB_FLAGS0_LE</TT
+>
+flag. Each row starts in a new byte so there may be some padding on
+the right. For 16bpp and 32bpp the data should be aligned to the
+appropriate boundary.
+        </P
+></DD
+><DT
+><CODE
+CLASS="PARAMETER"
+>offset</CODE
+></DT
+><DD
+><P
+>Sometimes only part of an image should be written to the screen. A
+vertical offset can be achieved simply by adjusting
+<CODE
+CLASS="PARAMETER"
+>data</CODE
+> to point at the appropriate row within the
+image instead of the top row. For 8bpp, 16bpp and 32bpp displays
+an additional horizontal offset can also be achieved by adjusting
+<CODE
+CLASS="PARAMETER"
+>data</CODE
+>. However for 1bpp, 2bpp and 4bpp displays
+the starting position within the image may be in the middle of a byte.
+Hence the horizontal pixel offset can instead be specified with the
+<CODE
+CLASS="PARAMETER"
+>offset</CODE
+> argument.
+        </P
+></DD
+><DT
+><CODE
+CLASS="PARAMETER"
+>stride</CODE
+></DT
+><DD
+><P
+>This indicates the number of bytes between rows. Usually it will be
+related to the <CODE
+CLASS="PARAMETER"
+>width</CODE
+>, but there are exceptions
+such as when drawing only part of an image.
+        </P
+></DD
+></DL
+></DIV
+><P
+>The following example fills a 4bpp display with an image held in
+memory and already in the right format. If the image is smaller than
+the display it will be centered. If the image is larger then the
+center portion will fill the entire display.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void
+draw_image(const void* data, int width, int height)
+{
+    cyg_ucount16 stride;
+    cyg_ucount16 x, y, offset;
+
+#if (4 != CYG_FB_DEPTH(FRAMEBUF))
+# error This code assumes a 4bpp display
+#endif
+
+    stride = (width + 1) &gt;&gt; 1;  // 4bpp to byte stride
+
+    if (width &lt; CYG_FB_WIDTH(FRAMEBUF)) {
+        x      = (CYG_FB_WIDTH(FRAMEBUF) - width) &gt;&gt; 1;
+        offset = 0;
+    } else {
+        x      = 0;
+        offset = (width - CYG_FB_WIDTH(FRAMEBUF)) &gt;&gt; 1;
+        width  = CYG_FB_WIDTH(FRAMEBUF);
+    }
+    if (height &lt; CYG_FB_HEIGHT(FRAMEBUF)) {
+        y      = (CYG_FB_HEIGHT(FRAMEBUF) - height) &gt;&gt; 1;
+    } else {
+        y      = 0;
+        data   = (const void*)((const cyg_uint8*)data +
+                 (stride * ((height - CYG_FB_HEIGHT(FRAMEBUF)) &gt;&gt; 1));
+        height = CYG_FB_HEIGHT(FRAMEBUF);
+    }
+    CYG_FB_WRITE_BLOCK(FRAMEBUF, x, y, width, height, data, offset, stride);
+}
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-DRAWING-BLOCK-MOVES"
+></A
+><H2
+>Moving Blocks with the Framebuffer</H2
+><P
+>Sometimes it is necessary to move a block of data around the screen,
+especially when using a higher-level graphics toolkit that supports
+multiple windows. Block moves can be implemented by a read into main
+memory followed by a write block, but this is expensive and imposes an
+additional memory requirement. Instead the framebuffer infrastructure
+provides a generic block move primitive. It will handle all cases
+where the source and destination positions overlap. The
+<CODE
+CLASS="PARAMETER"
+>x</CODE
+> and <CODE
+CLASS="PARAMETER"
+>y</CODE
+> arguments
+specify the top-left corner of the block to be moved, and
+<CODE
+CLASS="PARAMETER"
+>width</CODE
+> and <CODE
+CLASS="PARAMETER"
+>height</CODE
+>
+determine the block size. <CODE
+CLASS="PARAMETER"
+>new_x</CODE
+> and
+<CODE
+CLASS="PARAMETER"
+>new_y</CODE
+> specify the destination. The source data
+will remain unchanged except in areas where it overlaps the destination.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-DRAWING-SYNCH"
+></A
+><H2
+>Synchronizing Double-Buffered Displays</H2
+><P
+>Some framebuffer devices are double-buffered: the framebuffer memory
+that gets manipulated by the drawing primitives is separate from what
+is actually displayed, and a synch operation is needed to update the
+display. In some cases this may be because the actual display memory
+is not directly accessible by the processor, for example it may
+instead be attached via an SPI bus. Instead drawing happens in a
+buffer in main memory, and then this gets transferred over the SPI bus
+to the actual display hardware during a synch. In other cases it may
+be a software artefact. Some drawing operations, especially ones
+involving complex curves, can take a very long time and it may be
+considered undesirable to have the user see this happening a few
+pixels at a time. Instead the drawing happens in a separate buffer in
+main memory and then a double buffer synch just involves a block move
+to framebuffer memory. Typically that block move is much faster than
+the drawing operation. Obviously there is a cost: an extra area of
+memory, and the synch operation itself can consume many cycles and
+much of the available memory bandwidth.
+    </P
+><P
+>It is the responsibility of the framebuffer device driver to provide
+the extra main memory. As far as higher-level code is concerned the
+only difference between an ordinary and a double-buffered display is
+that with the latter changes do not become visible until a synch
+operation has been performed. The framebuffer infrastructure provides
+support for a bounding box, keeping track of what has been updated
+since the last synch. This means only the updated part of the screen
+has to be transferred to the display hardware.
+    </P
+><P
+>The synch primitives take two arguments. The first identifies the
+framebuffer device. The second should be one of
+<TT
+CLASS="LITERAL"
+>CYG_FB_UPDATE_NOW</TT
+> for an immediate update, or
+<TT
+CLASS="LITERAL"
+>CYG_FB_UPDATE_VERTICAL_RETRACE</TT
+>. Some display
+hardware involves a lengthy vertical retrace period every 10-20
+milliseconds during which nothing gets drawn to the screen, and
+performing the synch during this time means that the end user is
+unaware of the operation (assuming the synch can be completed in the
+time available). When the hardware supports it, specifying
+<TT
+CLASS="LITERAL"
+>CYG_FB_UPDATE_VERTICAL_RETRACE</TT
+> means that the synch
+operation will block until the next vertical retrace takes place and
+then perform the update. This may be an expensive operation, for
+example it may involve polling a bit in a register. In a
+multi-threaded environment it may also be unreliable because the
+thread performing the synch may get interrupted or rescheduled in the
+middle of the operation. When the hardware does not involve vertical
+retraces, or when there is no easy way to detect them, the second
+argument to the synch operation will just be ignored and the update
+will always happen immediately.
+    </P
+><P
+>It is up to higher level code to determine when a synch operation is
+appropriate. One approach for typical event-driven code is to perform
+the synch at the start of the event loop, just before waiting for an
+input or timer event. This may not be optimal. For example if there
+two small updates to opposite corners of the screen then it would be
+better to make two synch calls with small bounding boxes, rather than
+a single synch call with a a large bounding box that requires most of
+the framebuffer memory to be updated.
+    </P
+><P
+>Leaving out the synch operations leads to portability problems. On
+hardware which does not involve double-buffering the synch operation
+is a no-op, usually eliminated at compile-time, so invoking synch does
+not add any code size or cpu cycle overhead. On double-buffered
+hardware, leaving out the synch means the user cannot see what has
+been drawn into the framebuffer.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="framebuf-colour.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="framebuf-iterating.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Framebuffer Colours</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-framebuf.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Framebuffer Pixel Manipulation</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

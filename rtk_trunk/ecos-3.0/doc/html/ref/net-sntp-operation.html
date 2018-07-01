@@ -1,0 +1,182 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>What it does</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The SNTP Client"
+HREF="net-sntp.html"><LINK
+REL="PREVIOUS"
+TITLE="The SNTP Client"
+HREF="net-sntp.html"><LINK
+REL="NEXT"
+TITLE="Configuring the unicast list of NTP servers"
+HREF="net-sntp-unicast.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="net-sntp.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 64. The SNTP Client</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="net-sntp-unicast.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="NET-SNTP-OPERATION"
+>What it does</A
+></H1
+><P
+>The SNTP client listens for NTP IPv4 broadcasts from any NTP servers,
+or IPv6 multicasts using the address fe0x:0X::101, where X can be
+2 (Link Local), 5 (Site-Local) or 0xe (Global). Such
+packets contain a timestamp indicating the current time. The packet
+also contains information about where the server is in the hierarchy
+of time servers. A server at the root of the time server tree normally
+has an atomic clock. Such a server is said to be at stratum 0. A time
+server which is synchronised to a stratum 0 server is said to be at
+stratum 1 etc. The client will accept any NTP packets from
+servers using version 3 or 4 of the protocol. When receiving packets
+from multiple servers, it will use the packets from the server with
+the lowest stratum. However, if there are no packets from this server
+for 10 minutes and another server is sending packets, the client will
+change servers.</P
+><P
+>If SNTP unicast mode is enabled via the CYGPKG_NET_SNTP_UNICAST
+option, the SNTP client can additionally be configured with a list
+of specific NTP servers to query.  The general algorithm is as follows: if
+the system clock has not yet been set via an NTP time update, then
+the client will send out NTP requests every 30 seconds to all
+configured NTP servers.  Once an NTP time update has been received,
+the client will send out additional NTP requests every 30 minutes
+in order to update the system clock.  These requests are resent
+every 30 seconds until a response is received.</P
+><P
+>The system clock in eCos is accurate to 1 second. The SNTP client will
+change the system clock when the time difference with the received
+timestamp is greater than 2 seconds. The change is made as a step. </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="net-sntp.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="net-sntp-unicast.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The SNTP Client</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-sntp.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Configuring the unicast list of NTP servers</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

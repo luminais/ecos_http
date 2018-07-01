@@ -1,0 +1,199 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Configuring the unicast list of NTP servers</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The SNTP Client"
+HREF="net-sntp.html"><LINK
+REL="PREVIOUS"
+TITLE="What it does"
+HREF="net-sntp-operation.html"><LINK
+REL="NEXT"
+TITLE="Warning: timestamp wrap around"
+HREF="net-sntp-warning.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="net-sntp-operation.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 64. The SNTP Client</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="net-sntp-warning.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="NET-SNTP-UNICAST"
+>Configuring the unicast list of NTP servers</A
+></H1
+><P
+>If SNTP unicast mode is enabled via the CYGPKG_NET_SNTP_UNICAST
+option, the SNTP client can be configured with a list of
+NTP servers to contact for time updates.</P
+><P
+>By default, this list is configured with NTP server information
+received from DHCP.  The number of NTP servers that are extracted
+from DHCP can be configured with the CYGOPT_NET_SNTP_UNICAST_MAXDHCP
+option.  This option can also be used to disable DHCP usage entirely.</P
+><P
+>The list of NTP servers can be manually configured with the following
+API function.  Note that manual configuration will override any
+servers that were automatically configured by DHCP. But later
+reconfigurations by DHCP will override manual configurations. Hence it
+is not recommended to manually configure servers when
+CYGOPT_NET_SNTP_UNICAST is enabled.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#include &lt;cyg/sntp/sntp.h&gt;
+
+void cyg_sntp_set_servers(struct sockaddr *server_list, cyg_uint32 num_servers);</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function takes an array of sockaddr structures specifying the
+IP address and UDP port of each NTP server to query.  Currently,
+both IPv4 and IPv6 sockaddr structures are supported.  The
+num_servers argument specifies how many sockaddr's are contained
+in the array.  The server_list array must be maintained by the caller.
+Once the array is registered with this function, it must not be
+modified by the caller until it is replaced or unregistered
+by another call to this function.</P
+><P
+>Calling this function with a server_list of NULL and a num_servers
+value of 0 unregisters any previously configured server_list array.</P
+><P
+>Finally, note that if this function is called with a non-empty server
+list, it will implicitly start the SNTP client if it has not already
+been started (i.e. it will call cyg_sntp_start()).</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="net-sntp-operation.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="net-sntp-warning.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>What it does</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-sntp.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Warning: timestamp wrap around</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

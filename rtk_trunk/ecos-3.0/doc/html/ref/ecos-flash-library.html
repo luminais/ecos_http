@@ -1,0 +1,236 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>The eCos FLASH Library</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="FLASH Library"
+HREF="io-flash.html"><LINK
+REL="PREVIOUS"
+TITLE="FLASH Library"
+HREF="io-flash.html"><LINK
+REL="NEXT"
+TITLE="Danger, Will Robinson! Danger!"
+HREF="io-flash-danger.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-flash.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-flash-danger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="ECOS-FLASH-LIBRARY"
+></A
+>Chapter 26. The eCos FLASH Library</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="ecos-flash-library.html#AEN7823"
+>Notes on using the FLASH library</A
+></DT
+><DT
+><A
+HREF="io-flash-danger.html"
+>Danger, Will Robinson! Danger!</A
+></DT
+></DL
+></DIV
+><P
+>The FLASH library is an optional part of eCos, and is only
+	applicable to some platforms.</P
+><P
+>The eCos FLASH library provides the following functionality:</P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Identifying installed device of a FLASH family.
+          </P
+></LI
+><LI
+><P
+>Read, erasing and writing to FLASH blocks.</P
+></LI
+><LI
+><P
+>Validating an address is within the FLASH.</P
+></LI
+><LI
+><P
+>Determining the number and size of FLASH blocks.
+          </P
+></LI
+></OL
+><P
+> There are two APIs with the flash library. The old API is
+retained for backwards compatibility reasons, but should slowly be
+replaced with the new API which is much more flexible and does not
+pollute the name space as much.</P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN7823"
+>Notes on using the FLASH library</A
+></H1
+><P
+>FLASH devices cannot be read from when an erase or write
+operation is active. This means it is not possible to execute code
+from flash while an erase or write operation is active. It is possible
+to use the library when the executable image is resident in FLASH. The
+low level drivers are written such that the linker places the
+functions that actually manipulate the flash into RAM.  However the
+library may not be interrupt safe. An interrupt must not cause
+execution of code that is resident in FLASH. This may be the image
+itself, or RedBoot. In some configurations of eCos, ^C on the serial
+port or debugging via Ethernet may cause an interrupt handler to call
+RedBoot. If RedBoot is resident in FLASH this will cause a crash.
+Similarly, if another thread invokes a virtual vector function to
+access RedBoot, eg to perform a <CODE
+CLASS="FUNCTION"
+>diag_printf()</CODE
+> a
+crash could result.</P
+><P
+> Thus with a ROM based image or a ROM based Redboot it is
+recommended to disable interrupts while erasing or programming
+flash. Using both a ROMRAM or RAM images and a ROMRAM or RAM RedBoot
+are safe and there is no need to disable interrupts.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-flash.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-flash-danger.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>FLASH Library</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-flash.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Danger, Will Robinson! Danger!</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

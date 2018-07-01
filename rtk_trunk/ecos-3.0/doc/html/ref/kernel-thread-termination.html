@@ -1,0 +1,355 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Thread termination</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The eCos Kernel"
+HREF="kernel.html"><LINK
+REL="PREVIOUS"
+TITLE="Thread control"
+HREF="kernel-thread-control.html"><LINK
+REL="NEXT"
+TITLE="Thread priorities"
+HREF="kernel-thread-priorities.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="kernel-thread-control.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="kernel-thread-priorities.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="KERNEL-THREAD-TERMINATION"
+></A
+>Thread termination</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN581"
+></A
+><H2
+>Name</H2
+>cyg_thread_exit, cyg_thread_kill, cyg_thread_delete&nbsp;--&nbsp;Allow threads to terminate</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN586"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN587"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/kernel/kapi.h&gt;
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_thread_exit</CODE
+>(void);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_thread_kill</CODE
+>(cyg_handle_t thread);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_bool_t cyg_thread_delete</CODE
+>(cyg_handle_t thread);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN603"
+></A
+><H2
+>Description</H2
+><P
+>In many embedded systems the various threads are allocated statically,
+created during initialization, and never need to terminate. This
+avoids any need for dynamic memory allocation or other resource
+management facilities. However if a given application does have a
+requirement that some threads be created dynamically, must terminate,
+and their resources such as the stack be reclaimed, then the kernel
+provides the functions <CODE
+CLASS="FUNCTION"
+>cyg_thread_exit</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>cyg_thread_kill</CODE
+>, and
+<CODE
+CLASS="FUNCTION"
+>cyg_thread_delete</CODE
+>.
+      </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_thread_exit</CODE
+> allows a thread to terminate
+itself, thus ensuring that it will not be run again by the scheduler.
+However the <CODE
+CLASS="STRUCTNAME"
+>cyg_thread</CODE
+> data structure passed
+to <CODE
+CLASS="FUNCTION"
+>cyg_thread_create</CODE
+> remains in use, and the
+handle returned by <CODE
+CLASS="FUNCTION"
+>cyg_thread_create</CODE
+> remains
+valid. This allows other threads to perform certain operations on the
+terminated thread, for example to determine its stack usage via
+<CODE
+CLASS="FUNCTION"
+>cyg_thread_measure_stack_usage</CODE
+>. When the handle
+and <CODE
+CLASS="STRUCTNAME"
+>cyg_thread</CODE
+> structure are no longer
+required, <CODE
+CLASS="FUNCTION"
+>cyg_thread_delete</CODE
+> should be called to
+release these resources. If the stack was dynamically allocated then
+this should not be freed until after the call to
+<CODE
+CLASS="FUNCTION"
+>cyg_thread_delete</CODE
+>.
+      </P
+><P
+>Alternatively, one thread may use <CODE
+CLASS="FUNCTION"
+>cyg_thread_kill</CODE
+>
+on another This has much the same effect as the affected thread
+calling <CODE
+CLASS="FUNCTION"
+>cyg_thread_exit</CODE
+>. However killing a thread
+is generally rather dangerous because no attempt is made to unlock any
+synchronization primitives currently owned by that thread or release
+any other resources that thread may have claimed. Therefore use of
+this function should be avoided, and
+<CODE
+CLASS="FUNCTION"
+>cyg_thread_exit</CODE
+> is preferred.
+<CODE
+CLASS="FUNCTION"
+>cyg_thread_kill</CODE
+> cannot be used by a thread to
+kill itself.
+      </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_thread_delete</CODE
+> should be used on a thread
+after it has exited and is no longer required. After this call the
+thread handle is no longer valid, and both the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_thread</CODE
+> structure and the thread stack can
+be re-used or freed. If <CODE
+CLASS="FUNCTION"
+>cyg_thread_delete</CODE
+> is
+invoked on a thread that is still running then there is an implicit
+call to <CODE
+CLASS="FUNCTION"
+>cyg_thread_kill</CODE
+>. This function returns
+<TT
+CLASS="LITERAL"
+>true</TT
+> if the delete was successful, and
+<TT
+CLASS="LITERAL"
+>false</TT
+> if the delete did not happen. The delete
+may not happen for example if the thread being destroyed is a lower
+priority thread than the running thread, and will thus not wake up
+in order to exit until it is rescheduled.
+      </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="KERNEL-THREAD-TERMINATION-CONTEXT"
+></A
+><H2
+>Valid contexts</H2
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_thread_exit</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>cyg_thread_kill</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_thread_delete</CODE
+> can only be called from thread
+context. 
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="kernel-thread-control.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="kernel-thread-priorities.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Thread control</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="kernel.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Thread priorities</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

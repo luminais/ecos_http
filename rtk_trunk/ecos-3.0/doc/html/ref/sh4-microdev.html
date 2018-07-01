@@ -1,0 +1,243 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Overview</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="SuperH SH4-202 MicroDev Board Support"
+HREF="hal-sh4-microdev-part.html"><LINK
+REL="PREVIOUS"
+TITLE="SuperH SH4-202 MicroDev Board Support"
+HREF="hal-sh4-microdev-part.html"><LINK
+REL="NEXT"
+TITLE="Setup"
+HREF="sh4-microdev-setup.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="hal-sh4-microdev-part.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sh4-microdev-setup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SH4-MICRODEV"
+></A
+>Overview</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN19635"
+></A
+><H2
+>Name</H2
+>eCos Support for the SuperH SH4-202 MicroDev Board&nbsp;--&nbsp;Overview</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SH4-MICRODEV-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>The SuperH SH4-202 MicroDev board (henceforth just "MicroDev") has
+an SH4-202 processor, 64MB of external SDRAM, 32MB of external flash
+memory, an SMSC LAN91C111 ethernet controller and connectors plus
+required support chips for all the on-chip peripherals.
+    </P
+><P
+>For typical eCos development, a RedBoot image is programmed into the
+flash memory, and the board will boot this image from reset. RedBoot
+provides gdb stub functionality so it is then possible to download and
+debug stand-alone and eCos applications via the gdb debugger. This can
+happen over either a serial line or over ethernet.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SH4-MICRODEV-HARDWARE"
+></A
+><H2
+>Supported Hardware</H2
+><P
+>The flash memory consists of 128 blocks of 256k bytes each.
+In a typical setup, the first 
+flash block is used for the ROM RedBoot image
+and the second is used to store a version of RedBoot that can run out of
+RAM. The topmost two blocks are used to manage the flash and hold RedBoot fconfig
+values. The remaining 124 blocks between 0xA0080000 and 0xA1F7FFFF can be
+used by application code.
+    </P
+><P
+>The board is fitted with a PLCC socket suitable for an EEPROM (or PROM) such as
+the 1Mbit ST M29WO10B. This is enabled by toggling two DIP switches, after which
+the EEPROM is mapped into the same address as the flash memory. Therefore,
+the flash is not accessible if booting from the EEPROM.
+    </P
+><P
+>There is a serial driver <CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_SERIAL_SH_SCIF</CODE
+>
+which supports the on-chip serial device. This device
+can be used by RedBoot for communication with the host. If this device
+is needed by the application, either directly or via the serial
+driver, then it cannot also be used for RedBoot communication. Another
+communication channel such as ethernet should be used instead. The
+serial driver package is loaded automatically when configuring for the
+MicroDev target.
+    </P
+><P
+>There is an ethernet driver <CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_ETH_SH_MICRODEV</CODE
+>
+for the on-chip ethernet device. This driver is also loaded
+automatically when configuring for the MicroDev target.
+    </P
+><P
+>eCos manages the on-chip interrupt controller. Timer 0 is used to
+implement the eCos system clock, and timer 1 is used to implement a
+microsecond delay function. Timer 2 is unused and
+left for the application. Other on-chip devices (FEMI, EMI, INTC, TMU,
+CAC, UBC) are initialized only as far as is necessary for eCos to
+run. Other devices (eg RTC, DMAC, etc) are not touched.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SH4-MICRODEV-TOOLS"
+></A
+><H2
+>Tools</H2
+><P
+>The MicroDev port is intended to work with GNU tools configured for an
+sh-elf target. The original port was done using sh-elf-gcc version
+3.2.1, sh-elf-gdb version 5.3, and binutils version 2.13.1.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="hal-sh4-microdev-part.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sh4-microdev-setup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SuperH SH4-202 MicroDev Board Support</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="hal-sh4-microdev-part.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Setup</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

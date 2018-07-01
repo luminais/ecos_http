@@ -1,0 +1,596 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Motorola MCF52xx Coldfire I2C Bus  Driver</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Motorola MCF52xx ColdFire I2C Bus Driver"
+HREF="devs-i2c-m68k-mcf52xx-part.html"><LINK
+REL="PREVIOUS"
+TITLE="Motorola MCF52xx ColdFire I2C Bus Driver"
+HREF="devs-i2c-m68k-mcf52xx-part.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="devs-i2c-m68k-mcf52xx-part.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+>&nbsp;</TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="DEVS-I2C-M68K-MCF52XX"
+></A
+>Motorola MCF52xx Coldfire I<SUP
+>2</SUP
+>C Bus  Driver</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN21314"
+></A
+><H2
+>Name</H2
+><CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_I2C_MCF52xx</CODE
+>&nbsp;--&nbsp;eCos Support for the Motorola Coldfire I<SUP
+>2</SUP
+>C Bus</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="DEVS-I2C-M68K-MCF52XX-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>Several processors in the Motorola ColdFire family come with one or
+more on-chip I<SUP
+>2</SUP
+>C bus devices. This package
+provides an eCos I<SUP
+>2</SUP
+>C bus driver. It was
+originally developed on an MCF5280 but should work with any ColdFire
+processor that uses a compatible bus device. The driver implements the
+functionality defined by the generic I<SUP
+>2</SUP
+>C
+package <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_I2C</CODE
+>.
+    </P
+><DIV
+CLASS="CAUTION"
+><P
+></P
+><TABLE
+CLASS="CAUTION"
+BORDER="1"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="CENTER"
+><B
+>Caution</B
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+><P
+>The hardware does not support DMA or fifos, so usually a transfer will
+involve an interrupt for every byte transferred. Since the
+I<SUP
+>2</SUP
+>C bus typically runs at 100KHz large
+transfers will consume much of the available cpu time.
+    </P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>This package does not provide any <CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_bus</CODE
+>
+structures. The number of I<SUP
+>2</SUP
+>C buses varies
+between ColdFire processors. If multiple buses are available then
+exactly which one(s) are in use on a given hardware platform depends
+entirely on that platform. The desired I<SUP
+>2</SUP
+>C
+bus speed also depends on the platform, and there may be other issues
+such as how the processor pins should be set up. Hence it is left to
+other code, usually the platform HAL, to instantiate the bus
+structure(s). This driver package supplies the necessary functions and
+utility macros. Similarly this package does not provide any
+<CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_device</CODE
+> structures. Which
+I<SUP
+>2</SUP
+>C devices are hooked up to which
+I<SUP
+>2</SUP
+>C bus is entirely a characteristic of the
+hardware platform, so again it is up to the platform HAL to
+instantiate the necessary structures.
+    </P
+><P
+>The driver will operate in interrupt-driven mode if interrupts are
+enabled when a transfer is initiated. Otherwise it will operate in
+polled mode. This allows the driver to be used in a variety of
+configurations including inside RedBoot.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="DEVS-I2C-M68K-MCF52XX-CONFIG"
+></A
+><H2
+>Configuration Options</H2
+><P
+>The I<SUP
+>2</SUP
+>C bus driver package should be loaded
+automatically when selecting a target containing a suitable ColdFire
+processor, and it should never be necessary to load the package
+explicitly. If the application does not use any of the
+I<SUP
+>2</SUP
+>C functionality, directly or indirectly,
+then all the I<SUP
+>2</SUP
+>C code should be removed at
+link-time and the application does not suffer any overheads.
+    </P
+><P
+>By default the driver assumes a single I<SUP
+>2</SUP
+>C
+bus and optimizes for that case. For example options like the ISR
+vector and priority are handled by compile-time
+<TT
+CLASS="LITERAL"
+>#define</TT
+>'s in the platform HAL's exported header
+files rather than by per-bus structure fields. This helps to reduce
+both code and data overheads. If the driver should support multiple
+I<SUP
+>2</SUP
+>C buses then
+<CODE
+CLASS="VARNAME"
+>CYGHWR_DEVS_I2C_MCF52xx_MULTIPLE_BUSES</CODE
+> should be
+enabled. Typically this will be done by the platform HAL using a CDL
+<SPAN
+CLASS="PROPERTY"
+>requires</SPAN
+> property. If bus instantiation happens
+outside the platform HAL and hence the HAL's header files do not
+provide the appropriate definitions, then this configuration option
+should also be defined.
+    </P
+><P
+>The only other configuration options in this package provide control
+over the compiler flags used to build the driver code.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="DEVS-I2C-M68K-MCF52XX-BUS-DEVICES"
+></A
+><H2
+>Defining the Bus and Devices</H2
+><P
+>For most hardware targets the platform HAL will instantiate the
+<CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_bus</CODE
+> and
+<CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_device</CODE
+> structures, and it will also
+initialize the hardware so that the
+I<SUP
+>2</SUP
+>C-related pins are connected
+appropriately. Some development boards have no
+I<SUP
+>2</SUP
+>C devices, but the
+I<SUP
+>2</SUP
+>C bus signals are accessible via an
+expansion connector and I<SUP
+>2</SUP
+>C devices can be
+put on a daughter board. In such cases it may be necessary for the
+application to instantiate both the bus and all the device structures.
+Alternatively the platform HAL may provide a configuration option to
+enable just the bus, with the devices still left to application code.
+    </P
+><P
+>To facilitate bus instantiation the header file <TT
+CLASS="FILENAME"
+>cyg/io/i2c_mcf52xx.h</TT
+> provides a utility
+macro <CODE
+CLASS="FUNCTION"
+>CYG_MCF52xx_I2C_BUS</CODE
+>. This takes six
+parameters:
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>The name of the bus, for example
+<CODE
+CLASS="VARNAME"
+>hal_dnp5280_i2c_bus</CODE
+>. This name will be used when
+instantiating the I<SUP
+>2</SUP
+>C devices.
+      </P
+></LI
+><LI
+><P
+>An initialization function. If no platform-specific initialization is
+needed then this can be the <CODE
+CLASS="FUNCTION"
+>cyg_mcf52xx_i2c_init</CODE
+>
+function exported by this driver. Otherwise it can be a
+platform-specific function which, for example, sets up the relevant
+pins appropriately and then chains into
+<CODE
+CLASS="FUNCTION"
+>cyg_mcf52xx_i2c_init</CODE
+>.
+      </P
+></LI
+><LI
+><P
+>The base address of the I<SUP
+>2</SUP
+>C bus. For
+example on an MCF5282 with the IPSBAR set to its usual value of
+0x40000000, the I<SUP
+>2</SUP
+>C bus is at location
+0x40000300.
+      </P
+></LI
+><LI
+><P
+>The interrupt vector, for example
+<CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_ISR_I2C_IIF</CODE
+> on an MCF5282.
+      </P
+></LI
+><LI
+><P
+>The interrupt priority. Typically this will be a configurable option
+within the platform HAL.
+      </P
+></LI
+><LI
+><P
+>A value for the I<SUP
+>2</SUP
+>C bus's I2FDR register.
+That register controls the bus speed. Typical bus speeds are 100KHz
+and 400KHz, depending on the capabilities of the attached devices.
+There is no simple relationship between the system clock speed, the
+desired bus speed, and the FDR register. Although the driver could
+determine the FDR setting using a lookup table and appropriate code,
+it is better to determine the correct value once during the porting
+process and avoid unnecessary run-time overheads.
+      </P
+></LI
+></OL
+><P
+>For the common case where only a single I<SUP
+>2</SUP
+>C
+bus should be supported
+(<CODE
+CLASS="VARNAME"
+>CYGHWR_DEVS_I2C_MCF52xx_MULTIPLE_BUSES</CODE
+> is
+disabled), the last four parameters should be provided by preprocessor
+<TT
+CLASS="LITERAL"
+>#define</TT
+>'s, typically in <TT
+CLASS="FILENAME"
+>cyg/hal/plf_io.h</TT
+> which gets
+<TT
+CLASS="LITERAL"
+>#include</TT
+>'d automatically via
+<TT
+CLASS="FILENAME"
+>cyg/hal/hal_io.h</TT
+>. This header can also define the
+<CODE
+CLASS="VARNAME"
+>HAL_I2C_EXPORTED_DEVICES</CODE
+> macro as per the generic
+I<SUP
+>2</SUP
+>C package:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#include &lt;pkgconf/hal_m68k_dnp5280.h&gt;
+&#8230;
+#ifdef CYGHWR_HAL_M68K_DNP5280_I2C
+#define HAL_MCF52xx_I2C_SINGLETON_BASE   (HAL_MCF52xx_MBAR+HAL_MCF5282_I2C0_BASE)
+#define HAL_MCF52xx_I2C_SINGLETON_ISRVEC CYGNUM_HAL_ISR_I2C_IIF
+#define HAL_MCF52xx_I2C_SINGLETON_ISRPRI CYGNUM_HAL_M68K_DNP5280_I2C_ISRPRI
+#define HAL_MCF52xx_I2C_SINGLETON_FDR    CYGNUM_HAL_M68K_DNP5280_I2C_FDR
+
+#define HAL_I2C_EXPORTED_DEVICES \
+    extern cyg_i2c_bus hal_dnp5280_i2c_bus;
+#endif
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>On this particular platform the I<SUP
+>2</SUP
+>C bus is
+only accessible on an expansion connector so the support is
+conditional on a configuration option
+<CODE
+CLASS="VARNAME"
+>CYGHWR_HAL_M68K_DNP5280_I2C</CODE
+>. The interrupt priority
+and I2FDR values are also controlled by configuration options. On
+other platforms the I<SUP
+>2</SUP
+>C support may not be
+conditional and the priority and/or FDR values may be hard-wired.
+    </P
+><P
+>The I<SUP
+>2</SUP
+>C bus instantiation should happen in
+an ordinary C or C++ file, typically in the platform HAL. The
+corresponding object file should go into
+<TT
+CLASS="FILENAME"
+>libtarget.a</TT
+> and the file should only contain
+I<SUP
+>2</SUP
+>C-related code to get the maximum benefit
+of linker garbage collection.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#include &lt;cyg/infra/cyg_type.h&gt;
+#include &lt;cyg/hal/hal_io.h&gt;
+#include &lt;cyg/io/i2c.h&gt;
+#include &lt;cyg/io/i2c_mcf52xx.h&gt;
+
+static void
+dnp5280_i2c_init(struct cyg_i2c_bus* bus)
+{
+    cyg_uint16   paspar;
+    // Reset GPIO pins PAS0/1 to their alternative SCL/SDA settings
+    HAL_READ_UINT16(HAL_MCF5282_IPSBAR + HAL_MCF5282_GPIO_PASPAR, paspar);
+    paspar &amp;= ~(HAL_MCF5282_GPIO_PASPAR_A0_MASK | HAL_MCF5282_GPIO_PASPAR_A1_MASK);
+    paspar |= (HAL_MCF5282_GPIO_PASPAR_A0_SCL | HAL_MCF5282_GPIO_PASPAR_A1_SDA);
+    HAL_WRITE_UINT16(HAL_MCF5282_IPSBAR + HAL_MCF5282_GPIO_PASPAR, paspar);
+
+    // And leave the driver to take care of the rest.
+    cyg_mcf52xx_i2c_init(bus);
+}
+
+CYG_MCF52xx_I2C_BUS(hal_dnp5280_i2c_bus,
+                    &amp;dnp5280_i2c_init,
+                    HAL_MCF52xx_I2C_SINGLETON_BASE,
+                    HAL_MCF52xx_I2C_SINGLETON_ISRVEC,
+                    HAL_MCF52xx_I2C_SINGLETON_ISRPRI,
+                    HAL_MCF52xx_I2C_SINGLETON_FDR);
+
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>Obviously if <CODE
+CLASS="VARNAME"
+>CYGHWR_DEVS_I2C_MCF52xx_MULTIPLE_BUSES</CODE
+>
+is enabled then the singleton macros may not be defined and the
+appropriate numbers should be used directly. This example uses a
+custom initialization function which sets up the relevant pins and
+then chains into the I<SUP
+>2</SUP
+>C drivers'
+<CODE
+CLASS="FUNCTION"
+>cyg_mcf52xx_i2c_init</CODE
+> function. If the platform
+HAL has already set up the pins correctly then
+<CODE
+CLASS="FUNCTION"
+>cyg_mcf52xx_i2c_init</CODE
+> could be used directly in
+the bus instantiation, saving a small amount of code for the custom
+initialization function.
+    </P
+><P
+>I<SUP
+>2</SUP
+>C device structures can be instantiated
+in the usual way, for example:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_I2C_DEVICE(cyg_i2c_wallclock_ds1307,
+               &amp;hal_dnp5280_i2c_bus,
+               0x68,
+               0x00,
+               CYG_I2C_DEFAULT_DELAY);
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="devs-i2c-m68k-mcf52xx-part.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Motorola MCF52xx ColdFire I<SUP
+>2</SUP
+>C Bus Driver</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="devs-i2c-m68k-mcf52xx-part.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,397 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Porting to New Hardware</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="SPI Support"
+HREF="io-spi.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI Interface"
+HREF="spi-api.html"><LINK
+REL="NEXT"
+TITLE="I2C Support"
+HREF="io-i2c.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="spi-api.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-i2c.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI-PORTING"
+></A
+>Porting to New Hardware</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN8505"
+></A
+><H2
+>Name</H2
+>Porting&nbsp;--&nbsp;Adding SPI support to new hardware</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SPI-PORTING-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>Adding SPI support to an eCos port can take two forms. If there is
+already an SPI bus driver for the target hardware then both that
+driver and this generic SPI package <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_SPI</CODE
+>
+should be included in the <SPAN
+CLASS="DATABASE"
+>ecos.db</SPAN
+> target entry.
+Typically the platform HAL will need to supply some platform-specific
+information needed by the bus driver. In addition the platform HAL
+should provide <CODE
+CLASS="STRUCTNAME"
+>cyg_spi_device</CODE
+> structures for
+every device attached to the bus. The exact details of this depend on
+the bus driver so its documentation should be consulted for further
+details. If there is no suitable SPI bus driver yet then a new driver
+package will have to be written.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SPI-PORTING-DEVICES"
+></A
+><H2
+>Adding a Device</H2
+><P
+>The generic SPI package <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_SPI</CODE
+> defines a
+data structure <CODE
+CLASS="STRUCTNAME"
+>cyg_spi_device</CODE
+>. This contains
+the information needed by the generic package, but not the additional
+information needed by a bus driver to interact with the device. Each
+bus driver will define a larger data structure, for example
+<CODE
+CLASS="STRUCTNAME"
+>cyg_mcf52xx_qspi_device</CODE
+>, which contains a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_spi_device</CODE
+> as its first field. This is
+analogous to C++ base and derived classes, but without any use of
+virtual functions. The bus driver package should be consulted for the
+details.
+    </P
+><P
+>During initialization an SPI bus driver may need to know about all the
+devices attached to that bus. For example it may need to know which
+cpu pins should be configured as chip selects rather than GPIO pins.
+To achieve this all device definitions should specify the particular
+bus to which they are attached, for example:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct cyg_mcf52xx_qspi_device hal_spi_atod CYG_SPI_DEVICE_ON_BUS(0) =
+{
+    .spi_common.spi_bus = &amp;cyg_mcf52xx_qspi_bus,
+    &#8230;
+};
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>The <CODE
+CLASS="FUNCTION"
+>CYG_SPI_DEVICE_ON_BUS</CODE
+> macro adds information
+to the structure which causes the linker to group all such structures
+in a single table. The bus driver's initialization code can then
+iterate over this table. 
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SPI-PORTING-BUS"
+></A
+><H2
+>Adding Bus Support</H2
+><P
+>An SPI bus driver usually involves a new hardware package. This needs
+to perform the following:
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Define a device structure which contains a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_spi_device</CODE
+> as its first element. This
+should contain all the information needed by the bus driver to
+interact with a device on that bus.
+      </P
+></LI
+><LI
+><P
+>Provide functions for the following operations:
+      </P
+><P
+></P
+><TABLE
+BORDER="0"
+><TBODY
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>spi_transaction_begin</CODE
+></TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>spi_transaction_transfer</CODE
+></TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>spi_transaction_tick</CODE
+></TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>spi_transaction_end</CODE
+></TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>spi_get_config</CODE
+></TD
+></TR
+><TR
+><TD
+><CODE
+CLASS="FUNCTION"
+>spi_set_config</CODE
+></TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+><P
+>These correspond to the main API functions, but can assume that the
+bus is already locked so no other thread will be manipulating the bus
+or any of the attached devices. Some of these operations may be no-ops.
+      </P
+></LI
+><LI
+><P
+>Define a bus structure which contains a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_spi_bus</CODE
+> as its first element. This should
+contain any additional information needed by the bus driver.
+      </P
+></LI
+><LI
+><P
+>Optionally, instantiate the bus structure. The instance should have a
+well-known name since it needs to be referenced by the device
+structure initializers. For some drivers it may be best to create the
+bus inside the driver package. For other drivers it may be better to
+leave this to the platform HAL or the application. It depends on how
+much platform-specific knowledge is needed to fill in the bus
+structure.
+      </P
+></LI
+><LI
+><P
+>Create a HAL table for the devices attached to this bus.
+      </P
+></LI
+><LI
+><P
+>Arrange for the bus to be initialized early on during system
+initialization. Typically this will happen via a prioritized static
+constructor with priority <TT
+CLASS="LITERAL"
+>CYG_INIT_BUS_SPI</TT
+>.
+As part of this initialization the bus driver should
+invoke the <CODE
+CLASS="FUNCTION"
+>CYG_SPI_BUS_COMMON_INIT</CODE
+> macro on its
+<CODE
+CLASS="STRUCTNAME"
+>cyg_spi_bus</CODE
+> field.
+      </P
+></LI
+><LI
+><P
+>Provide the appropriate documentation, including details of how the
+SPI device structures should be initialized.
+      </P
+></LI
+></OL
+><P
+>There are no standard SPI testcases. It is not possible to write SPI
+code without knowing about the devices attached to the bus, and those
+are inherently hardware-specific.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="spi-api.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-i2c.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI Interface</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-spi.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>I2C Support</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,210 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>ipsec_strerror</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="libipsec Reference"
+HREF="libipsec-library-reference.html"><LINK
+REL="PREVIOUS"
+TITLE="libipsec Reference"
+HREF="libipsec-library-reference.html"><LINK
+REL="NEXT"
+TITLE="eCos PPP User Guide"
+HREF="ppp.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libipsec-library-reference.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 51. libipsec Reference</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ppp.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="NET-IPSEC-LIBIPSEC-MAN-IPSEC-STRERROR"
+>ipsec_strerror</A
+></H1
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>IPSEC_STRERROR(3)       System Library Functions Manual      IPSEC_STRERROR(3)
+
+NAME
+     ipsec_strerror - error message for IPsec policy manipulation library
+
+SYNOPSIS
+     #include &lt;netinet6/ipsec.h&#62;
+
+     const char *
+     ipsec_strerror();
+
+DESCRIPTION
+     netinet6/ipsec.h declares
+
+           extern int ipsec_errcode;
+
+     which is used to pass an error code from IPsec policy manipulation
+     library to an user program.  ipsec_strerror() can be used to obtain the
+     error message string for the error code.
+
+     The array pointed to is not to be modified by the program.  Since
+     ipsec_strerror() uses strerror(3) as underlying function, calling
+     strerror(3) after ipsec_strerror() would make the return value from
+     ipsec_strerror() invalid, or overwritten.
+
+RETURN VALUES
+     ipsec_strerror() always return a pointer to C string.  The C string must
+     not be overwritten by user programs.
+
+SEE ALSO
+     ipsec_set_policy(3)
+
+HISTORY
+     ipsec_strerror() first appeared in WIDE/KAME IPv6 protocol stack kit.
+
+BUGS
+     ipsec_strerror() will return its result which may be overwritten by sub-
+     sequent calls.
+
+     ipsec_errcode is not thread safe.
+
+KAME                              May 6, 1998                             KAME
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libipsec-library-reference.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ppp.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>libipsec Reference</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libipsec-library-reference.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

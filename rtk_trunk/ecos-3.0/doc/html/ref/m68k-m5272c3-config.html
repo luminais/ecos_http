@@ -1,0 +1,437 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Configuration</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Freescale M5272C3 Board Support"
+HREF="hal-m68k-m5272c3-part.html"><LINK
+REL="PREVIOUS"
+TITLE="Setup"
+HREF="m68k-m5272c3-setup.html"><LINK
+REL="NEXT"
+TITLE="The HAL Port"
+HREF="m68k-m5272c3-port.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="m68k-m5272c3-setup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="m68k-m5272c3-port.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="M68K-M5272C3-CONFIG"
+></A
+>Configuration</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN19499"
+></A
+><H2
+>Name</H2
+>Configuration&nbsp;--&nbsp;Platform-specific Configuration Options</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-CONFIG-OVERVIEW"
+></A
+><H2
+>Overview</H2
+><P
+>The M5272C3 platform HAL package is loaded automatically when eCos is
+configured for an M5272C3 target. It should never be necessary to load
+this package explicitly. Unloading the package should only happen as a
+side effect of switching target hardware.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-CONFIG-STARTUP"
+></A
+><H2
+>Startup</H2
+><P
+>The M5272C3 platform HAL package supports four separate startup types:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>RAM</DT
+><DD
+><P
+>This is the startup type which is normally used during application
+development. The board has RedBoot programmed into flash at location
+0xFFF00000 and boots from that location.
+<SPAN
+CLASS="APPLICATION"
+>m68k-elf-gdb</SPAN
+> is then used to load a RAM
+startup application into memory and debug it. It is assumed that the
+hardware has already been initialized by RedBoot. By default the
+application will use eCos' virtual vectors mechanism to obtain certain
+services from RedBoot, including diagnostic output.
+        </P
+></DD
+><DT
+>ROM</DT
+><DD
+><P
+>This startup type can be used for finished applications which will
+be programmed into flash at location 0xFFF00000. The application will
+be self-contained with no dependencies on services provided by other
+software. eCos startup code will perform all necessary hardware
+initialization.
+        </P
+></DD
+><DT
+>ROMFFE</DT
+><DD
+><P
+>This is a variant of the ROM startup type which can be used if the
+application will be programmed into flash at location 0xFFE00000,
+overwriting the board's dBUG ROM monitor.
+        </P
+></DD
+><DT
+>DBUG</DT
+><DD
+><P
+>This is a variant of the RAM startup which allows applications to be
+loaded via the board's dBUG ROM monitor rather than via RedBoot. It
+exists mainly to support the dBUG version of RedBoot which is needed
+during hardware setup. Once the application has started it will take
+over all the hardware, and it will not depend on any services provided
+by dBUG. This startup type does not provide gdb debug facilities.
+        </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-CONFIG-REDBOOT"
+></A
+><H2
+>RedBoot and Virtual Vectors</H2
+><P
+>If the application is intended to act as a ROM monitor, providing
+services for other applications, then the configuration option
+<CODE
+CLASS="VARNAME"
+>CYGSEM_HAL_ROM_MONITOR</CODE
+> should be set. Typically
+this option is set only when building RedBoot.
+    </P
+><P
+>If the application is supposed to make use of services provided by a
+ROM monitor, via the eCos virtual vector mechanism, then the
+configuration option <CODE
+CLASS="VARNAME"
+>CYGSEM_HAL_USE_ROM_MONITOR</CODE
+>
+should be set. By default this option is enabled when building for a
+RAM startup, disabled otherwise. It can be manually disabled for a RAM
+startup, making the application self-contained, as a testing step
+before switching to ROM startup.
+    </P
+><P
+>If the application does not rely on a ROM monitor for diagnostic
+services then one of the serial ports will be claimed for HAL
+diagnostics. By default eCos will use the terminal port, corresponding
+to uart0. The auxiliary port, uart1, can be selected instead via the
+configuration option
+<CODE
+CLASS="VARNAME"
+>CYGHWR_HAL_M68K_MCFxxxx_DIAGNOSTICS_PORT</CODE
+>. The baud
+rate for the selected port is controlled by
+<CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_M68K_MCFxxxx_DIAGNOSTICS_BAUD</CODE
+>.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-CONFIG-FLASH"
+></A
+><H2
+>Flash Driver</H2
+><P
+>The platform HAL package contains flash driver support. By default
+this is inactive, and it can be made active by loading the generic
+flash package <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_FLASH</CODE
+>.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-CONFIG-REGISTERS"
+></A
+><H2
+>Special Registers</H2
+><P
+>The MCF5272 processor has a number of special registers controlling
+the cache, on-chip RAM and ROM, and so on. The platform HAL provides a
+number of configuration options for setting these, for example
+<CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_M68K_M5272C3_RAMBAR</CODE
+> controls the initial
+value of the RAMBAR register. These options are only used during a ROM
+or ROMFFE startup. For a RAM startup it will be RedBoot that
+initializes these registers, so if the default values are not
+appropriate for the target application then it will be necessary to
+rebuild RedBoot with new settings for these options. Alternatively it
+should be possible to reprogram some or all of the registers early on
+during startup, for example by using a high-priority static
+constructor.
+    </P
+><P
+>One of the special registers, MBAR, cannot be controlled via a
+configuration option. Changing the value of this register could have
+drastic effects on the system, for example moving the on-chip
+peripherals to a different location in memory, and it would be very
+easy to end up with inconsistencies between RedBoot and the eCos
+application. Instead the on-chip peripherals are always mapped to
+location 0x10000000.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-CONFIG-CLOCK"
+></A
+><H2
+>System Clock</H2
+><P
+>By default the system clock interrupts once every 10ms, corresponding
+to a 100Hz clock. This can be changed by the configuration option
+<CODE
+CLASS="VARNAME"
+>CYGNUM_HAL_RTC_PERIOD</CODE
+>, the number of microseconds
+between clock ticks. Other clock-related settings are recalculated
+automatically if the period is changed.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-M5272C3-CONFIG-FLAGS"
+></A
+><H2
+>Compiler Flags</H2
+><P
+>The platform HAL defines the default compiler and linker flags for all
+packages, although it is possible to override these on a per-package
+basis. Most of the flags used are the same as for other architectures
+supported by eCos. There are three flags specific to this port:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="OPTION"
+>-mcpu=5272</CODE
+></DT
+><DD
+><P
+>The <SPAN
+CLASS="APPLICATION"
+>m68k-elf-gcc</SPAN
+> compiler supports many
+variants of the M68K architecture, from the original 68000 onwards.
+For an MCF5272 processor <CODE
+CLASS="OPTION"
+>-mcpu=5272</CODE
+> should be used.
+        </P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>-malign-int</CODE
+></DT
+><DD
+><P
+>This option forces <SPAN
+CLASS="APPLICATION"
+>m68k-elf-gcc</SPAN
+> to align
+integer and floating point data to a 32-bit boundary rather than a
+16-bit boundary. It should improve performance. However the resulting
+code is incompatible with most published application binary interface
+specifications for M68K processors, so it is possible that this option
+causes problems with existing third-party object code.
+        </P
+></DD
+><DT
+><CODE
+CLASS="OPTION"
+>-fomit-frame-pointer</CODE
+></DT
+><DD
+><P
+>Traditionally the <CODE
+CLASS="VARNAME"
+>%A6</CODE
+> register was used as a
+dedicated frame pointer, and the compiler was expected to generate
+link and unlink instructions on procedure entry and exit. These days
+the compiler is perfectly capable of generating working code without a
+frame pointer, so omitting the frame pointer often saves some work
+during procedure entry and exit and makes another register available
+for optimization. However without a frame pointer register the
+<SPAN
+CLASS="APPLICATION"
+>m68k-elf-gdb</SPAN
+> debugger is not always able to
+interpret a thread stack, so it cannot reliably give a backtrace.
+Removing <CODE
+CLASS="OPTION"
+>-fomit-frame-pointer</CODE
+> from the default flags
+will make debugging easier, but the generated code may be worse.
+        </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="m68k-m5272c3-setup.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="m68k-m5272c3-port.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Setup</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="hal-m68k-m5272c3-part.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The HAL Port</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

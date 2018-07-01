@@ -1,0 +1,256 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Spanning Tree Protocol</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="APIs"
+HREF="tcpip-openbsd-tcpip-apis.html"><LINK
+REL="PREVIOUS"
+TITLE="Bridging"
+HREF="openbsd-manpages-bridge.html"><LINK
+REL="NEXT"
+TITLE="DNS for eCos and RedBoot"
+HREF="net-ns-dns.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="openbsd-manpages-bridge.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 48. APIs</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="net-ns-dns.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="OPENBSD-MANPAGES-STP"
+>Spanning Tree Protocol</A
+></H1
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>NAME
+     stp - Spanning Tree Protocol
+
+SYNOPSIS
+
+
+DESCRIPTION
+     Spanning Tree (STP) is a layer 2 protocol designed to run on bridges. The
+     main purpose of STP is to ensure that there are no loop situations when
+     redundant paths are provisioned in the network. STP detects and disables
+     creation of network loops by blocking certain ports on some of the bridges
+     in the network. The process of selection of blocking ports (on occurance
+     of redundant paths) is governed by the following three parameters :
+
+     - Relative priority of each bridge. A higher value means lower priority.
+     - Relative priority of each port within a bridge. A higher value means
+       lower priority.
+     - Path cost (based on physical media type) associated with each port.
+
+     A given port/interface participates in STP if the flag IFBIF_STP is 
+     set for the interface. A possible time for setting this flag is at the 
+     time when the interface in context is added to bridge. 
+
+IOCTLS
+     The STP code is invoked for all ioctl calls specified in <A
+HREF="openbsd-manpages-bridge.html"
+>bridge</A
+> section.
+     The following ioctl calls are specific to STP functionality. They are
+     defined in &lt;sys/sockio.h&#62;.
+
+     SIOCBRDGGPRI         (struct ifbrparam) Get the configured priority of this
+                          bridge. The priority value could vary from 0 to 65535.
+                          0 being the highest priority and 65535 the lowest. The
+                          configured value is returned in field ifbrp_prio.
+
+     SIOCBRDGSPRI         (struct ifbrparam) Set priority of this bridge to the
+                          value specified in field ifbrp_prio.
+
+     SIOCBRDGGHT          (struct ifbrparam) Get the configured frequency of
+                          transmission of hello packets from non-blocking
+                          interfaces on this bridge. The configured frequency is
+                          returned in field ifbrp_hellotime.  
+
+     SIOCBRDGSHT          (struct ifbrparam) Set the frequency of transmission
+                          of hello packets to the value specified in field
+                          ifbrp_hellotime. The specified value should be greater
+                          than 0, else EINVAL is returned.
+
+     SIOCBRDGGFD          (struct ifbrparam) Get the forwarding delay time 
+                          associated with ports/interfaces on this bridge. The
+                          forwarding delay time is the time taken by a port
+                          to transit from one state to other (for eg. from 
+                          LEARNING state to FORWARDING state). The configured
+                          value if returned in field ifbrp_fwddelay.
+
+     SIOCBRDGSFD          (struct ifbrparam) Set the forwarding delay for ports
+                          attached to this bridge to a value specified in 
+                          field ifbrp_fwddelay. The specified value should be
+                          greater than 0, else EINVAL is returned.
+
+     SIOCBRDGGMA          (struct ifbrparam) Get aging timeout values of 
+                          spanning data. The timeout value is returned in field
+                          ifbrp_maxage. 
+
+     SIOCBRDGSMA          (struct ifbrparam) Set the aging timeout value of 
+                          BPDUs to the value specified in ifbrp_maxage. The 
+                          specified value should be greater than 0, else 
+                          EINVAL is returned.
+
+     SIOCBRDGSIFPRIO      (struct ifbreq) Set the priority of specified 
+                          interface to the value given in field ifbr_priority.
+
+     SIOCBRDGSIFCOST      (struct ifbreq) Set the cost associated with the 
+                          given interface to the value specified in field 
+                          ifbr_path_cost.
+
+
+ERRORS
+     Same as the ones specified for <A
+HREF="openbsd-manpages-bridge.html"
+>bridge</A
+>.
+
+SEE ALSO
+     <A
+HREF="openbsd-manpages-netintro.html"
+>netintro</A
+>, <A
+HREF="openbsd-manpages-bridge.html"
+>bridge</A
+>&#13;</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="openbsd-manpages-bridge.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="net-ns-dns.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Bridging</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tcpip-openbsd-tcpip-apis.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>DNS for eCos and RedBoot</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,2766 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>eCos Reference Manual</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="NEXT"
+TITLE="The eCos Kernel"
+HREF="kernel.html"></HEAD
+><BODY
+CLASS="BOOK"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="BOOK"
+><A
+NAME="ECOS-REF"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+><A
+NAME="AEN2"
+>eCos Reference Manual</A
+></H1
+><P
+CLASS="COPYRIGHT"
+>Copyright &copy; 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.</P
+><DIV
+CLASS="LEGALNOTICE"
+><A
+NAME="AEN17"
+></A
+><P
+><B
+>Documentation licensing terms</B
+></P
+><P
+>This material may be distributed only subject to the terms
+and conditions set forth in the Open Publication License, v1.0
+or later (the latest version is presently available at
+<A
+HREF="http://www.opencontent.org/openpub/"
+TARGET="_top"
+>http://www.opencontent.org/openpub/</A
+>).</P
+><P
+>Distribution of substantively modified versions of this
+document is prohibited without the explicit permission of the
+copyright holder.</P
+><P
+>Distribution of the work or derivative of the work in any
+standard (paper) book form is prohibited unless prior
+permission is obtained from the copyright holder.</P
+></DIV
+><DIV
+CLASS="LEGALNOTICE"
+><A
+NAME="AEN23"
+></A
+><P
+><B
+>Trademarks</B
+></P
+><P
+>Altera&reg; and Excalibur&#8482; are trademarks of Altera Corporation.</P
+><P
+>AMD&reg; is a registered trademark of Advanced Micro Devices, Inc.</P
+><P
+>ARM&reg;, StrongARM&reg;, Thumb&reg;, ARM7&#8482;, ARM9&#8482;  is a registered trademark of Advanced RISC Machines, Ltd.</P
+><P
+>Cirrus Logic&reg; and Maverick&#8482; are registered trademarks of Cirrus Logic, Inc.</P
+><P
+>Cogent&#8482; is a trademark of Cogent Computer Systems, Inc.</P
+><P
+>Compaq&reg; is a registered trademark of the Compaq Computer Corporation.</P
+><P
+>Fujitsu&reg; is a registered trademark of Fujitsu Limited.</P
+><P
+>IBM&reg;, and PowerPC&#8482; are trademarks of International Business Machines Corporation.</P
+><P
+>IDT&reg; is a registered trademark of Integrated Device Technology Inc.</P
+><P
+>Intel&reg;, i386&#8482;, Pentium&reg;, StrataFlash&reg; and XScale&#8482; are trademarks of Intel Corporation.</P
+><P
+>Intrinsyc&reg; and Cerf&#8482; are trademarks of Intrinsyc Software, Inc.</P
+><P
+>Linux&reg; is a registered trademark of Linus Torvalds. </P
+><P
+>Matsushita&#8482; and Panasonic&reg; are trademarks of the Matsushita Electric Industrial Corporation.</P
+><P
+>Microsoft&reg;, Windows&reg;, Windows NT&reg; and Windows XP&reg; are registered trademarks of Microsoft Corporation, Inc. </P
+><P
+>MIPS&reg;, MIPS32&#8482; MIPS64&#8482;, 4K&#8482;, 5K&#8482; Atlas&#8482; and Malta&#8482; are trademarks of MIPS Technologies, Inc.</P
+><P
+>Motorola&reg;, ColdFire&reg; is a trademark of Motorola, Inc.</P
+><P
+>NEC&reg; V800&#8482;, V850&#8482;, V850/SA1&#8482;, V850/SB1&#8482;, VR4300&#8482;, and VRC4375&#8482; are trademarks of NEC Corporation.</P
+><P
+>PMC-Sierra&reg; RM7000&#8482; and Ocelot&#8482; are trademarks of PMC-Sierra Incorporated. </P
+><P
+>Red Hat, eCos&#8482;, RedBoot&#8482;, GNUPro&reg;, and Insight&#8482; are trademarks of Red Hat, Inc. </P
+><P
+>Samsung&reg; and CalmRISC&#8482; are trademarks or registered trademarks of Samsung, Inc. </P
+><P
+>Sharp&reg; is a registered trademark of Sharp Electronics Corp.</P
+><P
+>SPARC&reg; is a registered trademark of SPARC International, Inc., and is used under license by Sun Microsystems, Inc. </P
+><P
+>Sun Microsystems&reg; and Solaris&reg; are registered trademarks of Sun Microsystems, Inc. </P
+><P
+>SuperH&#8482; and Renesas&#8482; are trademarks owned by Renesas Technology Corp.</P
+><P
+>Texas Instruments&reg;, OMAP&#8482; and Innovator&#8482; are trademarks of Texas Instruments Incorporated.</P
+><P
+>Toshiba&reg; is a registered trademark of the Toshiba Corporation.</P
+><P
+>UNIX&reg; is a registered trademark of The Open Group. </P
+><P
+>All other brand and product names, trademarks, and copyrights are the
+property of their respective owners. </P
+></DIV
+><DIV
+CLASS="LEGALNOTICE"
+><A
+NAME="AEN53"
+></A
+><P
+><B
+>Warranty</B
+></P
+><P
+>eCos and RedBoot are open source software, covered by a
+modified version of the <A
+HREF="http://www.gnu.org/copyleft/gpl.html"
+TARGET="_top"
+>GNU
+General Public Licence</A
+>,
+and you are welcome to change it and/or distribute copies of it under certain
+conditions. See <A
+HREF="http://ecos.sourceware.org/license-overview.html"
+TARGET="_top"
+>http://ecos.sourceware.org/license-overview.html</A
+> for more information about the license.</P
+><P
+>eCos and RedBoot software have NO WARRANTY. </P
+><P
+>Because this software is licensed free of charge, there are no warranties
+for it, to the extent permitted by applicable law. Except when otherwise stated
+in writing, the copyright holders and/or other parties provide the software
+&#8220;as is&#8221; without warranty of any kind, either expressed or implied,
+including, but not limited to, the implied warranties of merchantability and
+fitness for a particular purpose. The entire risk as to the quality and performance
+of the software is with you. Should the software prove defective, you assume
+the cost of all necessary servicing, repair or correction.</P
+><P
+> In no event, unless required by applicable law or agreed to in writing,
+will any copyright holder, or any other party who may modify and/or redistribute
+the program as permitted above, be liable to you for damages, including any
+general, special, incidental or consequential damages arising out of the use
+or inability to use the program (including but not limited to loss of data
+or data being rendered inaccurate or losses sustained by you or third parties
+or a failure of the program to operate with any other programs), even if such
+holder or other party has been advised of the possibility of such damages.</P
+></DIV
+><HR></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>I. <A
+HREF="kernel.html"
+>The eCos Kernel</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="kernel-overview.html"
+>Kernel Overview</A
+>&nbsp;--&nbsp;Overview of the eCos Kernel</DT
+><DT
+><A
+HREF="kernel-smp.html"
+>SMP Support</A
+>&nbsp;--&nbsp;Support Symmetric Multiprocessing Systems</DT
+><DT
+><A
+HREF="kernel-thread-create.html"
+>Thread creation</A
+>&nbsp;--&nbsp;Create a new thread</DT
+><DT
+><A
+HREF="kernel-thread-info.html"
+>Thread information</A
+>&nbsp;--&nbsp;Get basic thread information</DT
+><DT
+><A
+HREF="kernel-thread-control.html"
+>Thread control</A
+>&nbsp;--&nbsp;Control whether or not a thread is running</DT
+><DT
+><A
+HREF="kernel-thread-termination.html"
+>Thread termination</A
+>&nbsp;--&nbsp;Allow threads to terminate</DT
+><DT
+><A
+HREF="kernel-thread-priorities.html"
+>Thread priorities</A
+>&nbsp;--&nbsp;Examine and manipulate thread priorities</DT
+><DT
+><A
+HREF="kernel-thread-data.html"
+>Per-thread data</A
+>&nbsp;--&nbsp;Manipulate per-thread data</DT
+><DT
+><A
+HREF="kernel-thread-destructors.html"
+>Thread destructors</A
+>&nbsp;--&nbsp;Call functions on thread termination</DT
+><DT
+><A
+HREF="kernel-exceptions.html"
+>Exception handling</A
+>&nbsp;--&nbsp;Handle processor exceptions</DT
+><DT
+><A
+HREF="kernel-counters.html"
+>Counters</A
+>&nbsp;--&nbsp;Count event occurrences</DT
+><DT
+><A
+HREF="kernel-clocks.html"
+>Clocks</A
+>&nbsp;--&nbsp;Provide system clocks</DT
+><DT
+><A
+HREF="kernel-alarms.html"
+>Alarms</A
+>&nbsp;--&nbsp;Run an alarm function when a number of events have occurred</DT
+><DT
+><A
+HREF="kernel-mutexes.html"
+>Mutexes</A
+>&nbsp;--&nbsp;Synchronization primitive</DT
+><DT
+><A
+HREF="kernel-condition-variables.html"
+>Condition Variables</A
+>&nbsp;--&nbsp;Synchronization primitive</DT
+><DT
+><A
+HREF="kernel-semaphores.html"
+>Semaphores</A
+>&nbsp;--&nbsp;Synchronization primitive</DT
+><DT
+><A
+HREF="kernel-mail-boxes.html"
+>Mail boxes</A
+>&nbsp;--&nbsp;Synchronization primitive</DT
+><DT
+><A
+HREF="kernel-flags.html"
+>Event Flags</A
+>&nbsp;--&nbsp;Synchronization primitive</DT
+><DT
+><A
+HREF="kernel-spinlocks.html"
+>Spinlocks</A
+>&nbsp;--&nbsp;Low-level Synchronization Primitive</DT
+><DT
+><A
+HREF="kernel-schedcontrol.html"
+>Scheduler Control</A
+>&nbsp;--&nbsp;Control the state of the scheduler</DT
+><DT
+><A
+HREF="kernel-interrupts.html"
+>Interrupt Handling</A
+>&nbsp;--&nbsp;Manage interrupt handlers</DT
+><DT
+><A
+HREF="kernel-characterization.html"
+>Kernel Real-time Characterization</A
+>&nbsp;--&nbsp;Measure the performance of the eCos kernel</DT
+></DL
+></DD
+><DT
+>II. <A
+HREF="the-ecos-hardware-abstraction-layer.html"
+>The eCos Hardware Abstraction Layer (HAL)</A
+></DT
+><DD
+><DL
+><DT
+>1. <A
+HREF="hal-introduction.html"
+>Introduction</A
+></DT
+><DT
+>2. <A
+HREF="hal-architecture-variant-and-platform.html"
+>Architecture, Variant and Platform</A
+></DT
+><DT
+>3. <A
+HREF="hal-general-principles.html"
+>General principles</A
+></DT
+><DT
+>4. <A
+HREF="hal-interfaces.html"
+>HAL Interfaces</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="hal-interfaces.html#HAL-BASE-DEFINITIONS"
+>Base Definitions</A
+></DT
+><DT
+><A
+HREF="hal-architecture-characterization.html"
+>Architecture Characterization</A
+></DT
+><DT
+><A
+HREF="hal-interrupt-handling.html"
+>Interrupt Handling</A
+></DT
+><DT
+><A
+HREF="hal-clocks-and-timers.html"
+>Clocks and Timers</A
+></DT
+><DT
+><A
+HREF="hal-input-and-output.html"
+>HAL I/O</A
+></DT
+><DT
+><A
+HREF="hal-cache-control.html"
+>Cache Control</A
+></DT
+><DT
+><A
+HREF="hal-linker-scripts.html"
+>Linker Scripts</A
+></DT
+><DT
+><A
+HREF="hal-diagnostic-support.html"
+>Diagnostic Support</A
+></DT
+><DT
+><A
+HREF="hal-smp-support.html"
+>SMP Support</A
+></DT
+></DL
+></DD
+><DT
+>5. <A
+HREF="hal-exception-handling.html"
+>Exception Handling</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="hal-exception-handling.html#HAL-STARTUP"
+>HAL Startup</A
+></DT
+><DT
+><A
+HREF="hal-vectors-and-vsrs.html"
+>Vectors and VSRs</A
+></DT
+><DT
+><A
+HREF="hal-default-synchronous-exception-handling.html"
+>Default Synchronous Exception Handling</A
+></DT
+><DT
+><A
+HREF="hal-default-interrupt-handling.html"
+>Default Interrupt Handling</A
+></DT
+></DL
+></DD
+><DT
+>6. <A
+HREF="hal-porting-guide.html"
+>Porting Guide</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="hal-porting-guide.html#HAL-PORTING-INTRO"
+>Introduction</A
+></DT
+><DT
+><A
+HREF="hal-porting-structure.html"
+>HAL Structure</A
+></DT
+><DT
+><A
+HREF="hal-calling-if.html"
+>Virtual Vectors (eCos/ROM Monitor Calling Interface)</A
+></DT
+><DT
+><A
+HREF="hal-porting-coding-conventions.html"
+>HAL Coding Conventions</A
+></DT
+><DT
+><A
+HREF="hal-porting-platform.html"
+>Platform HAL Porting</A
+></DT
+><DT
+><A
+HREF="hal-porting-variant.html"
+>Variant HAL Porting</A
+></DT
+><DT
+><A
+HREF="hal-porting-architecture.html"
+>Architecture HAL Porting</A
+></DT
+></DL
+></DD
+><DT
+>7. <A
+HREF="hal-future-developments.html"
+>Future developments</A
+></DT
+></DL
+></DD
+><DT
+>III. <A
+HREF="libc.html"
+>The ISO Standard C and Math Libraries</A
+></DT
+><DD
+><DL
+><DT
+>8. <A
+HREF="c-and-math-library-overview.html"
+>C and math library overview</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="c-and-math-library-overview.html#INCLUDE-NON-ISO-FUNCTIONS"
+>Included non-ISO functions</A
+></DT
+><DT
+><A
+HREF="math-library-compatibility-modes.html"
+>Math library compatibility modes</A
+></DT
+><DT
+><A
+HREF="libc-implementation-details.html"
+>Some implementation details</A
+></DT
+><DT
+><A
+HREF="libc-thread-safety.html"
+>Thread safety</A
+></DT
+><DT
+><A
+HREF="c-library-startup.html"
+>C library startup</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>IV. <A
+HREF="io.html"
+>I/O Package (Device Drivers)</A
+></DT
+><DD
+><DL
+><DT
+>9. <A
+HREF="io-package-intro.html"
+>Introduction</A
+></DT
+><DT
+>10. <A
+HREF="io-user-api.html"
+>User API</A
+></DT
+><DT
+>11. <A
+HREF="io-serial-driver-details.html"
+>Serial driver details</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="io-serial-driver-details.html#IO-SIMPLE-SERIAL-DRIVER"
+>Raw Serial Driver</A
+></DT
+><DT
+><A
+HREF="io-tty-driver.html"
+>TTY driver</A
+></DT
+></DL
+></DD
+><DT
+>12. <A
+HREF="io-how-to-write-a-driver.html"
+>How to Write a Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="io-how-to-write-a-driver.html#IO-HOW-TO-WRITE-SERIAL-INTERFACE-DRIVER"
+>How to Write a Serial Hardware Interface Driver</A
+></DT
+><DT
+><A
+HREF="io-serial-testing-with-serfilter.html"
+>Serial testing with ser_filter</A
+></DT
+></DL
+></DD
+><DT
+>13. <A
+HREF="devapi-device-driver-interface-to-the-kernel.html"
+>Device Driver Interface to the Kernel</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devapi-device-driver-interface-to-the-kernel.html#DEVAPI-INTERRUPT-MODEL"
+>Interrupt Model</A
+></DT
+><DT
+><A
+HREF="devapi-synchronization.html"
+>Synchronization</A
+></DT
+><DT
+><A
+HREF="devapi-smp-support.html"
+>SMP Support</A
+></DT
+><DT
+><A
+HREF="devapi-device-driver-models.html"
+>Device Driver Models</A
+></DT
+><DT
+><A
+HREF="devapi-synchronization-levels.html"
+>Synchronization Levels</A
+></DT
+><DT
+><A
+HREF="devapi-api.html"
+>The API</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>V. <A
+HREF="fileio.html"
+>File System Support Infrastructure</A
+></DT
+><DD
+><DL
+><DT
+>14. <A
+HREF="fileio-intro.html"
+>Introduction</A
+></DT
+><DT
+>15. <A
+HREF="fileio-fstab.html"
+>File System Table</A
+></DT
+><DT
+>16. <A
+HREF="fileio-mount-table.html"
+>Mount Table</A
+></DT
+><DT
+>17. <A
+HREF="fileio-file-table.html"
+>File Table</A
+></DT
+><DT
+>18. <A
+HREF="fileio-directories.html"
+>Directories</A
+></DT
+><DT
+>19. <A
+HREF="fileio-synchronization.html"
+>Synchronization</A
+></DT
+><DT
+>20. <A
+HREF="fileio-mounting.html"
+>Initialization and Mounting</A
+></DT
+><DT
+>21. <A
+HREF="fileio-sockets.html"
+>Sockets</A
+></DT
+><DT
+>22. <A
+HREF="fileio-select.html"
+>Select</A
+></DT
+><DT
+>23. <A
+HREF="fileio-devices.html"
+>Devices</A
+></DT
+><DT
+>24. <A
+HREF="fileio-writing.html"
+>Writing a New Filesystem</A
+></DT
+></DL
+></DD
+><DT
+>VI. <A
+HREF="io-pci.html"
+>PCI Library</A
+></DT
+><DD
+><DL
+><DT
+>25. <A
+HREF="ecos-pci-library.html"
+>The eCos PCI Library</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="ecos-pci-library.html#PCI-LIBRARY"
+>PCI Library</A
+></DT
+><DT
+><A
+HREF="pci-library-reference.html"
+>PCI Library reference</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>VII. <A
+HREF="io-flash.html"
+>FLASH Library</A
+></DT
+><DD
+><DL
+><DT
+>26. <A
+HREF="ecos-flash-library.html"
+>The eCos FLASH Library</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="ecos-flash-library.html#AEN7823"
+>Notes on using the FLASH library</A
+></DT
+><DT
+><A
+HREF="io-flash-danger.html"
+>Danger, Will Robinson! Danger!</A
+></DT
+></DL
+></DD
+><DT
+>27. <A
+HREF="ecos-flash-v2.html"
+>The Version 2 eCos FLASH API</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="ecos-flash-v2.html#ECOS-FLASH-V2-API"
+>FLASH user API</A
+></DT
+><DT
+><A
+HREF="ecos-flash-v2-dev.html"
+>FLASH device API</A
+></DT
+></DL
+></DD
+><DT
+>28. <A
+HREF="ecos-flash-v1.html"
+>The legacy Version 1 eCos FLASH API</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="ecos-flash-v1.html#ECOS-FLASH-V1-API"
+>FLASH user API</A
+></DT
+><DT
+><A
+HREF="ecos-flash-v1-dev.html"
+>FLASH device API</A
+></DT
+></DL
+></DD
+><DT
+>29. <A
+HREF="ecos-flash-iodevice.html"
+>FLASH I/O devices</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="ecos-flash-iodevice.html#ECOS-FLASH-IODEVICE-OVERVIEW-CONFIG"
+>Overview and CDL Configuration</A
+></DT
+><DT
+><A
+HREF="ecos-flash-iodevice-usage.html"
+>Using FLASH I/O devices</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>VIII. <A
+HREF="io-spi.html"
+>SPI Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="spi.html"
+>Overview</A
+>&nbsp;--&nbsp;eCos Support for SPI, the Serial Peripheral Interface</DT
+><DT
+><A
+HREF="spi-api.html"
+>SPI Interface</A
+>&nbsp;--&nbsp;allow applications and other packages to access SPI devices</DT
+><DT
+><A
+HREF="spi-porting.html"
+>Porting to New Hardware</A
+>&nbsp;--&nbsp;Adding SPI support to new hardware</DT
+></DL
+></DD
+><DT
+>IX. <A
+HREF="io-i2c.html"
+>I2C Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="i2c.html"
+>Overview</A
+>&nbsp;--&nbsp;eCos Support for I2C, the Inter IC Bus</DT
+><DT
+><A
+HREF="i2c-api.html"
+>I2C Interface</A
+>&nbsp;--&nbsp;allow applications and other packages to access I2C devices</DT
+><DT
+><A
+HREF="i2c-porting.html"
+>Porting to New Hardware</A
+>&nbsp;--&nbsp;Adding I2C support to new hardware</DT
+></DL
+></DD
+><DT
+>X. <A
+HREF="io-can.html"
+>CAN Support</A
+></DT
+><DD
+><DL
+><DT
+>30. <A
+HREF="io-can-overview.html"
+>Overview</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="io-can-overview.html#IO-CAN-OVERVIEW-DESCR"
+>Description</A
+></DT
+><DT
+><A
+HREF="io-can-ecos-support.html"
+>eCos Support for CAN</A
+></DT
+></DL
+></DD
+><DT
+>31. <A
+HREF="io-can-api.html"
+>User API</A
+></DT
+><DT
+>32. <A
+HREF="io-can-driver-details.html"
+>CAN driver details</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="io-can-driver-details.html#IO-CAN-DRIVER-DESCRIPTION"
+>Description</A
+></DT
+><DT
+><A
+HREF="io-can-api-details.html"
+>API Details</A
+></DT
+><DT
+><A
+HREF="io-can-runtime-cfg.html"
+>Runtime Configuration</A
+></DT
+></DL
+></DD
+><DT
+>33. <A
+HREF="io-can-configuration.html"
+>Configuration</A
+></DT
+><DT
+>34. <A
+HREF="io-can-device-drivers.html"
+>Writing a CAN hardware device driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="io-can-device-drivers.html#IO-CAN-HOW-TO-WRITE-INTERFACE-DRIVER"
+>How to Write a CAN Hardware Interface Driver</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XI. <A
+HREF="io-adc.html"
+>ADC Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="adc.html"
+>Overview</A
+>&nbsp;--&nbsp;eCos Support for Analog/Digital Converters</DT
+><DT
+><A
+HREF="adcdev.html"
+>ADC Device Drivers</A
+>&nbsp;--&nbsp;ADC Device Drivers</DT
+></DL
+></DD
+><DT
+>XII. <A
+HREF="io-framebuf.html"
+>Framebuffer Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="framebuf.html"
+>Overview</A
+>&nbsp;--&nbsp;eCos Support for Framebuffer Devices</DT
+><DT
+><A
+HREF="framebuf-parameters.html"
+>Framebuffer Parameters</A
+>&nbsp;--&nbsp;determining framebuffer capabilities</DT
+><DT
+><A
+HREF="framebuf-control.html"
+>Framebuffer Control Operations</A
+>&nbsp;--&nbsp;managing a framebuffer</DT
+><DT
+><A
+HREF="framebuf-colour.html"
+>Framebuffer Colours</A
+>&nbsp;--&nbsp;formats and palette management</DT
+><DT
+><A
+HREF="framebuf-drawing.html"
+>Framebuffer Drawing Primitives</A
+>&nbsp;--&nbsp;updating the display</DT
+><DT
+><A
+HREF="framebuf-iterating.html"
+>Framebuffer Pixel Manipulation</A
+>&nbsp;--&nbsp;iterating over the display</DT
+><DT
+><A
+HREF="framebuf-porting.html"
+>Writing a Framebuffer Device Driver</A
+>&nbsp;--&nbsp;writing a new framebuffer device driver</DT
+></DL
+></DD
+><DT
+>XIII. <A
+HREF="posix-compatibility.html"
+>eCos POSIX compatibility layer</A
+></DT
+><DD
+><DL
+><DT
+>35. <A
+HREF="posix-standard-support.html"
+>POSIX Standard Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="posix-standard-support.html#POSIX-PROCESS-PRIMITIVES"
+>Process Primitives &#0091;POSIX Section 3&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-process-environment.html"
+>Process Environment &#0091;POSIX Section 4&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-files-and-directories.html"
+>Files and Directories &#0091;POSIX Section 5&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-input-and-output.html"
+>Input and Output &#0091;POSIX Section 6&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-device-and-class-specific-functions.html"
+>Device and Class Specific Functions &#0091;POSIX Section 7&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-c-language-services.html"
+>C Language Services &#0091;POSIX Section 8&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-system-databases.html"
+>System Databases &#0091;POSIX Section 9&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-data-interchange-format.html"
+>Data Interchange Format &#0091;POSIX Section 10&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-synchronization.html"
+>Synchronization &#0091;POSIX Section 11&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-memory-management.html"
+>Memory Management &#0091;POSIX Section 12&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-execution-scheduling.html"
+>Execution Scheduling &#0091;POSIX Section 13&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-clocks-and-timers.html"
+>Clocks and Timers &#0091;POSIX Section 14&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-message-passing.html"
+>Message Passing &#0091;POSIX Section 15&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-thread-management.html"
+>Thread Management &#0091;POSIX Section 16&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-thread-specific-data.html"
+>Thread-Specific Data &#0091;POSIX Section 17&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-thread-cancellation.html"
+>Thread Cancellation &#0091;POSIX Section 18&#0093;</A
+></DT
+><DT
+><A
+HREF="posix-non-posix-functions.html"
+>Non-POSIX Functions</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="posix-compatibility.html#POSIX-REFERENCES-AND-BIBLIOGRAPHY"
+>References and Bibliography</A
+></DT
+></DL
+></DD
+><DT
+>XIV. <A
+HREF="compat-uitron.html"
+>&micro;ITRON</A
+></DT
+><DD
+><DL
+><DT
+>36. <A
+HREF="compat-uitron-microitron-api.html"
+>&micro;ITRON API</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="compat-uitron-microitron-api.html#COMPAT-UITRON-INTRODUCTION"
+>Introduction to &micro;ITRON</A
+></DT
+><DT
+><A
+HREF="compat-uitron-over-ecos.html"
+>&micro;ITRON and <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>eCos</I
+></SPAN
+></A
+></DT
+><DT
+><A
+HREF="compat-uitron-task-management-functions.html"
+>Task Management Functions</A
+></DT
+><DT
+><A
+HREF="compat-uitron-task-dependent-synch-functions.html"
+>Task-Dependent Synchronization Functions</A
+></DT
+><DT
+><A
+HREF="compat-uitron-sync-and-comm-functions.html"
+>Synchronization and Communication Functions</A
+></DT
+><DT
+><A
+HREF="compat-uitron-extended-sync-comm-functions.html"
+>Extended Synchronization and Communication Functions</A
+></DT
+><DT
+><A
+HREF="compat-uitron-interrupt-management-functions.html"
+>Interrupt management functions</A
+></DT
+><DT
+><A
+HREF="compat-uitron-memory-pool-mgmt-functions.html"
+>Memory pool Management Functions</A
+></DT
+><DT
+><A
+HREF="compat-uitron-time-mgmt-functions.html"
+>Time Management Functions</A
+></DT
+><DT
+><A
+HREF="compat-uitron-system-mgmt-functions.html"
+>System Management Functions</A
+></DT
+><DT
+><A
+HREF="compat-uitron-network-support-functions.html"
+>Network Support Functions</A
+></DT
+><DT
+><A
+HREF="compat-uitron-configuration-faq.html"
+>&micro;ITRON Configuration FAQ</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XV. <A
+HREF="net-common-tcpip.html"
+>TCP/IP Stack Support for eCos</A
+></DT
+><DD
+><DL
+><DT
+>37. <A
+HREF="net-common-ethernet-driver-design.html"
+>Ethernet Driver Design</A
+></DT
+><DT
+>38. <A
+HREF="net-common-sample-code.html"
+>Sample Code</A
+></DT
+><DT
+>39. <A
+HREF="net-common-configuring-ip-addresses.html"
+>Configuring IP Addresses</A
+></DT
+><DT
+>40. <A
+HREF="net-common-tests-and-demonstrations.html"
+>Tests and Demonstrations</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="net-common-tests-and-demonstrations.html#NET-COMMON-LOOPBACK-TESTS"
+>Loopback tests</A
+></DT
+><DT
+><A
+HREF="net-common-building-the-network-tests.html"
+>Building the Network Tests</A
+></DT
+><DT
+><A
+HREF="net-common-standalone-tests.html"
+>Standalone Tests</A
+></DT
+><DT
+><A
+HREF="net-common-performance-test.html"
+>Performance Test</A
+></DT
+><DT
+><A
+HREF="net-common-interactive-tests.html"
+>Interactive Tests</A
+></DT
+><DT
+><A
+HREF="net-common-maintenance-tools.html"
+>Maintenance Tools</A
+></DT
+></DL
+></DD
+><DT
+>41. <A
+HREF="net-common-support.html"
+>Support Features</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="net-common-support.html#NET-COMMON-TFTP"
+>TFTP</A
+></DT
+><DT
+><A
+HREF="net-common-dhcp.html"
+>DHCP</A
+></DT
+></DL
+></DD
+><DT
+>42. <A
+HREF="tcpip-library-reference.html"
+>TCP/IP Library Reference</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="tcpip-library-reference.html#NET-COMMON-TCPIP-MANPAGES-GETDOMAINNAME"
+>getdomainname</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-gethostname.html"
+>gethostname</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-byteorder.html"
+>byteorder</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-ethers.html"
+>ethers</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-getaddrinfo.html"
+>getaddrinfo</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-gethostbyname.html"
+>gethostbyname</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-getifaddrs.html"
+>getifaddrs</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-getnameinfo.html"
+>getnameinfo</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-getnetent.html"
+>getnetent</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-getprotoent.html"
+>getprotoent</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-getrrsetbyname.html"
+>getrrsetbyname</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-getservent.html"
+>getservent</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-if-nametoindex.html"
+>if_nametoindex</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-inet.html"
+>inet</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-inet6-option-space.html"
+>inet6_option_space</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-inet6-rthdr-space.html"
+>inet6_rthdr_space</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-inet-net.html"
+>inet_net</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-ipx.html"
+>ipx</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-iso-addr.html"
+>iso_addr</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-link-addr.html"
+>link_addr</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-net-addrcmp.html"
+>net_addrcmp</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-ns.html"
+>ns</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-resolver.html"
+>resolver</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-accept.html"
+>accept</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-bind.html"
+>bind</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-connect.html"
+>connect</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-getpeername.html"
+>getpeername</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-getsockname.html"
+>getsockname</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-getsockopt.html"
+>getsockopt</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-ioctl.html"
+>ioctl</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-poll.html"
+>poll</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-select.html"
+>select</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-send.html"
+>send</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-shutdown.html"
+>shutdown</A
+></DT
+><DT
+><A
+HREF="net-common-tcpip-manpages-socket.html"
+>socket</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XVI. <A
+HREF="tcpip-freebsd.html"
+>FreeBSD TCP/IP Stack port for eCos</A
+></DT
+><DD
+><DL
+><DT
+>43. <A
+HREF="tcpip-freebsd-networking-stack-features.html"
+>Networking Stack Features</A
+></DT
+><DT
+>44. <A
+HREF="tcpip-freebsd-stack-port.html"
+>Freebsd TCP/IP stack port</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="tcpip-freebsd-stack-port.html#TCPIP-FREEBSD-TCPIP-TARGETS"
+>Targets</A
+></DT
+><DT
+><A
+HREF="tcpip-freebsd-building-the-network-stack.html"
+>Building the Network Stack</A
+></DT
+></DL
+></DD
+><DT
+>45. <A
+HREF="tcpip-freebsd-tcpip-apis.html"
+>APIs</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="tcpip-freebsd-tcpip-apis.html#TCPIP-FREEBSD-STANDARD-NETWORKING-API"
+>Standard networking</A
+></DT
+><DT
+><A
+HREF="tcpip-freebsd-enhanced-select.html"
+>Enhanced Select()</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XVII. <A
+HREF="tcpip-openbsd.html"
+>OpenBSD TCP/IP Stack port for eCos</A
+></DT
+><DD
+><DL
+><DT
+>46. <A
+HREF="tcpip-openbsd-networking-stack-features.html"
+>Networking Stack Features</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="tcpip-openbsd-networking-stack-features.html#TCPIP-OPENBSD-TCPIP-FEATURES"
+>Introduction</A
+></DT
+></DL
+></DD
+><DT
+>47. <A
+HREF="tcpip-openbsd-stack-port.html"
+>OpenBSD TCP/IP stack port</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="tcpip-openbsd-stack-port.html#TCPIP-OPENBSD-TCPIP-TARGETS"
+>Targets</A
+></DT
+><DT
+><A
+HREF="tcpip-openbsd-building-the-network-stack.html"
+>Building the Network Stack</A
+></DT
+><DT
+><A
+HREF="tcpip-openbsd-building-the-bridge-code.html"
+>Inclusion of bridge code</A
+></DT
+></DL
+></DD
+><DT
+>48. <A
+HREF="tcpip-openbsd-tcpip-apis.html"
+>APIs</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="tcpip-openbsd-tcpip-apis.html#TCPIP-OPENBSD-STANDARD-NETWORKING-API"
+>Standard networking</A
+></DT
+><DT
+><A
+HREF="tcpip-openbsd-enhanced-select.html"
+>Enhanced Select()</A
+></DT
+><DT
+><A
+HREF="openbsd-manpages-netintro.html"
+>OpenBSD networking facilities</A
+></DT
+><DT
+><A
+HREF="openbsd-manpages-bridge.html"
+>Bridging</A
+></DT
+><DT
+><A
+HREF="openbsd-manpages-stp.html"
+>Spanning Tree Protocol</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XVIII. <A
+HREF="net-ns-dns.html"
+>DNS for eCos and RedBoot</A
+></DT
+><DD
+><DL
+><DT
+>49. <A
+HREF="net-ns-dns-api.html"
+>DNS</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="net-ns-dns-api.html#NET-NS-DNS-API1"
+>DNS API</A
+></DT
+><DT
+><A
+HREF="net-ns-dns-testing.html"
+>DNS Client Testing</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XIX. <A
+HREF="net-ipsec-common.html"
+>IPSEC for eCos</A
+></DT
+><DD
+><DL
+><DT
+>50. <A
+HREF="net-ipsec-common-installation.html"
+>Installation and Configuration</A
+></DT
+><DT
+>51. <A
+HREF="libipsec-library-reference.html"
+>libipsec Reference</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="libipsec-library-reference.html#NET-IPSEC-LIBIPSEC-MAN-IPSEC-SET-POLICY"
+>ipsec_set_policy</A
+></DT
+><DT
+><A
+HREF="net-ipsec-libipsec-man-ipsec-strerror.html"
+>ipsec_strerror</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XX. <A
+HREF="ppp.html"
+><SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+> PPP User Guide</A
+></DT
+><DD
+><DL
+><DT
+>52. <A
+HREF="ppp-features.html"
+>Features</A
+></DT
+><DT
+>53. <A
+HREF="ppp-using.html"
+>Using PPP</A
+></DT
+><DT
+>54. <A
+HREF="ppp-interface.html"
+>PPP Interface</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="ppp-options-init.html"
+>cyg_ppp_options_init()</A
+>&nbsp;--&nbsp;Initialize PPP link options</DT
+><DT
+><A
+HREF="ppp-up.html"
+>cyg_ppp_up()</A
+>&nbsp;--&nbsp;Bring PPP connection up</DT
+><DT
+><A
+HREF="ppp-down.html"
+>cyg_ppp_down()</A
+>&nbsp;--&nbsp;Bring PPP connection down</DT
+><DT
+><A
+HREF="ppp-wait-up.html"
+>cyg_ppp_wait_up()</A
+>&nbsp;--&nbsp;Wait for PPP connection to come up</DT
+><DT
+><A
+HREF="ppp-wait-down.html"
+>cyg_ppp_wait_down()</A
+>&nbsp;--&nbsp;Wait for PPP connection to terminate</DT
+><DT
+><A
+HREF="ppp-chat-fn.html"
+>cyg_ppp_chat()</A
+>&nbsp;--&nbsp;Execute chat script</DT
+></DL
+></DD
+><DT
+>55. <A
+HREF="ppp-config.html"
+>Installing and Configuring PPP</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="ppp-config.html#PPP-CONFIG-INCLUDE"
+>Including PPP in a Configuration</A
+></DT
+><DT
+><A
+HREF="ppp-config-config.html"
+>Configuring PPP</A
+></DT
+></DL
+></DD
+><DT
+>56. <A
+HREF="ppp-chat.html"
+>CHAT Scripts</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="ppp-chat.html#PPP-CHAT-SCRIPT"
+>Chat Script</A
+></DT
+><DT
+><A
+HREF="ppp-chat-abort.html"
+>ABORT Strings</A
+></DT
+><DT
+><A
+HREF="ppp-chat-timeout.html"
+>TIMEOUT</A
+></DT
+><DT
+><A
+HREF="ppp-chat-eot.html"
+>Sending EOT</A
+></DT
+><DT
+><A
+HREF="ppp-chat-escape.html"
+>Escape Sequences</A
+></DT
+></DL
+></DD
+><DT
+>57. <A
+HREF="ppp-drivers.html"
+>PPP Enabled Device Drivers</A
+></DT
+><DT
+>58. <A
+HREF="ppp-tests.html"
+>Testing</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="ppp-tests.html#AEN13800"
+>Test Programs</A
+></DT
+><DT
+><A
+HREF="ppp-test-script.html"
+>Test Script</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXI. <A
+HREF="io-eth-drv-generic.html"
+>Ethernet Device Drivers</A
+></DT
+><DD
+><DL
+><DT
+>59. <A
+HREF="io-eth-drv-generic1.html"
+>Generic Ethernet Device Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="io-eth-drv-generic1.html#IO-ETH-DRV-API"
+>Generic Ethernet API</A
+></DT
+><DT
+><A
+HREF="io-eth-drv-api-funcs.html"
+>Review of the functions</A
+></DT
+><DT
+><A
+HREF="io-eth-drv-upper-api.html"
+>Upper Layer Functions</A
+></DT
+><DT
+><A
+HREF="io-eth-call-graph.html"
+>Calling graph for Transmission and Reception</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXII. <A
+HREF="io-eth-phy-generic.html"
+>Ethernet PHY Device Support</A
+></DT
+><DD
+><DL
+><DT
+>60. <A
+HREF="io-eth-phy-generic1.html"
+>Ethernet PHY Device Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="io-eth-phy-generic1.html#IO-ETH-PHY-API"
+>Ethernet PHY Device API</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXIII. <A
+HREF="net-snmp.html"
+>SNMP</A
+></DT
+><DD
+><DL
+><DT
+>61. <A
+HREF="net-snmp-ecos-port.html"
+>SNMP for <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>eCos</I
+></SPAN
+></A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="net-snmp-ecos-port.html#NET-SNMP-VERSION"
+>Version</A
+></DT
+><DT
+><A
+HREF="net-snmp-package-contents.html"
+>SNMP packages in the <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>eCos</I
+></SPAN
+> source repository</A
+></DT
+><DT
+><A
+HREF="net-snmp-mibs-supported.html"
+>MIBs supported</A
+></DT
+><DT
+><A
+HREF="net-snmp-ecos-changes.html"
+>Changes to eCos sources</A
+></DT
+><DT
+><A
+HREF="net-snmp-starting-the-snmp-agent.html"
+>Starting the SNMP Agent</A
+></DT
+><DT
+><A
+HREF="net-snmp-configuring-ecos.html"
+>Configuring eCos</A
+></DT
+><DT
+><A
+HREF="net-snmp-test-cases.html"
+>Test cases</A
+></DT
+><DT
+><A
+HREF="net-snmp-clients-and-package-use.html"
+>SNMP clients and package use</A
+></DT
+><DT
+><A
+HREF="net-snmp-unimplemented-features.html"
+>Unimplemented features</A
+></DT
+><DT
+><A
+HREF="net-snmp-mib-compiler.html"
+>MIB Compiler</A
+></DT
+><DT
+><A
+HREF="net-snmp-agent-manpages-snmpd.conf.html"
+>snmpd.conf</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXIV. <A
+HREF="net-httpd.html"
+>Embedded HTTP Server</A
+></DT
+><DD
+><DL
+><DT
+>62. <A
+HREF="net-httpd-chapter.html"
+>Embedded HTTP Server</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="net-httpd-chapter.html#NET-HTTPD-INTRO"
+>Intrduction</A
+></DT
+><DT
+><A
+HREF="net-httpd-organization.html"
+>Server Organization</A
+></DT
+><DT
+><A
+HREF="net-httpd-configuration.html"
+>Server Configuration</A
+></DT
+><DT
+><A
+HREF="net-httpd-html.html"
+>Support Functions and Macros</A
+></DT
+><DT
+><A
+HREF="net-httpd-monitor.html"
+>System Monitor</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXV. <A
+HREF="net-ftpclient.html"
+>FTP Client for eCos TCP/IP Stack</A
+></DT
+><DD
+><DL
+><DT
+>63. <A
+HREF="net-ftpclient-features.html"
+>FTP Client Features</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="net-ftpclient-features.html#NET-FTPCLIENT-FEATURES-API"
+>FTP Client API</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXVI. <A
+HREF="net-sntp-client.html"
+>Simple Network Time Protocol Client</A
+></DT
+><DD
+><DL
+><DT
+>64. <A
+HREF="net-sntp.html"
+>The SNTP Client</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="net-sntp.html#SNTP-STARTING"
+>Starting the SNTP client</A
+></DT
+><DT
+><A
+HREF="net-sntp-operation.html"
+>What it does</A
+></DT
+><DT
+><A
+HREF="net-sntp-unicast.html"
+>Configuring the unicast list of NTP servers</A
+></DT
+><DT
+><A
+HREF="net-sntp-warning.html"
+>Warning: timestamp wrap around</A
+></DT
+><DT
+><A
+HREF="net-sntp-testing.html"
+>The SNTP test program</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXVII. <A
+HREF="athttpd.html"
+>Another Tiny HTTP Server for <SPAN
+CLASS="PRODUCTNAME"
+>eCos</SPAN
+></A
+></DT
+><DD
+><DL
+><DT
+>65. <A
+HREF="net-athttpd.html"
+>The ATHTTP Server</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="net-athttpd.html#ATHTTPD-FEATURES"
+>Features</A
+></DT
+><DT
+><A
+HREF="athttpd-using.html"
+>Starting the server</A
+></DT
+><DT
+><A
+HREF="athttpd-mime-types.html"
+>MIME types</A
+></DT
+><DT
+><A
+HREF="athttpd-callback.html"
+>C language callback functions</A
+></DT
+><DT
+><A
+HREF="athttpd-cgi.html"
+>CGI</A
+></DT
+><DT
+><A
+HREF="athttpd-authentication.html"
+>Authentication</A
+></DT
+><DT
+><A
+HREF="athttpd-dirlist.html"
+>Directory Listing</A
+></DT
+><DT
+><A
+HREF="athttpd-formvars.html"
+>Form Variables</A
+></DT
+><DT
+><A
+HREF="athttpd-ires.html"
+>Internal Resources</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXVIII. <A
+HREF="services-memalloc-common.html"
+>Memory Allocation</A
+></DT
+><DD
+><DL
+><DT
+>66. <A
+HREF="memalloc.html"
+>eCos Memory Pools</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="memalloc.html#ECOS-MEMORY-POOLS"
+>eCos Memory pools</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXIX. <A
+HREF="services-crc.html"
+>CRC Algorithms</A
+></DT
+><DD
+><DL
+><DT
+>67. <A
+HREF="crc-functions.html"
+>CRC Functions</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="crc-functions.html#SERVICES-CRC-API"
+>CRC API</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXX. <A
+HREF="services-cpuload.html"
+>CPU load measurements</A
+></DT
+><DD
+><DL
+><DT
+>68. <A
+HREF="cpuload-functions.html"
+>CPU Load Measurements</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="cpuload-functions.html#SERVICES-CPULOAD-API"
+>CPU Load API</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>XXXI. <A
+HREF="services-profile-gprof.html"
+>gprof Profiling Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gprof.html"
+>Profiling</A
+>&nbsp;--&nbsp;eCos Support for the gprof profiling tool</DT
+></DL
+></DD
+><DT
+>XXXII. <A
+HREF="services-power.html"
+>eCos Power Management Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="power-intro.html"
+>Introduction</A
+>&nbsp;--&nbsp;eCos support for Power Management</DT
+><DT
+><A
+HREF="power-info.html"
+>Power Management Information</A
+>&nbsp;--&nbsp;finding out about the various power controllers in the system</DT
+><DT
+><A
+HREF="power-change.html"
+>Changing Power Modes</A
+>&nbsp;--&nbsp;reducing or increasing power consumption as needed</DT
+><DT
+><A
+HREF="power-policy.html"
+>Support for Policy Modules</A
+>&nbsp;--&nbsp;closer integration with higher-level code</DT
+><DT
+><A
+HREF="power-attached.html"
+>Attached and Detached Controllers</A
+>&nbsp;--&nbsp;control which power controllers are affected by global changes</DT
+><DT
+><A
+HREF="power-controller.html"
+>Implementing a Power Controller</A
+>&nbsp;--&nbsp;adding power management support to device drivers and
+other packages</DT
+></DL
+></DD
+><DT
+>XXXIII. <A
+HREF="io-usb-slave.html"
+>eCos USB Slave Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="usbs-intro.html"
+>Introduction</A
+>&nbsp;--&nbsp;eCos support for USB slave devices</DT
+><DT
+><A
+HREF="usbs-enum.html"
+>USB Enumeration Data</A
+>&nbsp;--&nbsp;The USB enumeration data structures</DT
+><DT
+><A
+HREF="usbs-start.html"
+>Starting up a USB Device</A
+>&nbsp;--&nbsp;Starting up a USB Device</DT
+><DT
+><A
+HREF="usbs-devtab.html"
+>Devtab Entries</A
+>&nbsp;--&nbsp;Data endpoint data structure</DT
+><DT
+><A
+HREF="usbs-start-rx.html"
+>Receiving Data from the Host</A
+>&nbsp;--&nbsp;Receiving Data from the Host</DT
+><DT
+><A
+HREF="usbs-start-tx.html"
+>Sending Data to the Host</A
+>&nbsp;--&nbsp;Sending Data to the Host</DT
+><DT
+><A
+HREF="usbs-halt.html"
+>Halted Endpoints</A
+>&nbsp;--&nbsp;Support for Halting and Halted Endpoints</DT
+><DT
+><A
+HREF="usbs-control.html"
+>Control Endpoints</A
+>&nbsp;--&nbsp;Control endpoint data structure</DT
+><DT
+><A
+HREF="usbs-data.html"
+>Data Endpoints</A
+>&nbsp;--&nbsp;Data endpoint data structures</DT
+><DT
+><A
+HREF="usbs-writing.html"
+>Writing a USB Device Driver</A
+>&nbsp;--&nbsp;USB Device Driver Porting Guide</DT
+><DT
+><A
+HREF="usbs-testing.html"
+>Testing</A
+>&nbsp;--&nbsp;Testing of USB Device Drivers</DT
+></DL
+></DD
+><DT
+>XXXIV. <A
+HREF="io-usb-slave-eth.html"
+>eCos Support for Developing USB-ethernet Peripherals</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="usbseth-intro.html"
+>Introduction</A
+>&nbsp;--&nbsp;eCos support for developing USB ethernet peripherals</DT
+><DT
+><A
+HREF="usbseth-init.html"
+>Initializing the USB-ethernet Package</A
+>&nbsp;--&nbsp;Initializing the USB-ethernet Package</DT
+><DT
+><A
+HREF="usbseth-data.html"
+>USB-ethernet Data Transfers</A
+>&nbsp;--&nbsp;Exchanging ethernet packets with the USB host</DT
+><DT
+><A
+HREF="usbseth-control.html"
+>USB-ethernet State Handling</A
+>&nbsp;--&nbsp;Maintaining the USB-ethernet connection with the host</DT
+><DT
+><A
+HREF="usbseth-netdev.html"
+>Network Device for the eCos TCP/IP Stack</A
+>&nbsp;--&nbsp;USB-ethernet support for the eCos TCP/IP Stack</DT
+><DT
+><A
+HREF="usbseth-host.html"
+>Example Host-side Device Driver</A
+>&nbsp;--&nbsp;Provide host-side support for the eCos USB-ethernet package</DT
+><DT
+><A
+HREF="usbseth-protocol.html"
+>Communication Protocol</A
+>&nbsp;--&nbsp;Protocol used between the host-side device driver and the eCos
+USB-ethernet package </DT
+></DL
+></DD
+><DT
+>XXXV. <A
+HREF="io-usb-slave-serial.html"
+>eCos Support for USB Serial like Peripherals</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="usbs-serial-intro.html"
+>Introduction</A
+>&nbsp;--&nbsp;        eCos support for USB Serial like Peripherals
+      </DT
+><DT
+><A
+HREF="usbs-serial-config.html"
+>Configuration</A
+>&nbsp;--&nbsp;Configuration USB Serial like Peripherals</DT
+><DT
+><A
+HREF="usbs-serial-host-config.html"
+>Host Configuration</A
+>&nbsp;--&nbsp;Host Configuration for USB Serial like Peripherals
+      </DT
+><DT
+><A
+HREF="usbs-serial-using.html"
+>API Function</A
+>&nbsp;--&nbsp;        eCos USB Serial like Peripherals API
+      </DT
+></DL
+></DD
+><DT
+>XXXVI. <A
+HREF="hal-synth-arch.html"
+>eCos Synthetic Target</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="synth.html"
+>Overview</A
+>&nbsp;--&nbsp;Overview</DT
+><DT
+><A
+HREF="synth-install.html"
+>Installation</A
+>&nbsp;--&nbsp;Preparing to use the synthetic target</DT
+><DT
+><A
+HREF="synth-running.html"
+>Running a Synthetic Target Application</A
+>&nbsp;--&nbsp;Arguments and configuration files</DT
+><DT
+><A
+HREF="synth-gui.html"
+>The I/O Auxiliary's User Interface</A
+>&nbsp;--&nbsp;Controlling the I/O Auxiliary</DT
+><DT
+><A
+HREF="synth-console.html"
+>The Console Device</A
+>&nbsp;--&nbsp;Show output from the eCos application</DT
+><DT
+><A
+HREF="synth-syscalls.html"
+>System Calls</A
+>&nbsp;--&nbsp;Access Linux system facilities</DT
+><DT
+><A
+HREF="synth-new-target.html"
+>Writing New Devices - target</A
+>&nbsp;--&nbsp;extending the synthetic target, target-side</DT
+><DT
+><A
+HREF="synth-new-host.html"
+>Writing New Devices - host</A
+>&nbsp;--&nbsp;extending the synthetic target, host-side</DT
+><DT
+><A
+HREF="synth-porting.html"
+>Porting</A
+>&nbsp;--&nbsp;Adding support for other hosts</DT
+></DL
+></DD
+><DT
+>XXXVII. <A
+HREF="hal-m68k-arch.html"
+>M68000 Architectural Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="m68k.html"
+>Overview</A
+>&nbsp;--&nbsp;eCos Support for the M68K Family of Processors</DT
+><DT
+><A
+HREF="m68k-configuration.html"
+>Configuration</A
+>&nbsp;--&nbsp;Configuring the M68K Architectural Package</DT
+><DT
+><A
+HREF="m68k-port.html"
+>The HAL Port</A
+>&nbsp;--&nbsp;Implementation Details</DT
+></DL
+></DD
+><DT
+>XXXVIII. <A
+HREF="hal-m68k-mcfxxxx.html"
+>Freescale MCFxxxx Variant Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="m68k-mcfxxxx.html"
+>MCFxxxx ColdFire Processors</A
+>&nbsp;--&nbsp;eCos Support for Freescale MCFxxxx Processors</DT
+></DL
+></DD
+><DT
+>XXXIX. <A
+HREF="hal-m68k-mcf5272.html"
+>Freescale MCF5272 Processor Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="m68k-mcf5272.html"
+>The MCF5272 ColdFire Processor</A
+>&nbsp;--&nbsp;eCos Support for the Freescale MCF5272 Processor</DT
+></DL
+></DD
+><DT
+>XL. <A
+HREF="hal-m68k-m5272c3-part.html"
+>Freescale M5272C3 Board Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="m68k-m5272c3.html"
+>Overview</A
+>&nbsp;--&nbsp;Overview</DT
+><DT
+><A
+HREF="m68k-m5272c3-setup.html"
+>Setup</A
+>&nbsp;--&nbsp;Preparing the M5272C3 board for eCos Development</DT
+><DT
+><A
+HREF="m68k-m5272c3-config.html"
+>Configuration</A
+>&nbsp;--&nbsp;Platform-specific Configuration Options</DT
+><DT
+><A
+HREF="m68k-m5272c3-port.html"
+>The HAL Port</A
+>&nbsp;--&nbsp;Implementation Details</DT
+></DL
+></DD
+><DT
+>XLI. <A
+HREF="hal-sh4-microdev-part.html"
+>SuperH SH4-202 MicroDev Board Support</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="sh4-microdev.html"
+>Overview</A
+>&nbsp;--&nbsp;Overview</DT
+><DT
+><A
+HREF="sh4-microdev-setup.html"
+>Setup</A
+>&nbsp;--&nbsp;Preparing the MicroDev board for eCos Development</DT
+><DT
+><A
+HREF="sh4-microdev-config.html"
+>Configuration</A
+>&nbsp;--&nbsp;Platform-specific Configuration Options</DT
+><DT
+><A
+HREF="sh4-microdev-port.html"
+>The HAL Port</A
+>&nbsp;--&nbsp;Implementation Details</DT
+></DL
+></DD
+><DT
+>XLII. <A
+HREF="devs-usb-sa11x0-ref.html"
+>SA11X0 USB Device Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devs-usb-sa11x0.html"
+>SA11X0 USB Device Driver</A
+>&nbsp;--&nbsp;Device driver for the on-chip SA11X0 USB device</DT
+></DL
+></DD
+><DT
+>XLIII. <A
+HREF="devs-usb-nec-upd985xx-ref.html"
+>NEC uPD985xx USB Device Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devs-usb-nec-upd985xx.html"
+>NEC uPD985xx USB Device Driver</A
+>&nbsp;--&nbsp;Device driver for the on-chip NEC uPD985xx USB device</DT
+></DL
+></DD
+><DT
+>XLIV. <A
+HREF="devs-eth-synth-ecosynth-ref.html"
+>Synthetic Target Ethernet Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devs-eth-synth-ecosynth.html"
+>Synthetic Target Ethernet Driver</A
+>&nbsp;--&nbsp;Allow synthetic target applications to perform ethernet I/O</DT
+></DL
+></DD
+><DT
+>XLV. <A
+HREF="devs-eth-m68k-mcfxxxx-part.html"
+>Freescale ColdFire Ethernet Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devs-eth-m68k-mcfxxxx.html"
+>Freescale ColdFire Ethernet Driver</A
+>&nbsp;--&nbsp;eCos Support for Freescale ColdFire On-chip Ethernet Devices</DT
+></DL
+></DD
+><DT
+>XLVI. <A
+HREF="devs-ser-m68k-mcfxxxx-part.html"
+>Freescale MCFxxxx Serial Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devs-ser-m68k-mcfxxxx.html"
+>MCFxxxx Serial Driver</A
+>&nbsp;--&nbsp;eCos Support for the MCFxxxx On-chip Serial Devices</DT
+></DL
+></DD
+><DT
+>XLVII. <A
+HREF="devs-watchdog-synth-ref.html"
+>Synthetic Target Watchdog Device</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devs-watchdog-synth.html"
+>Synthetic Target Watchdog Device</A
+>&nbsp;--&nbsp;Emulate watchdog hardware in the synthetic target</DT
+></DL
+></DD
+><DT
+>XLVIII. <A
+HREF="devs-wallclock-dallas-ds1307-part.html"
+>Dallas DS1307 Wallclock Device Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devs-wallclock-dallas-ds1307.html"
+>Dallas DS1307 Wallclock Device Driver</A
+>&nbsp;--&nbsp;eCos Support for the Dallas DS1307 Serial Real-Time Clock</DT
+></DL
+></DD
+><DT
+>XLIX. <A
+HREF="devs-disk-mmc-part.html"
+>MMC MultiMedia Card Disk Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devs-disk-mmc.html"
+>Device Driver for MMC MultiMedia Cards</A
+>&nbsp;--&nbsp;eCos Support for MMC MultiMedia Cards</DT
+></DL
+></DD
+><DT
+>L. <A
+HREF="devs-framebuf-synth-ref.html"
+>Synthetic Target Framebuffer Device</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devs-framebuf-synth.html"
+>Synthetic Target Framebuffer Device</A
+>&nbsp;--&nbsp;Emulate framebuffer hardware in the synthetic target</DT
+></DL
+></DD
+><DT
+>LI. <A
+HREF="devs-flash-am29xxxxx.html"
+>AMD AM29xxxxx Flash Device Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="am29xxxxx.html"
+>Overview</A
+>&nbsp;--&nbsp;eCos Support for AMD AM29xxxxx Flash Devices and Compatibles</DT
+><DT
+><A
+HREF="am29xxxxx-instance.html"
+>Instantiating an AM29xxxxx Device</A
+>&nbsp;--&nbsp;including the driver in an eCos target</DT
+></DL
+></DD
+><DT
+>LII. <A
+HREF="devs-flash-strata.html"
+>Intel Strata Flash Device Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="strata.html"
+>Overview</A
+>&nbsp;--&nbsp;eCos Support for Intel Strata Flash Devices and Compatibles</DT
+><DT
+><A
+HREF="strata-instance.html"
+>Instantiating a Strata Device</A
+>&nbsp;--&nbsp;including the driver in an eCos target</DT
+><DT
+><A
+HREF="strata-api-other.html"
+>Strata-Specific Functions</A
+>&nbsp;--&nbsp;driver-specific functions</DT
+></DL
+></DD
+><DT
+>LIII. <A
+HREF="devs-i2c-m68k-mcf52xx-part.html"
+>Motorola MCF52xx ColdFire I<SUP
+>2</SUP
+>C Bus Driver</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="devs-i2c-m68k-mcf52xx.html"
+>Motorola MCF52xx Coldfire I<SUP
+>2</SUP
+>C Bus  Driver</A
+>&nbsp;--&nbsp;eCos Support for the Motorola Coldfire I<SUP
+>2</SUP
+>C Bus</DT
+></DL
+></DD
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Tables</B
+></DT
+><DT
+>8-1. <A
+HREF="math-library-compatibility-modes.html#AEN5029"
+>Behavior of math exception handling</A
+></DT
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="kernel.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The eCos Kernel</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

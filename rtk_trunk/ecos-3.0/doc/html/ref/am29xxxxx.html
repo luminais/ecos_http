@@ -1,0 +1,249 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Overview</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="AMD AM29xxxxx Flash Device Driver"
+HREF="devs-flash-am29xxxxx.html"><LINK
+REL="PREVIOUS"
+TITLE="AMD AM29xxxxx Flash Device Driver"
+HREF="devs-flash-am29xxxxx.html"><LINK
+REL="NEXT"
+TITLE="Instantiating an AM29xxxxx Device"
+HREF="am29xxxxx-instance.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="devs-flash-am29xxxxx.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="am29xxxxx-instance.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="AM29XXXXX"
+></A
+>Overview</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN20591"
+></A
+><H2
+>Name</H2
+>Overview&nbsp;--&nbsp;eCos Support for AMD AM29xxxxx Flash Devices and Compatibles</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AM29XXXXX-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>The <CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_FLASH_AMD_AM29XXXXX_V2</CODE
+> AMD
+AM29xxxxx V2 flash driver package implements support for the AM29xxxxx
+family of flash devices and compatibles. Normally the driver is not
+accessed directly. Instead application code will use the API provided
+by the generic flash driver package
+<CODE
+CLASS="VARNAME"
+>CYGPKG_IO_FLASH</CODE
+>, for example by calling functions
+like <CODE
+CLASS="FUNCTION"
+>cyg_flash_program</CODE
+>.
+    </P
+><P
+>The driver imposes one restriction on application code which
+developers should be aware of: when programming the flash the
+destination addresses must be aligned to a bus boundary. For example
+if the target hardware has a single flash device attached to a 16-bit
+bus then program operations must involve a multiple of 16-bit values
+aligned to a 16-bit boundary. Note that it is the bus width that
+matters, not the device width. If the target hardware has two 16-bit
+devices attached to a 32-bit bus then program operations must still be
+aligned to a 32-bit boundary, even though in theory a 16-bit boundary
+would suffice. In practice this is rarely an issue, and requiring the
+larger boundary greatly simplifies the code and improves performance.
+    </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>Many eCos targets with AM29xxxxx or compatible flash devices will
+still use the older driver package
+<CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_FLASH_AMD_AM29XXXXX</CODE
+>. Only newer ports
+and some older ports that have been converted will use the V2 driver.
+This documentation only applies to the V2 driver.
+    </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AM29XXXXX-CONFIG"
+></A
+><H2
+>Configuration Options</H2
+><P
+>The AM29xxxxx flash driver package will be loaded automatically when
+configuring eCos for a target with suitable hardware. However the
+driver will be inactive unless the generic flash package
+<CODE
+CLASS="VARNAME"
+>CYGPKG_IO_FLASH</CODE
+> is loaded. It may be necessary to
+add this generic package to the configuration explicitly before the
+driver functionality becomes available. There should never be any need
+to load or unload the AM29xxxx driver package.
+    </P
+><P
+>There are a number of configuration options, relating mostly to hardware
+characteristics. It is very rare that application developers need to
+change any of these. For example the option
+<CODE
+CLASS="VARNAME"
+>CYGNUM_DEVS_FLASH_AMD_AM29XXXXX_V2_ERASE_REGIONS</CODE
+>
+may need a non-default value if the flash devices used on the target
+have an unusual boot block layout. If so the platform HAL will impose
+a requires constraint on this option and the configuration system will
+resolve the constraint. The only time it might be necessary to change
+the value manually is if the actual board being used is a variant of
+the one supported by the platform HAL and uses a different flash chip.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="devs-flash-am29xxxxx.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="am29xxxxx-instance.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>AMD AM29xxxxx Flash Device Driver</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="devs-flash-am29xxxxx.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Instantiating an AM29xxxxx Device</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

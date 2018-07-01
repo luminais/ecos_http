@@ -1,0 +1,291 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>stdlib malloc Pools</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="eCos Memory pools"
+HREF="memalloc.html#ECOS-MEMORY-POOLS"><LINK
+REL="PREVIOUS"
+TITLE="Fixed Size Allocation Pools"
+HREF="fixed-pools.html"><LINK
+REL="NEXT"
+TITLE="CRC Algorithms"
+HREF="services-crc.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="fixed-pools.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="services-crc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MALLOC-POOLS"
+></A
+>stdlib malloc Pools</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN15147"
+></A
+><H2
+>Name</H2
+>malloc, calloc, free, realloc, mallinfo&nbsp;--&nbsp;stdlib malloc pool</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN15154"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN15155"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;stdlib.h&gt;
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void *malloc</CODE
+>(size_t size);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void *calloc</CODE
+>(size_t nmemb, size_t size);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void free</CODE
+>(void *ptr);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void *realloc</CODE
+>(void *ptr, size_t size);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>struct mallinfo mallinfo</CODE
+>(void);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="MEMALLOC-STDLIB-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>      eCos provides the standard library functions used for allocating
+      memory from the heap. <CODE
+CLASS="FUNCTION"
+>malloc()</CODE
+> allocates a
+      block of memory of
+      <CODE
+CLASS="PARAMETER"
+>size</CODE
+> bytes. <CODE
+CLASS="FUNCTION"
+>calloc()</CODE
+>
+      performs the same, but also sets the memory to zero. The
+      function <CODE
+CLASS="FUNCTION"
+>free()</CODE
+> returns a block to the
+      pool. <CODE
+CLASS="FUNCTION"
+>realloc</CODE
+> resizes a block of
+      memory. Lastly, <CODE
+CLASS="FUNCTION"
+>mallinfo()</CODE
+> returns
+      information about the heap, as described by the structure
+      <CODE
+CLASS="STRUCTNAME"
+>mallinfo</CODE
+>:
+
+      <TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct mallinfo {
+    int arena;    /* total size of memory arena */
+    int ordblks;  /* number of ordinary memory blocks */
+    int smblks;   /* number of small memory blocks */
+    int hblks;    /* number of mmapped regions */
+    int hblkhd;   /* total space in mmapped regions */
+    int usmblks;  /* space used by small memory blocks */
+    int fsmblks;  /* space available for small memory blocks */
+    int uordblks; /* space used by ordinary memory blocks */
+    int fordblks; /* space free for ordinary blocks */
+    int keepcost; /* top-most, releasable (via malloc_trim) space */
+    int maxfree;  /* (NON-STANDARD EXTENSION) size of largest free block */
+};
+      </PRE
+></TD
+></TR
+></TABLE
+>
+     </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="fixed-pools.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="services-crc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Fixed Size Allocation Pools</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="memalloc.html#ECOS-MEMORY-POOLS"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CRC Algorithms</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

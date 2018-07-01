@@ -1,0 +1,261 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Configuration</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="eCos Support for USB Serial like Peripherals"
+HREF="io-usb-slave-serial.html"><LINK
+REL="PREVIOUS"
+TITLE="Introduction"
+HREF="usbs-serial-intro.html"><LINK
+REL="NEXT"
+TITLE="Host Configuration"
+HREF="usbs-serial-host-config.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="usbs-serial-intro.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="usbs-serial-host-config.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="USBS-SERIAL-CONFIG"
+></A
+>Configuration</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN17578"
+></A
+><H2
+>Name</H2
+>Configuration&nbsp;--&nbsp;Configuration USB Serial like Peripherals</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN17581"
+></A
+><H2
+>Configuration</H2
+><P
+>        The package requires a few basic configurations plus
+        optionally some additional configuration options.
+      </P
+><P
+>        The driver needs two or three endpoints, depending if ACM
+        communications or a more generic model is used. This is
+        configured
+        with <TT
+CLASS="LITERAL"
+>CYGDAT_IO_USB_SLAVE_CLASS_TYPE</TT
+> which
+        can take the value <TT
+CLASS="LITERAL"
+>ACM</TT
+>
+        or <TT
+CLASS="LITERAL"
+>generic</TT
+>.
+      </P
+><P
+>        The <TT
+CLASS="LITERAL"
+>CYGDAT_IO_USB_SLAVE_SERIAL_EP0</TT
+> must be
+        configured with the control end point of the USB
+        device. <TT
+CLASS="LITERAL"
+>CYGDAT_IO_USB_SLAVE_SERIAL_TX_EP</TT
+>
+        must be configured with the endpoint to be used for
+        transmission and  
+        <TT
+CLASS="LITERAL"
+>CYGDAT_IO_USB_SLAVE_SERIAL_RX_EP</TT
+> must be
+        configured with the end point used for reception. Associated
+        with these
+        are <TT
+CLASS="LITERAL"
+>CYGNUM_IO_USB_SLAVE_SERIAL_RX_EP_NUM</TT
+>
+        and <TT
+CLASS="LITERAL"
+>CYGNUM_IO_USB_SLAVE_SERIAL_TX_EP_NUM</TT
+>
+        which are the endpoint numbers and are used during enumeration
+        of the device. The TX and RX endpoints must operate in BULK
+        mode.
+      </P
+><P
+>        If operation mode ACM is selected a third endpoint is
+        needed. This must operate in interrupt mode and should be
+        configured
+        in <TT
+CLASS="LITERAL"
+>CYGNUM_IO_USB_SLAVE_SERIAL_INTR_EP</TT
+>
+        and <TT
+CLASS="LITERAL"
+>        CYGNUM_IO_USB_SLAVE_SERIAL_INTR_EP_NUM</TT
+>.
+      </P
+><P
+>        The USB serial device will make its vendor:product ID known to
+        the host. This should be configured
+        with <TT
+CLASS="LITERAL"
+>CYGNUM_IO_USB_SLAVE_SERIAL_VENDOR_ID</TT
+>
+        and <TT
+CLASS="LITERAL"
+>CYGNUM_IO_USB_SLAVE_SERIAL_PRODUCT_ID</TT
+>. NOTE:
+        The default configurations are not valid for products, but
+        should work for testing.
+      </P
+><P
+>        The USB enumeration also contains text strings to describe the
+        device. This text string can be set
+        with <TT
+CLASS="LITERAL"
+>CYGDAT_IO_USB_SLAVE_SERIAL_PRODUCT_STR</TT
+>.
+      </P
+><P
+>        The last configuration option of interest
+        is <TT
+CLASS="LITERAL"
+>CYGPKG_IO_USB_SLAVE_SERIAL_EXAMPLES</TT
+>. When
+        true example programs will be built when the eCos tests are
+        built. These are not pass/fail test like other eCos tests, but
+        examples of how the eCos USB serial class can be used.
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="usbs-serial-intro.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="usbs-serial-host-config.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Introduction</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-usb-slave-serial.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Host Configuration</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

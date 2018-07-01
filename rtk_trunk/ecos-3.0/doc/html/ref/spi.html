@@ -1,0 +1,389 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Overview</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="SPI Support"
+HREF="io-spi.html"><LINK
+REL="PREVIOUS"
+TITLE="SPI Support"
+HREF="io-spi.html"><LINK
+REL="NEXT"
+TITLE="SPI Interface"
+HREF="spi-api.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-spi.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="spi-api.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="SPI"
+></A
+>Overview</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN8254"
+></A
+><H2
+>Name</H2
+>Overview&nbsp;--&nbsp;eCos Support for SPI, the Serial Peripheral Interface</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SPI-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>The Serial Peripheral Interface (SPI) is one of a number of serial bus
+technologies. It can be used to connect a processor to one or more
+peripheral chips, for example analog-to-digital convertors or real
+time clocks, using only a small number of pins and PCB tracks. The
+technology was originally developed by Motorola but is now also
+supported by other vendors.
+    </P
+><P
+>A typical SPI system might look like this:
+    </P
+><DIV
+CLASS="INFORMALFIGURE"
+><P
+></P
+><A
+NAME="AEN8261"
+></A
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="spi_net.png"
+ALIGN="CENTER"></P
+></DIV
+><P
+></P
+></DIV
+><P
+>At the start of a data transfer the master cpu asserts one of the chip
+select signals and then generates a clock signal. During each clock
+tick the cpu will output one bit on its master-out-slave-in line and
+read one bit on the master-in-slave-out line. Each device is connected
+to the clock line, the two data lines, and has its own chip select. If
+a device's chip select is not asserted then it will ignore any
+incoming data and will tristate its output. If a device's chip select
+is asserted then during each clock tick it will read one bit of data
+on its input pin and output one bit on its output pin.
+    </P
+><P
+>The net effect is that the cpu can write an arbitrary amount of data
+to one of the attached devices at a time, and simultaneously read the
+same amount of data. Some devices are inherently uni-directional. For
+example an LED unit would only accept data from the cpu: it will not
+send anything meaningful back; the cpu will still sample its input
+every clock tick, but this should be discarded.
+    </P
+><P
+>A useful feature of SPI is that there is no flow control from the
+device back to the cpu. If the cpu tries to communicate with a device
+that is not currently present, for example an MMC socket which does
+not contain a card, then the I/O will still proceed. However the cpu
+will read random data. Typically software-level CRC checksums or
+similar techniques will be used to allow the cpu to detect this.
+    </P
+><P
+>SPI communication is not fully standardized. Variations between
+devices include the following:
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Many devices involve byte transfers, where the unit of data is 8 bits.
+Others use larger units, up to 16 bits.
+      </P
+></LI
+><LI
+><P
+>Chip selects may be active-high or active-low. If the attached devices
+use a mixture of polarities then this can complicate things.
+      </P
+></LI
+><LI
+><P
+>Clock rates can vary from 128KHz to 20MHz or greater. With some
+devices it is necessary to interrogate the device using a slow clock,
+then use the obtained information to select a faster clock for
+subsequent transfers.
+      </P
+></LI
+><LI
+><P
+>The clock is inactive between data transfers. When inactive the
+clock's polarity can be high or low.
+      </P
+></LI
+><LI
+><P
+>Devices depend on the phase of the clock. Data may be sampled on
+either the rising edge or the falling edge of the clock.
+      </P
+></LI
+><LI
+><P
+>A device may need additional delays, for example between asserting
+the chip select and the first clock tick.
+      </P
+></LI
+><LI
+><P
+>Some devices involve complicated transactions: perhaps a command from
+cpu to device; then an initial status response from the device; a data
+transfer; and a final status response. From the cpu's perspective
+these are separate stages and it may be necessary to abort the
+operation after the initial status response. However the device may
+require that the chip select remain asserted for the whole
+transaction. A side effect of this is that it is not possible to do a
+quick transfer with another device in the middle of the transaction.
+      </P
+></LI
+><LI
+><P
+>Certain devices, for example MMC cards, depend on a clock signal after
+a transfer has completed and the chip select has dropped. This clock
+is used to finish some processing within the device.
+      </P
+></LI
+></OL
+><P
+>Inside the cpu the clock and data signals are usually managed by
+dedicated hardware. Alternatively SPI can be implemented using
+bit-banging, but that approach is normally used for other serial bus
+technologies such as I2C. The chip selects may also be implemented by
+the dedicated SPI hardware, but often GPIO pins are used instead.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="SPI-ECOS-IMPLEMENTATION"
+></A
+><H2
+>eCos Support for SPI</H2
+><P
+>The eCos SPI support for any given platform is spread over a number of
+different packages:
+    </P
+><P
+></P
+><UL
+><LI
+><P
+>This package, <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_SPI</CODE
+>, exports an API for
+accessing devices attached to an SPI bus. This API handles issues such
+as locking between threads. The package does not contain any
+hardware-specific code, instead it will call into an SPI bus driver
+package.
+      </P
+><P
+>In future this package may be extended with a bit-banging
+implementation of an SPI bus driver. This would depend on lower-level
+code for manipulating the GPIO pins used for the clock, data and chip
+select signals, but timing and framing could be handled by generic code.
+      </P
+></LI
+><LI
+><P
+>There will be a bus driver package for the specific SPI hardware on
+the target hardware, for example
+<CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_SPI_MCF52xx_QSPI</CODE
+>. This is responsible
+for the actual I/O. A bus driver may be used on many different boards,
+all with the same SPI bus but with different devices attached to that
+bus. Details of the actual devices should be supplied by other code.
+      </P
+></LI
+><LI
+><P
+>The generic API depends on <CODE
+CLASS="STRUCTNAME"
+>cyg_spi_device</CODE
+>
+data structures. These contain the information needed by a bus driver,
+for example the appropriate clock rate and the chip select to use.
+Usually the data structures are provided by the platform HAL since it
+is that package which knows about all the devices on the board.
+      </P
+><P
+>On some development boards the SPI pins are brought out to expansion
+connectors, allowing end users to add extra devices. In such cases the
+platform HAL may not know about all the devices on the board. Data
+structures for the additional devices can instead be supplied by
+application code.
+      </P
+></LI
+><LI
+><P
+>Some types of SPI devices may have their own driver package. For
+example one common use for SPI buses is to provide low-cost
+MultiMediaCard (MMC) support. An MMC is a non-trivial device so there
+is an eCos package specially for that, providing a block device
+interface for higher-level code such as file systems. Other SPI
+devices such as analog-to-digital converters are much simpler and
+come in many varieties. There are no dedicated packages to support
+each such device: the chances are low that another board would use the
+exact same device, so there are no opportunities for code re-use.
+Instead the devices may be accessed directly by application code or by
+extra functions in the platform HAL.
+      </P
+></LI
+></UL
+><P
+>Typically all appropriate packages will be loaded automatically when
+you configure eCos for a given target. If the application does not use
+any of the SPI I/O facilities, directly or indirectly, then linker
+garbage collection should eliminate all unnecessary code and data. All
+necessary initialization should happen automatically. However the
+exact details may depend on the target, so the platform HAL
+documentation should be checked for further details.
+    </P
+><P
+>There is one important exception to this: if the SPI devices are
+attached to an expansion connector then the platform HAL will not know
+about these devices. Instead more work will have to be done by
+application code.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-spi.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="spi-api.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SPI Support</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-spi.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SPI Interface</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

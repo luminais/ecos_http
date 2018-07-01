@@ -1,0 +1,517 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Overview</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="ADC Support"
+HREF="io-adc.html"><LINK
+REL="PREVIOUS"
+TITLE="ADC Support"
+HREF="io-adc.html"><LINK
+REL="NEXT"
+TITLE="ADC Device Drivers"
+HREF="adcdev.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-adc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="adcdev.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ADC"
+></A
+>Overview</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN9818"
+></A
+><H2
+>Name</H2
+>Overview&nbsp;--&nbsp;eCos Support for Analog/Digital Converters</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="ADC-INTRO"
+></A
+><H2
+>Introduction</H2
+><P
+>ADC support in eCos is based around the standard character device
+interface. Hence all device IO function, or file IO functions may be
+used to access ADC devices.</P
+><P
+>ADC devices are presented as read-only serial channels that generate
+samples at a given rate. The size of each sample is hardware specific
+and is defined by the <SPAN
+CLASS="TYPE"
+>cyg_adc_sample_t</SPAN
+> type. The sample
+rate may be set at runtime by the application. Most ADC devices
+support several channels which are all sampled at the same
+rate. Therefore setting the rate for one channel will usually change
+the rate for all channels on that device.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="ADC-EXAMPLES"
+></A
+><H2
+>Examples</H2
+><P
+>The use of the ADC devices is best shown by example.  The following is
+a simple example of using the eCos device interface to access the ADC:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;        int res;
+        cyg_io_handle_t handle;
+
+        // Get a handle for ADC device 0 channel 0
+        res = cyg_io_lookup( "/dev/adc00", &amp;handle );
+
+        if( res != ENOERR )
+            handle_error(err);
+
+        for(;;)
+        {
+            cyg_adc_sample_t sample;
+            cyg_uint32 len = sizeof(sample);
+
+            // read a sample from the channel
+            res = cyg_io_read( handle, &amp;sample, &amp;len );
+
+            if( res != ENOERR )
+                handle_error(err);
+
+            use_sample( sample );
+        }&#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+>In this example, the required channel is looked up and a handle on it
+acquired. Conventionally ADC devices are named "/dev/adcXY" where X is
+the device number and Y the channel within that device. Following
+this, samples are read from the device sequentially.</P
+><P
+>ADC devices may also be accessed using FILEIO operations. These allow
+more sophisticated usage. The following example shows
+<CODE
+CLASS="FUNCTION"
+>select()</CODE
+> being used to gather samples from several devices.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;        int fd1, fd2;
+
+        // open channels, non-blocking
+        fd1 = open( "/dev/adc01", O_RDONLY|O_NONBLOCK );
+        fd2 = open( "/dev/adc02", O_RDONLY|O_NONBLOCK );
+
+        if( fd1 &#60; 0 || fd2 &#60; 0 )
+            handle_error( errno );
+
+        for(;;)
+        {
+            fd_set rd;
+            int maxfd = 0;
+            int err;
+            cyg_adc_sample_t samples[128];
+            int len;
+
+            FD_ZERO( &amp;rd );
+
+            FD_SET( fd1, &amp;rd );
+            FD_SET( fd2, &amp;rd );
+            maxfd = max(fd1,fd2);
+
+            // select on available data on each channel.
+            err = select( maxfd+1, &amp;rd, NULL, NULL, NULL );
+
+            if( err &#60; 0 )
+                handle_error(errno);
+
+            // If channel 1 has data, handle it
+            if( FD_ISSET( fd1, &amp;rd ) )
+            {
+                len = read( fd1, &amp;samples, sizeof(samples) );
+
+                if( len &#62; 0 )
+                    handle_samples_chan1( &amp;samples, len/sizeof(sample[0]) );
+            }
+
+            // If channel 2 has data, handle it
+            if( FD_ISSET( fd2, &amp;rd ) )
+            {
+                len = read( fd2, &amp;samples, sizeof(samples) );
+
+                if( len &#62; 0 )
+                    handle_samples_chan2( &amp;samples, len/sizeof(sample[0]) );
+            }
+
+        }&#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+>This test uses FILEIO operations to access ADC channels. It starts by
+opening two channels for reading only and with blocking disabled. It
+then falls into a loop using select to wake up whenever either channel
+has samples available.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="ADC-DETAILS"
+></A
+><H2
+>Details</H2
+><P
+>As indicated, the main interface to ADC devices is via the standard
+character device interface. However, there are a number of aspects
+that are ADC specific.</P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="ADC-DETAILS-SAMPLE-T"
+></A
+><H3
+>Sample Type</H3
+><P
+>Samples can vary in size depending on the underlying hardware and is
+often a non-standard number of bits. The actual number of bits is
+defined by the hardware driver package, and the generic ADC package
+uses this to define a type <SPAN
+CLASS="TYPE"
+>cyg_adc_sample_t</SPAN
+> which can
+contain at least the required number of bits. All reads from an ADC
+channel should be expressed in multiples of this type, and actual
+bytes read will also always be a multiple.</P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="ADC-DETAILS-RATE"
+></A
+><H3
+>Sample Rate</H3
+><P
+>The sample rate of an ADC device can be varied by calling a
+<CODE
+CLASS="FUNCTION"
+>set_config</CODE
+> function, either at the device IO API
+level or at the FILEIO level. The following two functions show how
+this is done at each:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;int set_rate_io( cyg_io_handle_t handle, int rate )
+{
+    cyg_adc_info_t info;
+    cyg_uint32 len = sizeof(info);
+
+    info.rate = rate;
+
+    return cyg_io_set_config( handle,
+                              CYG_IO_SET_CONFIG_ADC_RATE,
+                              &amp;info,
+                              &amp;len);
+}
+
+int set_rate_fileio( int fd, int rate )
+{
+    cyg_adc_info_t info;
+
+    info.rate = rate;
+
+    return cyg_fs_fsetinfo( fd,
+                            CYG_IO_SET_CONFIG_ADC_RATE,
+                            &amp;info,
+                            sizeof(info) );
+}</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="ADC-DETAILS-ENABLE"
+></A
+><H3
+>Enabling a Channel</H3
+><P
+>Channels are initialized in a disabled state and generate no
+samples. When a channel is first looked up or opened, then it is
+automatically enabled and samples start to accumulate. A channel may
+then be disable or re-enabled via a <CODE
+CLASS="FUNCTION"
+>set_config</CODE
+>
+function:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int disable_io( cyg_io_handle_t handle )
+{
+    return cyg_io_set_config( handle,
+                              CYG_IO_SET_CONFIG_ADC_DISABLE,
+                              NULL,
+                              NULL);
+}
+
+int enable_io( cyg_io_handle_t handle )
+{
+    return cyg_io_set_config( handle,
+                              CYG_IO_SET_CONFIG_ADC_DISABLE,
+                              NULL,
+                              NULL);
+}</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="ADC-CONFIG"
+></A
+><H2
+>Configuration</H2
+><P
+>The ADC package defines a number of generic configuration options that
+apply to all ADC implementations:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>cdl_component CYGPKG_IO_ADC_DEVICES</DT
+><DD
+><P
+>This option enables the hardware device drivers for the current
+platform. ADC devices will only be enabled if this option is itself
+enabled.</P
+></DD
+><DT
+>cdl_option CYGNUM_IO_ADC_SAMPLE_SIZE</DT
+><DD
+><P
+>This option defines the sample size for the ADC devices.  Given in
+bits, it will be rounded up to 8, 16 or 32 to define the
+<SPAN
+CLASS="TYPE"
+>cyg_adc_sample_t</SPAN
+> type. This option is usually set by the
+hardware device driver.</P
+></DD
+><DT
+>cdl_option CYGPKG_IO_ADC_SELECT_SUPPORT</DT
+><DD
+><P
+>&#13;This option enables support for the <CODE
+CLASS="FUNCTION"
+>select()</CODE
+> API
+function on all ADC devices. This option can be disabled if the
+<CODE
+CLASS="FUNCTION"
+>select()</CODE
+> is not used, saving some code and data
+space.</P
+></DD
+></DL
+></DIV
+><P
+>In addition to the generic options, each hardware device driver
+defines some parameters for each device and channel. The exact names
+of the following option depends on the hardware device driver, but
+options of this form should be available in all drivers.</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>cdl_option CYGDAT_IO_ADC_EXAMPLE_CHANNELN_NAME</DT
+><DD
+><P
+>This option specifies the name of the device for an ADC
+channel. Channel names should be of the form "/dev/adcXY" where X is
+the device number and Y the channel within that device.</P
+></DD
+><DT
+>cdl_option CYGNUM_IO_ADC_EXAMPLE_CHANNELN_BUFSIZE</DT
+><DD
+><P
+>This option specifies the buffer size for an ADC channel. The value is
+expressed in multiples of <SPAN
+CLASS="TYPE"
+>cyg_adc_sample_t</SPAN
+> rather than
+bytes. The default value is 128.</P
+></DD
+><DT
+>cdl_option CYGNUM_IO_ADC_EXAMPLE_DEFAULT_RATE</DT
+><DD
+><P
+>This option defines the initial default sample rate for all
+channels. The hardware driver may place constraints on the range of
+values this option may take.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-adc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="adcdev.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ADC Support</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-adc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ADC Device Drivers</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

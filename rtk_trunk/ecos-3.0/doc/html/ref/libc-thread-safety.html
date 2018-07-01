@@ -1,0 +1,317 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Thread safety</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="C and math library overview"
+HREF="c-and-math-library-overview.html"><LINK
+REL="PREVIOUS"
+TITLE="Some implementation details"
+HREF="libc-implementation-details.html"><LINK
+REL="NEXT"
+TITLE="C library startup"
+HREF="c-library-startup.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libc-implementation-details.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. C and math library overview</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c-library-startup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBC-THREAD-SAFETY"
+>Thread safety</A
+></H1
+><P
+>The ISO C library has configuration options that control thread
+safety, i.e. working behavior if multiple threads call the same
+function at the same time.</P
+><P
+>The following functionality has to be configured correctly,
+or used carefully in a multi-threaded environment:</P
+><P
+></P
+><UL
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>mblen()</CODE
+></P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>mbtowc()</CODE
+></P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>wctomb()</CODE
+></P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>printf()</CODE
+>
+ (and all standard I/O functions except for 
+<CODE
+CLASS="FUNCTION"
+>sprintf()</CODE
+>
+ and 
+<CODE
+CLASS="FUNCTION"
+>sscanf()</CODE
+></P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>strtok()</CODE
+></P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>rand()</CODE
+>
+ and 
+<CODE
+CLASS="FUNCTION"
+>srand()</CODE
+></P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>signal()</CODE
+>
+ and 
+<CODE
+CLASS="FUNCTION"
+>raise()</CODE
+></P
+></LI
+><LI
+><P
+><CODE
+CLASS="FUNCTION"
+>asctime()</CODE
+>
+, 
+<CODE
+CLASS="FUNCTION"
+>ctime()</CODE
+>
+, 
+<CODE
+CLASS="FUNCTION"
+>gmtime()</CODE
+>
+, and 
+<CODE
+CLASS="FUNCTION"
+>localtime()</CODE
+></P
+></LI
+><LI
+><P
+>the 
+<CODE
+CLASS="FUNCTION"
+>errno</CODE
+>
+ variable</P
+></LI
+><LI
+><P
+>the 
+<CODE
+CLASS="FUNCTION"
+>environ</CODE
+>
+ variable</P
+></LI
+><LI
+><P
+>date and time settings</P
+></LI
+></UL
+><P
+>In some cases, to make <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>eCos</I
+></SPAN
+> development
+easier, functions are provided (as specified by POSIX 1003.1) that define
+re-entrant alternatives, i.e. <CODE
+CLASS="FUNCTION"
+>rand_r()</CODE
+>, <CODE
+CLASS="FUNCTION"
+>strtok_r()</CODE
+>, <CODE
+CLASS="FUNCTION"
+>asctime_r()</CODE
+>, <CODE
+CLASS="FUNCTION"
+>ctime_r()</CODE
+>, <CODE
+CLASS="FUNCTION"
+>gmtime_r()</CODE
+>,
+and <CODE
+CLASS="FUNCTION"
+>localtime_r()</CODE
+>. In other cases,
+configuration options are provided that control either locking of functions
+or their shared data, such as with standard I/O streams,
+or by using per-thread data, such as with the <CODE
+CLASS="FUNCTION"
+>errno</CODE
+> variable.</P
+><P
+>In some other cases, like the setting of date and time, no
+re-entrant or thread-safe alternative or configuration is provided
+as it is simply not a worthwhile addition (date and time should
+rarely need to be set.)</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libc-implementation-details.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c-library-startup.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Some implementation details</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c-and-math-library-overview.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>C library startup</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

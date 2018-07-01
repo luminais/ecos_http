@@ -1,0 +1,756 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>I2C Interface</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="I2C Support"
+HREF="io-i2c.html"><LINK
+REL="PREVIOUS"
+TITLE="Overview"
+HREF="i2c.html"><LINK
+REL="NEXT"
+TITLE="Porting to New Hardware"
+HREF="i2c-porting.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="i2c.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="i2c-porting.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="I2C-API"
+></A
+>I2C Interface</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN8618"
+></A
+><H2
+>Name</H2
+>I2C Functions&nbsp;--&nbsp;allow applications and other packages to access I2C devices</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN8621"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN8622"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/io/i2c.h&gt;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_uint32 cyg_i2c_tx</CODE
+>(const cyg_i2c_device* device, const cyg_uint8* tx_data, cyg_uint32 count);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_uint32 cyg_i2c_rx</CODE
+>(const cyg_i2c_device* device, cyg_uint8* rx_data, cyg_uint32 count);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_i2c_transaction_begin</CODE
+>(const cyg_i2c_device* device);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_bool cyg_i2c_transaction_begin_nb</CODE
+>(const cyg_i2c_device* device);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_uint32 cyg_i2c_transaction_tx</CODE
+>(const cyg_i2c_device* device, cyg_bool send_start, const cyg_uint8* tx_data, cyg_uint32 count, cyg_bool send_stop);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_uint32 cyg_i2c_transaction_rx</CODE
+>(const cyg_i2c_device* device, cyg_bool send_start, cyg_uint8* rx_data, cyg_uint32 count, cyg_bool send_nack, cyg_bool send_stop);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_i2c_transaction_stop</CODE
+>(const cyg_i2c_device* device);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void cyg_i2c_transaction_end</CODE
+>(const cyg_i2c_device* device);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="I2C-API-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>All I2C functions take a pointer to a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_device</CODE
+> structure as their first
+argument. These structures are usually provided by the platform HAL.
+They contain the information needed by the I2C bus driver to interact
+with the device, for example the device address.
+    </P
+><P
+>An I2C transaction involves the following stages:
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Perform thread-level locking on the bus. Only one thread at a time is
+allowed to access an I2C bus. This eliminates the need to worry about
+locking at the bus driver level. If a platform involves multiple I2C
+buses then each one will have its own lock.
+      </P
+></LI
+><LI
+><P
+>Generate a start condition, send the address and direction bit, and
+wait for an acknowledgement from the addressed device.
+      </P
+></LI
+><LI
+><P
+>Either transmit data to or receive data from the addressed device.
+      </P
+></LI
+><LI
+><P
+>The previous two steps may be repeated several times, allowing data to
+move in both directions during a single transfer.
+      </P
+></LI
+><LI
+><P
+>Generate a stop condition, ending the current data transfer. It is
+now possible to start another data transfer while the bus is still
+locked, if desired.
+      </P
+></LI
+><LI
+><P
+>End the transaction by unlocking the bus, allowing other threads to
+access other devices on the bus.
+      </P
+></LI
+></OL
+><P
+>The simple functions <CODE
+CLASS="FUNCTION"
+>cyg_i2c_tx</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_rx</CODE
+> perform all these steps in a single
+call, making them suitable for many I/O operations. The alternative
+transaction-oriented functions provide greater control when
+appropriate, for example if a repeated start is necessary for a
+bi-directional data transfer.
+    </P
+><P
+>With the exception of
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_begin_nb</CODE
+> all the functions
+will block until completion. The tx routines will return 0 if the
+specified device does not respond to its address, or the number of
+bytes actually transferred. This may be less than the number requested
+if the device sends an early nack, for example because it has run out
+of buffer space. The rx routines will return 0 or the number of bytes
+received. Usually this will be the same as the
+<CODE
+CLASS="VARNAME"
+>count</CODE
+> parameter. A slave device has no way of
+indicating to the master that no more data is available, so the rx
+operation cannot complete early.
+    </P
+><P
+>I2C operations should always be performed at thread-level or during
+system initialization, and not inside an ISR or DSR. This greatly
+simplifies locking. Also a typical ISR or DSR should not perform a
+blocking operation such as an I2C transfer.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="I2C-API-TRANSFER"
+></A
+><H2
+>Simple Transfers</H2
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_i2c_tx</CODE
+> and <CODE
+CLASS="FUNCTION"
+>cyg_i2c_rx</CODE
+>
+can be used for simple data transfers. They both go through the
+following steps: lock the bus, generate the start condition, send the
+device address and the direction bit, either send or receive the data,
+generate the stop condition, and unlock the bus. At the end of a
+transfer the bus is back in its idle state, ready for the next
+transfer.
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_i2c_tx</CODE
+> returns the number of bytes actually
+transmitted. This may be 0 if the device does not respond when its
+address is sent out. It may be less than the number of bytes requested
+if the device generates an early nack, typically because it has run
+out of buffer space.
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_i2c_rx</CODE
+> returns 0 if the device does not
+respond when its address is sent out, or the number of bytes actually
+received. Usually this will be the number of bytes requested because
+an I2C slave device has no way of aborting an rx operation early.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="I2C-API-TRANSACTION"
+></A
+><H2
+>Transactions</H2
+><P
+>To allow multiple threads to access devices on the I2C some locking is
+required. This is encapsulated inside transactions. The
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_tx</CODE
+> and <CODE
+CLASS="FUNCTION"
+>cyg_i2c_rx</CODE
+>
+functions implicitly use such transactions, but the functionality is
+also available directly to application code. Amongst other things
+transactions can be used for more complicated interactions with I2C
+devices, in particular ones involving repeated starts.
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_begin</CODE
+> must be used at the
+start of a transaction. This performs thread-level locking on the bus,
+blocking if it is currently in use by another thread.
+    </P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_begin_nb</CODE
+> is a non-blocking
+variant, useful for threads which cannot afford to block for an
+indefinite period. If the bus is currently locked the function returns
+false immediately. If the bus is not locked then it acts as
+<TT
+CLASS="FILENAME"
+>cyg_i2c_transaction_begin</TT
+> and returns true.
+    </P
+><P
+>Once the bus has been locked it is possible to perform one or more
+data transfers by calling
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_tx</CODE
+>,
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_rx</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_stop</CODE
+>. Code should ensure that
+a stop condition has been generated by the end of a transaction.
+    </P
+><P
+>Once the transaction is complete
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_end</CODE
+> should be called. This
+unlocks the bus, allowing other threads to perform I2C I/O to devices
+on the same bus.
+    </P
+><P
+>As an example consider reading the registers in an FS6377 programmable
+clock generator. The first step is to write a byte 0 to the device,
+setting the current register to 0. Then a repeated start condition
+should be generated and it is possible to read the 16 byte-wide
+registers, starting with the current one. Typical code for this might
+look like:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    cyg_uint8  tx_data[1];
+    cyg_uint8  rx_data[16];
+
+    cyg_i2c_transaction_begin(&amp;hal_alaia_i2c_fs6377);
+    tx_data[0] = 0x00;
+    cyg_i2c_transaction_tx(&amp;hal_alaia_i2c_fs6377,
+                           true, tx_data, 1, false);
+    cyg_i2c_transaction_rx(&amp;hal_alaia_i2c_fs6377,
+                           true, rx_data, 16, true, true);
+    cyg_i2c_transaction_end(&amp;hal_alaia_i2c_fs6377);
+    </PRE
+></TD
+></TR
+></TABLE
+><P
+>Here <CODE
+CLASS="VARNAME"
+>hal_alaia_i2c_fs6377</CODE
+> is a
+<CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_device</CODE
+> structure provided by the
+platform HAL. A transaction is begun, locking the bus. Then there is a
+transmit for a single byte. This transmit involves generating a start
+condition and sending the address and direction bit, but not a stop
+condition. Next there is a receive for 16 bytes. This also involves a
+start condition, which the device will interpret as a repeated start
+because it has not yet seen a stop. The start condition will be
+followed by the address and direction bit, and then the device will
+start transmitting the register contents. Once all 16 bytes have been
+received the rx routine will send a nack rather than an ack, halting
+the transfer, and then a stop condition is generated. Finally the
+transaction is ended, unlocking the bus.
+    </P
+><P
+>The arguments to <CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_tx</CODE
+> are as
+follows:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="TYPE"
+>const cyg_i2c_device*</SPAN
+> <CODE
+CLASS="VARNAME"
+>device</CODE
+></DT
+><DD
+><P
+>This identifies the I2C device that should be used.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_bool</SPAN
+> <CODE
+CLASS="VARNAME"
+>send_start</CODE
+></DT
+><DD
+><P
+>If true, generate a start condition and send the address and direction
+bit. If false, skip those steps and go straight to transmitting the
+actual data. The latter can be useful if the data to be transmitted is
+spread over several buffers. The first tx call will involve generating
+the start condition but subsequent tx calls can skip this and just
+continue from the previous one.
+        </P
+><P
+><CODE
+CLASS="VARNAME"
+>send_start</CODE
+> must be true if the tx call is the first
+operation in a transaction, or if the previous call was an rx or stop.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>const cyg_uint8*</SPAN
+> <CODE
+CLASS="VARNAME"
+>tx_data</CODE
+>, <SPAN
+CLASS="TYPE"
+>cyg_uint32</SPAN
+> <CODE
+CLASS="VARNAME"
+>count</CODE
+></DT
+><DD
+><P
+>These arguments specify the data to be transmitted to the device.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_bool</SPAN
+> <CODE
+CLASS="VARNAME"
+>send_stop</CODE
+></DT
+><DD
+><P
+>If true, generate a stop condition at the end of the transmit. Usually
+this is done only if the transmit is the last operation in a
+transaction.
+        </P
+></DD
+></DL
+></DIV
+><P
+>The arguments to <CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_rx</CODE
+> are as
+follows:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="TYPE"
+>const cyg_i2c_device*</SPAN
+> <CODE
+CLASS="VARNAME"
+>device</CODE
+></DT
+><DD
+><P
+>This identifies the I2C device that should be used.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_bool</SPAN
+> <CODE
+CLASS="VARNAME"
+>send_start</CODE
+></DT
+><DD
+><P
+>If true, generate a start condition and send the address and direction
+bit. If false, skip those steps and go straight to receiving the
+actual data. The latter can be useful if the incoming data should be
+spread over several buffers. The first rx call will involve generating
+the start condition but subsequent rx calls can skip this and just
+continue from the previous one. Another use is for devices which can
+send variable length data, consisting of an initial length and then
+the actual data. The first rx will involve generating the start
+condition and reading the length, a subsequent rx will then just read
+the data.
+        </P
+><P
+><CODE
+CLASS="VARNAME"
+>send_start</CODE
+> must be true if the rx call is the first
+operation in a transaction, if the previous call was a tx or stop, or
+if the previous call was an an rx and the <CODE
+CLASS="VARNAME"
+>send_nack</CODE
+>
+flag was set.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_uint8*</SPAN
+> <CODE
+CLASS="VARNAME"
+>rx_data</CODE
+>, <SPAN
+CLASS="TYPE"
+>cyg_uint32</SPAN
+> <CODE
+CLASS="VARNAME"
+>count</CODE
+></DT
+><DD
+><P
+>These arguments specify how much data should be received and where it
+should be placed.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_bool</SPAN
+> <CODE
+CLASS="VARNAME"
+>send_nack</CODE
+></DT
+><DD
+><P
+>If true generate a nack instead of an ack for the last byte received.
+This causes the slave to end its transmit. The next operation should
+either involve a repeated start or a stop.
+<CODE
+CLASS="VARNAME"
+>send_nack</CODE
+> should be set to false only if
+<CODE
+CLASS="VARNAME"
+>send_stop</CODE
+> is also false, the next operation will be
+another rx, and that rx does not specify <CODE
+CLASS="VARNAME"
+>send_start</CODE
+>.
+        </P
+></DD
+><DT
+><SPAN
+CLASS="TYPE"
+>cyg_bool</SPAN
+> <CODE
+CLASS="VARNAME"
+>send_stop</CODE
+></DT
+><DD
+><P
+>If true, generate a stop condition at the end of the transmit. Usually
+this is done only if the transmit is the last operation in a
+transaction.
+        </P
+></DD
+></DL
+></DIV
+><P
+>The final transaction-oriented function is
+<CODE
+CLASS="FUNCTION"
+>cyg_i2c_transaction_stop</CODE
+>. This just generates a
+stop condition. It should be used if the previous operation was a tx
+or rx that, for some reason, did not set the
+<CODE
+CLASS="VARNAME"
+>send_stop</CODE
+> flag. A stop condition must be generated
+before the transaction is ended.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="I2C-API-INITIALIZATION"
+></A
+><H2
+>Initialization</H2
+><P
+>The generic package <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_I2C</CODE
+> arranges for all
+I2C bus devices to be initialized via a single prioritized C++ static
+constructor. This constructor will run early on during system startup,
+before any application code, with priority
+<TT
+CLASS="LITERAL"
+>CYG_INIT_BUS_I2C</TT
+>. Other code should not try to
+access any of the I2C devices until after the buses have been
+initialized.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="i2c.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="i2c-porting.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Overview</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-i2c.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Porting to New Hardware</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

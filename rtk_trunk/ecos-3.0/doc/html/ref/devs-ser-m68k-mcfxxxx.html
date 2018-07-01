@@ -1,0 +1,415 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>MCFxxxx Serial Driver</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Freescale MCFxxxx Serial Driver"
+HREF="devs-ser-m68k-mcfxxxx-part.html"><LINK
+REL="PREVIOUS"
+TITLE="Freescale MCFxxxx Serial Driver"
+HREF="devs-ser-m68k-mcfxxxx-part.html"><LINK
+REL="NEXT"
+TITLE="Synthetic Target Watchdog Device"
+HREF="devs-watchdog-synth-ref.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="devs-ser-m68k-mcfxxxx-part.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="devs-watchdog-synth-ref.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="DEVS-SER-M68K-MCFXXXX"
+></A
+>MCFxxxx Serial Driver</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN20233"
+></A
+><H2
+>Name</H2
+><CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_SERIAL_MCFxxxx</CODE
+>&nbsp;--&nbsp;eCos Support for the MCFxxxx On-chip Serial Devices</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="DEVS-SER-M68K-MCFXXXX-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>All members of the Freescale MCFxxxx ColdFire family of processors
+contain a number of on-chip UARTs for serial communication. They all
+use very similar hardware. There are some variations such as different
+fifo sizes, and some processors contain extra functionality such as
+autobaud detection, but a single eCos device driver can cope with most
+of these differences. The
+<CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_SERIAL_MCFxxxx</CODE
+> package provides this
+driver. It will use definitions provided by the variant HAL
+<CODE
+CLASS="VARNAME"
+>CYGPKG_HAL_M68K_MCFxxxx</CODE
+>, the processor HAL and the
+platform HAL.
+    </P
+><P
+>The driver provides partial support for hardware flow control and for
+serial line status. Only CTS/RTS hardware flow control is supported
+since the UART does not provide DTR/DSR lines. Similarly only line
+breaks, and certain communication errors are supported for line status
+since the UART does not provide other lines such as DCD or RI. On some
+platforms it should be possible to emulate these lines using GPIO
+pins, but currently there is no support for this.
+    </P
+><P
+>Once application code accesses a UART through the serial driver, for
+example by opening a device <TT
+CLASS="LITERAL"
+>/dev/ser0</TT
+>, the driver
+assumes that it has sole access to the hardware. This means that the
+UART should not be used for any other purpose, for example HAL
+diagnostics or gdb debug traffic. Instead such traffic has to go via
+another communication channel such as ethernet.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="DEVS-SER-M68K-MCFXXXX-CONFIG"
+></A
+><H2
+>Configuration Options</H2
+><P
+>    The MCFxxxx serial driver should be loaded automatically when
+selecting a platform containing a suitable processor, and it should
+never be necessary to load it explicitly. The driver as a whole is
+inactive unless the generic serial support,
+<CODE
+CLASS="VARNAME"
+>CYGPKG_IO_SERIAL_DEVICES</CODE
+>, is enabled. Exactly which
+UART or UARTs are accessible on a given platform is determined by the
+platform because even if the processor contains a UART the platform
+may not provide a connector. Support for a given UART, say uart0, is
+controlled by a configuration option
+<CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_SERIAL_MCFxxxx_SERIAL0</CODE
+>. The device
+driver configuration option in turn depends on a HAL configuration
+option <CODE
+CLASS="VARNAME"
+>CYGHWR_HAL_M68K_MCFxxxx_UART0</CODE
+> to indicate
+that the UART is actually present and connected on the target
+hardware. If a given UART is of no interest to an application
+developer then it is possible to save some memory by disabling this
+option.
+    </P
+><P
+>For every enabled UART there are a further four configuration options:
+    </P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><CODE
+CLASS="VARNAME"
+>CYGDAT_DEVS_SERIAL_MCFxxxx_SERIAL0_NAME</CODE
+></DT
+><DD
+><P
+>Each serial device should have a unique name so that application code
+can open it. The default device names are <TT
+CLASS="LITERAL"
+>/dev/ser0</TT
+>,
+<TT
+CLASS="LITERAL"
+>/dev/ser1</TT
+>, and so on. It is only necessary to change
+these if the platform contains additional off-chip UARTs with clashing
+names.
+        </P
+></DD
+><DT
+><CODE
+CLASS="VARNAME"
+>CYGNUM_DEVS_SERIAL_MCFxxxx_SERIAL0_ISR_PRIORITY</CODE
+></DT
+><DD
+><P
+>By default the driver arranges for the UARTs to interrupt at a low
+interrupt priority. Usually there will be no need to change this
+because the driver does not actually do very much processing at ISR
+level, and anyway UARTs are not especially fast devices so do not
+require immediate attention. On some Coldfires with MCF5282-compatible
+interrupt controllers care has to be taken that all interrupt
+priorities are unique.
+        </P
+></DD
+><DT
+><CODE
+CLASS="VARNAME"
+>CYGNUM_DEVS_SERIAL_MCFxxxx_SERIAL0_BAUD</CODE
+></DT
+><DD
+><P
+>Each UART will be initialized to a given baud rate. The default baud
+rate is 38400 because in most scenarios this is fast enough yet
+does not suffer from excess data corruption. Lower baud rates can be
+used if the application will operate in an electrically noisy
+environment, or higher baud rates up to 230400 can be used if
+38400 does not provide sufficient throughput. 
+        </P
+></DD
+><DT
+><CODE
+CLASS="VARNAME"
+>CYGNUM_DEVS_SERIAL_MCFxxxx_SERIAL0_BUFSIZE</CODE
+></DT
+><DD
+><P
+>The serial driver will maintain software buffers for incoming and
+outgoing data. The former allows data to continue to arrive even if
+the application is still busy processing the previous transfer, and
+thus potentially improves throughput. The latter allows the
+application to transmit data without immediately blocking until the
+transfer is complete, often eliminating the need for a separate
+thread. The size of these buffers can be controlled via this
+configuration option, or alternatively these buffers can be disabled
+completely to save memory.
+        </P
+></DD
+></DL
+></DIV
+><P
+>There are additional options in the generic serial I/O package
+<CODE
+CLASS="VARNAME"
+>CYGPKG_IO_SERIAL</CODE
+> which will affect this driver. For
+example <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_SERIAL_FLOW_CONTROL</CODE
+> and its
+sub-options determine what flow control mechanism (if any) should be
+used.
+    </P
+><P
+>This package also defines some configuration options related to
+testing. Usually these options are of no interest to application
+developers and can be ignored.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="DEVS-SER-M68K-MCFXXXX-PORTING"
+></A
+><H2
+>Porting</H2
+><P
+>The generic driver needs some information from other packages about
+the exact hardware, for example how many UARTs are available and where
+in memory they can be accessed.
+    </P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Another package, usually the processor HAL, should provide one or more
+options <CODE
+CLASS="VARNAME"
+>CYGHWR_HAL_M68K_MCFxxxx_UART0</CODE
+>,
+<CODE
+CLASS="VARNAME"
+>CYGHWR_HAL_M68K_MCFxxxx_UART1</CODE
+> or
+<CODE
+CLASS="VARNAME"
+>CYGHWR_HAL_M68K_MCFxxxx_UART2</CODE
+>. These may be
+calculated or user-configurable depending on the processor.
+      </P
+></LI
+><LI
+><P
+>The device driver will also look for symbol definitions
+<CODE
+CLASS="VARNAME"
+>CYGHWR_HAL_M68K_MCFxxxx_UART0_RTS</CODE
+> and
+<CODE
+CLASS="VARNAME"
+>CYGHWR_HAL_M68K_MCFxxxx_UART0_CTS</CODE
+>, and the
+equivalents for the other UARTs, to determine whether or not these
+handshake lines are connected. These may be configuration options or
+they may be statically defined in a HAL I/O header file. The platform
+HAL should also implement the generic serial package's interface
+<CODE
+CLASS="VARNAME"
+>CYGINT_IO_SERIAL_FLOW_CONTROL_HW</CODE
+> if appropriate.
+      </P
+></LI
+><LI
+><P
+>If RTS is connected then the driver will also look for a symbol
+<CODE
+CLASS="VARNAME"
+>CYGHWR_HAL_M68K_MCFxxxx_UART0_RS485_RTS</CODE
+>. This
+enables partial support for RS485 communication in that the device
+driver will arrange for the RTS line to be asserted during a transmit.
+The driver has no support for more advanced RS485 functionality such
+as multidrop.
+      </P
+></LI
+></OL
+><P
+>In addition the driver assumes the standard MCFxxxx HAL macros are
+defined for the UART base addresses and the registers. The driver
+primarily targets MCF5282-compatible UARTs but there is also some
+support for functionality available on other members of the Coldfire
+range, for example the MCF5272's fractional baud rate support.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="devs-ser-m68k-mcfxxxx-part.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="devs-watchdog-synth-ref.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Freescale MCFxxxx Serial Driver</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="devs-ser-m68k-mcfxxxx-part.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Synthetic Target Watchdog Device</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

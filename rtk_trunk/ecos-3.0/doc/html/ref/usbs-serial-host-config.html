@@ -1,0 +1,273 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Host Configuration</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="eCos Support for USB Serial like Peripherals"
+HREF="io-usb-slave-serial.html"><LINK
+REL="PREVIOUS"
+TITLE="Configuration"
+HREF="usbs-serial-config.html"><LINK
+REL="NEXT"
+TITLE="API Function"
+HREF="usbs-serial-using.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="usbs-serial-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="usbs-serial-using.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="USBS-SERIAL-HOST-CONFIG"
+></A
+>Host Configuration</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN17607"
+></A
+><H2
+>Name</H2
+>Host Configuration&nbsp;--&nbsp;Host Configuration for USB Serial like Peripherals
+      </DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN17610"
+></A
+><H2
+>Host Configuration</H2
+><P
+>        Configuration for two hosts are listed here, Microsoft Windows
+        and Linux. It should also be possible to use the eCos USB
+        serial like peripheral driver with other hosts.
+      </P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN17613"
+></A
+><H3
+>Linux</H3
+><P
+>          The eCos USB serial like peripheral driver can be used in
+          Linux in one of two ways.
+          <P
+></P
+><UL
+><LI
+><P
+>                Using the generic usbserial kernel module passing the
+                vendor and product ID as module parameters. e.g.
+              </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>                modprobe usbserial vendor=0xabcd product=0x1234
+              </PRE
+></TD
+></TR
+></TABLE
+><P
+>                would load the kernel module so that it would use a
+                USB device abcd:1234 as a serial device.
+              </P
+></LI
+><LI
+><P
+>                Using the mini driver provided with eCos in the
+                <TT
+CLASS="FILENAME"
+>host/linux</TT
+>
+                directory. This driver must be edited and the correct
+                vendor and product ID set to match the vendor and
+                product ID used by the device. Once compiled this
+                driver can be loaded with:
+              </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>                modprobe usbserial
+                modprobe ecos_usbserial
+              </PRE
+></TD
+></TR
+></TABLE
+><P
+>                This driver is known to compile with kernel versions
+                2.6.18 and probably works fine with other
+                kernels. However it fails to compile with kernels
+                after 2.6.25.
+              </P
+></LI
+></UL
+>
+          Both of these methods will result in the Linux Kernel making
+          a new serial device available. This is typically
+          named <TT
+CLASS="FILENAME"
+>/dev/ttyUSB0</TT
+>.
+        </P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN17627"
+></A
+><H3
+>Microsoft Windows</H3
+><P
+>          To install the device in a Microsoft Windows system make use
+          of the INF file
+          in <TT
+CLASS="FILENAME"
+>host/windows/eCosUsbSerial.inf</TT
+>. Copy
+          this INF file and <TT
+CLASS="FILENAME"
+>usbser.sys</TT
+> from your
+          version of Windows into an empty directory. Then plug in the
+          USB device. When prompted to load a driver navigate to the
+          INF file and select it.
+        </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="usbs-serial-config.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="usbs-serial-using.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-usb-slave-serial.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>API Function</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

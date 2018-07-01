@@ -1,0 +1,647 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>The Version 2 eCos FLASH API</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="FLASH Library"
+HREF="io-flash.html"><LINK
+REL="PREVIOUS"
+TITLE="Danger, Will Robinson! Danger!"
+HREF="io-flash-danger.html"><LINK
+REL="NEXT"
+TITLE="FLASH device API"
+HREF="ecos-flash-v2-dev.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-flash-danger.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ecos-flash-v2-dev.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="ECOS-FLASH-V2"
+></A
+>Chapter 27. The Version 2 eCos FLASH API</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="ecos-flash-v2.html#ECOS-FLASH-V2-API"
+>FLASH user API</A
+></DT
+><DT
+><A
+HREF="ecos-flash-v2-dev.html"
+>FLASH device API</A
+></DT
+></DL
+></DIV
+><P
+> There are two APIs described here. The first is the application
+API which programs should use. The second API is that between the
+FLASH IO library and the device drivers. </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECOS-FLASH-V2-API"
+>FLASH user API</A
+></H1
+><P
+>All of the functions described below are declared in the header
+file <TT
+CLASS="FILENAME"
+>&lt;cyg/io/flash.h&gt;</TT
+> which all users of
+the FLASH library should include.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN7838"
+>Initializing the FLASH library</A
+></H2
+><P
+>The FLASH library needs to be initialized before other FLASH
+operations can be performed. This only needs to be done once. The
+following function will only do the initialization once so it's safe
+to call multiple times: </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>__externC int cyg_flash_init(cyg_flash_printf *pf); </PRE
+></TD
+></TR
+></TABLE
+><P
+>The parameter <CODE
+CLASS="PARAMETER"
+>pf</CODE
+> must always be set to NULL. It
+exists solely for backward compatibility and other settings are deprecated
+and obsolete. Past use of this parameter has now been replaced with use of
+the <A
+HREF="ecos-flash-v2.html#ECOS-FLASH-V2-API-CONFIG-DIAG-OUTPUT"
+><CODE
+CLASS="FUNCTION"
+>cyg_flash_set_global_printf</CODE
+></A
+>
+function.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN7846"
+>Retrieving information about FLASH devices</A
+></H2
+><P
+>The following five functions return information about the FLASH.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>__externC int cyg_flash_get_info(cyg_uint32 devno, cyg_flash_info_t * info);
+__externC int cyg_flash_get_info_addr(cyg_flashaddr_t flash_base, cyg_flash_info_t * info);
+__externC int cyg_flash_verify_addr(const flashaddr_t address);
+__extern size_t cyg_flash_block_size(const cyg_flashaddr_t flash_base);
+
+typedef struct cyg_flash_block_info
+{
+    size_t                    block_size;
+    cyg_uint32                blocks;
+} cyg_flash_block_info_t;
+
+typedef struct {
+    cyg_flashaddr_t              start;          // First address
+    cyg_flashaddr_t              end;            // Last address
+    cyg_uint32                   num_block_infos;// Number of entries
+    const cyg_flash_block_info_t *blocks_info;   // Info about one block size
+} cyg_flash_info_t;</PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_flash_get_info()</CODE
+> is the main function
+to get information about installed flash devices.  Parameter
+<CODE
+CLASS="PARAMETER"
+>devno</CODE
+> is used to iterate over the available
+flash devices, starting from 0. If the devno'th device exists, the
+structure pointed to by <CODE
+CLASS="PARAMETER"
+>info</CODE
+> is filled in and
+<TT
+CLASS="LITERAL"
+>CYG_FLASH_ERR_OK</TT
+> is returned, otherwise
+<TT
+CLASS="LITERAL"
+>CYG_FLASH_ERR_INVALID</TT
+>.
+<CODE
+CLASS="FUNCTION"
+>cyg_flash_get_info()</CODE
+> is similar, but returns the
+information about the flash device at the given address.
+<CODE
+CLASS="FUNCTION"
+>cyg_flash_block_size()</CODE
+> returns the size of the
+block at the given address.  <CODE
+CLASS="FUNCTION"
+>cyg_flash_verify_addr()</CODE
+> tests if the target addresses is within one of the FLASH
+devices, returning <TT
+CLASS="LITERAL"
+>CYG_FLASH_ERR_OK </TT
+> if so.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN7860"
+>Reading from FLASH</A
+></H2
+><P
+>There are two methods for reading from FLASH. The first is to use the
+following function. </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>__externC int cyg_flash_read(cyg_flashaddr_t flash_base, void *ram_base, size_t len, cyg_flashaddr_t *err_address);</PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+CLASS="PARAMETER"
+>flash_base</CODE
+> is where in the flash to read
+from. <CODE
+CLASS="PARAMETER"
+>ram_base</CODE
+> indicates where the data read
+from flash should be placed into RAM. <CODE
+CLASS="PARAMETER"
+>len</CODE
+> is
+the number of bytes to be read from the FLASH and
+<CODE
+CLASS="PARAMETER"
+>err_address</CODE
+> is used to return the location in
+FLASH that any error occurred while reading.</P
+><P
+>The second method is to simply <CODE
+CLASS="FUNCTION"
+>memcpy()</CODE
+> directly
+from the FLASH. This is not recommended since some types of device
+cannot be read in this way, eg NAND FLASH. Using the FLASH library
+function to read the FLASH will always work so making it easy to port
+code from one FLASH device to another.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN7871"
+>Erasing areas of FLASH</A
+></H2
+><P
+>Blocks of FLASH can be erased using the following function:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>__externC int cyg_flash_erase(cyg_flashaddr_t flash_base, size_t len, cyg_flashaddr_t *err_address);</PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+CLASS="PARAMETER"
+>flash_base</CODE
+> is where in the flash to erase
+from. <CODE
+CLASS="PARAMETER"
+>len</CODE
+> is the minimum number of bytes to
+erase in the FLASH and <CODE
+CLASS="PARAMETER"
+>err_address</CODE
+> is used to
+return the location in FLASH that any error occurred while erasing. It
+should be noted that FLASH devices are block oriented when erasing. It
+is not possible to erase a few bytes within a block, the whole block
+will be erased. <CODE
+CLASS="PARAMETER"
+>flash_base</CODE
+> may be anywhere
+within the first block to be erased and <CODE
+CLASS="PARAMETER"
+>flash_base+len</CODE
+> may be anywhere in the last block to be erased.  </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN7881"
+>Programming the FLASH</A
+></H2
+><P
+> Programming of the flash is achieved using the following
+function.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>__externC int cyg_flash_program(cyg_flashaddr_t flash_base, void *ram_base, size_t len, cyg_flashaddr_t *err_address);</PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+CLASS="PARAMETER"
+>flash_base</CODE
+> is where in the flash to program
+from. <CODE
+CLASS="PARAMETER"
+>ram_base</CODE
+> indicates where the data to be
+programmed into FLASH should be read from in RAM. <CODE
+CLASS="PARAMETER"
+>len</CODE
+> is the number of bytes to be program into the FLASH and
+<CODE
+CLASS="PARAMETER"
+>err_address</CODE
+> is used to return the location in
+FLASH that any error occurred while programming. </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN7890"
+>Locking and unlocking blocks</A
+></H2
+><P
+>Some flash devices have the ability to lock and unlock blocks. A
+locked block cannot be erased or programmed without it first being
+unlocked. For devices which support this feature and when <TT
+CLASS="LITERAL"
+>CYGHWR_IO_FLASH_BLOCK_LOCKING</TT
+> is enabled then the following
+two functions are available:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>__externC int cyg_flash_lock(const cyg_flashaddr_t flash_base, size_t len, cyg_flashaddr_t *err_address);
+__externC int cyg_flash_unlock(const cyg_flashaddr_t flash_base, size_t len, cyg_flashaddr_t *err_address);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN7895"
+>Locking FLASH mutexes</A
+></H2
+><P
+>When the eCos kernel package is included in the eCos
+configuration, the FLASH IO library will perform mutex locking on
+FLASH operations. This makes the API defined here thread safe. However
+applications may wish to directly access the contents of the FLASH. In
+order for this to be thread safe it is necessary for the application
+to use the following two functions to inform the FLASH IO library that
+the FLASH devices are being used and other API calls should be
+blocked.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>__externC int cyg_flash_mutex_lock(const cyg_flashaddr_t from, size_t len);
+__externC int cyg_flash_mutex_unlock(const cyg_flashaddr_t from, size_t len);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="ECOS-FLASH-V2-API-CONFIG-DIAG-OUTPUT"
+>Configuring diagnostic output</A
+></H2
+><P
+> Each FLASH device can have an associated function which is
+called to perform diagnostic output. The function to be used can
+be configured with the following functions: </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>__externC int cyg_flash_set_printf(const cyg_flashaddr_t flash_base,
+                                   cyg_flash_printf *pf);
+__externC void cyg_flash_set_global_printf(cyg_flash_printf *pf);
+typedef int cyg_flash_printf(const char *fmt, ...); </PRE
+></TD
+></TR
+></TABLE
+><P
+>The parameter <CODE
+CLASS="PARAMETER"
+>pf</CODE
+> is a pointer to a function
+which is to be used for diagnostic output. Typically the function
+<CODE
+CLASS="FUNCTION"
+>diag_printf()</CODE
+> will be passed. Normally this
+function is not used by the higher layer of the library unless
+<TT
+CLASS="LITERAL"
+>CYGSEM_IO_FLASH_CHATTER</TT
+> is enabled.  Passing a
+<CODE
+CLASS="PARAMETER"
+>NULL</CODE
+> causes diagnostic output from lower level
+drivers to be discarded.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_flash_set_printf</CODE
+> is used to set a
+diagnostic output function which will be used specifically when
+diagnostic output is attempted from the FLASH device driver associated
+with the base address of <CODE
+CLASS="PARAMETER"
+>flash_base</CODE
+>. An error
+will be returned if no FLASH device is found for this address, or the
+FLASH subsystem has not yet been initialised with
+<CODE
+CLASS="FUNCTION"
+>cyg_flash_init</CODE
+>.</P
+><P
+><CODE
+CLASS="FUNCTION"
+>cyg_flash_set_global_printf</CODE
+> sets a
+diagnostic output function for all available FLASH devices. Any
+previous setting of a diagnostic output function (including with
+<CODE
+CLASS="FUNCTION"
+>cyg_flash_set_printf</CODE
+>) will be discarded.
+This function may be called prior to
+<CODE
+CLASS="FUNCTION"
+>cyg_flash_init</CODE
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN7916"
+>Return values and errors</A
+></H2
+><P
+>All the functions above return one of the following return
+values.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CYG_FLASH_ERR_OK              No error - operation complete
+CYG_FLASH_ERR_INVALID         Invalid FLASH address
+CYG_FLASH_ERR_ERASE           Error trying to erase
+CYG_FLASH_ERR_LOCK            Error trying to lock/unlock
+CYG_FLASH_ERR_PROGRAM         Error trying to program
+CYG_FLASH_ERR_PROTOCOL        Generic error
+CYG_FLASH_ERR_PROTECT         Device/region is write-protected
+CYG_FLASH_ERR_NOT_INIT        FLASH info not yet initialized
+CYG_FLASH_ERR_HWR             Hardware (configuration?) problem
+CYG_FLASH_ERR_ERASE_SUSPEND   Device is in erase suspend mode
+CYG_FLASH_ERR_PROGRAM_SUSPEND Device is in program suspend mode
+CYG_FLASH_ERR_DRV_VERIFY      Driver failed to verify data
+CYG_FLASH_ERR_DRV_TIMEOUT     Driver timed out waiting for device
+CYG_FLASH_ERR_DRV_WRONG_PART  Driver does not support device
+CYG_FLASH_ERR_LOW_VOLTAGE     Not enough juice to complete job</PRE
+></TD
+></TR
+></TABLE
+><P
+>To turn an error code into a human readable string the following
+function can be used:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>__externC const char *cyg_flash_errmsg(const int err);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-flash-danger.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecos-flash-v2-dev.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Danger, Will Robinson! Danger!</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-flash.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>FLASH device API</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

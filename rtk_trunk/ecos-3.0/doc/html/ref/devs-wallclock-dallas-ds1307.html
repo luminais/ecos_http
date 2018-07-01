@@ -1,0 +1,298 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Dallas DS1307 Wallclock Device Driver</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Dallas DS1307 Wallclock Device Driver"
+HREF="devs-wallclock-dallas-ds1307-part.html"><LINK
+REL="PREVIOUS"
+TITLE="Dallas DS1307 Wallclock Device Driver"
+HREF="devs-wallclock-dallas-ds1307-part.html"><LINK
+REL="NEXT"
+TITLE="MMC MultiMedia Card Disk Driver"
+HREF="devs-disk-mmc-part.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="devs-wallclock-dallas-ds1307-part.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="devs-disk-mmc-part.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="DEVS-WALLCLOCK-DALLAS-DS1307"
+></A
+>Dallas DS1307 Wallclock Device Driver</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN20396"
+></A
+><H2
+>Name</H2
+><CODE
+CLASS="VARNAME"
+>CYGPKG_DEVICES_WALLCLOCK_DALLAS_DS1307</CODE
+>&nbsp;--&nbsp;eCos Support for the Dallas DS1307 Serial Real-Time Clock</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="DEVS-WALLCLOCK-DALLAS-DS1307-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>This package
+<CODE
+CLASS="VARNAME"
+>CYGPKG_DEVICES_WALLCLOCK_DALLAS_DS1307</CODE
+> provides a
+device driver for the wallclock device in the Dallas DS1307 Serial
+Real-Time Clock chips. This combines a real-time clock and 56 bytes of
+battery-backed RAM in a single package. The driver can also be used
+with any other chips that provide the same interface to the clock
+hardware.
+    </P
+><P
+>The package will usually be loaded into the configuration
+automatically whenever selecting a target which contains a compatible
+chip. By default it will provide the standard eCos wallclock device,
+although another implementation such as software emulation may be
+selected if desired. The only other configuration options related to
+this package allow users to change the compiler flags. If the
+application does not actually use the wallclock device, directly or
+indirectly, then the code should get removed automatically at
+link-time to ensure that the application does not suffer any
+unnecessary overheads.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="DEVS-WALLCLOCK-DALLAS-DS1307-FUNCTIONS"
+></A
+><H2
+>Functionality</H2
+><P
+>This wallclock device driver package implements the standard
+functionality required by the generic wallclock support
+<CODE
+CLASS="VARNAME"
+>CYGPKG_IO_WALLCLOCK</CODE
+>. The functionality is not
+normally accessed directly. Instead it is used by the C library time
+package to implement standard calls such as <CODE
+CLASS="FUNCTION"
+>time</CODE
+>
+and <CODE
+CLASS="FUNCTION"
+>gmtime</CODE
+>. The eCos C library also provides a
+non-standard function <CODE
+CLASS="FUNCTION"
+>cyg_libc_time_settime</CODE
+> for
+changing the current wallclock setting. In addition RedBoot provides
+a <B
+CLASS="COMMAND"
+>date</B
+> command which interacts with the wallclock
+device.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="DEVS-WALLCLOCK-DALLAS-DS1307-PORTING"
+></A
+><H2
+>Porting</H2
+><P
+>DS1307 platform support can be implemented in one of two ways. The
+preferred approach involves the generic I2C API, as defined by the
+package <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_I2C</CODE
+>. The platform HAL can just
+provide a <CODE
+CLASS="STRUCTNAME"
+>cyg_i2c_device</CODE
+> structure
+<CODE
+CLASS="VARNAME"
+>cyg_i2c_wallclock_ds1307</CODE
+> and implement the CDL
+interface
+<CODE
+CLASS="VARNAME"
+>CYGINT_DEVICES_WALLCLOCK_DALLAS_DS1307_I2C</CODE
+>. The
+DS1307 driver will now use I2C rx and tx operations to interact with
+the chip.
+    </P
+><P
+>Alternatively the DS1307 driver can use macros or functions provided
+by another package to access the chip. This is intended primarily for
+older platforms that predate the <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_I2C</CODE
+>
+package. The other package should export a header file containing
+macros <CODE
+CLASS="FUNCTION"
+>DS_GET</CODE
+> and <CODE
+CLASS="FUNCTION"
+>DS_PUT</CODE
+>
+that transfer the eight bytes corresponding to the chip's clock
+registers. It should also export the name of this header via a
+<TT
+CLASS="LITERAL"
+>#define</TT
+>
+<CODE
+CLASS="VARNAME"
+>CYGDAT_DEVS_WALLCLOCK_DS1307_INL</CODE
+> in the global
+configuration header <TT
+CLASS="FILENAME"
+>pkgconf/system.h</TT
+>. For full details see
+the source code.
+    </P
+><P
+>In addition the DS1307 device driver package
+<CODE
+CLASS="VARNAME"
+>CYGPKG_DEVICES_WALLCLOCK_DALLAS_DS1307</CODE
+> should be
+included in the CDL target entry so that it gets loaded automatically
+whenever eCos is configured for that target.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="devs-wallclock-dallas-ds1307-part.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="devs-disk-mmc-part.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Dallas DS1307 Wallclock Device Driver</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="devs-wallclock-dallas-ds1307-part.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>MMC MultiMedia Card Disk Driver</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

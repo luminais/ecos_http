@@ -1,0 +1,205 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>eCos Support for CAN</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Overview"
+HREF="io-can-overview.html"><LINK
+REL="PREVIOUS"
+TITLE="Overview"
+HREF="io-can-overview.html"><LINK
+REL="NEXT"
+TITLE="User API"
+HREF="io-can-api.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-can-overview.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 30. Overview</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-can-api.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="IO-CAN-ECOS-SUPPORT"
+>eCos Support for CAN</A
+></H1
+><P
+>The eCos CAN subsystem supports the BasicCAN and FullCAN mode. The architecture 
+and the interface of the eCos CAN driver is quite similar to the eCos serial 
+driver and supports the same interface.</P
+><P
+>The eCos CAN support for any given platform is spread over a number of different 
+packages: </P
+><P
+></P
+><UL
+><LI
+><P
+>&#13;This package, <CODE
+CLASS="VARNAME"
+>CYGPKG_IO_CAN</CODE
+>, exports a generic
+device independent CAN I/O API for accessing devices attached to a CAN
+network. This API handles issues such as locking between threads. The
+package does not contain any hardware-specific code. Instead it will
+call into a CAN device driver to handle the hardware device
+access. This package also defines the inderface that such hardware
+drivers should provide.
+    </P
+></LI
+><LI
+><P
+>Each CAN device will have its own device driver, which is implemented 
+as a separate package, for example 
+<CODE
+CLASS="VARNAME"
+>CYGPKG_DEVS_CAN_MCF52xx_FLEXCAN</CODE
+>. For devices that may 
+be attached to a variety of different boards the device driver will be 
+generic and a second platform specific package will be used to customize 
+it to each platform. For devices that are associated with a specific 
+chipset, only a single package may be present.
+    </P
+></LI
+></UL
+><P
+>Typically all appropriate packages will be loaded automatically when 
+you configure eCos for a given platform. If the application does not use 
+any of the CAN I/O facilities, directly or indirectly, then linker garbage 
+collection should eliminate all unnecessary code and data. All necessary 
+initialization should happen automatically. However the exact details may 
+depend on the platform, so the platform HAL documentation should be 
+checked for further details.</P
+><P
+>There is an important exception to this: if the CAN devices are attached 
+to an expansion connector, such as PCI, then the platform HAL will not 
+know about these devices. Instead the necessary packages will need to be 
+added explicitly during configuration.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-can-overview.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-can-api.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Overview</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-can-overview.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>User API</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

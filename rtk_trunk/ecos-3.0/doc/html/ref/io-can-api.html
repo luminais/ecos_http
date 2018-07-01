@@ -1,0 +1,397 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>User API</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="CAN Support"
+HREF="io-can.html"><LINK
+REL="PREVIOUS"
+TITLE="eCos Support for CAN"
+HREF="io-can-ecos-support.html"><LINK
+REL="NEXT"
+TITLE="CAN driver details"
+HREF="io-can-driver-details.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-can-ecos-support.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-can-driver-details.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="IO-CAN-API"
+></A
+>Chapter 31. User API</H1
+><P
+>The CAN driver uses the standard eCos I/O API functions. All functions 
+except <CODE
+CLASS="FUNCTION"
+>cyg_io_lookup()</CODE
+> require an I/O "handle".</P
+><P
+>All functions return a value of the type <SPAN
+CLASS="TYPE"
+>Cyg_ErrNo</SPAN
+>. 
+If an error condition is detected, this value will be negative and the 
+absolute value indicates the actual error, as specified in 
+<TT
+CLASS="FILENAME"
+>cyg/error/codes.h</TT
+>. The only other legal return values 
+will be <CODE
+CLASS="VARNAME"
+>ENOERR</CODE
+>, <CODE
+CLASS="VARNAME"
+>-EINTR</CODE
+> and 
+<CODE
+CLASS="VARNAME"
+>-EAGAIN</CODE
+>. All other function arguments are pointers 
+(references). This allows the drivers to pass information efficiently, 
+both into and out of the driver. The most striking example of this is the 
+<CODE
+CLASS="PARAMETER"
+>len</CODE
+> value passed to the read and write functions. 
+This parameter contains the desired length of data on input to the 
+function and the actual transferred length on return.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>// Lookup a CAN device and return its handle 
+Cyg_ErrNo <CODE
+CLASS="FUNCTION"
+>cyg_io_lookup</CODE
+>( 
+    const char <CODE
+CLASS="PARAMETER"
+>*name</CODE
+>,
+    cyg_io_handle_t <CODE
+CLASS="PARAMETER"
+>*handle</CODE
+> )</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function maps a CAN device name onto an appropriate handle. If the
+named device is not in the system, then the error
+<CODE
+CLASS="VARNAME"
+>-ENOENT</CODE
+> is returned. If the device is found, then
+the handle for the device is returned by way of the handle pointer
+<CODE
+CLASS="PARAMETER"
+>*handle</CODE
+>.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>// Send a CAN message
+Cyg_ErrNo <CODE
+CLASS="FUNCTION"
+>cyg_io_write</CODE
+>( 
+    cyg_io_handle_t <CODE
+CLASS="PARAMETER"
+>handle</CODE
+>,
+    const void <CODE
+CLASS="PARAMETER"
+>*buf</CODE
+>,
+    cyg_uint32 <CODE
+CLASS="PARAMETER"
+>*len</CODE
+> )</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function sends one single CAN message (not a buffer of CAN messages) 
+to a device. The size of data to send is contained in 
+<CODE
+CLASS="PARAMETER"
+>*len</CODE
+> and the actual size sent will be returned in 
+the same place.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>// Read one CAN event from device
+Cyg_ErrNo <CODE
+CLASS="FUNCTION"
+>cyg_io_read</CODE
+>( 
+    cyg_io_handle_t <CODE
+CLASS="PARAMETER"
+>handle</CODE
+>,
+    void <CODE
+CLASS="PARAMETER"
+>*buf</CODE
+>,
+    cyg_uint32 <CODE
+CLASS="PARAMETER"
+>*len</CODE
+> )</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function receives one single CAN event from a device. The desired size 
+of data to receive is contained in <CODE
+CLASS="PARAMETER"
+>*len</CODE
+> and the 
+actual size obtained will be returned in the same place. </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>// Read configuration of a CAN device
+Cyg_ErrNo <CODE
+CLASS="FUNCTION"
+>cyg_io_get_config</CODE
+>( 
+    cyg_io_handle_t <CODE
+CLASS="PARAMETER"
+>handle</CODE
+>,
+    cyg_uint32 <CODE
+CLASS="PARAMETER"
+>key</CODE
+>,
+    void *<CODE
+CLASS="PARAMETER"
+>buf</CODE
+>,
+    cyg_uint32 *<CODE
+CLASS="PARAMETER"
+>len</CODE
+> )</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function is used to obtain run-time configuration about a
+device. The type of information retrieved is specified by the
+<CODE
+CLASS="PARAMETER"
+>key</CODE
+>. The data will be returned in the given
+buffer. The value of <CODE
+CLASS="PARAMETER"
+>*len</CODE
+> should contain the
+amount of data requested, which must be at least as large as the size
+appropriate to the selected key. The actual size of data retrieved is
+placed in <CODE
+CLASS="PARAMETER"
+>*len</CODE
+>. The appropriate key values 
+are all listed in the file <TT
+CLASS="FILENAME"
+>&lt;cyg/io/config_keys.h&gt;</TT
+>.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>// Change configuration of a CAN device
+Cyg_ErrNo <CODE
+CLASS="FUNCTION"
+>cyg_io_set_config</CODE
+>( 
+    cyg_io_handle_t <CODE
+CLASS="PARAMETER"
+>handle</CODE
+>,
+    cyg_uint32 <CODE
+CLASS="PARAMETER"
+>key</CODE
+>,
+    const void <CODE
+CLASS="PARAMETER"
+>*buf</CODE
+>,
+    cyg_uint32 <CODE
+CLASS="PARAMETER"
+>*len</CODE
+> )</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function is used to manipulate or change the run-time
+configuration of a device. The type of information is specified by the
+<CODE
+CLASS="PARAMETER"
+>key</CODE
+>. The data will be obtained from the given
+buffer. The value of <CODE
+CLASS="PARAMETER"
+>*len</CODE
+> should contain the
+amount of data provided, which must match the size appropriate to the
+selected key.  The appropriate key values are all listed in the file
+<TT
+CLASS="FILENAME"
+>&lt;cyg/io/config_keys.h&gt;</TT
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-can-ecos-support.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-can-driver-details.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>eCos Support for CAN</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-can.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CAN driver details</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

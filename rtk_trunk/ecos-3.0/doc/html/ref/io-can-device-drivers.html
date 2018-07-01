@@ -1,0 +1,721 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Writing a CAN hardware device driver</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="CAN Support"
+HREF="io-can.html"><LINK
+REL="PREVIOUS"
+TITLE="Configuration"
+HREF="io-can-configuration.html"><LINK
+REL="NEXT"
+TITLE="ADC Support"
+HREF="io-adc.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="io-can-configuration.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="io-adc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="IO-CAN-DEVICE-DRIVERS"
+></A
+>Chapter 34. Writing a CAN hardware device driver</H1
+><P
+>A CAN driver is nothing more than a named entity that supports the
+basic I/O functions - read, write, get config, and set config. The
+device driver uses and manages interrupts from the device. While the
+interface is generic and device driver independent, the actual driver
+implementation is completely up to the device driver designer.</P
+><P
+>That said, the reason for using a device driver is to provide access
+to a CAN device from application code in as general purpose a fashion
+as reasonable. Most driver writers are also concerned with making this
+access as simple as possible while being as efficient as possible.</P
+><P
+>Like other device drivers the CAN device driver is concerned with the
+movement of information - the CAN messages. In order to make the most
+efficient use of system resources, interrupts are used.  This will
+allow other application processing to take place while the data
+transfers are under way, with interrupts used to indicate when various
+events have occurred. For example, a CAN device typically generates an
+interrupt after a CAN message has been sent or a CAN message has been
+received by a CAN hardware message buffer. It makes sense to allow
+further application processing while the data is being sent since this
+can take quite a long time. The interrupt can be used to allow the
+driver to send a CAN message as soon as the current one is complete,
+without any active participation by the application code.</P
+><P
+>The main building blocks for CAN device drivers are found in the
+include files
+<TT
+CLASS="FILENAME"
+>&lt;cyg/io/devtab.h&gt;</TT
+> and <TT
+CLASS="FILENAME"
+>&lt;cyg/io/can.h&gt;</TT
+></P
+><P
+>Like many other device drivers in eCos, CAN device drivers are described by a device 
+table entry, using the <SPAN
+CLASS="TYPE"
+>cyg_devtab_entry_t</SPAN
+> type. The entry should be created using 
+the <CODE
+CLASS="VARNAME"
+>DEVTAB_ENTRY()</CODE
+> macro.</P
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="IO-CAN-HOW-TO-WRITE-INTERFACE-DRIVER"
+>How to Write a CAN Hardware Interface Driver</A
+></H1
+><P
+>The standard CAN driver supplied with eCos is structured as a hardware
+independent portion and a hardware dependent interface module. To add
+support for a new CAN device, the user should be able to use the
+existing hardware independent portion and just add their own interface
+driver which handles the details of the actual device. The user should
+have no need to change the hardware independent portion.</P
+><P
+>The interfaces used by the CAN driver and CAN implementation modules
+are contained in the file <TT
+CLASS="FILENAME"
+>&lt;cyg/io/can.h&gt;</TT
+>.</P
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN9656"
+>DevTab Entry</A
+></H2
+><P
+>The interface module contains the devtab entry (or entries if a single
+module supports more than one interface). This entry should have the
+form:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+> 
+DEVTAB_ENTRY(&lt;&lt;module_name&gt;&gt;, 
+             &lt;&lt;device_name&gt;&gt;,
+             0,
+             &amp;can_devio, 
+             &lt;&lt;module_init&gt;&gt;, 
+             &lt;&lt;module_lookup&gt;&gt;,
+             &amp;&lt;&lt;can_channel&gt;&gt;
+            );</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><P
+><B
+>Arguments</B
+></P
+><DL
+><DT
+><CODE
+CLASS="PARAMETER"
+>module_name</CODE
+></DT
+><DD
+><P
+>The "C" label for this devtab entry</P
+></DD
+><DT
+><CODE
+CLASS="PARAMETER"
+>device_name</CODE
+></DT
+><DD
+><P
+>The "C" string for the
+    device. E.g. <TT
+CLASS="FILENAME"
+>/dev/can0</TT
+>.</P
+></DD
+><DT
+><CODE
+CLASS="PARAMETER"
+>can_devio</CODE
+></DT
+><DD
+><P
+>The table of I/O functions. This set is defined in
+    the hardware independent CAN driver and should be used.</P
+></DD
+><DT
+><CODE
+CLASS="PARAMETER"
+>module_init</CODE
+></DT
+><DD
+><P
+>The hardware module initialization function.</P
+></DD
+><DT
+><CODE
+CLASS="PARAMETER"
+>module_lookup</CODE
+></DT
+><DD
+><P
+>The device lookup function. This function
+    typically sets up the CAN device for actual use, turning on
+    interrupts, configuring the message buffers, etc.</P
+></DD
+><DT
+><CODE
+CLASS="PARAMETER"
+>can_channel</CODE
+></DT
+><DD
+><P
+>This table (defined below) contains the interface
+    between the interface module and the CAN driver proper.</P
+></DD
+></DL
+></DIV
+><P
+>Example devtab entry for Motorola FlexCAN device driver:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>DEVTAB_ENTRY(flexcan_devtab, 
+             CYGDAT_DEVS_CAN_MCF52xx_FLEXCAN0_NAME,
+             0,                     // Does not depend on a lower level interface
+             &amp;cyg_io_can_devio, 
+             flexcan_init, 
+             flexcan_lookup,        // CAN driver may need initializing
+             &amp;flexcan_can0_chan
+    );</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN9695"
+>CAN Channel Structure</A
+></H2
+><P
+>Each CAN device must have a &#8220;CAN channel&#8221;.
+This is a set of data which describes all operations on the device.
+It also contains buffers, etc. The CAN channel is created by the macro: </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CAN_CHANNEL_USING_INTERRUPTS(l, funs, dev_priv, baud,
+                             out_buf, out_buflen,
+                             in_buf,  in_buflen)</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><P
+><B
+>Arguments</B
+></P
+><DL
+><DT
+><CODE
+CLASS="PARAMETER"
+>l</CODE
+></DT
+><DD
+><P
+>The "C" label for this structure.</P
+></DD
+><DT
+><CODE
+CLASS="PARAMETER"
+>funs</CODE
+></DT
+><DD
+><P
+>The set of interface functions (see below).</P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>dev_priv</CODE
+></DT
+><DD
+><P
+>A placeholder for any device specific data for
+    this channel.</P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>baud</CODE
+></DT
+><DD
+><P
+>The initial baud rate value
+    (<SPAN
+CLASS="TYPE"
+>cyg_can_baud_rate_t</SPAN
+>).</P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>out_buf</CODE
+></DT
+><DD
+><P
+>Pointer to the output buffer</P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>out_buflen</CODE
+></DT
+><DD
+><P
+>The length of the output buffer.</P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>in_buf</CODE
+></DT
+><DD
+><P
+>pointer to the input buffer.</P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>in_buflen</CODE
+></DT
+><DD
+><P
+>The length of the input buffer.</P
+></DD
+></DL
+></DIV
+><P
+>Example CAN channel implementation for Motorola FlexCAN device driver:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CAN_CHANNEL_USING_INTERRUPTS(
+    flexcan_can0_chan,
+    flexcan_lowlevel_funs,
+    flexcan_can0_info,
+    CYG_CAN_BAUD_RATE(CYGNUM_DEVS_CAN_MCF52xx_FLEXCAN0_KBAUD),
+    flexcan_can0_txbuf, CYGNUM_DEVS_CAN_MCF52xx_FLEXCAN0_QUEUESIZE_TX,
+    flexcan_can0_rxbuf, CYGNUM_DEVS_CAN_MCF52xx_FLEXCAN0_QUEUESIZE_RX
+);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The interface from the hardware independent driver into the hardware
+interface module is contained in the <CODE
+CLASS="STRUCTFIELD"
+>funs</CODE
+>
+table.  This is defined by the macro:</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN9746"
+>CAN Lowlevel Functions Structure</A
+></H2
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CAN_LOWLEVEL_FUNS(l, putmsg, getevent, get_config, set_config, start_xmit, stop_xmit)</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><P
+><B
+>Arguments</B
+></P
+><DL
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>l</CODE
+></DT
+><DD
+><P
+>The "C" label for this structure.</P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>putmsg</CODE
+></DT
+><DD
+><P
+><TT
+CLASS="LITERAL"
+>      bool (*putmsg)(can_channel *priv, cyg_can_message *pmsg, void *pdata)
+      </TT
+></P
+><P
+>      This function sends one CAN message to the interface. It should
+      return <TT
+CLASS="LITERAL"
+>true</TT
+> if the message is actually
+      consumed. It should return <TT
+CLASS="LITERAL"
+>false</TT
+> if there is
+      no space in the interface
+      </P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>getevent</CODE
+></DT
+><DD
+><P
+><TT
+CLASS="LITERAL"
+>      bool (*getevent)(can_channel *priv, cyg_can_event *pevent, void *pdata)
+      </TT
+></P
+><P
+>      This function fetches one event from the interface.
+      </P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>get_config</CODE
+></DT
+><DD
+><P
+><TT
+CLASS="LITERAL"
+> 
+      Cyg_ErrNo (*get_config)(can_channel *priv, cyg_uint32 key, const void *xbuf, cyg_uint32 *len)
+      </TT
+></P
+><P
+>        This function is used to query the configuration of a CAN channel.
+      </P
+></DD
+><DT
+><CODE
+CLASS="STRUCTFIELD"
+>set_config</CODE
+></DT
+><DD
+><P
+><TT
+CLASS="LITERAL"
+> 
+      Cyg_ErrNo (*set_config)(can_channel *priv, cyg_uint32 key, const void *xbuf, cyg_uint32 *len)
+      </TT
+></P
+><P
+>        This function is used to change configuration of a CAN channel.
+      </P
+></DD
+><DT
+><CODE
+CLASS="PARAMETER"
+>start_xmit</CODE
+></DT
+><DD
+><P
+><TT
+CLASS="LITERAL"
+>void (*start_xmit)(can_channel *priv)</TT
+></P
+><P
+>        Enable the transmit channel and turn on transmit interrupts.
+      </P
+></DD
+><DT
+><CODE
+CLASS="PARAMETER"
+>stop_xmit</CODE
+></DT
+><DD
+><P
+><TT
+CLASS="LITERAL"
+>void (*stop_xmit)(can_channel *priv)</TT
+></P
+><P
+>Disable the transmit channel and turn transmit interrupts off.</P
+></DD
+></DL
+></DIV
+><P
+>Example implementation of low level function structure for Motorola FlexCAN 
+device driver:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CAN_LOWLEVEL_FUNS(flexcan_lowlevel_funs,
+                  flexcan_putmsg,
+                  flexcan_getevent,
+                  flexcan_get_config,
+                  flexcan_set_config,
+                  flexcan_start_xmit,
+                  flexcan_stop_xmit
+     );</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN9802"
+>Callbacks</A
+></H2
+><P
+>The device interface module can execute functions in the
+hardware independent driver via <TT
+CLASS="LITERAL"
+>chan-&gt;callbacks</TT
+>.
+These functions are available:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void (*can_init)(can_channel *chan)</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function is used to initialize the CAN channel.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void (*xmt_msg)(can_channel *chan, void *pdata)</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function would be called from an interrupt handler after a
+transmit interrupt indicating that additional messages may be
+sent. The upper driver will call the <CODE
+CLASS="FUNCTION"
+>putmsg</CODE
+>
+function as appropriate to send more data to the device.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void (*rcv_event)(can_channel *chan, void *pdata)</PRE
+></TD
+></TR
+></TABLE
+><P
+>This function is used to tell the driver that a message has arrived
+at the interface or that an event has occurred. This function is typically 
+called from the interrupt handler. </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="io-can-configuration.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="io-adc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-can.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ADC Support</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

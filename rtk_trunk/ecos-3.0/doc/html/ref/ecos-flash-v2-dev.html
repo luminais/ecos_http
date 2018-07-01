@@ -1,0 +1,212 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>FLASH device API</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="The Version 2 eCos FLASH API"
+HREF="ecos-flash-v2.html"><LINK
+REL="PREVIOUS"
+TITLE="The Version 2 eCos FLASH API"
+HREF="ecos-flash-v2.html"><LINK
+REL="NEXT"
+TITLE="The legacy Version 1 eCos FLASH API"
+HREF="ecos-flash-v1.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="ecos-flash-v2.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 27. The Version 2 eCos FLASH API</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="ecos-flash-v1.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ECOS-FLASH-V2-DEV"
+>FLASH device API</A
+></H1
+><P
+>This section describes the API
+between the FLASH IO library the FLASH device drivers.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN7925"
+>The FLASH device Structure</A
+></H2
+><P
+>This structure keeps all the information about a single driver.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct cyg_flash_dev {
+  const struct cyg_flash_dev_funs *funs;            // Function pointers
+  cyg_uint32                      flags;            // Device characteristics
+  cyg_flashaddr_t                 start;            // First address
+  cyg_flashaddr_t                 end;              // Last address
+  cyg_uint32                      num_block_infos;  // Number of entries
+  const cyg_flash_block_info_t    *block_info;      // Info about one block size
+
+  const void                      *priv;            // Devices private data
+
+  // The following are only written to by the FLASH IO layer.
+  cyg_flash_printf                *pf;              // Pointer to diagnostic printf
+  bool                            init;             // Device has been initialised
+#ifdef CYGPKG_KERNEL
+  cyg_mutex_t                     mutex;            // Mutex for thread safeness
+#endif
+#if (CYGHWR_IO_FLASH_DEVICE &#62; 1)    
+  struct cyg_flash_dev            *next;            // Pointer to next device
+#endif    
+};
+
+struct cyg_flash_dev_funs {
+  int     (*flash_init) (struct cyg_flash_dev *dev);
+  size_t  (*flash_query) (struct cyg_flash_dev *dev, void * data, size_t len);
+  int     (*flash_erase_block) (struct cyg_flash_dev *dev, cyg_flashaddr_t block_base);
+  int     (*flash_program) (struct cyg_flash_dev *dev, cyg_flashaddr_t base, const void* data, size_t len);
+  int     (*flash_read) (struct cyg_flash_dev *dev, const cyg_flashaddr_t base, void* data, size_t len);
+#ifdef CYGHWR_IO_FLASH_BLOCK_LOCKING    
+  int     (*flash_block_lock) (struct cyg_flash_dev *dev, const cyg_flashaddr_t block_base);
+  int     (*flash_block_unlock) (struct cyg_flash_dev *dev, const cyg_flashaddr_t block_base);
+#endif    
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>The FLASH IO layer will only pass requests for operations on a single block.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="ecos-flash-v2.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="ecos-flash-v1.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>The Version 2 eCos FLASH API</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-flash-v2.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The legacy Version 1 eCos FLASH API</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

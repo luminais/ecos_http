@@ -1,0 +1,302 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Overview</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="M68000 Architectural Support"
+HREF="hal-m68k-arch.html"><LINK
+REL="PREVIOUS"
+TITLE="M68000 Architectural Support"
+HREF="hal-m68k-arch.html"><LINK
+REL="NEXT"
+TITLE="Configuration"
+HREF="m68k-configuration.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="hal-m68k-arch.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="m68k-configuration.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="M68K"
+></A
+>Overview</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN18836"
+></A
+><H2
+>Name</H2
+>Overview&nbsp;--&nbsp;eCos Support for the M68K Family of Processors</DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="M68K-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>The original Motorola 68000 processor was released in 1979, and
+featured the following:
+    </P
+><P
+></P
+><UL
+><LI
+><P
+>Eight general purpose 32-bit data registers, %D0 to %D7. Seven 32-bit
+address registers %A0 to %A6, with %A7 dedicated as the stack pointer.
+A 16-bit status register.
+      </P
+></LI
+><LI
+><P
+>A linear address space, limited to 24-bits because the chip package
+only had 24 address pins. Hence the processor could address 16
+megabytes of memory.
+      </P
+></LI
+><LI
+><P
+>No separate address space for I/O operations. Instead devices are
+accessed just like memory via the main address and data buses.
+      </P
+></LI
+><LI
+><P
+>16-bit external data bus, even though the data registers were 32 bits
+wide.
+      </P
+></LI
+><LI
+><P
+>A CISC variable-length instruction set with no less than 14 different
+addressing modes (although of course the terms RISC and CISC were not
+yet in common use).
+      </P
+></LI
+><LI
+><P
+>Separate supervisor and user modes. The processor actually has two
+distinct stack pointer registers %A7, and the mode determines which one
+gets used.
+      </P
+></LI
+><LI
+><P
+>An interrupt subsystem with support for vectored and prioritized
+interrupts.
+      </P
+></LI
+></UL
+><P
+>The 68000 processor was used in several microcomputers of its time,
+including the original Apple Macintosh, the Commodore Amiga, and the
+Atari ST. Over the years numerous variants have been developed. The
+core instruction set has remained essentially unchanged. Some of the
+variants have additional instructions. The development of MMUs led to
+changes in exception handling. In more recent variants, notably the
+Freescale ColdFire family, some infrequently used instructions and
+addressing modes have been removed.
+    </P
+><P
+></P
+><UL
+><LI
+><P
+>The 68008 reduced the widths of the external data and address buses to
+8 bits and 20 bits respectively, giving the processor slow access to
+only one megabyte.
+      </P
+></LI
+><LI
+><P
+>The 68010 (1982) added virtual memory support.
+      </P
+></LI
+><LI
+><P
+>In the 68020 (1984) both the address and data buses were made 32-bits wide. A
+256-byte instruction cache was added, as were some new instructions
+and addressing modes.
+      </P
+></LI
+><LI
+><P
+>The 68030 (1987) included an on-chip mmu and a 256-byte data cache.
+      </P
+></LI
+><LI
+><P
+>The 68040 (1991) added hardware floating point (previous processors relied on
+an external coprocessor or on software emulation). It also had larger
+caches and an improved mmu.
+      </P
+></LI
+><LI
+><P
+>The 68060 (1994) involved an internally very different superscalar
+implementation of the architecture, but few changes at the interface
+level. It also contained support for power management.
+      </P
+></LI
+><LI
+><P
+>There have been numerous 683xx variants for embedded use, with
+on-chip peripherals like UARTs and timers. The cpu core of these
+variants is also known as cpu32.
+      </P
+></LI
+><LI
+><P
+>The MCFxxxx ColdFire series (1995) resembles a stripped-down 68060,
+with some instructions and addressing modes removed to allow for a
+much smaller and more efficient implementation. Various hardware units
+such as the and FPU and MMU have become optional.
+      </P
+></LI
+></UL
+><P
+>eCos only provides support for some of these variants, although it
+should be possible to add support for additional variants with few or
+no changes to the architectural HAL package.
+    </P
+><P
+>The architectural HAL provides support for those features which are
+common to all members of the 68000 and ColdFire families, and for
+certain features which are present on some but not all members. A
+typical eCos configuration will also contain: a variant HAL package
+with support code for a family of processors, for example MCFxxxx;
+possibly a processor HAL package with support for one specific
+processor, for example the MCF5272; and a platform HAL
+which contains the code needed for a specific hardware platform such
+as the m5272c3.
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="hal-m68k-arch.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="m68k-configuration.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>M68000 Architectural Support</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="hal-m68k-arch.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Configuration</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

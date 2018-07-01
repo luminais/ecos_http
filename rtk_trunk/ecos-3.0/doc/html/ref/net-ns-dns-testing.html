@@ -1,0 +1,253 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>DNS Client Testing</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="DNS"
+HREF="net-ns-dns-api.html"><LINK
+REL="PREVIOUS"
+TITLE="DNS"
+HREF="net-ns-dns-api.html"><LINK
+REL="NEXT"
+TITLE="IPSEC for eCos"
+HREF="net-ipsec-common.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="net-ns-dns-api.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 49. DNS</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="net-ipsec-common.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="NET-NS-DNS-TESTING"
+>DNS Client Testing</A
+></H1
+><P
+>The DNS client has a test program, dns1.c, which tests many of
+        the features of the DNS client and the functions
+        <CODE
+CLASS="FUNCTION"
+>gethostbyname(),</CODE
+>
+        <CODE
+CLASS="FUNCTION"
+>gethostbyaddr()</CODE
+>,
+        <CODE
+CLASS="FUNCTION"
+>getaddrinfo()</CODE
+>,
+        <CODE
+CLASS="FUNCTION"
+>getnameinfo()</CODE
+>.
+      </P
+><P
+>In order for this test to work, a DNS server must be configured
+        with a number of names and addresses. The following is an example
+        forward address resolution database for bind v9, which explains the
+        requirements.</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>        $TTL            680400
+        @               IN      SOA     lunn.org.       andrew.lunn.lunn.org (
+        2003041801      ; serial
+        10800           ; refresh
+        1800            ; retry
+        3600000         ; expire
+        259200)         ; mimimum
+        IN      NS      londo.lunn.org.
+        
+        hostnamev4      IN      A       192.168.88.1
+        cnamev4         IN      CNAME   hostnamev4
+        hostnamev6      IN      AAAA    fec0::88:4:3:2:1
+        cnamev6         IN      CNAME   hostnamev6
+        hostnamev46     IN      A       192.168.88.2
+        hostnamev46     IN      AAAA    fec0::88:4:3:2:2
+        cnamev46        IN      CNAME   hostnamev46
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>The actual names and addresses do not matter, since they are
+        configurable in the test. What is important is the relationship
+        between the names and the addresses and there family. ie
+        hostnamev4 should map to one IPv4 address. hostnamev46 should
+        map to both an IPv4 and an IPv6 address. cnamev4 should be a
+        CNAME record for hostname4. Reverse lookup information is also
+        needed by the test.
+      </P
+><P
+>The information placed into the DNS server is also need in the
+        test case. A structure is defined to hold this
+        information:</P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>        struct test_info_s {
+            char * dns_server_v4;
+            char * dns_server_v6;
+            char * domain_name;
+            char * hostname_v4;
+            char * cname_v4;
+            char * ip_addr_v4;
+            char * hostname_v6;
+            char * cname_v6;
+            char * ip_addr_v6;
+            char * hostname_v46;
+            char * cname_v46;
+            char * ip_addr_v46_v4;
+            char * ip_addr_v46_v6;
+        };
+        </PRE
+></TD
+></TR
+></TABLE
+><P
+>The test program may hold a number of such structures for
+        different DNS server. The test will use each structure in turn
+        to perform the tests.  If IPv6 is not enabled in the eCos
+        configuration, the entries which use IPv6 may be assigned to
+        NULL.
+        </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="net-ns-dns-api.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="net-ipsec-common.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DNS</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="net-ns-dns-api.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>IPSEC for eCos</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

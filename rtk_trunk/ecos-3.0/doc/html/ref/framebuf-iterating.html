@@ -1,0 +1,703 @@
+<!-- Copyright (C) 2009 Free Software Foundation, Inc.                                -->
+<!-- This material may be distributed only subject to the terms      -->
+<!-- and conditions set forth in the Open Publication License, v1.0  -->
+<!-- or later (the latest version is presently available at          -->
+<!-- http://www.opencontent.org/openpub/).                           -->
+<!-- Distribution of the work or derivative of the work in any       -->
+<!-- standard (paper) book form is prohibited unless prior           -->
+<!-- permission is obtained from the copyright holder.               -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Framebuffer Pixel Manipulation</TITLE
+><meta name="MSSmartTagsPreventParsing" content="TRUE">
+<META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="eCos Reference Manual"
+HREF="ecos-ref.html"><LINK
+REL="UP"
+TITLE="Framebuffer Support"
+HREF="io-framebuf.html"><LINK
+REL="PREVIOUS"
+TITLE="Framebuffer Drawing Primitives"
+HREF="framebuf-drawing.html"><LINK
+REL="NEXT"
+TITLE="Writing a Framebuffer Device Driver"
+HREF="framebuf-porting.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>eCos Reference Manual</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="framebuf-drawing.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="framebuf-porting.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FRAMEBUF-ITERATING"
+></A
+>Framebuffer Pixel Manipulation</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN11049"
+></A
+><H2
+>Name</H2
+>Pixel Manipulation&nbsp;--&nbsp;iterating over the display</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN11052"
+></A
+><H2
+>Synopsis</H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN11053"
+></A
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="FUNCSYNOPSISINFO"
+>#include &lt;cyg/io/framebuf.h&gt;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>CYG_FB_PIXEL0_VAR</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_PIXEL0_SET</CODE
+>(FRAMEBUF, cyg_ucount16 x, cyg_ucount16 y);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_PIXEL0_GET</CODE
+>(FRAMEBUF, cyg_ucount16 x, cyg_ucount16 y);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_PIXEL0_ADDX</CODE
+>(FRAMEBUF, cyg_ucount16 incr);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_PIXEL0_ADDY</CODE
+>(FRAMEBUF, cyg_ucount16 incr);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_PIXEL0_WRITE</CODE
+>(FRAMEBUF, cyg_fb_colour colour);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>cyg_fb_colour CYG_FB_PIXEL0_READ</CODE
+>(FRAMEBUF);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_PIXEL0_FLUSHABS</CODE
+>(FRAMEBUF, cyg_ucount16 x0, cyg_ucount16 y0, cyg_ucount16 width, cyg_ucount16 height);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void CYG_FB_PIXEL0_FLUSHREL</CODE
+>(FRAMEBUF, cyg_ucount16 x0, cyg_ucount16 y0, cyg_ucount16 dx, cyg_ucount16 dy);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-ITERATION-DESCRIPTION"
+></A
+><H2
+>Description</H2
+><P
+>A common requirement for graphics code is to iterate over parts of the
+framebuffer. Drawing text typically involves iterating over a block
+of pixels for each character, say 8 by 8, setting each pixel to either
+a foreground or background colour. Drawing arbitrary lines typically
+involves moving to the start position and then adjusting the x and y
+coordinates until the end position is reached, setting a single pixel
+each time around the loop. Drawing images which are not in the frame
+buffer's native format typically involves iterating over a block of
+pixels, from top to bottom and left to right, setting pixels as the
+image is decoded.
+    </P
+><P
+>Functionality like this can be implemented in several ways. One
+approach is to use the pixel write primitive. Typically this involves
+some arithmetic to get from the x and y coordinates to a location
+within framebuffer memory so it is fairly expensive compared with a
+loop which just increments a pointer. Another approach is to write the
+data first to a separate buffer in memory and then use a block write
+primitive to move it to the framebuffer, but again this involves
+overhead. The eCos framebuffer support provides a third approach: a
+set of macros specifically for iterating over the frame buffer.
+Depending on the operation being performed and the details of the
+framebuffer implementation, these macros may be optimal or
+near-optimal. Obviously there are limitations. Most importantly the
+framebuffer device must be known at compile-time: the compiler can do
+a better job optimizing the code if information such as the frame
+buffer width are constant. Also each iteration must be performed
+within a single variable scope: it is not possible to do some of the
+iteration in one function, some in another.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-ITERATION-MACROS"
+></A
+><H2
+>The Pixel Macros</H2
+><P
+>All the pixel macros take a framebuffer identifier as their first
+argument. This is the same identifier that can be used with the other
+macros like <CODE
+CLASS="FUNCTION"
+>CYG_FB_WRITE_HLINE</CODE
+> and
+<CODE
+CLASS="FUNCTION"
+>CYG_FB_ON</CODE
+>, one of the entries in the
+configuration option <CODE
+CLASS="VARNAME"
+>CYGDAT_IO_FRAMEBUF_DEVICES</CODE
+>.
+Using an invalid identifier will result in numerous compile-time error
+messages which may bear little resemblance to the original code. In
+the examples below it is assumed that <CODE
+CLASS="VARNAME"
+>FRAMEBUF</CODE
+> has
+been <TT
+CLASS="LITERAL"
+>#define</TT
+>'d to a suitable identifier.
+    </P
+><P
+>Typical use of the pixel macros will look like this:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    CYG_FB_PIXEL0_VAR(FRAMEBUF);
+    &#8230;
+    CYG_FB_PIXEL0_FLUSHABS(FRAMEBUF, x, y, width, height);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The <TT
+CLASS="LITERAL"
+>VAR</TT
+> macro will define one or more local
+variables to keep track of the current pixel position, as appropriate
+to the framebuffer device. The other pixel macros will then use these
+variables. For a simple 8bpp linear framebuffer there will be just a
+byte pointer. For a 1bpp display there may be several variables: a
+byte pointer, a bit index within that byte, and possibly a cached
+byte; using a cached value means that the framebuffer may only get
+read and written once for every 8 pixels, and the compiler may well
+allocate a register for the cached value; on some platforms
+framebuffer access will bypass the processor's main cache, so reading
+from or writing to framebuffer memory will be slow; reducing the
+number of framebuffer accesses may greatly improve performance.
+    </P
+><P
+>Because the <TT
+CLASS="LITERAL"
+>VAR</TT
+> macro defines one or more local
+variables it is normally placed at the start of a function or block,
+alongside other local variable definitions.
+    </P
+><P
+>One the iteration has been completed there should be a
+<CODE
+CLASS="FUNCTION"
+>FLUSHABS</CODE
+> or <CODE
+CLASS="FUNCTION"
+>FLUSHREL</CODE
+> macro.
+This serves two purposes. First, if the local variables involve a
+dirty cached value or similar state then this will be written back.
+Second, for double-buffered displays the macro sets a bounding box for
+the part of the screen that has been updated. This allows the double
+buffer synch operation to update only the part of the display that has
+been modified, without having to keep track of the current bounding
+box for every updated pixel. For <TT
+CLASS="LITERAL"
+>FLUSHABS</TT
+> the
+<CODE
+CLASS="PARAMETER"
+>x0</CODE
+> and <CODE
+CLASS="PARAMETER"
+>y0</CODE
+> arguments
+specify the top-left corner of the bounding box, which extends for
+<CODE
+CLASS="PARAMETER"
+>width</CODE
+> by <CODE
+CLASS="PARAMETER"
+>height</CODE
+> pixels.
+For <TT
+CLASS="LITERAL"
+>FLUSHREL</TT
+> <CODE
+CLASS="PARAMETER"
+>x0</CODE
+> and
+<CODE
+CLASS="PARAMETER"
+>y0</CODE
+> still specify the top-left corner, but the
+bottom-right corner is now determined from the current pixel position
+offset by <CODE
+CLASS="PARAMETER"
+>dx</CODE
+> and <CODE
+CLASS="PARAMETER"
+>dy</CODE
+>.
+More specifically, <CODE
+CLASS="PARAMETER"
+>dx</CODE
+> should move the current
+horizontal position one pixel to the right of the right-most pixel
+modified, such that
+<TT
+CLASS="LITERAL"
+>(x&nbsp;+&nbsp;dx)&nbsp;-&nbsp;x0</TT
+> gives the width
+of the bounding box. Similarly <CODE
+CLASS="PARAMETER"
+>dy</CODE
+> should move
+the current vertical position one pixel below the bottom-most pixel
+modified. In typical code the current pixel position will already
+correspond in part or in whole to the bounding box corner, as a
+consequence of iterating over the block of memory.
+    </P
+><P
+>If a pixel variable has been used only for reading framebuffer memory,
+not for modifying it, then it should still be flushed. A
+<TT
+CLASS="LITERAL"
+>FLUSHABS</TT
+> with a width and height of 0 can be used
+to indicate that the bounding box is empty. If it is known that the
+framebuffer device being used does not support double-buffering then
+again it is possible to specify an empty bounding box. Otherwise
+portable code should specify a correct bounding box. If the
+framebuffer device that ends up being used does not support double
+buffering then the relevant macro arguments are eliminated at
+compile-time and do not result in any unnecessary code. In addition if
+there is no cached value or other state then the whole flush operation
+will be a no-op and no code will be generated.
+    </P
+><P
+>Failure to perform the flush may result in strange drawing artefacts
+on some displays which can be very hard to debug. A
+<CODE
+CLASS="FUNCTION"
+>FLUSHABS</CODE
+> or <CODE
+CLASS="FUNCTION"
+>FLUSHREL</CODE
+> macro
+only needs to be invoked once, at the end of the iteration.
+    </P
+><P
+>The <TT
+CLASS="LITERAL"
+>SET</TT
+> macro sets the current position within the
+framebuffer. It can be used many times within an iteration. However
+it tends to be somewhat more expensive than <TT
+CLASS="LITERAL"
+>ADDX</TT
+> or
+<TT
+CLASS="LITERAL"
+>ADDY</TT
+>, so usually <TT
+CLASS="LITERAL"
+>SET</TT
+> is only
+executed once at the start of an iteration.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    CYG_FB_PIXEL0_VAR(FRAMEBUF);
+    CYG_FB_PIXEL0_SET(FRAMEBUF, x, y);
+    &#8230;
+    CYG_FB_PIXEL0_FLUSHREL(FRAMEBUF, x, y, 0, 0);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The <TT
+CLASS="LITERAL"
+>GET</TT
+> macro retrieves the x and y coordinates
+corresponding to the current position. It is provided mainly for
+symmetry, but can prove useful for debugging.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    CYG_FB_PIXEL0_VAR(FRAMEBUF);
+    CYG_FB_PIXEL0_SET(FRAMEBUF, x, y);
+    &#8230;
+#ifdef DEBUG
+    CYG_FB_PIXEL0_GET(FRAMEBUF, new_x, new_y);
+    diag_printf("Halfway through: x now %d, y now %d\n", new_x, new_y);
+#endif
+    &#8230;
+    CYG_FB_PIXEL0_FLUSHREL(FRAMEBUF, x, y, 0, 0);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The <TT
+CLASS="LITERAL"
+>ADDX</TT
+> and <TT
+CLASS="LITERAL"
+>ADDY</TT
+> macros adjust
+the current position. The most common increments are 1 and -1, moving
+to the next or previous pixel horizontally or vertically, but any
+increment can be used.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    CYG_FB_PIXEL0_VAR(FRAMEBUF);
+    CYG_FB_PIXEL0_SET(FRAMEBUF, x, y);
+    for (rows = height; rows; rows--) {
+        for (columns = width; columns; columns--) {
+            &lt;perform operation&gt;
+            CYG_FB_PIXEL0_ADDX(FRAMEBUF, 1);
+        }
+        CYG_FB_PIXEL0_ADDX(FRAMEBUF, -1 * width);
+        CYG_FB_PIXEL0_ADDY(FRAMEBUF, 1);
+    }
+    CYG_FB_PIXEL0_FLUSHREL(FRAMEBUF, x, y, width, 0);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Here the current position is moved one pixel to the right each time
+around the inner loop. In the outer loop the position is first moved
+back to the start of the current row, then moved one pixel down.
+For the final flush the current x position is off by
+<TT
+CLASS="LITERAL"
+>width</TT
+>, but the current y position is already correct.
+    </P
+><P
+>The final two macros <TT
+CLASS="LITERAL"
+>READ</TT
+> and
+<TT
+CLASS="LITERAL"
+>WRITE</TT
+> can be used to examine or update the current
+pixel value.
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    CYG_FB_PIXEL0_VAR(FRAMEBUF);
+    CYG_FB_PIXEL0_SET(FRAMEBUF, x, y);
+    for (rows = height; rows; rows--) {
+        for (columns = width; columns; columns--) {
+            cyg_fb_colour colour = CYG_FB_PIXEL0_READ(FRAMEBUF);
+            if (colour == colour_to_replace) {
+                CYG_FB_PIXEL0_WRITE(FRAMEBUF, replacement);
+            }
+            CYG_FB_PIXEL0_ADDX(FRAMEBUF, 1);
+        }
+        CYG_FB_PIXEL0_ADDX(FRAMEBUF, -1 * width);
+        CYG_FB_PIXEL0_ADDY(FRAMEBUF, 1);
+    }
+    CYG_FB_PIXEL0_FLUSHREL(FRAMEBUF, x, y, width, 0);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="FRAMEBUF-ITERATION-OTHER"
+></A
+><H2
+>Concurrent Iterations</H2
+><P
+>Although uncommon, in some cases application code may need to iterate
+over two or more blocks. An example might be an advanced block move
+where each copied pixel requires some processing. To support this
+there are <TT
+CLASS="LITERAL"
+>PIXEL1</TT
+>, <TT
+CLASS="LITERAL"
+>PIXEL2</TT
+> and
+<TT
+CLASS="LITERAL"
+>PIXEL3</TT
+> variants of all the
+<TT
+CLASS="LITERAL"
+>PIXEL0</TT
+> macros. For example:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    CYG_FB_PIXEL0_VAR(FRAMEBUF);
+    CYG_FB_PIXEL1_VAR(FRAMEBUF);
+
+    CYG_FB_PIXEL0_SET(FRAMEBUF, dest_x, dest_y_);
+    CYG_FB_PIXEL1_SET(FRAMEBUF, source_x, source_y);
+    for (rows = height; rows; rows--) {
+        for (columns = width; columns; columns--) {
+            colour = CYG_FB_PIXEL1_READ(FRAMEBUF);
+            &lt;do some processing on colour&gt;
+            CYG_FB_PIXEL0_WRITE(FRAMEBUF, colour);
+            CYG_FB_PIXEL0_ADDX(FRAMEBUF, 1);
+            CYG_FB_PIXEL1_ADDX(FRAMEBUF, 1);
+        }
+        CYG_FB_PIXEL0_ADDX(FRAMEBUF, -100);
+        CYG_FB_PIXEL0_ADDY(FRAMEBUF, 1);
+        CYG_FB_PIXEL1_ADDX(FRAMEBUF, -100);
+        CYG_FB_PIXEL1_ADDY(FRAMEBUF, 1);
+    }
+
+    CYG_FB_PIXEL0_FLUSHABS(FRAMEBUF, source_x, source_y, width, height);
+    CYG_FB_PIXEL1_FLUSHABS(FRAMEBUF, 0, 0, 0, 0);  // Only used for reading</PRE
+></TD
+></TR
+></TABLE
+><P
+>The <TT
+CLASS="LITERAL"
+>PIXEL0</TT
+>, <TT
+CLASS="LITERAL"
+>PIXEL1</TT
+>,
+<TT
+CLASS="LITERAL"
+>PIXEL2</TT
+> and <TT
+CLASS="LITERAL"
+>PIXEL3</TT
+> macros all use
+different local variables so there are no conflicts. The variable
+names also depend on the framebuffer device. If the target has two
+displays and two active framebuffer devices then the pixel macros can
+be used with the two devices without conflict:
+    </P
+><TABLE
+BORDER="5"
+BGCOLOR="#E0E0F0"
+WIDTH="70%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>    CYG_FB_PIXEL0_VAR(FRAMEBUF0);
+    CYG_FB_PIXEL0_VAR(FRAMEBUF1);
+    &#8230;</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="framebuf-drawing.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="ecos-ref.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="framebuf-porting.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Framebuffer Drawing Primitives</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="io-framebuf.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Writing a Framebuffer Device Driver</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
