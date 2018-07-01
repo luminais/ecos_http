@@ -1,0 +1,168 @@
+# ====================================================================
+#
+#      819x_wrapper_drivers.cdl
+#
+#      Wrapper driver - support for RealTek network wrapper driver
+#
+# ====================================================================
+## ####ECOSGPLCOPYRIGHTBEGIN####                                            
+## -------------------------------------------                              
+## This file is part of eCos, the Embedded Configurable Operating System.   
+## Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+##
+## eCos is free software; you can redistribute it and/or modify it under    
+## the terms of the GNU General Public License as published by the Free     
+## Software Foundation; either version 2 or (at your option) any later      
+## version.                                                                 
+##
+## eCos is distributed in the hope that it will be useful, but WITHOUT      
+## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or    
+## FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License    
+## for more details.                                                        
+##
+## You should have received a copy of the GNU General Public License        
+## along with eCos; if not, write to the Free Software Foundation, Inc.,    
+## 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.            
+##
+## As a special exception, if other files instantiate templates or use      
+## macros or inline functions from this file, or you compile this file      
+## and link it with other works to produce a work based on this file,       
+## this file does not by itself cause the resulting work to be covered by   
+## the GNU General Public License. However the source code for this file    
+## must still be made available in accordance with section (3) of the GNU   
+## General Public License v2.                                               
+##
+## This exception does not invalidate any other reasons why a work based    
+## on this file might be covered by the GNU General Public License.         
+## -------------------------------------------                              
+## ####ECOSGPLCOPYRIGHTEND####                                              
+# ====================================================================
+######DESCRIPTIONBEGIN####
+#
+# Author(s):      David Hsu
+# Contributors:
+# Date:           2009-11-13
+#
+#####DESCRIPTIONEND####
+#
+# ====================================================================
+
+cdl_package RTLPKG_DEVS_ETH_RLTK_819X_WRAPPER {
+    display       "RealTek 819x network driver wrapper"
+    description   "Network wrapper driver for RTL819x."
+
+    parent        CYGPKG_IO_ETH_DRIVERS
+    active_if	  CYGPKG_IO_ETH_DRIVERS
+    #active_if     CYGPKG_HAL_MIPS_RLX
+
+    include_dir   cyg/io/eth/rltk/819x/wrapper
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_HAVE_WRAPPER {
+      display "Have wrapper"
+      description   ""
+      compile       -library=libextras.a wrapper.c skbuff.c timer.c
+      calculated { RTLPKG_DEVS_ETH_RLTK_819X_HAVE_ETH || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WLAN0 }
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_HAVE_IF_STATUS {
+      display "Have interface status"
+      flavor   bool
+      default_value 0
+      description ""
+      compile	    -library=libextras.a if_status.c
+      define -file system.h CONFIG_RTL_REPORT_LINK_STATUS
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_BRSC {
+      display "Bridge shortcut"
+      default_value 1
+      description   ""
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_RX_ZERO_COPY {
+      display "Rx zero copy"
+      default_value 1
+      description   ""
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_RX_DELAY_REFILL {
+      display "delay refill"
+      default_value 0
+      define -file system.h CONFIG_RTL_DELAY_REFILL
+      description   ""
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_USE_MIPS16 {
+      display "use mips16"
+      requires      CYGPKG_HAL_MIPS_RLX
+      default_value 1
+      description   ""
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_TIMER_USE_ECOS_TIMEOUT {
+      display "use eCos timeout function to implement the timer"
+      requires { CYGPKG_NET_FREEBSD_STACK || CYGPKG_NET_OPENBSD_STACK }
+      default_value 1
+      description   ""
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_KERNEL_TIMER {
+      display "realtek kernel timer"
+      flavor   bool
+      default_value 0
+      define -file system.h CONFIG_RTL_KERNEL_TIMER
+      description   ""
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_KMALLOC_USE_NET_MEMPOOL {
+      display "use net memory pool to implement kmalloc"
+      requires { CYGPKG_NET_FREEBSD_STACK || CYGPKG_NET_OPENBSD_STACK }
+      default_value 1
+      description   ""
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_PRINTK {
+      display "Enable support for printk"
+      flavor   bool
+      default_value 0
+      define -file system.h CONFIG_PRINTK
+      description   ""
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_SUSPEND_CHECK {
+      display "take interrupt count into consideration for cpu power saving"
+      active_if CYGSEM_HAL_819X_CPU_SLEEP
+      requires { RTLPKG_DEVS_ETH_RLTK_819X_HAVE_ETH || RTLPKG_DEVS_ETH_RLTK_819X_WLAN_WLAN0 }
+      default_value 1
+      define -file system.h CONFIG_RTL_819X_SUSPEND_CHECK
+      description   ""
+    }
+
+    cdl_option RTLPKG_DEVS_ETH_RLTK_819X_ALP {
+      display "ALP customization"
+      flavor   bool
+      no_define
+      default_value 0
+      define -file system.h CONFIG_RTL_ALP
+      description   ""
+    }
+
+    cdl_component RTLPKG_DEVS_ETH_RLTK_819X_WRAPPER_OPTIONS {
+        display "819x ethernet support build options"
+        flavor  none
+	no_define
+
+        cdl_option RTLPKG_DEVS_ETH_RLTK_819X_WRAPPER_CFLAGS_ADD {
+            display "Additional compiler flags"
+            flavor  data
+            no_define
+            default_value { "-D_KERNEL -D__ECOS -include pkgconf/system.h" }
+            description   "
+                This option modifies the set of compiler flags for
+                building the 819x ethernet support package. These flags are used in addition
+                to the set of global flags."
+        }
+    }
+}
+
+ 
