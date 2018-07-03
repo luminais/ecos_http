@@ -1162,12 +1162,14 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 	}
 	printf("[%s][%d]total_len = %d\n", __FUNCTION__, __LINE__, total_len);
 	conf_content[total_len] = '\0';
+#if 0
 	char_p = strchr(conf_content, '\r');
 	if(char_p)
 		*char_p = '\0';
 	char_p = strchr(conf_content, '\n');
 	if(char_p)
 		*char_p = '\0';
+#endif
 	diag_printf("[%s][%d] conf_content = %s\n", __FUNCTION__, __LINE__, conf_content);
 	*conf_content_save = conf_content;
 	free(file_buf);

@@ -10696,6 +10696,24 @@ int rtl_qos_tc_limit(int dir,struct ip *iph)
 
 }
 
+int tenda_bridge_stream_(int dir,struct ip *iph)
+{
+
+	if(dir == RTL_RX_DIR&& (iph->ip_p == PROTO_TCP 
+			|| iph->ip_p == PROTO_UDP ))
+	{
+		bridge_stream_statistic(iph, 0);
+	}else if((dir == RTL_TX_DIR)
+			&& (iph->ip_p == PROTO_TCP 
+			|| iph->ip_p == PROTO_UDP))
+	{
+		bridge_stream_statistic(iph, 1);
+	}
+
+	return FAILED;
+
+}
+
 int rtl_qos_rate_limite_check(int dir, unsigned char *dev_name, struct sk_buff *skb)
 {
 	struct ip *iph = NULL;
@@ -10736,7 +10754,13 @@ int rtl_qos_rate_limite_check(int dir, unsigned char *dev_name, struct sk_buff *
 	if_name = rtl_get_wan_if_name();
 	if (if_name &&(strcmp(dev_name, if_name) !=0 ))
 	{
-		return rtl_qos_tc_limit(dir,iph);
+		if(work_mode_is_route)
+		{
+			return rtl_qos_tc_limit(dir,iph);
+		}else
+		{
+			tenda_bridge_stream_(dir,iph);
+		}
 	}
 
 	return FAILED;

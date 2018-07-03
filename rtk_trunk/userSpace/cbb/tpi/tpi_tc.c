@@ -13,6 +13,7 @@ static P_TC_CLIENT_INFO_STRUCT head;
 extern void tenda_arp_init(void);
 extern void del_stream_control();
 extern void stream_tmr_func(void);
+extern void bridge_stream_tmr_func(void);
 void tpi_tc_start_handle();
 void tpi_tc_stop_handle();
 
@@ -22,7 +23,7 @@ static RET_INFO tpi_tc_start();
 static RET_INFO tpi_tc_stop();
 static RET_INFO tpi_tc_restart();
 static PI32 tpi_do_stream_timer();
-
+static PI32 tpi_do_bridge_stream_timer();
 RET_INFO tpi_tc_struct_init()
 {
 	return RET_SUC;
@@ -37,6 +38,7 @@ RET_INFO tpi_tc_first_init()
 	init_stream_ip();
 	enable_tc();
 	tpi_do_stream_timer();
+	tpi_do_bridge_stream_timer();
 	tpi_tc_timer_init();
 #ifdef __CONFIG_TENDA_HTTPD_NORMAL__
 	load_remark_config();
@@ -113,6 +115,19 @@ static PI32 tpi_do_stream_timer()
     timer.enable = DO_TIMER_ON;
     timer.sleep_time = DO_TIMER_MIN_TIME;
     timer.fun = stream_tmr_func;
+    sys_do_timer_add(&timer);
+	return 0;
+}
+
+static PI32 tpi_do_bridge_stream_timer()
+{
+	DO_TIMER_FUN timer;
+	
+    memset(&timer,0x0,sizeof(DO_TIMER_FUN));
+	strcpy(timer.name,TC_BRIDGE_STREAM_TIMER);
+    timer.enable = DO_TIMER_ON;
+    timer.sleep_time = DO_TIMER_MIN_TIME;
+    timer.fun = bridge_stream_tmr_func;
     sys_do_timer_add(&timer);
 	return 0;
 }

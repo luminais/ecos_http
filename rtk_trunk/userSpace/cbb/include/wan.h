@@ -165,4 +165,5 @@ P_WAN_ERR_INFO_STRUCT tpi_wan_get_err_info_other();
 P_WAN_INFO_STRUCT tpi_wan_get_info();
 P_WAN_HWADDR_INFO_STRUCT tpi_wan_get_hwaddr_info();
 P_WAN_CURRCET_INFO_STRUCT tpi_wan_get_currcet_info(P_WAN_CURRCET_INFO_STRUCT p);
+RET_INFO tpi_wan_get_connect();
 #endif

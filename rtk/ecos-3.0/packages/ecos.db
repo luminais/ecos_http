@@ -219,6 +219,15 @@ package CYGPKG_DEVS_FLASH_SPI_RTL819X {
         RTL819x SPI flash support."
 }
 
+package CYGPKG_DEVS_FLASH_SPI_SHEIPA {
+        alias           { "Sheipa SPI Flash" flash_spi_sheipa }
+        directory       devs/flash/sheipa
+        script          flash_spi_sheipa.cdl
+        hardware
+        description "
+        Sheipa SPI flash support."
+}
+
 package CYGPKG_DEVS_FLASH_ARM_PID {
 	alias 		{ "Support for flash memory on ARM/PID board" flash_arm_pid }
 	directory	devs/flash/arm/pid
@@ -3953,6 +3962,16 @@ package CYGPKG_HAL_MIPS_RLX_RTL8881A {
            actual hardware."
 }
 
+package CYGPKG_HAL_MIPS_RTL8197F {
+	alias		{ "RTL8197F board" hal_rtl8197f rtl8197f_hal }
+	directory	hal/mips/rtl8197f
+	script		hal_mips_rtl8197f.cdl
+	hardware
+	description "
+           The RTL8197F HAL package should be used when targetting the
+           actual hardware. "
+}
+
 package CYGPKG_HAL_MIPS_MIPS32 {
 	alias		{ "MIPS32 HAL" hal_mips32 mips32_hal mips32_arch_hal }
 	directory	hal/mips/mips32/
@@ -5918,6 +5937,25 @@ target rtl8881a {
            eCos on a RTL8881A board."
 }
 
+target rtl8197f {
+        alias		{ "RTL8197F board" }
+	packages        { CYGPKG_HAL_MIPS
+                          CYGPKG_HAL_MIPS_MIPS32
+                          CYGPKG_HAL_MIPS_RTL8197F
+                          CYGPKG_IO_SERIAL_RTL819X
+                          CYGPKG_DEVS_FLASH_SPI_SHEIPA
+                          CYGPKG_IO_FLASH
+			  RTLPKG_DEVS_ETH_RLTK_819X_SWITCH
+			  RTLPKG_DEVS_ETH_RLTK_819X_WLAN
+			  RTLPKG_DEVS_ETH_RLTK_819X_WRAPPER
+			  CYGPKG_DEVICES_WATCHDOG_RTL819X
+        }
+        set_value CYGHWR_HAL_MIPS_MIPS32_CORE "4Kc"
+        description "
+           The rtl8197f target provides the packages needed to run
+           eCos on a RTL8197F board."
+}
+
 target atlas_mips32_4kc {
         alias		{ "MIPS Atlas board with Mips32 4Kc processor" }
 	packages        { CYGPKG_HAL_MIPS
@@ -6602,7 +6640,7 @@ package CYGPKG_DEVS_ETH_I386_PC_RLTK8139 {
 package RTLPKG_DEVS_ETH_RLTK_819X_SWITCH {
 	alias 		{ "Realtek 819x ethernet switch driver" rtl819x_switch_driver }
 	hardware
-	directory	devs/eth/rltk/819x_1_4_3/switch
+	directory	devs/eth/rltk/819x_1_5_1/switch
 	script		819x_switch_drivers.cdl
         description     "Realtek 819x using Ethernet switch."
 }
@@ -6610,7 +6648,7 @@ package RTLPKG_DEVS_ETH_RLTK_819X_SWITCH {
 package RTLPKG_DEVS_ETH_RLTK_819X_WLAN {
 	alias 		{ "Realtek 819x wlan driver" rtl819x_wlan_driver }
 	hardware
-	directory	devs/eth/rltk/819x_1_4_3/wlan
+	directory	devs/eth/rltk/819x_1_5_1/wlan
 	script		819x_wlan_drivers.cdl
         description     "Realtek 819x using wireless lan."
 }
@@ -6618,7 +6656,7 @@ package RTLPKG_DEVS_ETH_RLTK_819X_WLAN {
 package RTLPKG_DEVS_ETH_RLTK_819X_WRAPPER {
 	alias 		{ "Realtek Linux net driver wrapper" rtl819x_wrapper_driver }
 	hardware
-	directory	devs/eth/rltk/819x_1_4_3/wrapper
+	directory	devs/eth/rltk/819x_1_5_1/wrapper
 	script		819x_wrapper_drivers.cdl
         description     "Realtek 819x network wrapper."
 }

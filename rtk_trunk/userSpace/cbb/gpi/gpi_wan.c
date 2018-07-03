@@ -5,6 +5,10 @@
 
 #include "wan.h"
 
+RET_INFO gpi_wan_get_connect()
+{
+	return tpi_wan_get_connect();
+}
 PIU32 gpi_wan_get_err_result_info()
 {
 	return tpi_wan_get_err_result_info();

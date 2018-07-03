@@ -805,6 +805,21 @@ static RET_INFO tpi_wan_get_status(SYS_WORK_MODE wl_mode,WIFISTASTATUS * wifi_st
 	return ret;
 }
 
+RET_INFO tpi_wan_get_connect()
+{
+	SYS_WORK_MODE mode = WL_ROUTE_MODE;
+	WIFISTASTATUS wifi_status = WIFI_INIT_FAIL;
+	mode = gpi_wifi_get_mode();
+
+	tpi_wan_get_status(mode,&wifi_status);
+
+	if(wan_info.wan_status == WAN_CONNECTED)
+	{
+		return 1;
+	}
+	return 0;
+}
+
 static PIU32 tpi_wan_get_err_result(P_WAN_ERR_INFO_STRUCT p)
 {
 	PIU32 ret = 0;

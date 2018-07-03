@@ -80,6 +80,72 @@ RET_INFO cgi_lib_get_black_num(webs_t wp, cJSON *root, void *info)
    	 return RET_SUC;
 }
 
+u_long get_stream_statistic(int dir)
+{	
+	char iterm_value[PI_BUFLEN_64];
+	int	i = 0;
+	u_long up_speed = 0;
+	u_long down_speed = 0;
+	char_t pre_ip[32]={'\0'}, pr_ip[32]={'\0'};
+	char_t *lanip, *p;
+	unsigned int index;
+	unsigned int *mac_look_list;
+	mac_look_list = NULL;
+	
+
+	for(i = 0;i<MAX_BRIDGE_NUM;++i)
+	{
+		if(i == 0)
+		{
+			_GET_VALUE(LAN_IPADDR, lanip);
+			strcpy(pr_ip, lanip);
+			p=rindex(pr_ip, '.');
+			if(p) *p='\0';
+		}
+#ifdef __CONFIG_GUEST__
+		else
+		{
+			_GET_VALUE(LAN1_IPADDR, lanip);
+			strcpy(pr_ip, lanip);
+			p=rindex(pr_ip, '.');
+			if(p) *p='\0';
+		}
+#endif
+		for(index = 1; index < STREAM_CLIENT_NUMBER; ++index)
+		{
+			sprintf(pre_ip, "%s.%u", pr_ip, index+1);
+			if(!strcmp(pre_ip , lanip))
+			{
+				continue ;
+			}
+			
+			mac_look_list = tenda_arp_ip_to_mac(inet_addr(pre_ip));
+			if( NULL == mac_look_list)
+			{
+				continue ;
+			}
+		
+			if(tenda_arp_is_multicast(mac_look_list))
+				continue ;
+			if(i == 0)
+			{
+				(up_speed) += (float)stream_ip_per[index][0] / (TIMES * KILO);
+				(down_speed) += (float)stream_ip_per[index][1] / (TIMES * KILO);
+			}
+#ifdef __CONFIG_GUEST__
+			else
+			{
+				(up_speed) += (float)guest_stream_ip_per[index][0] / (TIMES * KILO);
+				(down_speed) += (float)guest_stream_ip_per[index][1] / (TIMES * KILO);
+			}
+#endif
+		}
+
+	}
+
+	return dir ? up_speed:down_speed;
+	
+}
 
 RET_INFO cgi_lib_get_stream_statistic(webs_t wp, cJSON *root, void *info)
 {

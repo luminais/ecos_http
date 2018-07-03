@@ -746,7 +746,9 @@ unsigned int stream_ip_per[STREAM_CLIENT_NUMBER][2];  //0:up, 1: down;
 
 static total_stream_statistic_t g_total_stream_statistics;
 
+static total_stream_statistic_t g_total_bridge_stream_statistics;
 
+static total_stream_statistic_t g_total_bridge_stream_speed;
 
 #define MAX_TC_STREAM_b  (95 * 1024 * 1024 / 8)//95Mbps
 
@@ -939,6 +941,49 @@ void stream_statistic(ip_t *ip, int direction,int type){
 }
 
 
+void bridge_stream_statistic(ip_t *ip, int direction){
+	unsigned int index=0;
+	unsigned int ip_len=0;
+
+	ip_len =  ntohs(ip->ip_len);
+
+	if (0 == direction)//UP_DIRECTION
+	{
+		g_total_bridge_stream_statistics.up_bytes += ip_len;
+	}
+	else //DOWN_DIRECTION
+	{
+		//printf("========%lu=======%s [%d]\n",g_total_bridge_stream_statistics.down_bytes, __FUNCTION__, __LINE__);
+		g_total_bridge_stream_statistics.down_bytes += ip_len;
+	}
+	return;
+}
+
+
+void bridge_stream_tmr_func(void)
+{
+	static unsigned long last_up_bytes = 0;
+	static unsigned long last_down_bytes = 0;
+	unsigned long up_bytes = 0;
+	unsigned long down_bytes = 0;
+
+	up_bytes= g_total_bridge_stream_statistics.up_bytes - last_up_bytes;
+	down_bytes = g_total_bridge_stream_statistics.down_bytes - last_down_bytes;
+	last_up_bytes = g_total_bridge_stream_statistics.up_bytes ;
+	last_down_bytes = g_total_bridge_stream_statistics.down_bytes ;
+	g_total_bridge_stream_speed.up_bytes = (up_bytes < MAX_TC_STREAM_b)? up_bytes : MAX_TC_STREAM_b;
+	g_total_bridge_stream_speed.down_bytes = (down_bytes < MAX_TC_STREAM_b)? down_bytes : MAX_TC_STREAM_b;
+
+	return ;
+}
+
+void get_bridge_stream_speed(unsigned long * tx,unsigned long * rx)
+{
+	(*tx) = g_total_bridge_stream_speed.up_bytes;
+	(*rx) = g_total_bridge_stream_speed.down_bytes;
+
+	return;
+}
 
 #define UP_DIRECTION		0
 #define DOWN_DIRECTION		1
