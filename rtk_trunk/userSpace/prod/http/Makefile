@@ -114,6 +114,9 @@ endif
 $(MODULE): $(ALL_OBJS)
 	$(LD) -r $(TDAPP_LDFLAGS) -o $(MODULE) $(ALL_OBJS)
 	rm -f webrom.c webrom.d webrom.o webcomp
+	@if [ ! -d obj ]; then \
+		mkdir obj;  \
+	fi
 	mv *.o *.d obj/
 	mv obj/$(MODULE) ./
 

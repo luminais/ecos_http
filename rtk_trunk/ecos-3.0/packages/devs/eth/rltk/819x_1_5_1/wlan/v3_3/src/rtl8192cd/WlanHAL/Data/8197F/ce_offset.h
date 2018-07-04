@@ -4,39 +4,31 @@ power offset in 0.5db step
 
 RATE 18_06, 54_24 CCK1 MCS0-3, MCS7_4, MCS11_8,MCS15_12 A11_2B11
 (a) means pathA, (b) means pathB, (ab) means pathAB
-18   (ab)„ÄÅ 12    (ab)„ÄÅ 9     (ab)„ÄÅ  6    (ab)Ôºõ
-54   (ab)„ÄÅ 48    (ab)„ÄÅ 36    (ab)„ÄÅ 24    (ab)Ôºõ
-5.5  (b) „ÄÅ 2     (b) „ÄÅ  1    (ab)„ÄÅ MCS32(ab)Ôºõ
-MCS3 (ab)„ÄÅ MCS2 (ab)„ÄÅ MCS1 (ab)„ÄÅ MCS0 (ab)Ôºõ
-MCS7 (ab)„ÄÅ MCS6 (ab)„ÄÅ MCS5 (ab)„ÄÅ MCS4 (ab)Ôºõ
-MCS11(ab)„ÄÅ MCS10(ab)„ÄÅ MCS9 (ab)„ÄÅ MCS8 (ab)Ôºõ
-MCS15(ab)„ÄÅ MCS14(ab)„ÄÅ MCS13(ab)„ÄÅ MCS12(ab)Ôºõ
-11   (a) „ÄÅ 5.5   (a) „ÄÅ  2    (a)„ÄÅ   11   (b)
+18   (ab)°¢ 12    (ab)°¢ 9     (ab)°¢  6    (ab)£ª
+54   (ab)°¢ 48    (ab)°¢ 36    (ab)°¢ 24    (ab)£ª
+5.5  (b) °¢ 2     (b) °¢  1    (ab)°¢ MCS32(ab)£ª
+MCS3 (ab)°¢ MCS2 (ab)°¢ MCS1 (ab)°¢ MCS0 (ab)£ª
+MCS7 (ab)°¢ MCS6 (ab)°¢ MCS5 (ab)°¢ MCS4 (ab)£ª
+MCS11(ab)°¢ MCS10(ab)°¢ MCS9 (ab)°¢ MCS8 (ab)£ª
+MCS15(ab)°¢ MCS14(ab)°¢ MCS13(ab)°¢ MCS12(ab)£ª
+11   (a) °¢ 5.5   (a) °¢  2    (a)°¢   11   (b)
 */
-unsigned int path_offset[] = {0x11131313, 
-                              0x0D0E0F10, 
-                              0x12121200,
-                              0x0F101112, 
-                              0x0C0D0D0E,
-                              0x0D0E0F10,
-                              0x0A0B0B0C,
-                              0x12121212};
+unsigned int path_offset[] = {0x12141416,0x0E101012,0x1C161600,0x12121416, 
+                                    0x0C0E1010,0x12121416,0x0C0E1010,0x201C1C20};
 
+																		
 
-
-/* OFDM 6,9,12,18,24,36,48,54 */		
-unsigned char offset_OFDM[]={18,18,18,18,
-                            10,10,10,10};
-
+/* OFDM 6,9,12,18,24,36,48,54 */								  
+unsigned char offset_OFDM[]={20,20,18,18,
+                                    16,16,14,12};
 /* HT MCS0-7 MCS8-15 */    
-unsigned char offset_MCS[]= {18,18,18,17,
-                            8, 8, 8, 8,
-                            18,18,18,17,
-                            8, 8, 8, 8};
-
-/*VHT NSS1 MCS0-9 NSS2 MCS0-9*/
-unsigned char offset_VHT[]= {16,16,16,16,
-                            14,12,10, 8,
-                            8 ,2, 16,16,
-                            16,16,16,14,
-                            12,10, 8, 2};
+unsigned char offset_MCS[]={20,18,18,16,
+								   14,14,12,10,
+								   18,18,16,16,
+								   14,14,12,10};
+/*VHT NSS1 MCS0-9 NSS2 MCS0-9*/ 								   
+unsigned char offset_VHT[]={20,18,18,16,
+								   14,12,10,2,
+								   2,2,20,18,		
+								   18,16,14,12,
+								   10,2,2,2};

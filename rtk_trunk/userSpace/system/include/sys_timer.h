@@ -19,6 +19,7 @@
 #define LAN_LINK_TIMER 		"lan_link"
 #define TENDA_ARP_TIMER 	"tenda_arp"
 #define TC_STREAM_TIMER 	"tc stream"
+#define TC_BRIDGE_STREAM_TIMER 	"bridge stream"
 #ifdef __CONFIG_GUEST__
 #define GUEST_NETWORK_TIMER 	"guest_network"
 #endif

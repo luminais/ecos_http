@@ -102,13 +102,21 @@ struct nvram_tuple tenda_nvram_defaults[] = {
 	{ "wl_maclist", "", 0},
 	{ "wl_macmode", "deny", 0},
 	{ "wl_guest_down_speed_limit","0",0},
+
+#ifdef __CONFIG_WIFI_DOUBLEBAND_UNITY__
+	/*****************wlan 双频优选功能参数**********/
+	{ "wl_doubleBandUn_enable","0", 0},
+	{ "wl_doubleBandUn_lmt_rssi_2g","-47", 0},
+	{ "wl_doubleBandUn_lmt_rssi_5g","-75", 0},
+	{ "wl_doubleBandUn_sta_balance_en","0", 0},
+#endif
 	/**************wps相关的参数*****************/
 	{ "wps_aplockdown_cap", "1", 0},
 	{ "wps_config_method", "0x284", 0},
 	{ "wps_device_name", "Tenda", 0},
 	{ "wps_device_pin", "64274959", 0},
 	{ "wps_mfstring", "Tenda", 0},
-	{ "wps_mode", "disabled", 0},
+	{ "wps_mode", "enabled", 0},
 	{ "wps_modelname", "Tenda", 0},
 	{ "wps_modelnum", "123456", 0},
 	{ "wps_proc_status", "0", 0},
@@ -137,11 +145,15 @@ struct nvram_tuple tenda_nvram_defaults[] = {
 	/*****************其他配置参数*******************/
 	{"sys_workmode","route",0},
 	{ "country_code", "CN", 0},
-	{ "auto_conn_extend_rssi", "20", 0}, /*自动桥接\自动快速设置信号强度阈值*/
+	{ "auto_conn_extend_rssi", "35", 0}, /*自动桥接\自动快速设置信号强度阈值*/
 	
-	{ "td_dig_sel", "44", 0},/* 抗干扰接收灵敏度调整范围的上限，44=0x2c*/	
+	{ "td_dig_sel", "0", 0},/* 抗干扰接收灵敏度调整范围的上限，44=0x2c*/	
 	
 	{ "td_auto_antiInterferance", "1", 0},/*是否开启干扰自适应*/	
+	{ "td_FA_UpperBound", "768", 0},
+	{ "td_FA_LowerBound", "256", 0},
+	{ "td_FA_UpperBound_20M", "600", 0},
+	{ "td_FA_LowerBound_20M", "256", 0},
 	
 	{ "adaptivity_enable", "1", 0},
 	{ "antswctl2g", "0x1", 0},
@@ -342,7 +354,7 @@ struct nvram_tuple tenda_nvram_defaults[] = {
 	{ "nat_type", "sym", 0},
 	{ "never_prompt_pppoe", "0", 0},
 	{ "never_prompt_wlpwd", "0", 0},
-	{ "ntp_server", "129.6.15.28 129.6.15.29 18.145.0.30 211.138.200.208", 0},
+	{ "ntp_server", "120.25.108.11 108.59.2.24 212.47.249.141 129.6.15.28 129.6.15.29 18.145.0.30", 0},
 	{ "nvram_changed", "0", 0},
 	{ "os_date", "Jan 13 2016", 0},
 	{ "os_language", "en", 0},
@@ -435,7 +447,7 @@ struct nvram_tuple tenda_nvram_defaults[] = {
 	{ "rltk_wlan_protection_disable", "1", 0},
 	{ "rltk_wlan_short_gi", "1", 0},
 	{ "rltk_wlan_sta_num", "0", 0},
-	{ "rltk_wlan_stbc_enable", "0", 0},//BSPLJF++ 170224 在复杂环境下，关闭stbc功能，支持stbc的网卡会更倾向于用更高的速率向路由器发包
+	{ "rltk_wlan_stbc_enable", "1", 0},//BSPLJF++ 170224 在复杂环境下，关闭stbc功能，支持stbc的网卡会更倾向于用更高的速率向路由器发包
 	{ "rltk_wlan_tx_beamforming", "1", 0},  //默认开启
 	{ "rltk_wlan_wmm_enable", "1", 0},
 	{ "rltk_wlan_wpa_group_rekey_time", "86400", 0},
@@ -593,11 +605,12 @@ struct nvram_tuple tenda_nvram_defaults[] = {
 	{"parentCtl_date", "00000110", 0},
 	{"parentCtl_urlFilter_mode", "disable", 0},
 	{"parentCtl_urlFilter_list", "", 0},
-	{ "pingwan_enable", "1", 0}, //ping wan add by zgd
+	{"pingwan_enable", "0", 0}, //ping wan add by zgd
 	{"led_time","00:00-07:00",0},		//LED定时关闭时间段
 	{"led_ctl_type","0",0},		//LED控制类型	0:常开 1:常关  2:定时关闭
 	{"iptv_enable","0",0},		//IPTV开关
-	{"iptv_portName","lan1",0},		//IPTV 口
+	{"iptv_portName","lan0",0},		//IPTV 口
+	{"vlan_nat_port","lan1 lan2 lan3 wlan0 wlan0-va0 wlan0-va1 wlan1 wlan1-va0 wlan1-va1",0},
 	{ 0, 0, 0 }
 };
 
@@ -630,28 +643,32 @@ struct nvram_tuple tenda_envram_defaults[] = {
     { "HW_BOARD_VER", "1", 0},
     { "wl0_ctv_power", "high", 0},
     { "wl1_ctv_power", "high", 0},
-    { "wl0_country_pwr_power", "78,92,100", 0},
-    { "wl1_country_pwr_power", "92,100", 0},
+    { "wl0_country_pwr_power", "100", 0},
+    { "wl1_country_pwr_power", "100", 0},
     { "country_offset_power", "12,6,0", 0},//功率设为最大值23x2，然后根据 低、中、高分别减country_offset_power对应的值 fh add
-    { "HW_WLAN0_11N_THER", "28", 0},
-	{ "HW_WLAN0_11N_XCAP", "36", 0},	
-	{ "HW_WLAN0_REG_DOMAIN", "13", 0},
-	{ "HW_WLAN0_TX_POWER_5G_HT40_1S_A", "0000000000000000000000000000000000000000000000000000000000000000000000262626262626262626262626262626262626262626272727272727272727272727272727272727272727272727272727272727272727272727272727272727272727272727272727272727272728282828282828282828282828282828272727272727272727272727272727271b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b14141414141414140f0f0f0f0f0f0f0f00000000000000000000000000000000000000", 0},
-	{ "HW_WLAN0_TX_POWER_5G_HT40_1S_B", "00000000000000000000000000000000000000000000000000000000000000000000002828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282828282823232323232323232323232323232323231f1f1f1f1f1f1f1f1b1b1b1b1b1b1b1b00000000000000000000000000000000000000", 0},
-	{ "HW_WLAN0_TX_POWER_DIFF_5G_20BW1S_OFDM1T_A", "2424242424242424242424000000", 0},
-	{ "HW_WLAN0_TX_POWER_DIFF_5G_20BW1S_OFDM1T_B", "2424242424242424242424010101", 0},
-	{ "HW_WLAN0_TX_POWER_DIFF_5G_40BW2S_20BW2S_A", "0202020202020202020202000000", 0},
-	{ "HW_WLAN0_TX_POWER_DIFF_5G_40BW2S_20BW2S_B", "0202020202020202020202000000", 0},	
-	{ "HW_WLAN1_11N_THER", "36", 0},
+    { "HW_WLAN0_11N_THER", "1c", 0},
+	{ "HW_WLAN0_11N_XCAP", "2a", 0},	
+	{ "HW_WLAN0_REG_DOMAIN", "d", 0},
+	{ "HW_WLAN0_TX_POWER_5G_HT40_1S_A", "00000000000000000000000000000000000000000000000000000000000000000000001f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f20202020202020202020202020202020202020202020202020202020202020202020202020202020262626262626262626262626262626262625252525252525252424242424242424", 0},
+	{ "HW_WLAN0_TX_POWER_5G_HT40_1S_B", "000000000000000000000000000000000000000000000000000000000000000000000023232323232323232323232323232323232323232323232323232323232121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121282828282828282828282828282828282827272727272727272626262626262626", 0},
+	{ "HW_WLAN0_TX_POWER_DIFF_5G_20BW1S_OFDM1T_A", "2424242424242424242424242424", 0},
+	{ "HW_WLAN0_TX_POWER_DIFF_5G_20BW1S_OFDM1T_B", "2424242424242424242424242424", 0},
+	{ "HW_WLAN0_TX_POWER_DIFF_5G_40BW2S_20BW2S_A", "0000000000000000000000000000", 0},
+	{ "HW_WLAN0_TX_POWER_DIFF_5G_40BW2S_20BW2S_B", "0000000000000000000000000000", 0},	
+	{ "HW_WLAN1_11N_THER", "28", 0},
 	{ "HW_WLAN1_11N_XCAP", "2", 0},
-	{ "HW_WLAN1_REG_DOMAIN", "13", 0},
-	{ "HW_WLAN1_TX_POWER_CCK_A", "1515151616161616161818181818", 0},
-	{ "HW_WLAN1_TX_POWER_CCK_B", "1313131515151515151818181818", 0},
-	{ "HW_WLAN1_TX_POWER_DIFF_HT20", "ffffff0000000000000000000000", 0},
+	{ "HW_WLAN1_REG_DOMAIN", "d", 0},
+	{ "HW_WLAN1_TX_POWER_CCK_A", "3333333434343434343535353535", 0},
+	{ "HW_WLAN1_TX_POWER_CCK_B", "3030303232323232323333333333", 0},
+	{ "HW_WLAN1_TX_POWER_DIFF_HT20", "2222223333333333333333333333", 0},
 	{ "HW_WLAN1_TX_POWER_DIFF_HT40_2S", "0000000000000000000000000000", 0},
-	{ "HW_WLAN1_TX_POWER_DIFF_OFDM", "2222222222222222222222222222", 0},
-	{ "HW_WLAN1_TX_POWER_HT40_1S_A", "1919191a1a1a1a1a1a1b1b1b1b1b", 0},
-	{ "HW_WLAN1_TX_POWER_HT40_1S_B", "1818181919191919191c1c1c1c1c", 0},
+	{ "HW_WLAN1_TX_POWER_DIFF_OFDM", "4444445555555555555555555555", 0},
+	{ "HW_WLAN1_TX_POWER_HT40_1S_A", "2828282828282828282929292929", 0},
+	{ "HW_WLAN1_TX_POWER_HT40_1S_B", "2525252626262626262727272727", 0},
+	{ "HW_WLAN0_TX_POWER_DIFF_5G_80BW1S_160BW1S_A", "9090909090909090909090909090", 0},
+	{ "HW_WLAN0_TX_POWER_DIFF_5G_80BW1S_160BW1S_B", "9090909090909090909090909090", 0},
+	{ "HW_WLAN0_TX_POWER_DIFF_5G_80BW2S_160BW2S_A", "0000000000000000000000000000", 0},
+	{ "HW_WLAN0_TX_POWER_DIFF_5G_80BW2S_160BW2S_B", "0000000000000000000000000000", 0},
     { "HW_WLAN0_RF_TYPE", "a", 0},
     { "HW_WLAN0_LED_TYPE", "7", 0},
     { "HW_WLAN0_11N_TSSI1", "0", 0},
@@ -669,7 +686,7 @@ struct nvram_tuple tenda_envram_defaults[] = {
     { "wl0_hwaddr", "00:90:4C:88:88:89", 0},
 	{ "wl1_hwaddr", "00:90:4C:88:88:8D", 0},
     { "et0macaddr", "00:90:4C:88:88:88", 0},
-    { "BOARD_NAME", "AC6_V3.0", 0},
+    { "BOARD_NAME", "AC6_V4.0", 0},
     { "country_code", "CN", 0},
     { "RFTestFlag", "0", 0},	//RFTestFlag ThroughputTestFlag FinishTestFlag产测防止漏测参数
     { "ThroughputTestFlag", "0", 0},
