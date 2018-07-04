@@ -12,6 +12,7 @@ typedef unsigned char	uint8;
 #define MAX_TYPE_NUM (5)
 
 #define WHITE_HOST_HASH_LEN (30)
+#define URL_HOST_HASH_LEN (10)
 
 #define CHECK_NULL_RETURN(p, ret) \
 	do \
@@ -35,6 +36,14 @@ typedef struct len_string
 	unsigned int len;
 	char *str;
 }len_string_t;
+
+typedef struct http_hdr_params
+{
+	len_string_t host;
+	len_string_t uri;
+	len_string_t suffix;
+	len_string_t referer;
+}http_hdr_params_t;
 
 typedef struct url_rule
 {
@@ -60,7 +69,7 @@ typedef struct len_string_list
 
 typedef struct url_match_rule
 {
-	len_string_list_t *host;
+	len_string_list_t *host[URL_HOST_HASH_LEN];
 	len_string_t suffix;
 	len_string_t uri;
 	len_string_t redirect;
@@ -133,6 +142,7 @@ void print_url_rules(void)
 	url_match_rules_t *rules_p;
 	url_match_rule_t *rule_p;
 	len_string_list_t *len_string_list_p;
+	int first;
 
 	for(i=0; i<MAX_TYPE_NUM; i++)
 	{
@@ -142,9 +152,23 @@ void print_url_rules(void)
 		rule_p = rules_p->rule_list;
 		while(rule_p)
 		{
+			first = 1;
 			printf("\t");
-			len_string_list_p = rule_p->host;
-			print_len_string_list(len_string_list_p);
+            for(j=0; j<URL_HOST_HASH_LEN; j++)
+    		{
+    			len_string_list_p = rule_p->host[j];
+				while(len_string_list_p)
+				{
+					if(first)
+					{
+						printf("%.*s", len_string_list_p->list.len, len_string_list_p->list.str);
+						first = 0;
+					}
+					else
+						printf("|%.*s", len_string_list_p->list.len, len_string_list_p->list.str);
+					len_string_list_p = len_string_list_p->next;
+				}
+    		}
 			printf(";");
 			if(rule_p->suffix.len > 0)
 				printf("%.*s", rule_p->suffix.len, rule_p->suffix.str);
@@ -304,14 +328,16 @@ void len_string_list_free(len_string_list_t *len_string_list_p)
 
 void url_match_rule_free(url_match_rule_t *url_match_rule_p)
 {
+    int i;
+
 	if(!url_match_rule_p)
 	{
 		return;
 	}
 
-	if(url_match_rule_p->host)
+    for(i=0; i<URL_HOST_HASH_LEN; i++)
 	{
-		len_string_list_free(url_match_rule_p->host);
+		len_string_list_free(url_match_rule_p->host[i]);
 	}
 
 	if(url_match_rule_p->suffix.str)
@@ -345,10 +371,34 @@ void url_rules_free(void)
 	}
 }
 
+int add_len_string_hash(len_string_list_t *list_hash[], int hash_len, char *value)
+{
+	char *char_p = NULL, *char_save = NULL;
+	u32 hash_index;
+	if(!list_hash || !value)
+	{
+		printf("[%s][%d] invalid param\n", __FUNCTION__, __LINE__);
+		return -1;
+	}
+
+	char_p = strtok_r(value, SAME_RULE_DELIM_STR, &char_save);
+	while(char_p)
+	{
+		printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
+		hash_index = jhash(char_p, strlen(char_p), 0)%hash_len;
+		if(0 != add_len_string_list(&(list_hash[hash_index]), char_p))
+			goto add_white_host_failed;
+		char_p = strtok_r(NULL, SAME_RULE_DELIM_STR, &char_save);
+	}
+	return 0;
+add_white_host_failed:
+	// free
+	return -1;
+}
+
 url_match_rule_t *url_match_rule_new(url_rule_t *url_rule_p)
 {
 	url_match_rule_t *url_match_rule_p;
-	char *char_p = NULL, *char_save = NULL;
 	if(!url_rule_p)
 	{
 		printf("[%s][%d] invalid param\n", __FUNCTION__, __LINE__);
@@ -364,14 +414,8 @@ url_match_rule_t *url_match_rule_new(url_rule_t *url_rule_p)
 
 	if(NULL != url_rule_p->host)
 	{
-		char_p = strtok_r(url_rule_p->host, SAME_RULE_DELIM_STR, &char_save);
-		while(char_p)
-		{
-			printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
-			if(0 != add_len_string_list(&(url_match_rule_p->host), char_p))
-				goto url_match_rule_new_failed;
-			char_p = strtok_r(NULL, SAME_RULE_DELIM_STR, &char_save);
-		}
+        if(0 != add_len_string_hash(url_match_rule_p->host, URL_HOST_HASH_LEN, url_rule_p->host))
+            goto url_match_rule_new_failed;
 	}
 
 	if(NULL != url_rule_p->suffix)
@@ -540,31 +584,6 @@ add_white_uri_failed:
 	return -1;
 }
 
-int add_white_host(len_string_list_t *list_hash[], int hash_len, char *value)
-{
-	char *char_p = NULL, *char_save = NULL;
-	u32 hash_index;
-	if(!list_hash || !value)
-	{
-		printf("[%s][%d] invalid param\n", __FUNCTION__, __LINE__);
-		return -1;
-	}
-
-	char_p = strtok_r(value, SAME_RULE_DELIM_STR, &char_save);
-	while(char_p)
-	{
-		printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
-		hash_index = jhash(char_p, strlen(char_p), 0)%hash_len;
-		if(0 != add_len_string_list(&(list_hash[hash_index]), char_p))
-			goto add_white_host_failed;
-		char_p = strtok_r(NULL, SAME_RULE_DELIM_STR, &char_save);
-	}
-	return 0;
-add_white_host_failed:
-	// free
-	return -1;
-}
-
 int add_white_rule(white_rule_t *white_rule_p)
 {
 	url_match_rules_t *url_match_rules_p;
@@ -580,7 +599,7 @@ int add_white_rule(white_rule_t *white_rule_p)
 	switch(white_rule_p->white_type)
 	{
 		case WHITE_RULE_TYPE_HOST:
-			ret = add_white_host(url_match_rules_p->white_host, WHITE_HOST_HASH_LEN, white_rule_p->value);
+			ret = add_len_string_hash(url_match_rules_p->white_host, WHITE_HOST_HASH_LEN, white_rule_p->value);
 			break;
 		case WHITE_RULE_TYPE_URI:
 			ret = add_white_uri(&(url_match_rules_p->white_uri), white_rule_p->value);
@@ -689,9 +708,13 @@ int main()
 	printf("[%s][%d] print_url_rules : \n", __FUNCTION__, __LINE__);
 	print_url_rules();
 #endif
+
+	char http_hdr[1024] = "GET /jzt/tpl/sspPic.html?ad_ids=3194:5&adflag=0&clkmn=&expose= HTTP/1.1\r\nHost: static-alias-1.360buyimg.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://wa.gtimg.com/website/201709/bjjdsj_QNR_20170901175534.html?tclick=http%3A%2F%2Fc.l.qq.com%2Flclick%3Foid%3D4028810%26cid%3D2691790%26loc%3DQQCOM_N_Rectangle3%26soid%3DbhwOtwAAWzzb4Q5t9QjyJplYARJu%26click_data%3DdXNlcl9pbmZvPW9BRGptejA2Rmg0PSZheHBoZWFkZXI9MSZwYWdlX3R5cGU9MSZzc3A9MSZ1cF92ZXJzaW9uPVM5MnxMNTcxJnNpPTE4MzUyMjQ2MQ%3D%3D%26index%3D1%26chl%3D478\r\nConnection: keep-alive\r\n\r\n"
+
 	printf("[%s][%d] url_rules_free\n", __FUNCTION__, __LINE__);
 	url_rules_free();
-#else
+#endif
+#if 0
 #if 0
 	char test_str[256] = "1;2;;html;x=1;http://www.taobao.com/";
 	printf("[%s][%d] test_str : %s\n", __FUNCTION__, __LINE__, test_str);
