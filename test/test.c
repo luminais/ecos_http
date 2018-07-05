@@ -211,6 +211,27 @@ void print_url_rules(void)
 		printf("\n");
 	}
 }
+
+void print_http_hdr_params(http_hdr_params_t *http_hdr_params_p)
+{
+	if(!http_hdr_params_p)
+		return;
+	printf("[%s][%d] http_hdr_params : \n", __FUNCTION__, __LINE__);
+	printf("\thost : %.*s\n", http_hdr_params_p->host.len, http_hdr_params_p->host.str);
+	printf("\turi : %.*s\n", http_hdr_params_p->uri.len, http_hdr_params_p->uri.str);
+	if(http_hdr_params_p->suffix.len == 0)
+		printf("\tsuffix : is NULL\n");
+	else
+		printf("\tsuffix : %.*s\n", http_hdr_params_p->suffix.len, http_hdr_params_p->suffix.str);
+	if(http_hdr_params_p->query.len == 0)
+		printf("\tquery : is NULL\n");
+	else
+		printf("\tquery : %.*s\n", http_hdr_params_p->query.len, http_hdr_params_p->query.str);
+	if(http_hdr_params_p->referer.len == 0)
+		printf("\treferer : is NULL\n");
+	else
+		printf("\treferer : %.*s\n", http_hdr_params_p->referer.len, http_hdr_params_p->referer.str);
+}
 #endif
 
 void init_url_rules(void)
@@ -792,7 +813,8 @@ char *strrchr_len(char *s, int s_len, char c)
 int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *http_hdr_params_p)
 {
 	len_string_t *len_string_p;
-	char *char_p;
+	char *char_p, *char_q;
+	int query_off = 0, suffix_len = 0;
 
 	if(NULL==http_hdr || NULL==http_hdr_params_p)
 		return -1;
@@ -817,10 +839,38 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 	len_string_p->len = (int)(char_p - len_string_p->str);
 
 	// query
-	len_string_p = &(http_hdr_params_p->query);
+	char_q = strchr_len(len_string_p->str, len_string_p->len, '?');
+	if(char_q)
+	{
+		query_off = (int)(char_p - char_q);
+		len_string_p = &(http_hdr_params_p->query);
+		len_string_p->str = char_q + 1;
+		len_string_p->len = query_off - 1;
+	}
 
 	// suffix
-	len_string_p = &(http_hdr_params_p->suffix);
+	len_string_p = &(http_hdr_params_p->uri);
+	char_q = strchr_len(len_string_p->str, len_string_p->len - query_off, '.');
+	if(char_q)
+	{
+		suffix_len = len_string_p->len - (int)(char_q - len_string_p->str +1) - query_off;
+		len_string_p = &(http_hdr_params_p->suffix);
+		len_string_p->str = char_q + 1;
+		len_string_p->len = suffix_len;
+	}
+
+	// referer
+	len_string_p = &(http_hdr_params_p->referer);
+	len_string_p->str = http_hdr_find_field(http_hdr, http_hdr_len, REFERER_STR, REFERER_LEN);
+	if(len_string_p->str)
+	{
+		len_string_p->str += REFERER_LEN;
+		char_p = strchr(len_string_p->str, '\r');
+		if(char_p)
+			len_string_p->len = (int)(char_p - len_string_p->str);
+	}
+
+	return 0;
 }
 
 int main()
@@ -849,7 +899,8 @@ int main()
 	print_url_rules();
 #endif
 
-	char http_hdr[1024] = "GET /jzt/tpl/sspPic.html?ad_ids=3194:5&adflag=0&clkmn=&expose= HTTP/1.1\r\nHost: static-alias-1.360buyimg.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://wa.gtimg.com/website/201709/bjjdsj_QNR_20170901175534.html?tclick=http%3A%2F%2Fc.l.qq.com%2Flclick%3Foid%3D4028810%26cid%3D2691790%26loc%3DQQCOM_N_Rectangle3%26soid%3DbhwOtwAAWzzb4Q5t9QjyJplYARJu%26click_data%3DdXNlcl9pbmZvPW9BRGptejA2Rmg0PSZheHBoZWFkZXI9MSZwYWdlX3R5cGU9MSZzc3A9MSZ1cF92ZXJzaW9uPVM5MnxMNTcxJnNpPTE4MzUyMjQ2MQ%3D%3D%26index%3D1%26chl%3D478\r\nConnection: keep-alive\r\n\r\n";
+	//char http_hdr[1024] = "GET /jzt/tpl/sspPic.html?ad_ids=3194:5&adflag=0&clkmn=&expose= HTTP/1.1\r\nHost: static-alias-1.360buyimg.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://wa.gtimg.com/website/201709/bjjdsj_QNR_20170901175534.html?tclick=http%3A%2F%2Fc.l.qq.com%2Flclick%3Foid%3D4028810%26cid%3D2691790%26loc%3DQQCOM_N_Rectangle3%26soid%3DbhwOtwAAWzzb4Q5t9QjyJplYARJu%26click_data%3DdXNlcl9pbmZvPW9BRGptejA2Rmg0PSZheHBoZWFkZXI9MSZwYWdlX3R5cGU9MSZzc3A9MSZ1cF92ZXJzaW9uPVM5MnxMNTcxJnNpPTE4MzUyMjQ2MQ%3D%3D%26index%3D1%26chl%3D478\r\nConnection: keep-alive\r\n\r\n";
+	char http_hdr[1024] = "GET /a.js?tx=1 HTTP/1.1\r\nHost: static-alias-1.360buyimg.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 	http_hdr_params_t http_hdr_params_s;
 
 	memset(&http_hdr_params_s, 0x0, sizeof(http_hdr_params_s));
@@ -857,6 +908,10 @@ int main()
 
 	printf("[%s][%d] http_hdr : \n", __FUNCTION__, __LINE__);
 	printf("%s", http_hdr);
+
+	parse_http_hdr_params(http_hdr, strlen(http_hdr), &http_hdr_params_s);
+	printf("[%s][%d] print_http_hdr_params : \n", __FUNCTION__, __LINE__);
+	print_http_hdr_params(&http_hdr_params_s);
 
 #if 0
 	printf("[%s][%d] url_rules_free\n", __FUNCTION__, __LINE__);
