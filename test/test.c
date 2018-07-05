@@ -4,6 +4,19 @@
 #include "jhash.h"
 typedef unsigned char	uint8;
 
+#define HOST_STR "Host: "
+#define HOST_LEN 6
+#define REFERER_STR "Referer: "
+#define REFERER_LEN 9
+#define UA_STR "User-Agent: "
+#define UA_LEN 12
+#define COOKIE_STR "Cookie: "
+#define COOKIE_LEN 8
+#define CONTENT_T_STR "Content-Type: "
+#define CONTENT_T_LEN 14
+#define CONTENT_L_STR "Content-Length: "
+#define CONTENT_L_LEN 16
+
 #define DIFF_RULE_DELIM_STR ";"
 #define SAME_RULE_DELIM_STR "|"
 #define DIFF_RULE_DELIM_CHR ';'
@@ -42,6 +55,7 @@ typedef struct http_hdr_params
 	len_string_t host;
 	len_string_t uri;
 	len_string_t suffix;
+	len_string_t query;
 	len_string_t referer;
 }http_hdr_params_t;
 
@@ -683,36 +697,171 @@ int parse_white_rules(char *white_rules, const char *delim)
 	return 0;
 }
 
+char *http_hdr_find_field(char *http_hdr,  int http_hdr_len, char *field, int field_len)
+{
+	char *cp = http_hdr;
+	char *s1, *s2;
+	int len, line_len;
+	
+	if(NULL==http_hdr || NULL==field || 0==http_hdr_len || 0==field_len)
+		return NULL;
+
+	if(http_hdr_len >= field_len)
+	{
+		len = http_hdr_len - field_len;
+		
+		while (*cp)
+		{
+			s1 = cp;
+			s2 = field;
+
+			while ( *s1 && *s2 && !(*s1-*s2) )
+				s1++, s2++;
+
+			if (!*s2)
+				return(cp);
+			
+			s2 = strchr(cp, '\r');
+			if(NULL==s2)
+				break;
+
+			s2 += 2;
+			line_len = (int)(s2-cp);
+			
+			len -= line_len;
+			if(len < 0)
+				break;
+
+			cp = s2;
+		}
+	}
+
+	return NULL;
+}
+
+char *strstr_len(char *s, int s_len, char *d, int d_len)
+{
+	int i, j, k;
+	if(!s || *s == '\0' || !d || *d == '\0')
+		return NULL;
+	if(s_len < d_len)
+		return NULL;
+	for(i=0; i<s_len&&(s_len-i>=d_len); i++)
+	{
+		if(s[i] == d[0])
+		{
+			for(k=i+1, j=1; j<d_len; k++, j++)
+				if(s[k] != d[j])
+					break;
+			if(j == d_len)
+				return &(s[i]);
+		}
+	}
+
+	return NULL;
+}
+
+char *strchr_len(char *s, int s_len, char c)
+{
+	int i;
+	if(!s || *s == '\0')
+		return NULL;
+	for(i=0; i<s_len; i++)
+		if(c == s[i])
+			break;
+	if(i<s_len)
+		return &(s[i]);
+	else
+		return NULL;
+}
+
+char *strrchr_len(char *s, int s_len, char c)
+{
+	int i;
+	if(!s)
+		return NULL;
+	for(i=s_len-1; i>=0; i--)
+		if(c == s[i])
+			break;
+	if(i>=0)
+		return &(s[i]);
+	else
+		return NULL;
+}
+
+int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *http_hdr_params_p)
+{
+	len_string_t *len_string_p;
+	char *char_p;
+
+	if(NULL==http_hdr || NULL==http_hdr_params_p)
+		return -1;
+
+	// host
+	len_string_p = &(http_hdr_params_p->host);
+	len_string_p->str = http_hdr_find_field(http_hdr, http_hdr_len, HOST_STR, HOST_LEN);
+	CHECK_NULL_RETURN(len_string_p->str, -1);
+	len_string_p->str += HOST_LEN;
+	char_p = strchr(len_string_p->str, '\r');
+	CHECK_NULL_RETURN(char_p, -1);
+	len_string_p->len = (int)(char_p - len_string_p->str);
+
+	// uri
+	len_string_p = &(http_hdr_params_p->uri);
+	len_string_p->str = http_hdr + 4; // "GET "
+	char_p = strchr(len_string_p->str, '\r');
+	CHECK_NULL_RETURN(char_p, -1);
+	char_p -= 9;
+	if(0 != memcmp(char_p, " HTTP/1.", 8))
+		return -1;
+	len_string_p->len = (int)(char_p - len_string_p->str);
+
+	// query
+	len_string_p = &(http_hdr_params_p->query);
+
+	// suffix
+	len_string_p = &(http_hdr_params_p->suffix);
+}
+
 int main()
 {
 #if 1
 	//开启关闭;类型;Host;后缀;URI;重定向网址
-	char test_rule[1024] = "\r\n\r\n1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/\n\n\n1;1;qq.com;js;;http://www.hao123.com/\r\n0;2;liquan.com;css;x=1;http://www.shubao.com/\n1;2;;html;x=1;http://www.taobao.com/\n1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/\n\n\n";
+	//char test_rule[1024] = "\r\n\r\n1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/\n\n\n1;1;qq.com;js;;http://www.hao123.com/\r\n0;2;liquan.com;css;x=1;http://www.shubao.com/\n1;2;;html;x=1;http://www.taobao.com/\n1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/\n\n\n";
 	//char *test_rule = "1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/^^^1;1;qq.com;js;;http://www.hao123.com/@^1;2;;html;x=1;http://www.taobao.com/^1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/^^^";
 #if 0
 	printf("[%s][%d] test_rule : \n", __FUNCTION__, __LINE__);
 	printf("%s", test_rule);
 #endif
 
-	parse_url_rules(test_rule, " \n\r");
+	//parse_url_rules(test_rule, " \n\r");
 
 	// 类型;白名单类型;值;
-	char test_white[1024] = "1;uri;dn=2\n1;host;diannao.com\r\n2;HoSt;edu.cn|163.com|org.net\n\n3;uri;cc=a&d=1\n4;Uri;tx=2|rx=34|tt=60\n\n5;;dd.cn|aa.net\n4;host;";
+	//char test_white[1024] = "1;uri;dn=2\n1;host;diannao.com\r\n2;HoSt;edu.cn|163.com|org.net\n\n3;uri;cc=a&d=1\n4;Uri;tx=2|rx=34|tt=60\n\n5;;dd.cn|aa.net\n4;host;";
 #if 0
 	printf("[%s][%d] test_white : \n", __FUNCTION__, __LINE__);
 	printf("%s", test_white);
 #endif
-	parse_white_rules(test_white, " \n\r");
+	//parse_white_rules(test_white, " \n\r");
 
-#if 1
+#if 0
 	printf("[%s][%d] print_url_rules : \n", __FUNCTION__, __LINE__);
 	print_url_rules();
 #endif
 
-	char http_hdr[1024] = "GET /jzt/tpl/sspPic.html?ad_ids=3194:5&adflag=0&clkmn=&expose= HTTP/1.1\r\nHost: static-alias-1.360buyimg.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://wa.gtimg.com/website/201709/bjjdsj_QNR_20170901175534.html?tclick=http%3A%2F%2Fc.l.qq.com%2Flclick%3Foid%3D4028810%26cid%3D2691790%26loc%3DQQCOM_N_Rectangle3%26soid%3DbhwOtwAAWzzb4Q5t9QjyJplYARJu%26click_data%3DdXNlcl9pbmZvPW9BRGptejA2Rmg0PSZheHBoZWFkZXI9MSZwYWdlX3R5cGU9MSZzc3A9MSZ1cF92ZXJzaW9uPVM5MnxMNTcxJnNpPTE4MzUyMjQ2MQ%3D%3D%26index%3D1%26chl%3D478\r\nConnection: keep-alive\r\n\r\n"
+	char http_hdr[1024] = "GET /jzt/tpl/sspPic.html?ad_ids=3194:5&adflag=0&clkmn=&expose= HTTP/1.1\r\nHost: static-alias-1.360buyimg.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://wa.gtimg.com/website/201709/bjjdsj_QNR_20170901175534.html?tclick=http%3A%2F%2Fc.l.qq.com%2Flclick%3Foid%3D4028810%26cid%3D2691790%26loc%3DQQCOM_N_Rectangle3%26soid%3DbhwOtwAAWzzb4Q5t9QjyJplYARJu%26click_data%3DdXNlcl9pbmZvPW9BRGptejA2Rmg0PSZheHBoZWFkZXI9MSZwYWdlX3R5cGU9MSZzc3A9MSZ1cF92ZXJzaW9uPVM5MnxMNTcxJnNpPTE4MzUyMjQ2MQ%3D%3D%26index%3D1%26chl%3D478\r\nConnection: keep-alive\r\n\r\n";
+	http_hdr_params_t http_hdr_params_s;
 
+	memset(&http_hdr_params_s, 0x0, sizeof(http_hdr_params_s));
+
+
+	printf("[%s][%d] http_hdr : \n", __FUNCTION__, __LINE__);
+	printf("%s", http_hdr);
+
+#if 0
 	printf("[%s][%d] url_rules_free\n", __FUNCTION__, __LINE__);
 	url_rules_free();
+#endif
 #endif
 #if 0
 #if 0
@@ -730,9 +879,15 @@ int main()
 	parse_url_rule(test_str);
 #endif
 
-	int ret;
-	ret = strcasecmp("URI", "uri");
-	printf("[%s][%d] ret = %d\n", __FUNCTION__, __LINE__, ret);
+	char *char_p;
+	char ss[32] = "www.baidu.com";
+	char dd[32] = "com";
+
+	char_p = strstr_len(ss, strlen(ss)-1, dd, strlen(dd));
+	if(char_p)
+		printf("%s\n", char_p);
+	else
+		printf("is NULL\n");
 #endif
 }
 
