@@ -782,6 +782,28 @@ char *strstr_len(char *s, int s_len, char *d, int d_len)
 	return NULL;
 }
 
+char *strrstr_len(char *s, int s_len, char *d, int d_len)
+{
+	int i, j, k;
+	if(!s || *s=='\0' || !d || *d=='\0')
+		return NULL;
+	if(s_len < d_len)
+		return NULL;
+	for(i=s_len-d_len; i>=0; i--)
+	{
+		if(s[i] == d[0])
+		{
+			for(k=i+1, j=1; j<d_len; k++, j++)
+				if(s[k] != d[j])
+					break;
+			if(j == d_len)
+				return &(s[i]);
+		}
+	}
+
+	return NULL;
+}
+
 char *strchr_len(char *s, int s_len, char c)
 {
 	int i;
@@ -876,7 +898,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 int main()
 {
 #if 1
-	//¿ªÆô¹Ø±Õ;ÀàÐÍ;Host;ºó×º;URI;ÖØ¶¨ÏòÍøÖ·
+	//å¼€å¯å…³é—­;ç±»åž‹;Host;åŽç¼€;URI;é‡å®šå‘ç½‘å€
 	//char test_rule[1024] = "\r\n\r\n1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/\n\n\n1;1;qq.com;js;;http://www.hao123.com/\r\n0;2;liquan.com;css;x=1;http://www.shubao.com/\n1;2;;html;x=1;http://www.taobao.com/\n1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/\n\n\n";
 	//char *test_rule = "1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/^^^1;1;qq.com;js;;http://www.hao123.com/@^1;2;;html;x=1;http://www.taobao.com/^1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/^^^";
 #if 0
@@ -886,7 +908,7 @@ int main()
 
 	//parse_url_rules(test_rule, " \n\r");
 
-	// ÀàÐÍ;°×Ãûµ¥ÀàÐÍ;Öµ;
+	// ç±»åž‹;ç™½åå•ç±»åž‹;å€¼;
 	//char test_white[1024] = "1;uri;dn=2\n1;host;diannao.com\r\n2;HoSt;edu.cn|163.com|org.net\n\n3;uri;cc=a&d=1\n4;Uri;tx=2|rx=34|tt=60\n\n5;;dd.cn|aa.net\n4;host;";
 #if 0
 	printf("[%s][%d] test_white : \n", __FUNCTION__, __LINE__);
