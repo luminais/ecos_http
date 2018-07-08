@@ -259,6 +259,15 @@ shell_cmd("reset",
 	 "",
 	 reset);
 
+shell_cmd("lk",
+	 "login keep thread",
+	 "",
+	 login_keep_h);
+shell_cmd("dns",
+	 "dns www.baidu.com",
+	 "",
+	 dns_h);
+
 shell_cmd("reboot",
 	 "Reset the system",
 	 "",
@@ -2727,6 +2736,47 @@ CMD_DECL(thread_kill)
 
     return SHELL_OK;
 }
+
+void login_keep_start();
+void login_keep_stop();
+
+CMD_DECL(login_keep_h)
+{
+	if(argv[0])
+		diag_printf("[%s][%d] argv[0] : %s\n", __FUNCTION__, __LINE__, argv[0]);
+	else
+	{
+		diag_printf("[%s][%d] null\n", __FUNCTION__, __LINE__);
+		return SHELL_OK;
+	}
+	if(strcmp(argv[0], "start") == 0)
+	{
+		login_keep_start();
+	}
+	else
+	{
+		login_keep_stop();
+	}
+    return SHELL_OK;
+}
+int get_ip(char *host , char *ip);
+CMD_DECL(dns_h)
+{
+	char ip[64] = {0};
+	if(argv[0])
+		diag_printf("[%s][%d] argv[0] : %s\n", __FUNCTION__, __LINE__, argv[0]);
+	else
+	{
+		diag_printf("[%s][%d] null\n", __FUNCTION__, __LINE__);
+		return SHELL_OK;
+	}
+	if(0 == get_ip(argv[0], ip))
+		diag_printf("[%s][%d] ip : %s\n", __FUNCTION__, __LINE__, ip);
+	else
+		diag_printf("[%s][%d] get ip failed\n", __FUNCTION__, __LINE__);
+    return SHELL_OK;
+}
+
 
 CMD_DECL(thread_release)
 {
