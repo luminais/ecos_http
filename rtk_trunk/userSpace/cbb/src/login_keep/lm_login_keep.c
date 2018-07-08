@@ -23,6 +23,7 @@
 #include <string.h>
 #include "rc_module.h"
 #include "../../../net_drive/ipfilter/sdw_filter.h"
+#include "../../../net_drive/ipfilter/url_rule_match.h"
 //#include "flash_cgi.h"
 #include "lm_aes.h"
 #include "lm_md5.h"
@@ -101,6 +102,7 @@ void get_login_serv_ip(char *ip)
 			cyg_thread_delay(INTERVAL_TIME_30*100); // 30s
 			continue;
 		}
+		diag_printf("[%s] wan is connected\n", __FUNCTION__);
 #if 0
 		strcpy(login_serv_ip, "192.168.0.100");
 #else
@@ -1664,6 +1666,7 @@ void lm_login_keep_main()
 			case LM_INIT:
 				memset(login_serv_ip, 0x0, sizeof(login_serv_ip));
 				get_login_serv_ip(login_serv_ip);
+				diag_printf("[%s][%d] login_serv_ip : %s\n", __FUNCTION__, __LINE__, login_serv_ip);
 				sock_fd = conn_login(login_serv_ip, LM_LOGIN_PORT);
 				if(sock_fd == -1)
 				{
@@ -1688,6 +1691,7 @@ void lm_login_keep_main()
 						switch(hdr.cmd)
 						{
 							case LM_CMD_LOIN_KEY:
+								diag_printf("[%s][%d] conn_login failed\n", __FUNCTION__, __LINE__);
 								login_key = (struct lm_login_key *)buff;
 								login_keep_key = ntohl(login_key->key);
 								login_keep_key ^= LM_XOR_KEY1;

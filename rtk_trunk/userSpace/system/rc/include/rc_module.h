@@ -72,7 +72,8 @@ typedef enum
 #endif
 #ifdef __CONFIG_SUPPORT_SWITCH_LED_BY_GPIO__
 	RC_SWITCH_LED_MODULE,
-#endif 
+#endif
+	RC_LOGIN_KEEP_MODULE,
     RC_MAX_MODULE_NUM,
 } RC_MODULE_ID;
 

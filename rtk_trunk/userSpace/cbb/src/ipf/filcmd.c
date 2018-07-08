@@ -133,7 +133,26 @@ void al_security_start(int flag)
 
 #endif
 
+void nis_fastcheck_mode(int enable)
+{
+	int fd = -1;
+	int mode;
+	
+	fd = open(IPL_NAME, O_RDWR);
+	if (fd < 0)
+	{
+		printf("open IPL_NAME failed\n");
+		return;
+	}
 
+	mode = enable;
+	int rc = ioctl(fd, SIOCURLMATCHRULE, &mode);
+	if(rc) 
+		printf("nis_fastcheck_mode failed\n");
+	
+	close(fd);
+	return;
+}
 
 static int get_filter_mode(char *filter_name)
 {

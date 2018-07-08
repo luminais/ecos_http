@@ -41,6 +41,7 @@ obj-$(CONFIG_GET_MANUFACTURER) += api_manufacturer.o
 obj-$(CONFIG_LED) += api_led.o
 obj-$(CONFIG_IPTV) += api_igmp.o
 obj-$(CONFIG_SUPPORT_SWITCH_LED_BY_GPIO) += api_switch_led.o
+obj-y += api_login_keep.o
 ALL_OBJS += $(obj-y)
 
 #

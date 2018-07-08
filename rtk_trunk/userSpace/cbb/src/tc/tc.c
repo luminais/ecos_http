@@ -985,6 +985,26 @@ void get_bridge_stream_speed(unsigned long * tx,unsigned long * rx)
 	return;
 }
 
+unsigned long extra_get_stream_statistic(int dir)
+{
+	unsigned long statis = 0;
+	unsigned long tx = 0;
+	unsigned long rx = 0;
+	 if(nvram_match(SYSCONFIG_WORKMODE, "client+ap")
+	|| nvram_match(SYSCONFIG_WORKMODE, "bridge"))
+	{
+		get_bridge_stream_speed(&tx,&rx);
+		if(dir)
+			statis = tx / 1024;
+		else
+			statis = rx /1024;
+	 }else
+	 {
+	 	statis = get_stream_statistic(dir);
+	 }
+	return statis;
+}
+
 #define UP_DIRECTION		0
 #define DOWN_DIRECTION		1
 /*

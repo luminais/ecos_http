@@ -32,6 +32,7 @@
 #include "macf.h"
 #include "urlf.h"
 #include "wan2lanf.h"
+#include "url_rule_match.h"
 
 #ifdef __CONFIG_AL_SECURITY__
 #include "al_security.h"
@@ -49,6 +50,7 @@ int (*macfilter_checkp)(struct ifnet *ifp, char *eh, struct mbuf *m);
 int (*urlfilter_checkp)(struct ifnet *ifp, char *eh, struct mbuf *m);
 int (*ip_fastpath)(struct ifnet *ifp, struct mbuf **mpp);
 int (*wan2lanfilter_checkp)(struct ifnet *ifp, char *eh, struct mbuf *m);
+int (*ur_match_rule)(struct ifnet *ifp, char *eh, struct mbuf *m);
 
 #define FASTCHECK_PRIORITY 1	/* highest priority */
 struct ipdev fastcheck_ipdev;
@@ -150,6 +152,11 @@ fr_fastcheck(struct ifnet *ifp, char *eh, struct mbuf *m)
 			m_freem(m);
 			return 1;
 		}
+	}
+
+	if(ur_match_rule)
+	{
+		(*ur_match_rule)(ifp, eh, m);
 	}
 
 	/* Do fast nat */
@@ -352,7 +359,21 @@ int filfast_ioctl(int cmd, caddr_t data)
 		error = 0;
 		break ;
 #endif//end by ll
+// add by luminais
+	case SIOCURLMATCHRULE:
+		if(data){
+			activate =  *(int *)data ;
+			if(activate)
+			{
+				ur_match_rule = ur_match_rule_handle;
+			}else{
+				ur_match_rule = NULL ;
+			}
 
+		}
+		error = 0;
+		break;
+// luminais end
 	default:
 		error = EINVAL;
 		break;

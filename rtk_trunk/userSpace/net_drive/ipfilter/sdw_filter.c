@@ -42,7 +42,9 @@ int get_ip(char *host , char *ip)
 		return -1 ;
 	}
 
+	diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 	hent = gethostbyname(host);
+	diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 
 	if (NULL == hent)
 	{

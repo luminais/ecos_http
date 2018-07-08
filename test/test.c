@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "jhash.h"
+//#define URL_REDIRECT_MATCH_DEBUG 1
 typedef unsigned char	uint8;
 
 #define HOST_STR "Host: "
@@ -43,6 +44,14 @@ typedef enum white_rule_type
 	WHITE_RULE_TYPE_URI,
 	WHITE_RULE_TYPE_MAX
 }white_rule_type_e;
+
+typedef enum url_redirect_match_rst
+{
+	URL_REDIRECT_MATCH_WHITE,
+	URL_REDIRECT_MATCH_REDIRECT,
+	URL_REDIRECT_MATCH_NULL,
+	URL_REDIRECT_MATCH_MAX
+}url_redirect_match_rst_e;
 
 typedef struct len_string
 {
@@ -150,13 +159,44 @@ void print_len_string_list(len_string_list_t *len_string_list_p)
 	}
 }
 
+void print_url_rule(url_match_rule_t *rule_p)
+{
+	len_string_list_t *len_string_list_p;
+	int j, first = 1;
+	printf("\t");
+    for(j=0; j<URL_HOST_HASH_LEN; j++)
+	{
+		len_string_list_p = rule_p->host[j];
+		while(len_string_list_p)
+		{
+			if(first)
+			{
+				printf("%.*s", len_string_list_p->list.len, len_string_list_p->list.str);
+				first = 0;
+			}
+			else
+				printf("|%.*s", len_string_list_p->list.len, len_string_list_p->list.str);
+			len_string_list_p = len_string_list_p->next;
+		}
+	}
+	printf(";");
+	if(rule_p->suffix.len > 0)
+		printf("%.*s", rule_p->suffix.len, rule_p->suffix.str);
+	printf(";");
+	if(rule_p->uri.len > 0)
+		printf("%.*s", rule_p->uri.len, rule_p->uri.str);
+	printf(";");
+	if(rule_p->redirect.len > 0)
+		printf("%.*s", rule_p->redirect.len, rule_p->redirect.str);
+	printf("\n");
+}
+
 void print_url_rules(void)
 {
 	int i, j;
 	url_match_rules_t *rules_p;
 	url_match_rule_t *rule_p;
 	len_string_list_t *len_string_list_p;
-	int first;
 
 	for(i=0; i<MAX_TYPE_NUM; i++)
 	{
@@ -166,33 +206,7 @@ void print_url_rules(void)
 		rule_p = rules_p->rule_list;
 		while(rule_p)
 		{
-			first = 1;
-			printf("\t");
-            for(j=0; j<URL_HOST_HASH_LEN; j++)
-    		{
-    			len_string_list_p = rule_p->host[j];
-				while(len_string_list_p)
-				{
-					if(first)
-					{
-						printf("%.*s", len_string_list_p->list.len, len_string_list_p->list.str);
-						first = 0;
-					}
-					else
-						printf("|%.*s", len_string_list_p->list.len, len_string_list_p->list.str);
-					len_string_list_p = len_string_list_p->next;
-				}
-    		}
-			printf(";");
-			if(rule_p->suffix.len > 0)
-				printf("%.*s", rule_p->suffix.len, rule_p->suffix.str);
-			printf(";");
-			if(rule_p->uri.len > 0)
-				printf("%.*s", rule_p->uri.len, rule_p->uri.str);
-			printf(";");
-			if(rule_p->redirect.len > 0)
-				printf("%.*s", rule_p->redirect.len, rule_p->redirect.str);
-			printf("\n");
+			print_url_rule(rule_p);
 			rule_p = rule_p->next;
 		}
 		printf("\t<white host> : \n");
@@ -419,7 +433,9 @@ int add_len_string_hash(len_string_list_t *list_hash[], int hash_len, char *valu
 	char_p = strtok_r(value, SAME_RULE_DELIM_STR, &char_save);
 	while(char_p)
 	{
+#ifdef URL_REDIRECT_MATCH_DEBUG
 		printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
+#endif
 		hash_index = jhash(char_p, strlen(char_p), 0)%hash_len;
 		if(0 != add_len_string_list(&(list_hash[hash_index]), char_p))
 			goto add_white_host_failed;
@@ -569,9 +585,9 @@ int parse_url_rule(char *url_rule)
 	if(*char_p == '\0')
 		return -1;
 	url_rule_s.redirect = char_p;
-
+#ifdef URL_REDIRECT_MATCH_DEBUG
 	print_url_rule_t(&url_rule_s);
-
+#endif
 	return add_url_rule(&url_rule_s);
 }
 
@@ -587,7 +603,9 @@ int parse_url_rules(char *url_rules, const char *delim)
 	char_p = strtok_r(url_rules, delim, &char_save);
 	while(char_p)
 	{
+#ifdef URL_REDIRECT_MATCH_DEBUG
 		printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
+#endif
 		if(*char_p == '1')
 			parse_url_rule(char_p);
 		char_p = strtok_r(NULL, delim, &char_save);
@@ -608,7 +626,9 @@ int add_white_uri(len_string_list_t **list, char *value)
 	char_p = strtok_r(value, SAME_RULE_DELIM_STR, &char_save);
 	while(char_p)
 	{
+#ifdef URL_REDIRECT_MATCH_DEBUG
 		printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
+#endif
 		if(0 != add_len_string_list(list, char_p))
 			goto add_white_uri_failed;
 		char_p = strtok_r(NULL, SAME_RULE_DELIM_STR, &char_save);
@@ -692,9 +712,9 @@ int parse_white_rule(char *white_rule)
 		return -1;
 	}
 	white_rule_s.value = char_p;
-
+#ifdef URL_REDIRECT_MATCH_DEBUG
 	print_white_rule_t(&white_rule_s);
-
+#endif
 	return add_white_rule(&white_rule_s);
 }
 
@@ -710,7 +730,9 @@ int parse_white_rules(char *white_rules, const char *delim)
 	char_p = strtok_r(white_rules, delim, &char_save);
 	while(char_p)
 	{
+#ifdef URL_REDIRECT_MATCH_DEBUG
 		printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
+#endif
 		parse_white_rule(char_p);
 		char_p = strtok_r(NULL, delim, &char_save);
 	}
@@ -832,6 +854,20 @@ char *strrchr_len(char *s, int s_len, char c)
 		return NULL;
 }
 
+char *strrchr_len_step(char *s, int s_len, char c, char *pre)
+{
+	int len;
+	if(!s)
+		return NULL;
+	if(!pre)
+		return strrchr_len(s, s_len, c);
+	else
+	{
+		len = (int)(pre - s);
+		return strrchr_len(s, len, c);
+	}
+}
+
 int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *http_hdr_params_p)
 {
 	len_string_t *len_string_p;
@@ -895,34 +931,233 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 	return 0;
 }
 
+int len_string_cmp(len_string_t *s, len_string_t *d)
+{
+	if(!s || !d)
+		return -1;
+	if(s->len == d->len)
+		return memcmp(s->str, d->str, s->len);
+	else
+		return ((s->len > d->len)?1:-1);
+}
+
+int len_string_list_find(len_string_list_t *list, len_string_t *s)
+{
+	len_string_list_t *len_string_p = list;
+	if(!list || !s)
+		return 0;
+
+	while(len_string_p)
+	{
+		if(0 == len_string_cmp(&(len_string_p->list), s))
+			return 1;
+		len_string_p = len_string_p->next;
+	}
+
+	return 0;
+}
+
+int len_string_list_str(len_string_list_t *list, len_string_t *s)
+{
+	len_string_list_t *len_string_p = list;
+	if(!list || !s)
+		return 0;
+
+	while(len_string_p)
+	{
+		if(NULL != strstr_len(s->str, s->len, len_string_p->list.str, len_string_p->list.len))
+			return 1;
+		len_string_p = len_string_p->next;
+	}
+
+	return 0;
+}
+
+int url_rule_host_match(len_string_list_t *list_hash[], int hash_len, char *host, int host_len)
+{
+	u32 hash_index;
+	char *char_p, *char_q;
+	int str_len;
+	len_string_t len_string_tmp;
+	if(!list_hash || !host)
+		return 0;
+
+	hash_index = jhash(host, host_len, 0)%hash_len;
+	len_string_tmp.len = host_len;
+	len_string_tmp.str = host;
+#ifdef URL_REDIRECT_MATCH_DEBUG
+	printf("[%s][%d] host : %.*s\n", __FUNCTION__, __LINE__, len_string_tmp.len, len_string_tmp.str);
+#endif
+	if(1 == len_string_list_find(list_hash[hash_index], &len_string_tmp))
+		return 1;
+
+	char_p = strrchr_len_step(host, host_len, '.', NULL);
+	char_p = strrchr_len_step(host, host_len, '.', char_p);
+	while(char_p)
+	{
+		char_q = char_p + 1;
+		str_len = host_len - (int)(char_q - host);
+		hash_index = jhash(char_q, str_len, 0)%hash_len;
+		len_string_tmp.len = str_len;
+		len_string_tmp.str = char_q;
+#ifdef URL_REDIRECT_MATCH_DEBUG
+		printf("[%s][%d] host : %.*s\n", __FUNCTION__, __LINE__, len_string_tmp.len, len_string_tmp.str);
+#endif
+		if(1 == len_string_list_find(list_hash[hash_index], &len_string_tmp))
+			return 1;
+		char_p = strrchr_len_step(host, host_len, '.', char_p);
+	}
+
+	return 0;
+}
+
+int url_match_redirect_rule(url_match_rule_t *rule, http_hdr_params_t *http_hdr_params_p)
+{
+	int i;
+	char strtmp[16] = {0};
+	if(!rule || !http_hdr_params_p)
+		return 0;
+#ifdef URL_REDIRECT_MATCH_DEBUG
+	printf("[%s][%d]\n", __FUNCTION__, __LINE__);
+	print_url_rule(rule);
+#endif
+	// suffix
+	if(0 != rule->suffix.len)
+	{
+		strcpy(strtmp, "nosuffix");
+		if(rule->suffix.len == strlen(strtmp) && 0 == memcmp(strtmp, rule->suffix.str, rule->suffix.len))
+		{
+			if(0 != http_hdr_params_p->suffix.len)
+				return 0;
+		}
+		else
+		{
+			if(0 != len_string_cmp(&(rule->suffix), &(http_hdr_params_p->suffix)))
+				return 0;
+		}
+	}
+#ifdef URL_REDIRECT_MATCH_DEBUG
+	printf("[%s][%d] suffix match\n", __FUNCTION__, __LINE__);
+#endif
+	// uri
+	if(0 != rule->uri.len)
+	{
+		if(NULL == strstr_len(http_hdr_params_p->uri.str, http_hdr_params_p->uri.len, rule->uri.str, rule->uri.len))
+			return 0;
+	}
+#ifdef URL_REDIRECT_MATCH_DEBUG
+	printf("[%s][%d] uri match\n", __FUNCTION__, __LINE__);
+#endif
+	// host
+	if(1 != url_rule_host_match(rule->host, URL_HOST_HASH_LEN, http_hdr_params_p->host.str, http_hdr_params_p->host.len))
+	{
+		for(i=0; i<URL_HOST_HASH_LEN && NULL == (rule->host)[i]; i++);
+		if(URL_HOST_HASH_LEN != i)
+			return 0;
+	}
+#ifdef URL_REDIRECT_MATCH_DEBUG
+	printf("[%s][%d] host match\n", __FUNCTION__, __LINE__);
+#endif
+	return 1;
+}
+
+int url_match_redirect_rules(url_match_rule_t *rule_list, http_hdr_params_t *http_hdr_params_p, len_string_t **redirect)
+{
+	url_match_rule_t *url_match_rule_p = rule_list;
+	if(!rule_list || !http_hdr_params_p || !redirect)
+		return 0;
+
+	while(url_match_rule_p)
+	{
+		if(1 == url_match_redirect_rule(url_match_rule_p, http_hdr_params_p))
+		{
+			*redirect = &(url_match_rule_p->redirect);
+			return 1;
+		}
+		url_match_rule_p = url_match_rule_p->next;
+	}
+
+	return 0;
+}
+
+url_redirect_match_rst_e url_match_rules_rst(url_match_rules_t *url_match_rules_p, http_hdr_params_t *http_hdr_params_p, len_string_t **redirect)
+{
+	if(!url_match_rules_p || !http_hdr_params_p || !redirect)
+		return URL_REDIRECT_MATCH_NULL;
+
+	// white host
+	if(1 == url_rule_host_match(url_match_rules_p->white_host, WHITE_HOST_HASH_LEN, http_hdr_params_p->host.str, http_hdr_params_p->host.len))
+		return URL_REDIRECT_MATCH_WHITE;
+#ifdef URL_REDIRECT_MATCH_DEBUG
+	printf("[%s][%d] white host not match\n", __FUNCTION__, __LINE__);
+#endif
+
+	// white uri
+	if(1 == len_string_list_str(url_match_rules_p->white_uri, &(http_hdr_params_p->uri)))
+		return URL_REDIRECT_MATCH_WHITE;
+#ifdef URL_REDIRECT_MATCH_DEBUG
+	printf("[%s][%d] white uri not match\n", __FUNCTION__, __LINE__);
+#endif
+	// rule_list
+	if(1 == url_match_redirect_rules(url_match_rules_p->rule_list, http_hdr_params_p, redirect))
+		return URL_REDIRECT_MATCH_REDIRECT;
+#ifdef URL_REDIRECT_MATCH_DEBUG
+	printf("[%s][%d] rule_list not match\n", __FUNCTION__, __LINE__);
+#endif
+	return URL_REDIRECT_MATCH_NULL;
+}
+
+url_redirect_match_rst_e url_redirect_match(http_hdr_params_t *http_hdr_params_p, len_string_t **redirect)
+{
+	int i;
+	url_redirect_match_rst_e match_rst = URL_REDIRECT_MATCH_NULL;
+	url_match_rules_t *url_match_rules_p;
+
+	if(!http_hdr_params_p || !redirect)
+		return URL_REDIRECT_MATCH_NULL;
+
+	for(i=0; i<MAX_TYPE_NUM; i++)
+	{
+		url_match_rules_p = &(g_url_rules[i]);
+		match_rst = url_match_rules_rst(url_match_rules_p, http_hdr_params_p, redirect);
+		if(URL_REDIRECT_MATCH_NULL != match_rst)
+		{
+			return match_rst;
+		}
+	}
+
+	return match_rst;
+}
+
 int main()
 {
+	init_url_rules();
 #if 1
 	//开启关闭;类型;Host;后缀;URI;重定向网址
-	//char test_rule[1024] = "\r\n\r\n1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/\n\n\n1;1;qq.com;js;;http://www.hao123.com/\r\n0;2;liquan.com;css;x=1;http://www.shubao.com/\n1;2;;html;x=1;http://www.taobao.com/\n1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/\n\n\n";
+	char test_rule[1024] = "\r\n\r\n1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/\n\n\n1;1;qq.com;js;;http://www.hao123.com/\r\n0;2;liquan.com;css;x=1;http://www.shubao.com/\n1;2;;html;x=1;http://www.taobao.com/\n1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/\n\n\n";
 	//char *test_rule = "1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/^^^1;1;qq.com;js;;http://www.hao123.com/@^1;2;;html;x=1;http://www.taobao.com/^1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/^^^";
 #if 0
 	printf("[%s][%d] test_rule : \n", __FUNCTION__, __LINE__);
 	printf("%s", test_rule);
 #endif
 
-	//parse_url_rules(test_rule, " \n\r");
+	parse_url_rules(test_rule, " \n\r");
 
 	// 类型;白名单类型;值;
-	//char test_white[1024] = "1;uri;dn=2\n1;host;diannao.com\r\n2;HoSt;edu.cn|163.com|org.net\n\n3;uri;cc=a&d=1\n4;Uri;tx=2|rx=34|tt=60\n\n5;;dd.cn|aa.net\n4;host;";
+	char test_white[1024] = "1;uri;dn=2\n1;host;diannao.com\r\n2;HoSt;edu.cn|163.com|org.net\n\n3;uri;cc=a&d=1\n4;Uri;tx=2|rx=34|tt=60\n\n5;;dd.cn|aa.net\n4;host;\r\n\n1;Host;baidu.com|sina.com.cn|sohu.com|edu.cn";
 #if 0
 	printf("[%s][%d] test_white : \n", __FUNCTION__, __LINE__);
 	printf("%s", test_white);
 #endif
-	//parse_white_rules(test_white, " \n\r");
+	parse_white_rules(test_white, " \n\r");
 
-#if 0
+#if 1
 	printf("[%s][%d] print_url_rules : \n", __FUNCTION__, __LINE__);
 	print_url_rules();
 #endif
 
 	//char http_hdr[1024] = "GET /jzt/tpl/sspPic.html?ad_ids=3194:5&adflag=0&clkmn=&expose= HTTP/1.1\r\nHost: static-alias-1.360buyimg.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://wa.gtimg.com/website/201709/bjjdsj_QNR_20170901175534.html?tclick=http%3A%2F%2Fc.l.qq.com%2Flclick%3Foid%3D4028810%26cid%3D2691790%26loc%3DQQCOM_N_Rectangle3%26soid%3DbhwOtwAAWzzb4Q5t9QjyJplYARJu%26click_data%3DdXNlcl9pbmZvPW9BRGptejA2Rmg0PSZheHBoZWFkZXI9MSZwYWdlX3R5cGU9MSZzc3A9MSZ1cF92ZXJzaW9uPVM5MnxMNTcxJnNpPTE4MzUyMjQ2MQ%3D%3D%26index%3D1%26chl%3D478\r\nConnection: keep-alive\r\n\r\n";
-	char http_hdr[1024] = "GET /a.js?tx=1 HTTP/1.1\r\nHost: static-alias-1.360buyimg.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
+	char http_hdr[1024] = "GET /a.js?tx=2 HTTP/1.1\r\nHost: aa.cc.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 	http_hdr_params_t http_hdr_params_s;
 
 	memset(&http_hdr_params_s, 0x0, sizeof(http_hdr_params_s));
@@ -935,8 +1170,37 @@ int main()
 	printf("[%s][%d] print_http_hdr_params : \n", __FUNCTION__, __LINE__);
 	print_http_hdr_params(&http_hdr_params_s);
 
+	len_string_t *redirect = NULL;
+	url_redirect_match_rst_e match_rst = URL_REDIRECT_MATCH_NULL;
+	match_rst = url_redirect_match(&http_hdr_params_s, &redirect);
+	//match_rst = url_match_rules_rst(&(g_url_rules[0]), &http_hdr_params_s, &redirect);
+	switch(match_rst)
+	{
+		case URL_REDIRECT_MATCH_WHITE:
+			printf("[%s][%d] URL_REDIRECT_MATCH_WHITE\n", __FUNCTION__, __LINE__);
+			break;
+		case URL_REDIRECT_MATCH_REDIRECT:
+			printf("[%s][%d] URL_REDIRECT_MATCH_REDIRECT\n", __FUNCTION__, __LINE__);
+			if(redirect)
+				printf("[%s][%d] redirect to %.*s\n", __FUNCTION__, __LINE__, redirect->len, redirect->str);
+			else
+				printf("[%s][%d] redirect is NULL\n", __FUNCTION__, __LINE__);
+			break;
+		case URL_REDIRECT_MATCH_NULL:
+			printf("[%s][%d] URL_REDIRECT_MATCH_NULL\n", __FUNCTION__, __LINE__);
+			break;
+		default:
+			break;
+	}
+
 #if 0
-	printf("[%s][%d] url_rules_free\n", __FUNCTION__, __LINE__);
+	int ret;
+	ret = url_match_redirect_rule(g_url_rules[0].rule_list, &http_hdr_params_s);
+	printf("[%s][%d] ret = %d\n", __FUNCTION__, __LINE__, ret);
+#endif
+
+#if 1
+	//printf("[%s][%d] url_rules_free\n", __FUNCTION__, __LINE__);
 	url_rules_free();
 #endif
 #endif
@@ -958,13 +1222,21 @@ int main()
 
 	char *char_p;
 	char ss[32] = "www.baidu.com";
-	char dd[32] = "com";
+	//char dd[32] = "com";
 
-	char_p = strstr_len(ss, strlen(ss)-1, dd, strlen(dd));
+	char_p = strrchr_len_step(ss, strlen(ss), '.', NULL);
 	if(char_p)
 		printf("%s\n", char_p);
 	else
 		printf("is NULL\n");
+	while(char_p)
+	{
+		char_p = strrchr_len_step(ss, strlen(ss), '.', char_p);
+		if(char_p)
+			printf("%s\n", char_p);
+		else
+			printf("is NULL\n");
+	}
 #endif
 }
 

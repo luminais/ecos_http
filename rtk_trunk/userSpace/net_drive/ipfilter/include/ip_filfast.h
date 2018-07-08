@@ -39,6 +39,8 @@
 #define SIOCALSECURITY	_IOW('f', 74, int)
 #endif
 
+#define SIOCURLMATCHRULE	_IOW('f', 75, int)
+
 #ifdef _KERNEL
 int filfast_ioctl(int cmd, caddr_t data);
 #endif

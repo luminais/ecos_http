@@ -72,7 +72,7 @@ FASTOBJ = ip_filfast.o macfilter.o
 #HACKOBJ = ip_def.o
 URLFIL  = urlfilter.o
 WAN2LANFIL = wan2lanfilter.o
-SDWHANDLE = sdw_filter.o
+SDWHANDLE = sdw_filter.o url_rule_match.o
 
 
 ifdef CONFIG_IPFILTER_LOG

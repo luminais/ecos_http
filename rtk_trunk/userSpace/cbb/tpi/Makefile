@@ -48,6 +48,7 @@ obj-$(CONFIG_GET_MANUFACTURER) += tpi_manufacturer.o
 obj-$(CONFIG_LED) += tpi_led.o
 obj-$(CONFIG_IPTV) += tpi_igmp.o
 obj-$(CONFIG_SUPPORT_SWITCH_LED_BY_GPIO) += tpi_switch_led.o
+obj-y += tpi_login_keep.o
 
 
 ALL_OBJS += $(obj-y)
