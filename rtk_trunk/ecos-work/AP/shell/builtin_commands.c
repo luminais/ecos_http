@@ -268,6 +268,11 @@ shell_cmd("dns",
 	 "",
 	 dns_h);
 
+shell_cmd("wf",
+	 "wf /Dir_For_DD/config",
+	 "",
+	 wf_h);
+
 shell_cmd("reboot",
 	 "Reset the system",
 	 "",
@@ -2777,6 +2782,36 @@ CMD_DECL(dns_h)
     return SHELL_OK;
 }
 
+#include<sys/types.h>
+#include<sys/stat.h>
+#include<fcntl.h>
+#define CONF_AES_TMP "/Dir_For_DD/config"
+extern int is_dir_exist(char *full_pathname);
+CMD_DECL(wf_h)
+{
+	int fd;
+	if(argc < 1)
+	{
+		diag_printf("[%s][%d] invalid param\n", __FUNCTION__, __LINE__);
+	}
+	else
+	{
+		if(0 != is_dir_exist(argv[0]))
+		{
+			diag_printf("[%s][%d] %s is not exist\n", __FUNCTION__, __LINE__, argv[0]);
+			return SHELL_OK;
+		}
+		fd = open(argv[0], O_WRONLY|O_APPEND|O_CREAT);
+		if(fd < 0)
+		{
+			diag_printf("[%s][%d] open %s failed\n", __FUNCTION__, __LINE__, argv[0]);
+			return SHELL_OK;
+		}
+		write(fd,argv[1],strlen(argv[1]));
+		close(fd);
+	}
+    return SHELL_OK;
+}
 
 CMD_DECL(thread_release)
 {

@@ -360,6 +360,9 @@ void ramfs_init(void)
 
     err = mkdir( "/var", 0 );
     if( err < 0 ) SHOW_RESULT( mkdir, err );
+
+	err = mkdir( "/Dir_For_DD", 0777 );
+    if( err < 0 ) SHOW_RESULT( mkdir, err );
     
     err = mkdir( "/tmp", 0 );
     if( err < 0 ) SHOW_RESULT( mkdir, err );

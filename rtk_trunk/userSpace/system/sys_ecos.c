@@ -138,6 +138,7 @@ void tapf_sys_init(cyg_addrword_t data)
 	ramfs_init();///
 	syslogAll_printk("Mount ramfs ..\n");
 	#endif 
+	ramfs_init();
 			
 	nvram_init();	
 	

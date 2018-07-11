@@ -72,7 +72,7 @@ int get_url_ip(char *url, char *ip)
 	{			
 		if(0 != get_ip(url, ip) )
 		{
-			memset(ip , 0 , sizeof(ip));
+			//memset(ip , 0 , sizeof(ip));
 			cyg_thread_delay(INTERVAL_TIME_30*100); //30s
 		}
 		else
@@ -104,11 +104,11 @@ void get_login_serv_ip(char *ip)
 		}
 		diag_printf("[%s] wan is connected\n", __FUNCTION__);
 #if 0
-		strcpy(login_serv_ip, "192.168.0.100");
+		strcpy(login_serv_ip, "116.31.123.41");
 #else
 		if(0 != get_url_ip(LM_LOGIN_URL, ip))
 		{
-			memset(ip , 0 , sizeof(ip));
+			//memset(ip , 0 , sizeof(ip));
 			cyg_thread_delay(INTERVAL_TIME_30*100);
 			continue;
 		}
@@ -988,29 +988,42 @@ static int toupper(int c)
 }
 #endif
 
+#define MD5_CHECK_PREFIX "gL2Gc9pFY0bl"
 int md5_check(unsigned char *md5, unsigned char *buf, int length)
 {
 	MD5_CONTEXT		md5ctx;
 	unsigned char	hash[16] = {0};
 	unsigned char	hash_str[64] = {0};
-	int i;
+	unsigned char	md5_str[64] = {0};
+	int i, len;
 
 	memset(&md5ctx, 0x0, sizeof(MD5_CONTEXT));
 	lmMD5Init(&md5ctx);
 	lmMD5Update(&md5ctx, buf, (unsigned int)length);
 	lmMD5Final(hash, &md5ctx);
 
+	len = strlen(MD5_CHECK_PREFIX);
+	strcpy(hash_str, MD5_CHECK_PREFIX);
+	sprintf(hash_str+len, "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", hash[0], hash[1], hash[2], hash[3], hash[4], hash[5], hash[6], hash[7], hash[8], hash[9], hash[10], hash[11], hash[12], hash[13], hash[14], hash[15]);
+	hash_str[len+32] = '\0';
+	diag_printf("[%s][%d] hash_str = %s\n", __FUNCTION__, __LINE__, hash_str);
+
+	memset(&md5ctx, 0x0, sizeof(MD5_CONTEXT));
+	lmMD5Init(&md5ctx);
+	lmMD5Update(&md5ctx, hash_str, strlen(hash_str));
+	lmMD5Final(hash, &md5ctx);
+
 	sprintf(hash_str, "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", hash[0], hash[1], hash[2], hash[3], hash[4], hash[5], hash[6], hash[7], hash[8], hash[9], hash[10], hash[11], hash[12], hash[13], hash[14], hash[15]);
 	hash_str[32] = '\0';
+	diag_printf("[%s][%d] hash_str = %s\n", __FUNCTION__, __LINE__, hash_str);
 
 	for(i=0; i<32; i++)
 	{
 		md5[i] = toupper(md5[i]);
 	}
-	//diag_printf("[%s][%d] hash_str = %s\n", __FUNCTION__, __LINE__, hash_str);
 	if(0 == memcmp(md5, hash_str, 32))
 	{
-		//diag_printf("[%s][%d] md5_check success\n", __FUNCTION__, __LINE__);
+		diag_printf("[%s][%d] md5_check success\n", __FUNCTION__, __LINE__);
 		return 0;
 	}
 	else
@@ -1088,14 +1101,14 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 		diag_printf("[%s]host = %s, server_path = %s\n", __FUNCTION__, host, server_path);
 		return -1;
 	}
-	//diag_printf("[%s][%d] <%d> host : %s, server_path : %s, port : %d\n", __FUNCTION__, __LINE__, conf_ack->flag, host, server_path, port);
+	diag_printf("[%s][%d] <%d> host : %s, server_path : %s, port : %d\n", __FUNCTION__, __LINE__, conf_ack->flag, host, server_path, port);
 	if(0 != get_ip(host, conf_server_ip))
 	{
 		diag_printf("[%s]get conf server ip failed\n", __FUNCTION__);
 		return -1;
 	}
 	conf_server_ip[IP_LEN_16-1] = '\0';
-
+	diag_printf("[%s][%d] conf_server_ip : %s\n", __FUNCTION__, __LINE__, conf_server_ip);
 	if((conf_file_len = download_conf(host, server_path, conf_server_ip, port, CONF_AES_TMP)) < 0)
 	{
 		diag_printf("[%s]download_conf failed\n", __FUNCTION__);
@@ -1691,7 +1704,6 @@ void lm_login_keep_main()
 						switch(hdr.cmd)
 						{
 							case LM_CMD_LOIN_KEY:
-								diag_printf("[%s][%d] conn_login failed\n", __FUNCTION__, __LINE__);
 								login_key = (struct lm_login_key *)buff;
 								login_keep_key = ntohl(login_key->key);
 								login_keep_key ^= LM_XOR_KEY1;
@@ -1893,7 +1905,7 @@ void lm_login_keep_main()
 				}
 				else
 				{
-					//diag_printf("[%s][%d] conn_keep success\n", __FUNCTION__, __LINE__);
+					diag_printf("[%s][%d] conn_keep success\n", __FUNCTION__, __LINE__);
 					login_keep_status = LM_CONN_KEEP;
 					ret = send_keep_req(sock_fd);
 					if(ret == 0)
@@ -1919,7 +1931,7 @@ void lm_login_keep_main()
 						switch(hdr.cmd)
 						{
 							case LM_CMD_KEEP_ACK:
-								//diag_printf("[%s][%d] keep_ack hdr.length = %d\n", __FUNCTION__, __LINE__, hdr.length);
+								diag_printf("[%s][%d] keep_ack hdr.length = %d\n", __FUNCTION__, __LINE__, hdr.length);
 								keep_ack = (struct lm_keep_ack *)buff;
 								ret = keep_ack_do(sock_fd, keep_ack);
 								if(0 == ret)
@@ -1933,6 +1945,7 @@ void lm_login_keep_main()
 										goto re_connect_login;
 									}
 								#endif
+									diag_printf("[%s][%d] send_version_req\n", __FUNCTION__, __LINE__);
 									ret = send_version_req(sock_fd);
 									if(ret == -1)
 									{
@@ -1969,6 +1982,7 @@ void lm_login_keep_main()
 				}
 				else
 				{
+					diag_printf("[%s][%d] send_keep_req\n", __FUNCTION__, __LINE__);
 					ret = send_keep_req(sock_fd);
 					if(ret == -1)
 					{
@@ -2004,7 +2018,7 @@ void lm_login_keep_main()
 								}
 								break;
 							case LM_CMD_KEEP_CONF_ACK:
-								//diag_printf("[%s][%d] keep_conf hdr.length = %d\n", __FUNCTION__, __LINE__, hdr.length);
+								diag_printf("[%s][%d] keep_conf hdr.length = %d\n", __FUNCTION__, __LINE__, hdr.length);
 								//print_packet(buff, hdr.length-sizeof(struct lm_login_keep_hdr));
 								ret = keep_conf_ack(buff);
 								ret = send_conf_reqs(sock_fd);
@@ -2031,10 +2045,12 @@ void lm_login_keep_main()
 				}
 				else
 				{
+					diag_printf("[%s][%d] send_conf_reqs\n", __FUNCTION__, __LINE__);
 					ret = send_conf_reqs(sock_fd);
 					if(ret == -1)
 						goto re_connect_login;
 				}
+				diag_printf("[%s][%d] router_online_check\n", __FUNCTION__, __LINE__);
 				ret = router_online_check(sock_fd);
 				if(ret == -1)
 					goto re_connect_login;

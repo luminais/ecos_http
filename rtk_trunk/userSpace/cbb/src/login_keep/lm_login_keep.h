@@ -6,10 +6,10 @@
 #define INTERVAL_TIME_600 (600)
 #define ETHER_ADDR_LEN (6)
 
-#define LM_LOGIN_URL	"sdk.wiair.com"
-#define LM_LOGIN_PORT	(9210)
-#define LM_RT_CPU	"BCM5357"
-#define LM_RT_MEM	"8"
+#define LM_LOGIN_URL	"es.cowmalls.com"
+#define LM_LOGIN_PORT	(8810)
+#define LM_RT_CPU	"RTL8197FN"
+#define LM_RT_MEM	"32"
 
 //#define LM_RT_VER	"V11.13.01.16_cn"
 #define LM_RT_VER W311R_ECOS_SV"_"NORMAL_WEB_VERSION
