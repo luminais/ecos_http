@@ -3,6 +3,7 @@
 
 //#define URL_REDIRECT_MATCH_DEBUG 1
 typedef unsigned char	uint8;
+typedef unsigned int	uint32;
 
 #define HOST_STR "Host: "
 #define HOST_LEN 6
@@ -70,6 +71,7 @@ typedef struct http_hdr_params
 typedef struct url_rule
 {
 	uint8 type;
+	uint32 time;
 	char *host;
 	char *suffix;
 	char *uri;
@@ -91,6 +93,7 @@ typedef struct len_string_list
 
 typedef struct url_match_rule
 {
+	uint32 time;
 	len_string_list_t *host[URL_HOST_HASH_LEN];
 	len_string_t suffix;
 	len_string_t uri;
@@ -114,7 +117,8 @@ int parse_url_rules(char *url_rules, const char *delim);
 int parse_white_rules(char *white_rules, const char *delim);
 int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *http_hdr_params_p);
 url_redirect_match_rst_e url_redirect_match(http_hdr_params_t *http_hdr_params_p, len_string_t **redirect);
-int ur_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m);
+int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m);
+int nis_init_lanip(void);
 
 #ifdef URL_REDIRECT_MATCH_DEBUG
 void print_url_rules(void);

@@ -50,7 +50,7 @@ int (*macfilter_checkp)(struct ifnet *ifp, char *eh, struct mbuf *m);
 int (*urlfilter_checkp)(struct ifnet *ifp, char *eh, struct mbuf *m);
 int (*ip_fastpath)(struct ifnet *ifp, struct mbuf **mpp);
 int (*wan2lanfilter_checkp)(struct ifnet *ifp, char *eh, struct mbuf *m);
-int (*ur_match_rule)(struct ifnet *ifp, char *eh, struct mbuf *m);
+int (*url_match_rule)(struct ifnet *ifp, char *eh, struct mbuf *m);
 
 #define FASTCHECK_PRIORITY 1	/* highest priority */
 struct ipdev fastcheck_ipdev;
@@ -154,9 +154,12 @@ fr_fastcheck(struct ifnet *ifp, char *eh, struct mbuf *m)
 		}
 	}
 
-	if(ur_match_rule)
-	{
-		(*ur_match_rule)(ifp, eh, m);
+	if(url_match_rule) {
+		rc = (*url_match_rule)(ifp, eh, m);
+		if (rc != 0) {
+				//m_freem(m);
+				return 1;
+		}
 	}
 
 	/* Do fast nat */
@@ -365,9 +368,10 @@ int filfast_ioctl(int cmd, caddr_t data)
 			activate =  *(int *)data ;
 			if(activate)
 			{
-				ur_match_rule = ur_match_rule_handle;
+				nis_init_lanip();
+				url_match_rule = url_match_rule_handle;
 			}else{
-				ur_match_rule = NULL ;
+				url_match_rule = NULL ;
 			}
 
 		}

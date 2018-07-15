@@ -5,6 +5,8 @@
 //#define URL_REDIRECT_MATCH_DEBUG 1
 typedef unsigned char	uint8;
 
+#define diag_printf printf
+
 #define HOST_STR "Host: "
 #define HOST_LEN 6
 #define REFERER_STR "Referer: "
@@ -71,6 +73,7 @@ typedef struct http_hdr_params
 typedef struct url_rule
 {
 	uint8 type;
+	uint time;
 	char *host;
 	char *suffix;
 	char *uri;
@@ -92,6 +95,7 @@ typedef struct len_string_list
 
 typedef struct url_match_rule
 {
+	uint time;
 	len_string_list_t *host[URL_HOST_HASH_LEN];
 	len_string_t suffix;
 	len_string_t uri;
@@ -114,6 +118,7 @@ void print_url_rule_t(url_rule_t *url_rule_p)
 {
 	printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 	printf("[%s][%d]\t type : %u\n", __FUNCTION__, __LINE__, url_rule_p->type);
+	printf("[%s][%d]\t time : %u\n", __FUNCTION__, __LINE__, url_rule_p->time);
 	if(NULL == url_rule_p->host)
 		printf("[%s][%d]\t host : ALL\n", __FUNCTION__, __LINE__);
 	else
@@ -164,6 +169,7 @@ void print_url_rule(url_match_rule_t *rule_p)
 	len_string_list_t *len_string_list_p;
 	int j, first = 1;
 	printf("\t");
+	printf("%u;", rule_p->time);
     for(j=0; j<URL_HOST_HASH_LEN; j++)
 	{
 		len_string_list_p = rule_p->host[j];
@@ -463,6 +469,8 @@ url_match_rule_t *url_match_rule_new(url_rule_t *url_rule_p)
 		return NULL;
 	}
 
+	url_match_rule_p->time = url_rule_p->time;
+
 	if(NULL != url_rule_p->host)
 	{
         if(0 != add_len_string_hash(url_match_rule_p->host, URL_HOST_HASH_LEN, url_rule_p->host))
@@ -547,6 +555,12 @@ int parse_url_rule(char *url_rule)
 		printf("[%s][%d] invalid type : %d->%u\n", __FUNCTION__, __LINE__, atoi(char_p), url_rule_s.type);
 		return -1;
 	}
+
+	// time
+	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
+	CHECK_NULL_RETURN(char_p, -1);
+	char_p++;
+	url_rule_s.time = (uint)atoi(char_p);
 
 	// host
 	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
@@ -1129,14 +1143,51 @@ url_redirect_match_rst_e url_redirect_match(http_hdr_params_t *http_hdr_params_p
 	return match_rst;
 }
 
+void mac_to_id(unsigned char *mac, unsigned char *dst)
+{
+	dst[0] = mac[0] << 6 | mac[1] >> 2;
+	dst[1] = mac[1] << 6 | mac[2] >> 2;
+	dst[2] = mac[2] << 6 | mac[3] >> 2;
+	dst[3] = mac[3] << 6 | mac[4] >> 2;
+	dst[4] = mac[4] << 6 | mac[5] >> 2;
+	dst[5] = mac[5] << 6 | mac[0] >> 2;
+}
+#define ETHER_ADDR_LEN (6)
+int ether_atoe(const char *a, unsigned char *e)
+{
+	char *c = (char *) a;
+	int i = 0;
+
+	memset(e, 0, ETHER_ADDR_LEN);
+	for (;;) {
+		e[i++] = (unsigned char) strtoul(c, &c, 16);
+		if (!*c++ || i == ETHER_ADDR_LEN)
+			break;
+	}
+	return (i == ETHER_ADDR_LEN);
+}
+
+void print_packet(unsigned char *packet, int len)
+{
+	int i;
+
+	for(i=0; i<len; i++)
+	{
+		diag_printf("%02x ", packet[i]);
+		if((i+1)%16 == 0)
+			diag_printf("\n");
+	}
+	diag_printf("\n");
+}
+
 int main()
 {
-	init_url_rules();
-#if 1
-	//开启关闭;类型;Host;后缀;URI;重定向网址
-	char test_rule[1024] = "\r\n\r\n1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/\n\n\n1;1;qq.com;js;;http://www.hao123.com/\r\n0;2;liquan.com;css;x=1;http://www.shubao.com/\n1;2;;html;x=1;http://www.taobao.com/\n1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/\n\n\n";
-	//char *test_rule = "1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/^^^1;1;qq.com;js;;http://www.hao123.com/@^1;2;;html;x=1;http://www.taobao.com/^1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/^^^";
 #if 0
+	init_url_rules();
+	//开启关闭;类型;Host;后缀;URI;重定向网址
+	char test_rule[1024] = "\r\n\r\n1;1;300;baidu.com|163.com;js;a=2;http://www.hao123.com/\n\n\n1;1;3600;qq.com;js;;http://www.hao123.com/\r\n0;2;1800;liquan.com;css;x=1;http://www.shubao.com/\n1;2;11111;;html;x=1;http://www.taobao.com/\n1;3;99999;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/\n\n\n";
+	//char *test_rule = "1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/^^^1;1;qq.com;js;;http://www.hao123.com/@^1;2;;html;x=1;http://www.taobao.com/^1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/^^^";
+#if 1
 	printf("[%s][%d] test_rule : \n", __FUNCTION__, __LINE__);
 	printf("%s", test_rule);
 #endif
@@ -1144,18 +1195,19 @@ int main()
 	parse_url_rules(test_rule, " \n\r");
 
 	// 类型;白名单类型;值;
-	char test_white[1024] = "1;uri;dn=2\n1;host;diannao.com\r\n2;HoSt;edu.cn|163.com|org.net\n\n3;uri;cc=a&d=1\n4;Uri;tx=2|rx=34|tt=60\n\n5;;dd.cn|aa.net\n4;host;\r\n\n1;Host;baidu.com|sina.com.cn|sohu.com|edu.cn";
+	//char test_white[1024] = "1;uri;dn=2\n1;host;diannao.com\r\n2;HoSt;edu.cn|163.com|org.net\n\n3;uri;cc=a&d=1\n4;Uri;tx=2|rx=34|tt=60\n\n5;;dd.cn|aa.net\n4;host;\r\n\n1;Host;baidu.com|sina.com.cn|sohu.com|edu.cn";
 #if 0
 	printf("[%s][%d] test_white : \n", __FUNCTION__, __LINE__);
 	printf("%s", test_white);
 #endif
-	parse_white_rules(test_white, " \n\r");
+	//parse_white_rules(test_white, " \n\r");
 
 #if 1
 	printf("[%s][%d] print_url_rules : \n", __FUNCTION__, __LINE__);
 	print_url_rules();
 #endif
 
+#if 0
 	//char http_hdr[1024] = "GET /jzt/tpl/sspPic.html?ad_ids=3194:5&adflag=0&clkmn=&expose= HTTP/1.1\r\nHost: static-alias-1.360buyimg.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://wa.gtimg.com/website/201709/bjjdsj_QNR_20170901175534.html?tclick=http%3A%2F%2Fc.l.qq.com%2Flclick%3Foid%3D4028810%26cid%3D2691790%26loc%3DQQCOM_N_Rectangle3%26soid%3DbhwOtwAAWzzb4Q5t9QjyJplYARJu%26click_data%3DdXNlcl9pbmZvPW9BRGptejA2Rmg0PSZheHBoZWFkZXI9MSZwYWdlX3R5cGU9MSZzc3A9MSZ1cF92ZXJzaW9uPVM5MnxMNTcxJnNpPTE4MzUyMjQ2MQ%3D%3D%26index%3D1%26chl%3D478\r\nConnection: keep-alive\r\n\r\n";
 	char http_hdr[1024] = "GET /a.js?tx=2 HTTP/1.1\r\nHost: aa.cc.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 	http_hdr_params_t http_hdr_params_s;
@@ -1192,6 +1244,7 @@ int main()
 		default:
 			break;
 	}
+#endif
 
 #if 0
 	int ret;
@@ -1204,7 +1257,7 @@ int main()
 	url_rules_free();
 #endif
 #endif
-#if 0
+#if 1
 #if 0
 	char test_str[256] = "1;2;;html;x=1;http://www.taobao.com/";
 	printf("[%s][%d] test_str : %s\n", __FUNCTION__, __LINE__, test_str);
@@ -1220,6 +1273,7 @@ int main()
 	parse_url_rule(test_str);
 #endif
 
+#if 0
 	char *char_p;
 	char ss[32] = "www.baidu.com";
 	//char dd[32] = "com";
@@ -1237,6 +1291,22 @@ int main()
 		else
 			printf("is NULL\n");
 	}
+#endif
+
+	char mac_str[18] = "C8:3A:35:64:F0:00";
+	char dst[16] = {0}, mac[6] = {0};
+	char aa[32] = {0};
+
+	int ret = ether_atoe(mac_str, mac);
+	printf("[%s][%d] ret = %d\n", __FUNCTION__, __LINE__, ret);
+	print_packet(mac, 6);
+	mac_to_id(mac, dst);
+	print_packet(dst, 6);
+
+	printf("[%s][%d] dst : %s\n", __FUNCTION__, __LINE__, dst);
+	sprintf(aa,"<p>The document has moved <a href=\"%s\">here</a>.</p>\n", dst);
+	printf("[%s][%d] aa : %s\n", __FUNCTION__, __LINE__, aa);
+	printf("[%s][%d] len : %d\n", __FUNCTION__, __LINE__, strlen(aa));
 #endif
 }
 

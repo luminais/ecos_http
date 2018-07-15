@@ -28,15 +28,52 @@
 #include <ctype.h>
 #include <time.h>
 #include "jhash.h"
+#include "sdw_filter.h"
 #include "url_rule_match.h"
 
+#define URLF_PASS	0
+#define URLF_BLOCK	1
+
+static char htmhead[MAX_FULL_URL_LEN] = {0}; 
+
+enum {
+	HTTP_OPTIONS = 0,
+	HTTP_HEAD,
+	HTTP_GET,
+	HTTP_POST,
+	HTTP_PUT,
+	HTTP_DELETE,
+	HTTP_TRACE,
+	HTTP_CONNECT,
+	HTTP_METHOD_MAX,
+};
+
+struct http_method {
+	char *method_name;
+	int name_len;
+};
+
 url_match_rules_t g_url_rules[MAX_TYPE_NUM] = {0};
+struct in_addr addr_lan_ip = {0};
+char lan_ip[IP_LEN_16] = {0} ;
+
+struct http_method http_methods[] = {
+	{"OPTIONS ",8},
+	{"HEAD ",5},
+	{"GET ",4},
+	{"POST ",5},
+	{"PUT ",4},
+	{"DELETE ",7},
+	{"TRACE ",6},
+	{"CONNECT ",8},
+};
 
 #if 1
 void print_url_rule_t(url_rule_t *url_rule_p)
 {
 	printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 	printf("[%s][%d]\t type : %u\n", __FUNCTION__, __LINE__, url_rule_p->type);
+	printf("[%s][%d]\t time : %u\n", __FUNCTION__, __LINE__, url_rule_p->time);
 	if(NULL == url_rule_p->host)
 		printf("[%s][%d]\t host : ALL\n", __FUNCTION__, __LINE__);
 	else
@@ -87,6 +124,7 @@ void print_url_rule(url_match_rule_t *rule_p)
 	len_string_list_t *len_string_list_p;
 	int j, first = 1;
 	printf("\t");
+	printf("%u;", rule_p->time);
     for(j=0; j<URL_HOST_HASH_LEN; j++)
 	{
 		len_string_list_p = rule_p->host[j];
@@ -119,7 +157,6 @@ void print_url_rules(void)
 	int i, j;
 	url_match_rules_t *rules_p;
 	url_match_rule_t *rule_p;
-	len_string_list_t *len_string_list_p;
 
 	for(i=0; i<MAX_TYPE_NUM; i++)
 	{
@@ -170,6 +207,66 @@ void print_http_hdr_params(http_hdr_params_t *http_hdr_params_p)
 		printf("\treferer : %.*s\n", http_hdr_params_p->referer.len, http_hdr_params_p->referer.str);
 }
 #endif
+
+int get_http_method(char *http_hdr)
+{
+	int ret = -1;
+
+	if(NULL==http_hdr)
+		return -1;
+
+	switch(http_hdr[0])
+	{
+		case 'O':
+			if(memcmp(http_hdr, http_methods[HTTP_OPTIONS].method_name, http_methods[HTTP_OPTIONS].name_len)==0)
+			{
+				ret = HTTP_OPTIONS;
+			}
+			break;
+		case 'H':
+			if(memcmp(http_hdr, http_methods[HTTP_HEAD].method_name, http_methods[HTTP_HEAD].name_len)==0)
+			{
+				ret = HTTP_HEAD;
+			}
+			break;
+		case 'G':
+			if(memcmp(http_hdr, http_methods[HTTP_GET].method_name, http_methods[HTTP_GET].name_len)==0)
+			{
+				ret = HTTP_GET;
+			}
+			break;
+		case 'P':
+			if(http_hdr[1] == 'O' && memcmp(http_hdr, http_methods[HTTP_POST].method_name, http_methods[HTTP_POST].name_len)==0)
+			{
+				ret = HTTP_POST;
+			}
+			else if(http_hdr[1] == 'U' && memcmp(http_hdr, http_methods[HTTP_PUT].method_name, http_methods[HTTP_PUT].name_len)==0)
+			{
+				ret = HTTP_PUT;
+			}
+			break;
+		case 'D':
+			if(memcmp(http_hdr, http_methods[HTTP_DELETE].method_name, http_methods[HTTP_DELETE].name_len)==0)
+			{
+				ret = HTTP_DELETE;
+			}
+			break;
+		case 'T':
+			if(memcmp(http_hdr, http_methods[HTTP_TRACE].method_name, http_methods[HTTP_TRACE].name_len)==0)
+			{
+				ret = HTTP_TRACE;
+			}
+			break;
+		case 'C':
+			if(memcmp(http_hdr, http_methods[HTTP_CONNECT].method_name, http_methods[HTTP_CONNECT].name_len)==0)
+			{
+				ret = HTTP_CONNECT;
+			}
+			break;
+	}
+
+	return ret;
+}
 
 void init_url_rules(void)
 {
@@ -415,6 +512,8 @@ url_match_rule_t *url_match_rule_new(url_rule_t *url_rule_p)
 		return NULL;
 	}
 
+	url_match_rule_p->time = url_rule_p->time;
+
 	if(NULL != url_rule_p->host)
 	{
         if(0 != add_len_string_hash(url_match_rule_p->host, URL_HOST_HASH_LEN, url_rule_p->host))
@@ -499,6 +598,12 @@ int parse_url_rule(char *url_rule)
 		printf("[%s][%d] invalid type : %d->%u\n", __FUNCTION__, __LINE__, atoi(char_p), url_rule_s.type);
 		return -1;
 	}
+
+	// time
+	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
+	CHECK_NULL_RETURN(char_p, -1);
+	char_p++;
+	url_rule_s.time = (uint)atoi(char_p);
 
 	// host
 	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
@@ -1081,10 +1186,280 @@ url_redirect_match_rst_e url_redirect_match(http_hdr_params_t *http_hdr_params_p
 	return match_rst;
 }
 
-int ur_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m)
+int nis_init_lanip(void)
 {
-	printf("[%s][%d]\n", __FUNCTION__, __LINE__);
+	char *tmp_value = NULL;
+	//char tmp_mac_value[MAC_LEN_20] = {0} ;
+	memset(&addr_lan_ip , 0, sizeof(addr_lan_ip));
+	memset(lan_ip , 0, sizeof(lan_ip));
+	
+	tmp_value = nvram_safe_get("lan_ipaddr");
+	
+	strcpy(lan_ip, tmp_value);
+	if(strlen(lan_ip) > 0)
+	{
+		if (0 == inet_aton(lan_ip, &addr_lan_ip)) 
+		{
+			printf("lan_ip inet_aton error,thread exit!!!\n");
+			return 0;
+		}
+	}
+	
+	return 1 ;
+}
+
+int check_lan_ip(struct in_addr ip_src,struct in_addr ip_dst)
+{
+
+	if (ip_src.s_addr==addr_lan_ip.s_addr || ip_dst.s_addr==addr_lan_ip.s_addr)
+	{	
+		return 1;
+	}
 
 	return 0;
+}
+
+static void http_init_302_pkt(char *url)
+{
+	char htmbody[ARRAY_LEN_1024] = {0};
+
+	int n = 0,len=0;
+	char *p = htmbody;
+
+	//printf("http_redirection_url [%s]\n",url);
+	
+	//build html body
+	n = sprintf(p, "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n");
+	p = p + n;
+	n = sprintf(p, "<html><head>\n");
+	p = p + n;
+	n = sprintf(p, "<title>302 Moved Temporarily</title>\n");
+	p = p + n;
+	n = sprintf(p, "</head><body>\n");
+	p = p + n;
+	n = sprintf(p, "<h1>Moved Temporarily</h1>\n");
+	p = p + n;
+	n = sprintf(p,"<p>The document has moved <a href=\"%s\">here</a>.</p>\n", url);
+	p = p + n;
+	n = sprintf(p, "<h1></body></html></h1>\n");
+	p = p + n;
+	n = sprintf(p, "\n");
+	p = p + n;
+
+	len = p - htmbody;
+
+	p = htmhead;
+
+	n = sprintf(p, "HTTP/1.1 302 Moved Temporarily\r\n");
+	p = p+n;
+	n = sprintf(p,"Location: %s\r\n", url);
+	p = p+n;
+
+	n= sprintf(p, "Content-Type: text/html; charset=iso-8859-1\r\n");
+	p = p+n;
+	n= sprintf(p,"Content-Length: %d\r\n", len);
+	p = p+n;
+	n= sprintf(p, "\r\n");
+	p = p+n;
+	
+	n= sprintf(p, "%s", htmbody);
+
+}
+
+void return_http_redirection(struct mbuf *m , char *http_redirection_url)
+{
+	struct tcphdr *tcph = NULL;
+    struct ip *ip = NULL;
+	struct route ro;   
+
+	int iphlen = 0;
+	int off = 0,olen=0,nlen = 0;
+	int inc = 0;
+	unsigned long src_addr = 0 ,dest_addr = 0 ;
+	unsigned short dest_port = 0 ;
+
+	ip = mtod(m, struct ip *);
+	if(ip == NULL)
+	{
+		return ;
+	}
+
+	iphlen = ip->ip_hl << 2;
+	
+	http_init_302_pkt(http_redirection_url);
+	
+	tcph = (struct tcphdr *)((unsigned char*)ip + iphlen);
+	if(tcph == NULL)
+	{
+		return ;
+	}
+
+	off = iphlen + (tcph->th_off << 2);	
+	olen = ntohs(ip->ip_len) -off;
+	//printf("===========> \n\n %s \n\n" , htmhead);
+	nlen = strlen(htmhead);
+	inc = nlen - olen;
+	
+//must do this
+	if (inc < 0)
+	{
+		m_adj(m, inc);
+	}
+	
+//learn form ip_ftp_pxy.c->ippr_ftp_port()
+	m_copyback(m, off, nlen, htmhead);
+
+	src_addr = ip->ip_dst.s_addr;
+	dest_addr = ip->ip_src.s_addr;
+
+	bzero(ip,iphlen);
+
+	//make presudo uip header,learn form l2tp_usrreq.c->ifl2tp_output()
+	ip->ip_p = IPPROTO_TCP;
+	//ip_len = tcp head len+ data_len
+	ip->ip_len = htons((tcph->th_off << 2) + nlen);
+	ip->ip_src.s_addr = src_addr ;
+	ip->ip_dst.s_addr = dest_addr;
+
+
+	dest_port = tcph->th_sport;
+	tcph->th_sport = tcph->th_dport;
+	tcph->th_dport = dest_port;
+
+	src_addr = tcph->th_seq;
+	dest_addr = tcph->th_ack;
+
+	tcph->th_seq = dest_addr;
+	tcph->th_ack = htonl(ntohl(src_addr)+olen);
+	tcph->th_win = htons(ntohs(tcph->th_win) - nlen);
+
+	//cksum = tcp_sum((unsigned short *)tcph, ip->ip_len, tcp_pseudo_sum(ip));
+
+	tcph->th_sum = 0;//very important
+    	tcph->th_sum =in_cksum(m, iphlen+ntohs(ip->ip_len));
+	
+
+	ip->ip_len = iphlen + ntohs(ip->ip_len);
+	ip->ip_ttl= 128;
+	ip->ip_off|=IP_DF;
+
+	bzero(&ro, sizeof ro);
+	
+	ip_output(m, 0, &ro, 0, 0);
+	
+	return;
+}
+
+int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m)
+{
+	struct ip *ip = NULL;
+	struct tcphdr *tcp = NULL ;
+	char *data = NULL;
+	char *char_p = NULL, *char_q = NULL, *http_hdr_end = NULL;
+	int hdr_left_len = 0, ret = 0;
+	int pk_len = 0 ;
+	int d_method = -1;
+	http_hdr_params_t http_hdr_params_s;
+	url_redirect_match_rst_e match_rst = URL_REDIRECT_MATCH_NULL;
+
+	if(head == NULL || ifp == NULL || m == NULL)
+	{
+		return URLF_PASS;
+	}
+
+	if ((((struct ifnet *)m->m_pkthdr.rcvif)->if_fltflags & IFFLT_NAT) == 0)
+	{
+		return URLF_PASS;
+	}
+	
+	if (m->m_pkthdr.len < 40)
+	{
+		return URLF_PASS;
+	}
+	ip = mtod(m, struct ip *);
+	if(ip == NULL)
+	{
+		return URLF_PASS ;
+	}
+
+	if (ip->ip_p != IPPROTO_TCP)
+	{
+		return URLF_PASS ;
+	}
+
+	tcp = (struct tcphdr *)((char *)ip + (ip->ip_hl << 2));
+	if(tcp == NULL)
+	{
+		return URLF_PASS ;
+	}
+
+	if (tcp->th_flags & (TH_RST | TH_FIN | TH_SYN))
+		return URLF_PASS;
+	
+	if((htons(80) == tcp->th_dport)|| (htons(80) == tcp->th_sport))
+	{
+		;
+	}
+	else
+		return URLF_PASS;
+	
+	data = (char *)tcp + (tcp->th_off << 2);
+	
+	if(data == NULL)
+	{
+		return URLF_PASS ;
+	}
+	pk_len = m->m_pkthdr.len - (tcp->th_off << 2) - (ip->ip_hl << 2);
+
+	if(pk_len <= 5 )
+	{
+		return URLF_PASS ;
+	}
+	
+	if (check_lan_ip(ip->ip_src,ip->ip_dst))
+	{
+		return URLF_PASS;
+	}
+
+	d_method = get_http_method(data);
+	if(-1 == d_method)
+	{
+		return URLF_PASS;
+	}
+
+	char_q = strchr(data, '\r');
+	if(NULL==char_q)
+	{
+		return URLF_PASS;
+	}
+	char_q -= 8;
+	if(0 != memcmp(char_q, "HTTP/1.", 7))
+	{
+		return URLF_PASS;
+		return -1;
+	}
+
+	char_p = strstr(data, "\r\n\r\n");
+	if(NULL==char_p)
+	{
+		return URLF_PASS;
+	}
+	http_hdr_end = char_p;
+	hdr_left_len = (int)(char_p - data);
+#if 1
+	printf("[%s][%d] http header :\n", __FUNCTION__, __LINE__);
+	printf("%.*s\n", hdr_left_len, data);
+#endif
+
+	memset(&http_hdr_params_s, 0x0, sizeof(http_hdr_params_s));
+	parse_http_hdr_params(data, hdr_left_len, &http_hdr_params_s);
+#if 1
+	printf("[%s][%d] print_http_hdr_params : \n", __FUNCTION__, __LINE__);
+	print_http_hdr_params(&http_hdr_params_s);
+#endif
+
+	return_http_redirection(m, "http://192.168.0.1/index.html");
+
+	return URLF_BLOCK;
 }
 

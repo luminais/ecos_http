@@ -52,17 +52,46 @@ int keep_conf_index = 0;
 
 static uint64 g_next_online_rqst = 0;
 
+
+int send_conf_reqs(int s);
+int send_conf_req(int s, uint16 conf_flag);
+int g_test_fd = -1;
+void send_conf_test(int flag)
+{
+	int ret;
+	char *char_p = NULL;
+	switch(flag)
+	{
+		case KEEP_CONF_URL_CONF:
+			char_p = "KEEP_CONF_URL_CONF";
+			break;
+		case KEEP_CONF_URL_WHITE:
+			char_p = "KEEP_CONF_URL_WHITE";
+			break;
+	}
+	diag_printf("[%s][%d] req %s\n", __FUNCTION__, __LINE__, char_p);
+	ret = send_conf_req(g_test_fd, flag);
+	if(ret == 0)
+	{
+		diag_printf("[%s][%d] success.\n", __FUNCTION__, __LINE__);
+	}
+	else
+	{
+		diag_printf("[%s][%d] failed\n", __FUNCTION__, __LINE__);
+	}
+}
+
 void print_packet(unsigned char *packet, int len)
 {
 	int i;
 
 	for(i=0; i<len; i++)
 	{
-		printf("%02x ", packet[i]);
+		diag_printf("%02x ", packet[i]);
 		if((i+1)%16 == 0)
-			printf("\n");
+			diag_printf("\n");
 	}
-	printf("\n");
+	diag_printf("\n");
 }
 
 int get_url_ip(char *url, char *ip)
@@ -1163,12 +1192,12 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 	ret = lm_aes_decrypt(&my_aes_ctx, conf_content, conf_content_len, file_buf, conf_file_len, &total_len);
 	if(ret == -1)
 	{
-		printf("[%s][%d]lm_aes_decrypt failed\n", __FUNCTION__, __LINE__);
+		diag_printf("[%s][%d]lm_aes_decrypt failed\n", __FUNCTION__, __LINE__);
 		free(file_buf);
 		free(conf_content);
 		return -1;
 	}
-	printf("[%s][%d]total_len = %d\n", __FUNCTION__, __LINE__, total_len);
+	diag_printf("[%s][%d]total_len = %d\n", __FUNCTION__, __LINE__, total_len);
 	conf_content[total_len] = '\0';
 #if 0
 	char_p = strchr(conf_content, '\r');
@@ -1188,23 +1217,23 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 int print_conf_ack(struct lm_conf_ack *conf_ack)
 {
 	diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
-	printf("result : %d\n", conf_ack->result);
-	printf("flag : %d\n", conf_ack->flag);
-	printf("urllen : %d\n", conf_ack->urllen);
-	printf("url : %s\n", conf_ack->url);
-	printf("md5len : %d\n", conf_ack->md5len);
+	diag_printf("result : %d\n", conf_ack->result);
+	diag_printf("flag : %d\n", conf_ack->flag);
+	diag_printf("urllen : %d\n", conf_ack->urllen);
+	diag_printf("url : %s\n", conf_ack->url);
+	diag_printf("md5len : %d\n", conf_ack->md5len);
 #if 0
 	int i;
 
 	for(i=0; i<conf_ack->md5len; i++)
 	{
-		printf("%02x ", conf_ack->md5[i]);
+		diag_printf("%02x ", conf_ack->md5[i]);
 		if((i+1)%16 == 0)
-			printf("\n");
+			diag_printf("\n");
 	}
-	printf("\n");
+	diag_printf("\n");
 #else
-	printf("md5 : %s\n", conf_ack->md5);
+	diag_printf("md5 : %s\n", conf_ack->md5);
 #endif
 	diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 	return 0;
@@ -1252,10 +1281,16 @@ int keep_conf_ack(char *conf_ack_buf)
 	switch(conf_ack.flag)
 	{
 		case KEEP_CONF_URL_CONF:
-			keep_conf_status[KEEP_CONF_URL_CONF-1] = 1;
+			url_match_rules_free();
+			ret = parse_url_rules(conf_content, " \n\r");
+			if(ret == 0)
+				keep_conf_status[KEEP_CONF_URL_CONF-1] = 1;
 			break;
 		case KEEP_CONF_URL_WHITE:
-			keep_conf_status[KEEP_CONF_URL_WHITE-1] = 1;
+			url_white_rules_free();
+			ret = parse_white_rules(conf_content, " \n\r");
+			if(ret == 0)
+				keep_conf_status[KEEP_CONF_URL_WHITE-1] = 1;
 			break;
 		default:
 			break;
@@ -1456,7 +1491,7 @@ int login_reg_ack_do(int s, struct lm_register_ack *register_ack)
 	register_ack->result = ntohs(register_ack->result);
 	if(register_ack->result != 0)
 	{
-		printf("[%s][%d] register failed\n", __FUNCTION__, __LINE__);
+		diag_printf("[%s][%d] register failed\n", __FUNCTION__, __LINE__);
 		diag_printf("[%s][%d] need do register\n", __FUNCTION__, __LINE__);
 		ret = send_register_req(s);
 		if(-1 == ret)
@@ -1597,7 +1632,7 @@ int keep_ack_do(int s, struct lm_keep_ack *keep_ack)
 	}
 	keep_cks = ntohl(keep_ack->check);
 	keep_cks ^= LM_XOR_KEY1;
-
+	diag_printf("[%s][%d] goto keep ack!!!\n", __FUNCTION__, __LINE__);
 	login_keep_status = LM_KEEP_ACK;
 	return 0;
 }
@@ -1614,7 +1649,7 @@ int send_conf_reqs(int s)
 		{
 			diag_printf("[%s][%d] <%d> send_conf_req failed\n", __FUNCTION__, __LINE__, keep_conf_index+1);
 		}
-#if 0
+#if 1
 		else
 		{
 			diag_printf("[%s][%d] <%d> send_conf_req success\n", __FUNCTION__, __LINE__, keep_conf_index+1);
@@ -1906,6 +1941,7 @@ void lm_login_keep_main()
 				else
 				{
 					diag_printf("[%s][%d] conn_keep success\n", __FUNCTION__, __LINE__);
+					g_test_fd = sock_fd;
 					login_keep_status = LM_CONN_KEEP;
 					ret = send_keep_req(sock_fd);
 					if(ret == 0)
@@ -2003,6 +2039,7 @@ void lm_login_keep_main()
 						switch(hdr.cmd)
 						{
 							case LM_CMD_KEEP_ONLINE_ACK:
+								diag_printf("[%s][%d] LM_CMD_KEEP_ONLINE_ACK\n", __FUNCTION__, __LINE__);
 								ret = keep_router_online(buff);
 								if(0 == ret)
 								{
@@ -2010,6 +2047,7 @@ void lm_login_keep_main()
 								}
 								break;
 							case LM_CMD_KEEP_VERSION_ACK:
+								diag_printf("[%s][%d] LM_CMD_KEEP_VERSION_ACK\n", __FUNCTION__, __LINE__);
 								diag_printf("[%s][%d] keep_version hdr.length = %d\n", __FUNCTION__, __LINE__, hdr.length);
 								ret = keep_firm_version(buff);
 								if(0 == ret)
@@ -2018,18 +2056,23 @@ void lm_login_keep_main()
 								}
 								break;
 							case LM_CMD_KEEP_CONF_ACK:
+								diag_printf("[%s][%d] LM_CMD_KEEP_CONF_ACK\n", __FUNCTION__, __LINE__);
 								diag_printf("[%s][%d] keep_conf hdr.length = %d\n", __FUNCTION__, __LINE__, hdr.length);
-								//print_packet(buff, hdr.length-sizeof(struct lm_login_keep_hdr));
+								print_packet(buff, hdr.length-sizeof(struct lm_login_keep_hdr));
 								ret = keep_conf_ack(buff);
+							#if 0 //luminais mark
 								ret = send_conf_reqs(sock_fd);
+							#endif
 								if(ret == -1)
 									goto re_connect_login;
 								break;
 							default:
+							#if 0 //luminais mark
 								diag_printf("[%s][%d] <%d> conf_reqs\n", __FUNCTION__, __LINE__, hdr.cmd);
 								ret = send_conf_reqs(sock_fd);
 								if(ret == -1)
 									goto re_connect_login;
+							#endif
 								break;
 						}
 					}
@@ -2045,12 +2088,14 @@ void lm_login_keep_main()
 				}
 				else
 				{
+				#if 0 // luminais mark
 					diag_printf("[%s][%d] send_conf_reqs\n", __FUNCTION__, __LINE__);
 					ret = send_conf_reqs(sock_fd);
 					if(ret == -1)
 						goto re_connect_login;
+				#endif
 				}
-				diag_printf("[%s][%d] router_online_check\n", __FUNCTION__, __LINE__);
+				//diag_printf("[%s][%d] router_online_check\n", __FUNCTION__, __LINE__);
 				ret = router_online_check(sock_fd);
 				if(ret == -1)
 					goto re_connect_login;
