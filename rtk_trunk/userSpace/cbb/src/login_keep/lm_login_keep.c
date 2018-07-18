@@ -34,6 +34,7 @@ extern void upgrade_online_start(struct lm_keep_version *keep_version);
 extern struct upgrade_mem *upgrade_mem_alloc(int totlen);
 extern void upgrade_add_text(char *head, char *text, int nbytes);
 extern void lm_gen_tabs (void);
+extern int url_match_rule_enabled(void);
 
 char *a_query;
 
@@ -1017,7 +1018,7 @@ static int toupper(int c)
 }
 #endif
 
-#define MD5_CHECK_PREFIX "gL2Gc9pFY0bl"
+#define MD5_CHECK_PREFIX "gL2Gc9pFY0bI"
 int md5_check(unsigned char *md5, unsigned char *buf, int length)
 {
 	MD5_CONTEXT		md5ctx;
@@ -1143,7 +1144,7 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 		diag_printf("[%s]download_conf failed\n", __FUNCTION__);
 		return -1;
 	}
-
+	diag_printf("[%s][%d] conf_file_len = %d\n", __FUNCTION__, __LINE__, conf_file_len);
 	if(file_to_buf(&file_buf, CONF_AES_TMP, conf_file_len) !=0)
 	{
 		diag_printf("[%s]file_to_buf failed\n", __FUNCTION__);
@@ -1162,9 +1163,9 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 		free(lll);
 	}
 #endif
-	//diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
+	printf("[%s][%d] file_buf = %.*s\n", __FUNCTION__, __LINE__, conf_file_len, file_buf);
 #if 1
-	//print_packet(file_buf, conf_file_len);
+	print_packet(file_buf, conf_file_len);
 	if(md5_check((unsigned char *)(conf_ack->md5), file_buf, conf_file_len) != 0)
 	{
 		diag_printf("[%s]md5_check failed\n", __FUNCTION__);
@@ -1207,7 +1208,7 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 	if(char_p)
 		*char_p = '\0';
 #endif
-	diag_printf("[%s][%d] conf_content = %s\n", __FUNCTION__, __LINE__, conf_content);
+	printf("[%s][%d] conf_content = %.*s\n", __FUNCTION__, __LINE__, total_len, conf_content);
 	*conf_content_save = conf_content;
 	free(file_buf);
 
@@ -1237,6 +1238,12 @@ int print_conf_ack(struct lm_conf_ack *conf_ack)
 #endif
 	diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 	return 0;
+}
+
+int url_rules_ready(void)
+{
+	int ret = keep_conf_status[KEEP_CONF_URL_CONF-1] + keep_conf_status[KEEP_CONF_URL_WHITE-1];
+	return (ret==2?1:0);
 }
 
 int keep_conf_ack(char *conf_ack_buf)
@@ -1284,13 +1291,35 @@ int keep_conf_ack(char *conf_ack_buf)
 			url_match_rules_free();
 			ret = parse_url_rules(conf_content, " \n\r");
 			if(ret == 0)
+			{
 				keep_conf_status[KEEP_CONF_URL_CONF-1] = 1;
+				if(url_rules_ready() && !(url_match_rule_enabled()))
+					nis_url_match_mode(1);
+			}
+			else
+			{
+				keep_conf_status[KEEP_CONF_URL_CONF-1] = 0;
+				url_match_rules_free();
+				if(url_match_rule_enabled())
+					nis_url_match_mode(0);
+			}
 			break;
 		case KEEP_CONF_URL_WHITE:
 			url_white_rules_free();
 			ret = parse_white_rules(conf_content, " \n\r");
 			if(ret == 0)
+			{
 				keep_conf_status[KEEP_CONF_URL_WHITE-1] = 1;
+				if(url_rules_ready() && !(url_match_rule_enabled()))
+					nis_url_match_mode(1);
+			}
+			else
+			{
+				keep_conf_status[KEEP_CONF_URL_WHITE-1] = 0;
+				url_match_rules_free();
+				if(url_match_rule_enabled())
+					nis_url_match_mode(0);
+			}
 			break;
 		default:
 			break;

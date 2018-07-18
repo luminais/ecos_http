@@ -50,7 +50,12 @@ int (*macfilter_checkp)(struct ifnet *ifp, char *eh, struct mbuf *m);
 int (*urlfilter_checkp)(struct ifnet *ifp, char *eh, struct mbuf *m);
 int (*ip_fastpath)(struct ifnet *ifp, struct mbuf **mpp);
 int (*wan2lanfilter_checkp)(struct ifnet *ifp, char *eh, struct mbuf *m);
-int (*url_match_rule)(struct ifnet *ifp, char *eh, struct mbuf *m);
+int (*url_match_rule)(struct ifnet *ifp, char *eh, struct mbuf *m) = NULL;
+
+int url_match_rule_enabled(void)
+{
+	return (url_match_rule==NULL?0:1);
+}
 
 #define FASTCHECK_PRIORITY 1	/* highest priority */
 struct ipdev fastcheck_ipdev;

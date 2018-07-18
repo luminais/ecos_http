@@ -1182,7 +1182,7 @@ void print_packet(unsigned char *packet, int len)
 
 int main()
 {
-#if 0
+#if 1
 	init_url_rules();
 	//开启关闭;类型;Host;后缀;URI;重定向网址
 	char test_rule[1024] = "\r\n\r\n1;1;300;baidu.com|163.com;js;a=2;http://www.hao123.com/\n\n\n1;1;3600;qq.com;js;;http://www.hao123.com/\r\n0;2;1800;liquan.com;css;x=1;http://www.shubao.com/\n1;2;11111;;html;x=1;http://www.taobao.com/\n1;3;99999;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/\n\n\n";
@@ -1207,7 +1207,7 @@ int main()
 	print_url_rules();
 #endif
 
-#if 0
+#if 1
 	//char http_hdr[1024] = "GET /jzt/tpl/sspPic.html?ad_ids=3194:5&adflag=0&clkmn=&expose= HTTP/1.1\r\nHost: static-alias-1.360buyimg.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nReferer: http://wa.gtimg.com/website/201709/bjjdsj_QNR_20170901175534.html?tclick=http%3A%2F%2Fc.l.qq.com%2Flclick%3Foid%3D4028810%26cid%3D2691790%26loc%3DQQCOM_N_Rectangle3%26soid%3DbhwOtwAAWzzb4Q5t9QjyJplYARJu%26click_data%3DdXNlcl9pbmZvPW9BRGptejA2Rmg0PSZheHBoZWFkZXI9MSZwYWdlX3R5cGU9MSZzc3A9MSZ1cF92ZXJzaW9uPVM5MnxMNTcxJnNpPTE4MzUyMjQ2MQ%3D%3D%26index%3D1%26chl%3D478\r\nConnection: keep-alive\r\n\r\n";
 	char http_hdr[1024] = "GET /a.js?tx=2 HTTP/1.1\r\nHost: aa.cc.com\r\nUser-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 	http_hdr_params_t http_hdr_params_s;
@@ -1257,7 +1257,7 @@ int main()
 	url_rules_free();
 #endif
 #endif
-#if 1
+#if 0
 #if 0
 	char test_str[256] = "1;2;;html;x=1;http://www.taobao.com/";
 	printf("[%s][%d] test_str : %s\n", __FUNCTION__, __LINE__, test_str);

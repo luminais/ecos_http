@@ -276,6 +276,10 @@ shell_cmd("url_rd",
 	 "url_rd 1",
 	 "",
 	 url_rd_h);
+shell_cmd("tt",
+	 "tt",
+	 "",
+	 tt_h);
 
 shell_cmd("reboot",
 	 "Reset the system",
@@ -2796,6 +2800,11 @@ void nis_url_match_mode(int enable);
 CMD_DECL(url_rd_h)
 {
 	nis_url_match_mode(atoi(argv[0]));
+}
+
+CMD_DECL(tt_h)
+{
+
 }
 
 CMD_DECL(thread_release)

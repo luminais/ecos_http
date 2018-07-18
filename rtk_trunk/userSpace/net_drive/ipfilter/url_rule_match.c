@@ -1360,6 +1360,7 @@ int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m)
 	int pk_len = 0 ;
 	int d_method = -1;
 	http_hdr_params_t http_hdr_params_s;
+	len_string_t *redirect = NULL;
 	url_redirect_match_rst_e match_rst = URL_REDIRECT_MATCH_NULL;
 
 	if(head == NULL || ifp == NULL || m == NULL)
@@ -1458,8 +1459,17 @@ int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m)
 	print_http_hdr_params(&http_hdr_params_s);
 #endif
 
+#if 0
 	return_http_redirection(m, "http://192.168.0.1/index.html");
+#else
+	match_rst = url_redirect_match(&http_hdr_params_s, &redirect);
+	if(URL_REDIRECT_MATCH_REDIRECT == match_rst && redirect)
+	{
+		printf("[%s][%d] redirect to %.*s\n", __FUNCTION__, __LINE__, redirect->len, redirect->str);
+		return URLF_BLOCK;
+	}
+#endif
 
-	return URLF_BLOCK;
+	return URLF_PASS;
 }
 

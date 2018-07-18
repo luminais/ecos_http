@@ -2,9 +2,6 @@
 发送在线信息是在连接keep成功后开始计时，间隔半小时或一小时发送一次
 拉取版本更新是在连接keep成功后拉取一次
 
-访问是rj.baidu.com，白名单host是baidu.com，应该算命中
-  访问是rj.baidu.com，白名单host是www.baidu.com，应该不算命中
-  就是匹配的含义是strstr
 
 
 1、5中类型的规则中，每种类型1条规则还是多条
@@ -29,3 +26,8 @@
 3 login_ack中（10007），result不是0和2的值怎么处理
 4 keep_request type : Tenda
 5 一个类型白名单中，既有host又有uri，是只要匹配上其中一个就认为命中，还是要host和uri同时有匹配上才算命中
+
+
+js redirect MAC地址 tid rid
+模糊匹配
+time
