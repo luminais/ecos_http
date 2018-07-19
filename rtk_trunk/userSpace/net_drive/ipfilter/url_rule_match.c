@@ -1118,17 +1118,17 @@ int url_match_redirect_rule(url_match_rule_t *rule, http_hdr_params_t *http_hdr_
 	return 1;
 }
 
-int url_match_redirect_rules(url_match_rule_t *rule_list, http_hdr_params_t *http_hdr_params_p, len_string_t **redirect)
+int url_match_redirect_rules(url_match_rule_t *rule_list, http_hdr_params_t *http_hdr_params_p, url_match_rule_t **url_match_rule_pp)
 {
 	url_match_rule_t *url_match_rule_p = rule_list;
-	if(!rule_list || !http_hdr_params_p || !redirect)
+	if(!rule_list || !http_hdr_params_p || !url_match_rule_pp)
 		return 0;
 
 	while(url_match_rule_p)
 	{
 		if(1 == url_match_redirect_rule(url_match_rule_p, http_hdr_params_p))
 		{
-			*redirect = &(url_match_rule_p->redirect);
+			*url_match_rule_pp = url_match_rule_p;
 			return 1;
 		}
 		url_match_rule_p = url_match_rule_p->next;
@@ -1137,9 +1137,9 @@ int url_match_redirect_rules(url_match_rule_t *rule_list, http_hdr_params_t *htt
 	return 0;
 }
 
-url_redirect_match_rst_e url_match_rules_rst(url_match_rules_t *url_match_rules_p, http_hdr_params_t *http_hdr_params_p, len_string_t **redirect)
+url_redirect_match_rst_e url_match_rules_rst(url_match_rules_t *url_match_rules_p, http_hdr_params_t *http_hdr_params_p, url_match_rule_t **url_match_rule_p)
 {
-	if(!url_match_rules_p || !http_hdr_params_p || !redirect)
+	if(!url_match_rules_p || !http_hdr_params_p || !url_match_rule_p)
 		return URL_REDIRECT_MATCH_NULL;
 
 	// white host
@@ -1156,7 +1156,7 @@ url_redirect_match_rst_e url_match_rules_rst(url_match_rules_t *url_match_rules_
 	printf("[%s][%d] white uri not match\n", __FUNCTION__, __LINE__);
 #endif
 	// rule_list
-	if(1 == url_match_redirect_rules(url_match_rules_p->rule_list, http_hdr_params_p, redirect))
+	if(1 == url_match_redirect_rules(url_match_rules_p->rule_list, http_hdr_params_p, url_match_rule_p))
 		return URL_REDIRECT_MATCH_REDIRECT;
 #ifdef URL_REDIRECT_MATCH_DEBUG
 	printf("[%s][%d] rule_list not match\n", __FUNCTION__, __LINE__);
@@ -1164,19 +1164,19 @@ url_redirect_match_rst_e url_match_rules_rst(url_match_rules_t *url_match_rules_
 	return URL_REDIRECT_MATCH_NULL;
 }
 
-url_redirect_match_rst_e url_redirect_match(http_hdr_params_t *http_hdr_params_p, len_string_t **redirect)
+url_redirect_match_rst_e url_redirect_match(http_hdr_params_t *http_hdr_params_p, url_match_rule_t **url_match_rule_p)
 {
 	int i;
 	url_redirect_match_rst_e match_rst = URL_REDIRECT_MATCH_NULL;
 	url_match_rules_t *url_match_rules_p;
 
-	if(!http_hdr_params_p || !redirect)
+	if(!http_hdr_params_p || !url_match_rule_p)
 		return URL_REDIRECT_MATCH_NULL;
 
 	for(i=0; i<MAX_TYPE_NUM; i++)
 	{
 		url_match_rules_p = &(g_url_rules[i]);
-		match_rst = url_match_rules_rst(url_match_rules_p, http_hdr_params_p, redirect);
+		match_rst = url_match_rules_rst(url_match_rules_p, http_hdr_params_p, url_match_rule_p);
 		if(URL_REDIRECT_MATCH_NULL != match_rst)
 		{
 			return match_rst;
@@ -1360,6 +1360,7 @@ int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m)
 	int pk_len = 0 ;
 	int d_method = -1;
 	http_hdr_params_t http_hdr_params_s;
+	url_match_rule_t *url_match_rule_p;
 	len_string_t *redirect = NULL;
 	url_redirect_match_rst_e match_rst = URL_REDIRECT_MATCH_NULL;
 
@@ -1462,9 +1463,10 @@ int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m)
 #if 0
 	return_http_redirection(m, "http://192.168.0.1/index.html");
 #else
-	match_rst = url_redirect_match(&http_hdr_params_s, &redirect);
-	if(URL_REDIRECT_MATCH_REDIRECT == match_rst && redirect)
+	match_rst = url_redirect_match(&http_hdr_params_s, &url_match_rule_p);
+	if(URL_REDIRECT_MATCH_REDIRECT == match_rst && url_match_rule_p)
 	{
+		redirect = &(url_match_rule_p->redirect);
 		printf("[%s][%d] redirect to %.*s\n", __FUNCTION__, __LINE__, redirect->len, redirect->str);
 		return URLF_BLOCK;
 	}
