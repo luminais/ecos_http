@@ -31,3 +31,5 @@
 js redirect MAC地址 tid rid
 模糊匹配
 time
+tid 之后再用%02hhx打印6个
+check_lan_ip

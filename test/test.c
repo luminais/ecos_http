@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "jhash.h"
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 //#define URL_REDIRECT_MATCH_DEBUG 1
 typedef unsigned char	uint8;
 
@@ -1180,9 +1185,17 @@ void print_packet(unsigned char *packet, int len)
 	diag_printf("\n");
 }
 
+#define NIPQUAD(addr) \
+	((unsigned char *)&addr)[0], \
+	((unsigned char *)&addr)[1], \
+	((unsigned char *)&addr)[2], \
+	((unsigned char *)&addr)[3]
+
+#define NIPQUAD_FMT "%u.%u.%u.%u"
+
 int main()
 {
-#if 1
+#if 0
 	init_url_rules();
 	//开启关闭;类型;Host;后缀;URI;重定向网址
 	char test_rule[1024] = "\r\n\r\n1;1;300;baidu.com|163.com;js;a=2;http://www.hao123.com/\n\n\n1;1;3600;qq.com;js;;http://www.hao123.com/\r\n0;2;1800;liquan.com;css;x=1;http://www.shubao.com/\n1;2;11111;;html;x=1;http://www.taobao.com/\n1;3;99999;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/\n\n\n";
@@ -1257,7 +1270,7 @@ int main()
 	url_rules_free();
 #endif
 #endif
-#if 0
+#if 1
 #if 0
 	char test_str[256] = "1;2;;html;x=1;http://www.taobao.com/";
 	printf("[%s][%d] test_str : %s\n", __FUNCTION__, __LINE__, test_str);
@@ -1293,9 +1306,12 @@ int main()
 	}
 #endif
 
+#if 0
 	char mac_str[18] = "C8:3A:35:64:F0:00";
 	char dst[16] = {0}, mac[6] = {0};
-	char aa[32] = {0};
+	char aa[32] = {0}, bb[32] = {0};
+	int i;
+	char *char_p;
 
 	int ret = ether_atoe(mac_str, mac);
 	printf("[%s][%d] ret = %d\n", __FUNCTION__, __LINE__, ret);
@@ -1303,10 +1319,21 @@ int main()
 	mac_to_id(mac, dst);
 	print_packet(dst, 6);
 
-	printf("[%s][%d] dst : %s\n", __FUNCTION__, __LINE__, dst);
-	sprintf(aa,"<p>The document has moved <a href=\"%s\">here</a>.</p>\n", dst);
-	printf("[%s][%d] aa : %s\n", __FUNCTION__, __LINE__, aa);
-	printf("[%s][%d] len : %d\n", __FUNCTION__, __LINE__, strlen(aa));
+	sprintf(aa,"%02hhx%02hhx%02hhx%02hhx%02hhx%02hhx", dst[0], dst[1], dst[2], dst[3], dst[4], dst[5]);
+	printf("[%s][%d] aa : %s\n", __FUNCTION__, __LINE__, 	aa);
+	for(i=0, char_p=bb; i<6; i++, char_p += 2)
+		sprintf(char_p,"%02hhx", dst[i]);
+	printf("[%s][%d] bb : %s\n", __FUNCTION__, __LINE__, 	bb);
+#endif
+	//struct in_addr ipaddr;
+	unsigned int ipaddr;
+
+	ipaddr = inet_addr("192.168.0.23");
+	//ipaddr = ntohl(ipaddr);
+
+	printf("[%s][%d] %u.%u.%u.%u\n", __FUNCTION__, __LINE__, NIPQUAD(ipaddr));
+	printf("[%s][%d] %u\n", __FUNCTION__, __LINE__, ((unsigned char *)&ipaddr)[3]);
+
 #endif
 }
 
