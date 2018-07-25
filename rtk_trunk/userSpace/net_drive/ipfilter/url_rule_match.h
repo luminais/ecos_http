@@ -129,5 +129,33 @@ void print_url_rule(url_match_rule_t *rule_p);
 void print_http_hdr_params(http_hdr_params_t *http_hdr_params_p);
 #endif
 
+// url match record update
+#define MATCH_REDIRECT_ARRAY_SIZE (256)
+#define MATCH_REFERER_ARRAY_SIZE (256)
+#define MATCH_REFERER_BASE_LEN (8)
+#define REFERER_RECORD_TIMEOUT (60*100)
+
+typedef struct url_match_record
+{
+	struct url_match_record *next;
+	unsigned int ipaddr;
+	url_match_rule_t *matched;
+	uint32 time;
+}url_match_record_t;
+
+typedef struct referer_match_record
+{
+	struct referer_match_record *next;
+	unsigned int ipaddr;
+	uint32 time;
+	int is_all;
+	unsigned int len;
+	int idx[2];
+	char *arr[3];
+}referer_match_record_t;
+
+void url_record_post_init(void);
+void url_match_record_free(void);
+
 #endif /* __URL_RULE_MATCH_H__ */
 

@@ -29,7 +29,7 @@ static struct rc_msg_ops rc_login_keep_ops[] =
 
 static RET_INFO api_login_keep_init()
 {
-    //tpi_login_keep_first_init();
+    tpi_login_keep_first_init();
     rc_register_module_msg_opses(rc_login_keep_ops,RC_LOGIN_KEEP_MODULE,ARRAY_SIZE(rc_login_keep_ops));
     return RET_SUC;
 }

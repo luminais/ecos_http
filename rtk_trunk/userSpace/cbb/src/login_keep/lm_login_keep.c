@@ -25,7 +25,7 @@
 #include "../../../net_drive/ipfilter/sdw_filter.h"
 #include "../../../net_drive/ipfilter/url_rule_match.h"
 //#include "flash_cgi.h"
-#include "lm_aes.h"
+#include "aes.h"
 #include "lm_md5.h"
 #include "version.h"
 #include "lm_login_keep.h"
@@ -36,10 +36,14 @@ extern void upgrade_add_text(char *head, char *text, int nbytes);
 extern void lm_gen_tabs (void);
 extern int url_match_rule_enabled(void);
 
-char *a_query;
+extern cyg_mutex_t keep_conf_mutex;
 
-unsigned char lm_aes_key[16]={0xcf, 0xdc, 0x96, 0x86, 0x35, 0x32, 0x91, 0x3c, 0x92, 0x85, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-struct aes_ctx my_aes_ctx;
+char *a_query;
+char router_mac_save[32] = {0};
+
+//unsigned char lm_aes_key[16]={0xcf, 0xdc, 0x96, 0x86, 0x35, 0x32, 0x91, 0x3c, 0x92, 0x85, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+unsigned char lm_aes_key[16]={0xcf, 0xdc, 0x96, 0x86, 0x35, 0x32, 0x91, 0x3c, 0x92, 0x85};
+aes_context my_aes_ctx;
 uint32 LM_XOR_KEY1 = 131492;
 uint32 LM_XOR_KEY2 = 101190;
 int32 login_keep_key = 0;
@@ -186,9 +190,8 @@ int send_register_req(int s)
 {
 	struct lm_register_req register_req;
 	struct lm_login_keep_hdr *hdr = NULL;
-	char *macaddr = NULL, *char_p = NULL;
+	char *char_p = NULL;
 	char register_req_buf[128] = {0};
-	char mac_save[32] = {0};
 	uint16 register_req_len = 0, len_tmp = 0;
 	int ret = -1;
 
@@ -197,10 +200,8 @@ int send_register_req(int s)
 	register_req.hdr.cmd = htons(register_req.hdr.cmd);
 	register_req.check = htonl(login_keep_key);
 
-	macaddr = nvram_safe_get("et0macaddr");
-	mac_no_colon(macaddr, mac_save);
-	register_req.mac = mac_save;
-	register_req.maclen = strlen(mac_save);
+	register_req.mac = router_mac_save;
+	register_req.maclen = strlen(router_mac_save);
 
 	register_req.cpulen= strlen(LM_RT_CPU);
 	register_req.cpu = LM_RT_CPU;
@@ -1131,20 +1132,20 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 		diag_printf("[%s]host = %s, server_path = %s\n", __FUNCTION__, host, server_path);
 		return -1;
 	}
-	diag_printf("[%s][%d] <%d> host : %s, server_path : %s, port : %d\n", __FUNCTION__, __LINE__, conf_ack->flag, host, server_path, port);
+	//diag_printf("[%s][%d] <%d> host : %s, server_path : %s, port : %d\n", __FUNCTION__, __LINE__, conf_ack->flag, host, server_path, port);
 	if(0 != get_ip(host, conf_server_ip))
 	{
 		diag_printf("[%s]get conf server ip failed\n", __FUNCTION__);
 		return -1;
 	}
 	conf_server_ip[IP_LEN_16-1] = '\0';
-	diag_printf("[%s][%d] conf_server_ip : %s\n", __FUNCTION__, __LINE__, conf_server_ip);
+	//diag_printf("[%s][%d] conf_server_ip : %s\n", __FUNCTION__, __LINE__, conf_server_ip);
 	if((conf_file_len = download_conf(host, server_path, conf_server_ip, port, CONF_AES_TMP)) < 0)
 	{
 		diag_printf("[%s]download_conf failed\n", __FUNCTION__);
 		return -1;
 	}
-	diag_printf("[%s][%d] conf_file_len = %d\n", __FUNCTION__, __LINE__, conf_file_len);
+	//diag_printf("[%s][%d] conf_file_len = %d\n", __FUNCTION__, __LINE__, conf_file_len);
 	if(file_to_buf(&file_buf, CONF_AES_TMP, conf_file_len) !=0)
 	{
 		diag_printf("[%s]file_to_buf failed\n", __FUNCTION__);
@@ -1163,7 +1164,7 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 		free(lll);
 	}
 #endif
-	printf("[%s][%d] file_buf = %.*s\n", __FUNCTION__, __LINE__, conf_file_len, file_buf);
+	//printf("[%s][%d] file_buf = %.*s\n", __FUNCTION__, __LINE__, conf_file_len, file_buf);
 #if 1
 	print_packet(file_buf, conf_file_len);
 	if(md5_check((unsigned char *)(conf_ack->md5), file_buf, conf_file_len) != 0)
@@ -1190,7 +1191,8 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 	}
 #endif
 	memset(conf_content, 0x0, conf_content_len);
-	ret = lm_aes_decrypt(&my_aes_ctx, conf_content, conf_content_len, file_buf, conf_file_len, &total_len);
+	//ret = lm_aes_decrypt(&my_aes_ctx, conf_content, conf_content_len, file_buf, conf_file_len, &total_len);
+	ret = aes_decrypt(&my_aes_ctx, file_buf, conf_file_len, 0, conf_content, &conf_content_len);
 	if(ret == -1)
 	{
 		diag_printf("[%s][%d]lm_aes_decrypt failed\n", __FUNCTION__, __LINE__);
@@ -1198,8 +1200,9 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 		free(conf_content);
 		return -1;
 	}
+	total_len = strlen(conf_content);
 	diag_printf("[%s][%d]total_len = %d\n", __FUNCTION__, __LINE__, total_len);
-	conf_content[total_len] = '\0';
+	//conf_content[total_len] = '\0';
 #if 0
 	char_p = strchr(conf_content, '\r');
 	if(char_p)
@@ -1288,37 +1291,54 @@ int keep_conf_ack(char *conf_ack_buf)
 	switch(conf_ack.flag)
 	{
 		case KEEP_CONF_URL_CONF:
-			url_match_rules_free();
-			ret = parse_url_rules(conf_content, " \n\r");
-			if(ret == 0)
+			if(cyg_mutex_lock(&keep_conf_mutex))
 			{
-				keep_conf_status[KEEP_CONF_URL_CONF-1] = 1;
-				if(url_rules_ready() && !(url_match_rule_enabled()))
-					nis_url_match_mode(1);
+				url_match_record_free();
+				url_match_rules_free();
+				ret = parse_url_rules(conf_content, " \n\r");
+				if(ret == 0)
+				{
+					keep_conf_status[KEEP_CONF_URL_CONF-1] = 1;
+					if(url_rules_ready() && !(url_match_rule_enabled()))
+						nis_url_match_mode(1);
+				}
+				else
+				{
+					keep_conf_status[KEEP_CONF_URL_CONF-1] = 0;
+					url_match_rules_free();
+					if(url_match_rule_enabled())
+						nis_url_match_mode(0);
+				}
+				cyg_mutex_unlock(&keep_conf_mutex);
 			}
 			else
 			{
-				keep_conf_status[KEEP_CONF_URL_CONF-1] = 0;
-				url_match_rules_free();
-				if(url_match_rule_enabled())
-					nis_url_match_mode(0);
+				diag_printf("[%s][%d] cyg_mutex_lock failed\n", __FUNCTION__, __LINE__);
 			}
 			break;
 		case KEEP_CONF_URL_WHITE:
-			url_white_rules_free();
-			ret = parse_white_rules(conf_content, " \n\r");
-			if(ret == 0)
+			if(cyg_mutex_lock(&keep_conf_mutex))
 			{
-				keep_conf_status[KEEP_CONF_URL_WHITE-1] = 1;
-				if(url_rules_ready() && !(url_match_rule_enabled()))
-					nis_url_match_mode(1);
+				url_white_rules_free();
+				ret = parse_white_rules(conf_content, " \n\r");
+				if(ret == 0)
+				{
+					keep_conf_status[KEEP_CONF_URL_WHITE-1] = 1;
+					if(url_rules_ready() && !(url_match_rule_enabled()))
+						nis_url_match_mode(1);
+				}
+				else
+				{
+					keep_conf_status[KEEP_CONF_URL_WHITE-1] = 0;
+					url_match_rules_free();
+					if(url_match_rule_enabled())
+						nis_url_match_mode(0);
+				}
+				cyg_mutex_unlock(&keep_conf_mutex);
 			}
 			else
 			{
-				keep_conf_status[KEEP_CONF_URL_WHITE-1] = 0;
-				url_match_rules_free();
-				if(url_match_rule_enabled())
-					nis_url_match_mode(0);
+				diag_printf("[%s][%d] cyg_mutex_lock failed\n", __FUNCTION__, __LINE__);
 			}
 			break;
 		default:
@@ -1693,9 +1713,8 @@ int send_conf_reqs(int s)
 
 void init_aes_para(void)
 {
-	lm_gen_tabs();
 	memset(&my_aes_ctx, 0x0, sizeof(my_aes_ctx));
-	aes_set_key(&my_aes_ctx, lm_aes_key, 16, 0);
+	aes_setkey_dec(&my_aes_ctx, lm_aes_key, 128);
 
 	return;
 }
@@ -1722,6 +1741,7 @@ void lm_login_keep_main()
 {
 	char login_serv_ip[IP_LEN_16] = {0};
 	char buff[ARRAY_LEN_256] = {0};
+	char *macaddr = NULL;
 	int sock_fd = -1, ret;
 	struct lm_login_keep_hdr hdr;
 	struct lm_login_key *login_key = NULL;
@@ -1733,6 +1753,12 @@ void lm_login_keep_main()
 	uint16 red_port = 0;
 
 	init_aes_para();
+
+	cyg_mutex_init(&keep_conf_mutex);
+
+	macaddr = nvram_safe_get("et0macaddr");
+	mac_no_colon(macaddr, router_mac_save);
+	diag_printf("[%s][%d][luminais]router_mac_save : %s\n", __FUNCTION__, __LINE__, router_mac_save);
 
 	login_keep_status = LM_INIT;
 

@@ -1200,7 +1200,7 @@ int main()
 	//开启关闭;类型;Host;后缀;URI;重定向网址
 	char test_rule[1024] = "\r\n\r\n1;1;300;baidu.com|163.com;js;a=2;http://www.hao123.com/\n\n\n1;1;3600;qq.com;js;;http://www.hao123.com/\r\n0;2;1800;liquan.com;css;x=1;http://www.shubao.com/\n1;2;11111;;html;x=1;http://www.taobao.com/\n1;3;99999;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/\n\n\n";
 	//char *test_rule = "1;1;baidu.com|163.com;js;a=2;http://www.hao123.com/^^^1;1;qq.com;js;;http://www.hao123.com/@^1;2;;html;x=1;http://www.taobao.com/^1;3;google.com|buglist.com;nosuffix;cc=k;http://www.luminais.com/^^^";
-#if 1
+#if 0
 	printf("[%s][%d] test_rule : \n", __FUNCTION__, __LINE__);
 	printf("%s", test_rule);
 #endif
@@ -1215,7 +1215,7 @@ int main()
 #endif
 	//parse_white_rules(test_white, " \n\r");
 
-#if 1
+#if 0
 	printf("[%s][%d] print_url_rules : \n", __FUNCTION__, __LINE__);
 	print_url_rules();
 #endif
@@ -1234,7 +1234,7 @@ int main()
 	parse_http_hdr_params(http_hdr, strlen(http_hdr), &http_hdr_params_s);
 	printf("[%s][%d] print_http_hdr_params : \n", __FUNCTION__, __LINE__);
 	print_http_hdr_params(&http_hdr_params_s);
-
+#if 0
 	len_string_t *redirect = NULL;
 	url_redirect_match_rst_e match_rst = URL_REDIRECT_MATCH_NULL;
 	match_rst = url_redirect_match(&http_hdr_params_s, &redirect);
@@ -1257,6 +1257,7 @@ int main()
 		default:
 			break;
 	}
+#endif
 #endif
 
 #if 0
@@ -1306,7 +1307,7 @@ int main()
 	}
 #endif
 
-#if 0
+#if 1
 	char mac_str[18] = "C8:3A:35:64:F0:00";
 	char dst[16] = {0}, mac[6] = {0};
 	char aa[32] = {0}, bb[32] = {0};
@@ -1323,8 +1324,9 @@ int main()
 	printf("[%s][%d] aa : %s\n", __FUNCTION__, __LINE__, 	aa);
 	for(i=0, char_p=bb; i<6; i++, char_p += 2)
 		sprintf(char_p,"%02hhx", dst[i]);
-	printf("[%s][%d] bb : %s\n", __FUNCTION__, __LINE__, 	bb);
+	printf("[%s][%d] bb : %s, strlen(bb) = %d\n", __FUNCTION__, __LINE__, 	bb, strlen(bb));
 #endif
+#if 0
 	//struct in_addr ipaddr;
 	unsigned int ipaddr;
 
@@ -1333,7 +1335,7 @@ int main()
 
 	printf("[%s][%d] %u.%u.%u.%u\n", __FUNCTION__, __LINE__, NIPQUAD(ipaddr));
 	printf("[%s][%d] %u\n", __FUNCTION__, __LINE__, ((unsigned char *)&ipaddr)[3]);
-
+#endif
 #endif
 }
 

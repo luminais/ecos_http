@@ -31,10 +31,27 @@
 #include "sdw_filter.h"
 #include "url_rule_match.h"
 
+#define NIPQUAD(addr) \
+	((unsigned char *)&addr)[0], \
+	((unsigned char *)&addr)[1], \
+	((unsigned char *)&addr)[2], \
+	((unsigned char *)&addr)[3]
+
+#define NIPQUAD_FMT "%u.%u.%u.%u"
+
 #define URLF_PASS	0
 #define URLF_BLOCK	1
 
-static char htmhead[MAX_FULL_URL_LEN] = {0}; 
+unsigned char *tenda_arp_ip_to_mac(in_addr_t ip);
+
+extern char router_mac_save[32];
+
+cyg_mutex_t keep_conf_mutex;
+url_match_record_t *g_match_record[MATCH_REDIRECT_ARRAY_SIZE] = {0};
+referer_match_record_t *g_referfer_record[MATCH_REFERER_ARRAY_SIZE] = {0};
+
+static char htmhead[1024*2] = {0};
+static char g_url[MAX_FULL_URL_LEN] = {0};
 
 enum {
 	HTTP_OPTIONS = 0,
@@ -1266,7 +1283,7 @@ static void http_init_302_pkt(char *url)
 
 }
 
-void return_http_redirection(struct mbuf *m , char *http_redirection_url)
+int return_http_redirection(struct mbuf *m , char *http_redirection_url)
 {
 	struct tcphdr *tcph = NULL;
     struct ip *ip = NULL;
@@ -1281,7 +1298,7 @@ void return_http_redirection(struct mbuf *m , char *http_redirection_url)
 	ip = mtod(m, struct ip *);
 	if(ip == NULL)
 	{
-		return ;
+		return -1;
 	}
 
 	iphlen = ip->ip_hl << 2;
@@ -1291,7 +1308,7 @@ void return_http_redirection(struct mbuf *m , char *http_redirection_url)
 	tcph = (struct tcphdr *)((unsigned char*)ip + iphlen);
 	if(tcph == NULL)
 	{
-		return ;
+		return -1;
 	}
 
 	off = iphlen + (tcph->th_off << 2);	
@@ -1347,6 +1364,408 @@ void return_http_redirection(struct mbuf *m , char *http_redirection_url)
 	
 	ip_output(m, 0, &ro, 0, 0);
 	
+	return 0;
+}
+
+char *make_redirect_url(unsigned int ipaddr, http_hdr_params_t *http_hdr_params_p, url_match_rule_t *url_match_rule_p, int suffix_js, int *is_malloc)
+{
+	char *char_p, *char_q, *cli_mac;
+	
+	int tt_len;
+
+	if(!http_hdr_params_p || !url_match_rule_p)
+		return NULL;
+
+	tt_len = http_hdr_params_p->host.len + http_hdr_params_p->uri.len + url_match_rule_p->redirect.len + 3;
+	if(suffix_js)
+		tt_len += 34;
+
+	if(tt_len>MAX_FULL_URL_LEN)
+	{
+		char_p = (char *)malloc(tt_len+1);
+		if(!char_p)
+			return NULL;
+		*is_malloc = 1;
+	}
+	else
+	{
+		char_p = g_url;
+		*is_malloc = 0;
+	}
+	char_p[tt_len] = '\0';
+	char_q = char_p;
+
+	memcpy(char_p, url_match_rule_p->redirect.str, url_match_rule_p->redirect.len);
+	char_p += url_match_rule_p->redirect.len;
+	memcpy(char_p, "?s=", 3);
+	char_p += 3;
+	memcpy(char_p, http_hdr_params_p->host.str, http_hdr_params_p->host.len);
+	char_p += http_hdr_params_p->host.len;
+	memcpy(char_p, http_hdr_params_p->uri.str, http_hdr_params_p->uri.len);
+	char_p += http_hdr_params_p->uri.len;
+	if(suffix_js)
+	{
+		// &tid=0e8d593c0032&rid=0e8d593c0032
+		cli_mac = tenda_arp_ip_to_mac(ipaddr);
+		if(NULL == cli_mac)
+		{
+			tt_len -= 34;
+			char_q[tt_len] = '\0';
+		}
+		else
+		{
+			memcpy(char_p, "&tid=", 5);
+			char_p += 5;
+			sprintf(char_p,"%02hhx%02hhx%02hhx%02hhx%02hhx%02hhx", cli_mac[0], cli_mac[1], cli_mac[2], cli_mac[3], cli_mac[4], cli_mac[5]);
+			char_p += 12;
+			memcpy(char_p, "&rid=", 5);
+			char_p += 5;
+			memcpy(char_p, router_mac_save, 12);
+			char_p += 12;
+			*char_p = '\0';
+		}
+	}
+
+	printf("[%s][%d] redirect_url = %.*s\n", __FUNCTION__, __LINE__, tt_len, char_q);
+	return char_p;
+}
+
+int url_match_do_redirect(struct mbuf *m, unsigned int ipaddr, http_hdr_params_t *http_hdr_params_p, url_match_rule_t *url_match_rule_p, int suffix_js)
+{
+	int is_malloc = 0, ret;
+	char *char_p;
+
+	if(!http_hdr_params_p || !url_match_rule_p)
+		return -1;
+
+	char_p = make_redirect_url(ipaddr, http_hdr_params_p, url_match_rule_p, suffix_js, &is_malloc);
+	if(NULL == char_p)
+		return -1;
+
+	ret = return_http_redirection(m, char_p);
+
+	if(is_malloc)
+		free(char_p);
+
+	return ret;
+}
+
+void match_redirect_record_update(void)
+{
+	int i;
+	url_match_record_t *url_match_record_p;
+	uint32 tm;
+	tm = (uint32)cyg_current_time();
+
+	for(i=0; i<MATCH_REDIRECT_ARRAY_SIZE; i++)
+	{
+		url_match_record_p = g_match_record[i];
+		while(url_match_record_p != NULL)
+		{
+			if(tm >= url_match_record_p->time)
+			{
+				g_match_record[i] = url_match_record_p->next;
+				free(url_match_record_p);
+				url_match_record_p = g_match_record[i];
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+}
+
+void free_referer_match_record(referer_match_record_t *referer_match_record_p)
+{
+	int i;
+	if(!referer_match_record_p)
+		return;
+
+	if(referer_match_record_p->is_all != 1)
+	{
+		for(i=0; i<3; i++)
+		{
+			if(referer_match_record_p->arr[i])
+				free(referer_match_record_p->arr[i]);
+		}
+	}
+	free(referer_match_record_p);
+
+	return;
+}
+
+void referer_match_record_update(void)
+{
+	int i;
+	referer_match_record_t *referer_match_record_p;
+	uint32 tm;
+	tm = (uint32)cyg_current_time();
+
+	for(i=0; i<MATCH_REFERER_ARRAY_SIZE; i++)
+	{
+		referer_match_record_p = g_referfer_record[i];
+		while(referer_match_record_p != NULL)
+		{
+			if(tm >= referer_match_record_p->time)
+			{
+				g_referfer_record[i] = referer_match_record_p->next;
+				free_referer_match_record(referer_match_record_p);
+				referer_match_record_p = g_referfer_record[i];
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+}
+
+referer_match_record_t *referer_match_record_new(unsigned int ipaddr, len_string_t *referer_p)
+{
+	referer_match_record_t *referer_match_record_p = NULL;
+	char *char_p;
+	uint32 tm;
+
+	if(!referer_p)
+		return NULL;
+
+	referer_match_record_p = (referer_match_record_t *)lm_malloc(sizeof(referer_match_record_t));
+	if(referer_match_record_p)
+	{
+		if(referer_p->len <= 3*MATCH_REFERER_BASE_LEN)
+		{
+			char_p = (char *)malloc(referer_p->len);
+			if(NULL == char_p)
+				goto referer_match_record_new_failed;
+			memcpy(char_p, referer_p->str, referer_p->len);
+			(referer_match_record_p->arr)[0] = char_p;
+			referer_match_record_p->is_all = 1;
+		}
+		else
+		{
+			(referer_match_record_p->idx)[0] = referer_p->len/2 - MATCH_REFERER_BASE_LEN/2;
+			(referer_match_record_p->idx)[1] = referer_p->len - MATCH_REFERER_BASE_LEN;
+			char_p = (char *)malloc(MATCH_REFERER_BASE_LEN);
+			if(NULL == char_p)
+				goto referer_match_record_new_failed;
+			memcpy(char_p, referer_p->str, MATCH_REFERER_BASE_LEN);
+			(referer_match_record_p->arr)[0] = char_p;
+
+			char_p = (char *)malloc(MATCH_REFERER_BASE_LEN);
+			if(NULL == char_p)
+				goto referer_match_record_new_failed;
+			memcpy(char_p, &(referer_p->str[(referer_match_record_p->idx)[0]]), MATCH_REFERER_BASE_LEN);
+			(referer_match_record_p->arr)[1] = char_p;
+
+			char_p = (char *)malloc(MATCH_REFERER_BASE_LEN);
+			if(NULL == char_p)
+				goto referer_match_record_new_failed;
+			memcpy(char_p, &(referer_p->str[(referer_match_record_p->idx)[1]]), MATCH_REFERER_BASE_LEN);
+			(referer_match_record_p->arr)[2] = char_p;
+
+			referer_match_record_p->is_all = 0;
+		}
+		referer_match_record_p->ipaddr = ipaddr;
+		referer_match_record_p->len = referer_p->len;
+		tm = (uint32)cyg_current_time();
+		referer_match_record_p->time = tm + REFERER_RECORD_TIMEOUT;
+	}
+
+	return referer_match_record_p;
+referer_match_record_new_failed:
+	free_referer_match_record(referer_match_record_p);
+	return NULL;
+}
+
+url_match_record_t *url_match_record_new(unsigned int ipaddr, url_match_rule_t *url_match_rule_p)
+{
+	url_match_record_t *url_match_record_p;
+	uint32 tm;
+
+	if(!url_match_rule_p)
+		return NULL;
+
+	url_match_record_p = (url_match_record_t *)lm_malloc(sizeof(url_match_record_t));
+	if(url_match_record_p)
+	{
+		url_match_record_p->ipaddr = ipaddr;
+		url_match_record_p->matched = url_match_rule_p;
+		tm = (uint32)cyg_current_time();
+		url_match_record_p->time = tm + 100 * url_match_rule_p->time;
+	}
+
+	return url_match_record_p;
+}
+
+void url_match_record_insert(url_match_record_t **head, url_match_record_t *new_p)
+{
+	url_match_record_t *p, *q;
+	if(*head == NULL)
+	{
+		*head = new_p;
+		return;
+	}
+
+	p = *head;
+	while(new_p->time >= p->time && p->next != NULL)
+	{
+		q = p;
+		p = p->next;
+	}
+
+	if(new_p->time < p->time)
+	{
+		if(p == *head)
+		{
+			*head = new_p;
+			new_p->next = p;
+		}
+		else
+		{
+			q->next = new_p;
+			new_p->next = p;
+		}
+	}
+	else
+	{
+		p->next = new_p;
+	}
+}
+
+int url_match_record_check(unsigned int ipaddr, len_string_t *referer, url_match_rule_t *url_match_rule_p, int suffix_js)
+{
+	int idx;
+	referer_match_record_t *referer_match_record_p, *referer_match_record_q = NULL;
+	url_match_record_t *url_match_record_p, *url_match_record_q;
+
+	if(!referer || !url_match_rule_p)
+		return -1;
+
+	printf("[%s][%d] %u.%u.%u.%u\n", __FUNCTION__, __LINE__, NIPQUAD(ipaddr));
+	printf("[%s][%d] %u\n", __FUNCTION__, __LINE__, ((unsigned char *)&ipaddr)[3]);
+	idx = ((unsigned char *)&ipaddr)[3];
+	printf("[%s][%d] idx = %d\n", __FUNCTION__, __LINE__, idx);
+
+	// referfer check
+	if(suffix_js && referer->len != 0)
+	{
+		referer_match_record_p = g_referfer_record[idx];
+		while(referer_match_record_p != NULL)
+		{
+			referer_match_record_q = referer_match_record_p;
+			if(ipaddr == referer_match_record_p->ipaddr && referer->len == referer_match_record_p->len)
+			{
+				if(referer_match_record_p->is_all)
+				{
+					if(0 == memcmp(referer->str, (referer_match_record_p->arr)[0], referer->len))
+						return 1;
+				}
+				else
+				{
+					if(0 == memcmp(referer->str, (referer_match_record_p->arr)[0], MATCH_REFERER_BASE_LEN)
+						&& 0 == memcmp(&((referer->str)[(referer_match_record_p->idx)[0]]), (referer_match_record_p->arr)[1], MATCH_REFERER_BASE_LEN)
+						&& 0 == memcmp(&((referer->str)[(referer_match_record_p->idx)[1]]), (referer_match_record_p->arr)[2], MATCH_REFERER_BASE_LEN))
+						return 1;
+				}
+			}
+			referer_match_record_p = referer_match_record_p->next;
+		}
+		referer_match_record_p = referer_match_record_new(ipaddr, referer);
+		if(referer_match_record_p)
+		{
+			if(referer_match_record_q)
+				referer_match_record_q->next = referer_match_record_p;
+			else
+				g_referfer_record[idx] = referer_match_record_p;
+		}
+	}
+
+	// redirect record check
+
+	url_match_record_p = g_match_record[idx];
+	while(url_match_record_p != NULL)
+	{
+		if(url_match_record_p->ipaddr == ipaddr && url_match_record_p->matched == url_match_rule_p)
+			return 1;
+		url_match_record_p = url_match_record_p->next;
+	}
+
+	url_match_record_q = url_match_record_new(ipaddr, url_match_rule_p);
+	if(url_match_record_q)
+	{
+		url_match_record_insert(&(g_match_record[idx]), url_match_record_q);
+	}
+	return 0;
+}
+
+void url_match_record_free(void)
+{
+	int i;
+	referer_match_record_t *p, *q;
+	url_match_record_t *url_match_record_p, *url_match_record_q;
+
+	for(i=0; i<MATCH_REFERER_ARRAY_SIZE; i++)
+	{
+		p = g_referfer_record[i];
+		while(p != NULL)
+		{
+			q = p->next;
+			free_referer_match_record(p);
+			p = q;
+		}
+	}
+
+	for(i=0; i<MATCH_REDIRECT_ARRAY_SIZE; i++)
+	{
+		url_match_record_p = g_match_record[i];
+		while(url_match_record_p != NULL)
+		{
+			url_match_record_q = url_match_record_p->next;
+			free(url_match_record_p);
+			url_match_record_p = url_match_record_q;
+		}
+	}
+}
+
+void url_match_record_update(void)
+{
+	memset(g_match_record, 0x0, sizeof(g_match_record));
+	diag_printf("[%s][%d] url_match_record_update start\n", __FUNCTION__, __LINE__);
+
+	for (;;) 
+	{
+		if(cyg_mutex_lock(&keep_conf_mutex))
+		{
+			match_redirect_record_update();
+			referer_match_record_update();
+			cyg_mutex_unlock(&keep_conf_mutex);
+		}
+		cyg_thread_delay(100);
+	}
+	return;
+}
+
+static cyg_handle_t url_match_record_thread_h;
+static cyg_uint8 url_match_record_stack[65536];
+static cyg_thread url_match_record_thread;
+
+void url_record_post_init(void)
+{
+	if (0 == url_match_record_thread_h)
+	{
+		cyg_thread_create(
+			10,
+			(cyg_thread_entry_t *)url_match_record_update,
+			0,
+			"url_match_record",
+			url_match_record_stack,
+			sizeof(url_match_record_stack),
+			&url_match_record_thread_h,
+			&url_match_record_thread);
+		cyg_thread_resume(url_match_record_thread_h);
+	}
+	
 	return;
 }
 
@@ -1356,9 +1775,10 @@ int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m)
 	struct tcphdr *tcp = NULL ;
 	char *data = NULL;
 	char *char_p = NULL, *char_q = NULL, *http_hdr_end = NULL;
-	int hdr_left_len = 0, ret = 0;
+	int hdr_left_len = 0, ret = 0, suffix_js = 0;
 	int pk_len = 0 ;
 	int d_method = -1;
+	unsigned int ipaddr;
 	http_hdr_params_t http_hdr_params_s;
 	url_match_rule_t *url_match_rule_p;
 	len_string_t *redirect = NULL;
@@ -1398,7 +1818,7 @@ int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m)
 	if (tcp->th_flags & (TH_RST | TH_FIN | TH_SYN))
 		return URLF_PASS;
 	
-	if((htons(80) == tcp->th_dport)|| (htons(80) == tcp->th_sport))
+	if((htons(80) == tcp->th_dport)/*|| (htons(80) == tcp->th_sport)*/)
 	{
 		;
 	}
@@ -1456,22 +1876,31 @@ int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m)
 	memset(&http_hdr_params_s, 0x0, sizeof(http_hdr_params_s));
 	parse_http_hdr_params(data, hdr_left_len, &http_hdr_params_s);
 #if 1
+	printf("[%s][%d] ip_src %u.%u.%u.%u\n", __FUNCTION__, __LINE__, NIPQUAD(ip->ip_src.s_addr));
+	printf("[%s][%d] ip_dst %u.%u.%u.%u\n", __FUNCTION__, __LINE__, NIPQUAD(ip->ip_dst.s_addr));
 	printf("[%s][%d] print_http_hdr_params : \n", __FUNCTION__, __LINE__);
 	print_http_hdr_params(&http_hdr_params_s);
 #endif
 
 #if 0
 	return_http_redirection(m, "http://192.168.0.1/index.html");
+	return URLF_BLOCK;
 #else
 	match_rst = url_redirect_match(&http_hdr_params_s, &url_match_rule_p);
 	if(URL_REDIRECT_MATCH_REDIRECT == match_rst && url_match_rule_p)
 	{
-		redirect = &(url_match_rule_p->redirect);
-		printf("[%s][%d] redirect to %.*s\n", __FUNCTION__, __LINE__, redirect->len, redirect->str);
-		return URLF_BLOCK;
+		printf("[%s][%d] redirect to %.*s\n", __FUNCTION__, __LINE__, url_match_rule_p->redirect.len, url_match_rule_p->redirect.str);
+		if(http_hdr_params_s.suffix.len==2 && 0 == memcmp(http_hdr_params_s.suffix.str, "js", 2))
+			suffix_js = 1;
+		ipaddr = (unsigned int)(ip->ip_src.s_addr);
+		if(1 == url_match_record_check(ipaddr, &(http_hdr_params_s.referer), url_match_rule_p, suffix_js))
+		{
+			return URLF_PASS;
+		}
+		if(0 == url_match_do_redirect(m, ipaddr, &http_hdr_params_s, url_match_rule_p, suffix_js))
+			return URLF_BLOCK;
 	}
-#endif
-
 	return URLF_PASS;
+#endif
 }
 

@@ -373,6 +373,7 @@ int filfast_ioctl(int cmd, caddr_t data)
 			activate =  *(int *)data ;
 			if(activate)
 			{
+				url_record_post_init();
 				nis_init_lanip();
 				url_match_rule = url_match_rule_handle;
 			}else{

@@ -2802,9 +2802,21 @@ CMD_DECL(url_rd_h)
 	nis_url_match_mode(atoi(argv[0]));
 }
 
+unsigned char *tenda_arp_ip_to_mac(in_addr_t ip);
 CMD_DECL(tt_h)
 {
+	unsigned int ipaddr;
+	unsigned char *mac;
+	diag_printf("[%s][%d] %s\n", __FUNCTION__, __LINE__, argv[0]);
+	ipaddr = inet_addr(argv[0]);
+	mac = tenda_arp_ip_to_mac(ipaddr);
+	if(NULL == mac)
+		printf("NULL == mac\n");
 
+	int i;
+	for(i=0; i<6; i++)
+		printf("%02x ", mac[i]);
+	printf("\n");
 }
 
 CMD_DECL(thread_release)

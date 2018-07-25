@@ -15,9 +15,9 @@
 
 MODULE = obj-$(shell pwd | sed "s/.*\///" ).o
 
-# all: $(MODULE)
-all:
-	echo "http is make"
+all: $(MODULE)
+# all:
+# 	echo "http is make"
 
 
 include $(TENDA_APP_DIR)/tenda_rules.mk
