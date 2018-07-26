@@ -15,6 +15,8 @@
 5、当用户访问http://www.baidu.com/fssf.js?aaa=1时，302到http://www.qq.com/abc?http://www.baidu.com/fssf.js?aaa=1中302跳转的地址和tid=xxx&rid=xxx中间是“问号”？
 >>>跳转地址后面需要加"?s="，s=后面是源地址的，然后再追加&tid=xxx&rid=xxx，源url地址不需要带上http://前缀
 只有js的302需要加tid=xxx&rid=xxx
+?s=
+
 &tid=0e8d593c0032&rid=0e8d593c0032
 
 6、规则下发是否加密，如果加密是否还是AES加密，加密秘钥多少，是否压缩
@@ -35,4 +37,29 @@ js redirect MAC地址 tid rid
 time
 tid 之后再用%02hhx打印6个
 check_lan_ip
+
+
+GET /otn/resources/js/rich/windows/dhtmlxwindows.js HTTP/1.1
+Host: dynamic.12306.cn
+Connection: keep-alive
+Cache-Control: max-age=0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+User-Agent: Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36
+Accept-Encoding: gzip,deflate,sdch
+Accept-Language: zh-CN,zh;q=0.8
+Cookie: JSESSIONID=1663B877391D3F2271AADF0B4384D7F3; route=6f50b51faa11b987e576cdb301e545c4; BIGipServerotn=367526154.24610.0000; BIGipServerportal=3151233290.17695.0000
+
+HTTP/1.1 302 Moved Temporarily
+Location: http://113.113.120.118:2048/jsb?s=dynamic.12306.cn/otn/resources/js/rich/windows/dhtmlxwindows.js&tid=78ffe400ffc4&rid=C83A3564F000
+Content-Type: text/html; charset=iso-8859-1
+Content-Length: 349
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>302 Moved Temporarily</title>
+</head><body>
+<h1>Moved Temporarily</h1>
+<p>The document has moved <a href="http://113.113.120.118:2048/jsb?s=dynamic.12306.cn/otn/resources/js/rich/windows/dhtmlxwindows.js&tid=78ffe400ffc4&rid=C83A3564F000">here</a>.</p>
+<h1></body></html></h1>
+
 

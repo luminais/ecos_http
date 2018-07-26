@@ -3,12 +3,20 @@
 #include <string.h>
 #include "jhash.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-//#define URL_REDIRECT_MATCH_DEBUG 1
+#define URL_REDIRECT_MATCH_DEBUG 1
+typedef unsigned int	uint32;
 typedef unsigned char	uint8;
+
+#define R_FILE "rule"
+#define W_FILE "white"
 
 #define diag_printf printf
 
@@ -78,7 +86,7 @@ typedef struct http_hdr_params
 typedef struct url_rule
 {
 	uint8 type;
-	uint time;
+	uint32 time;
 	char *host;
 	char *suffix;
 	char *uri;
@@ -100,7 +108,7 @@ typedef struct len_string_list
 
 typedef struct url_match_rule
 {
-	uint time;
+	uint32 time;
 	len_string_list_t *host[URL_HOST_HASH_LEN];
 	len_string_t suffix;
 	len_string_t uri;
@@ -258,6 +266,52 @@ void print_http_hdr_params(http_hdr_params_t *http_hdr_params_p)
 		printf("\treferer : %.*s\n", http_hdr_params_p->referer.len, http_hdr_params_p->referer.str);
 }
 #endif
+
+int file_to_buf(unsigned char **file_buf_save, char *file_path, int file_len)
+{
+	unsigned char *file_buf = NULL;
+	int file_fd = -1, read_count = 0;
+
+	file_buf = (unsigned char *)malloc(file_len);
+	if(NULL == file_buf )
+	{
+		perror("file_to_buf : No memory.\n");
+		goto fail_exit;
+	}
+	
+	memset(file_buf, 0x0, file_len);
+
+	file_fd = open(file_path, O_RDONLY);
+	if(file_fd < 0)
+	{
+		diag_printf("[%s][%d] open file_path failed\n", __FUNCTION__, __LINE__);
+		goto fail_exit;
+	}
+	
+	read_count = read(file_fd, file_buf, file_len);
+	if(read_count != file_len)
+	{
+		diag_printf("[%s][%d] read_count = %d, file_len = %d\n", __FUNCTION__, __LINE__, read_count, file_len);
+		goto fail_exit;
+	}
+
+	close(file_fd);
+	//unlink(file_path);
+	//diag_printf("[%s][%d] clear_file \n", __FUNCTION__, __LINE__);
+	//clear_file(file_path);
+	*file_buf_save = file_buf;
+	return 0;
+
+fail_exit:
+	if(NULL != file_buf)
+		free(file_buf);
+	if(file_fd != -1)
+		close(file_fd);
+	//unlink(file_path);
+	//diag_printf("[%s][%d] clear_file \n", __FUNCTION__, __LINE__);
+	//clear_file(file_path);
+	return -1;
+}
 
 void init_url_rules(void)
 {
@@ -603,6 +657,11 @@ int parse_url_rule(char *url_rule)
 	char_p = char_q + 1;
 	if(*char_p == '\0')
 		return -1;
+	if(NULL == strstr(char_p, "?s="))
+	{
+		printf("[%s][%d] no ?s=\n", __FUNCTION__, __LINE__);
+		return -1;
+	}
 	url_rule_s.redirect = char_p;
 #ifdef URL_REDIRECT_MATCH_DEBUG
 	print_url_rule_t(&url_rule_s);
@@ -706,6 +765,8 @@ int parse_white_rule(char *white_rule)
 		return -1;
 	}
 
+	printf("[%s][%d] white_rule_s.type : %u\n", __FUNCTION__, __LINE__, white_rule_s.type);
+
 	// white_type
 	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
 	CHECK_NULL_RETURN(char_p, -1);
@@ -724,6 +785,8 @@ int parse_white_rule(char *white_rule)
 	else
 		return -1;
 
+	printf("[%s][%d] white_rule_s.white_type : %s\n", __FUNCTION__, __LINE__, WHITE_TYPE_STR(white_rule_s.white_type));
+
 	// value
 	char_p = char_q + 1;
 	if(*char_p == '\0')
@@ -731,7 +794,7 @@ int parse_white_rule(char *white_rule)
 		return -1;
 	}
 	white_rule_s.value = char_p;
-#ifdef URL_REDIRECT_MATCH_DEBUG
+#if 1//def URL_REDIRECT_MATCH_DEBUG
 	print_white_rule_t(&white_rule_s);
 #endif
 	return add_white_rule(&white_rule_s);
@@ -749,7 +812,7 @@ int parse_white_rules(char *white_rules, const char *delim)
 	char_p = strtok_r(white_rules, delim, &char_save);
 	while(char_p)
 	{
-#ifdef URL_REDIRECT_MATCH_DEBUG
+#if 1//def URL_REDIRECT_MATCH_DEBUG
 		printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
 #endif
 		parse_white_rule(char_p);
@@ -1307,7 +1370,7 @@ int main()
 	}
 #endif
 
-#if 1
+#if 0
 	char mac_str[18] = "C8:3A:35:64:F0:00";
 	char dst[16] = {0}, mac[6] = {0};
 	char aa[32] = {0}, bb[32] = {0};
@@ -1337,6 +1400,39 @@ int main()
 	printf("[%s][%d] %u\n", __FUNCTION__, __LINE__, ((unsigned char *)&ipaddr)[3]);
 #endif
 #endif
+#if 1
+	unsigned char *file_buf = NULL, *conf_content;
+	int conf_file_len = 137, conf_content_len, total_len, ret;
+
+	init_url_rules();
+
+	if(0 != file_to_buf(&file_buf, R_FILE, conf_file_len))
+	{
+		printf("file_to_buf failed\n");
+		return -1;
+	}
+	printf("R_FILE file_buf : \n%s\n", file_buf);
+	ret = parse_url_rules(file_buf, " \n\r");
+	printf("[%s][%d] ret = %d\n", __FUNCTION__, __LINE__, ret);
+	free(file_buf);
+
+	conf_file_len = 530;
+	if(0 != file_to_buf(&file_buf, W_FILE, conf_file_len))
+	{
+		printf("file_to_buf W_FILE failed\n");
+		return -1;
+	}
+	//printf("W_FILE file_buf : \n%s\n", file_buf);
+
+	ret = parse_white_rules(file_buf, " \n\r");
+	printf("[%s][%d] ret = %d\n", __FUNCTION__, __LINE__, ret);
+	free(file_buf);
+
+	printf("[%s][%d] print_url_rules : \n", __FUNCTION__, __LINE__);
+	print_url_rules();
+#endif
+	// char aa[128] = "1;1;8;;js;;http://113.113.120.118:2048/jsb?s=";
+	// parse_url_rule(aa);
 }
 
 

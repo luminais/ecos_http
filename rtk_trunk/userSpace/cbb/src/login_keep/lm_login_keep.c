@@ -1037,7 +1037,7 @@ int md5_check(unsigned char *md5, unsigned char *buf, int length)
 	strcpy(hash_str, MD5_CHECK_PREFIX);
 	sprintf(hash_str+len, "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", hash[0], hash[1], hash[2], hash[3], hash[4], hash[5], hash[6], hash[7], hash[8], hash[9], hash[10], hash[11], hash[12], hash[13], hash[14], hash[15]);
 	hash_str[len+32] = '\0';
-	diag_printf("[%s][%d] hash_str = %s\n", __FUNCTION__, __LINE__, hash_str);
+	//diag_printf("[%s][%d] hash_str = %s\n", __FUNCTION__, __LINE__, hash_str);
 
 	memset(&md5ctx, 0x0, sizeof(MD5_CONTEXT));
 	lmMD5Init(&md5ctx);
@@ -1046,7 +1046,7 @@ int md5_check(unsigned char *md5, unsigned char *buf, int length)
 
 	sprintf(hash_str, "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", hash[0], hash[1], hash[2], hash[3], hash[4], hash[5], hash[6], hash[7], hash[8], hash[9], hash[10], hash[11], hash[12], hash[13], hash[14], hash[15]);
 	hash_str[32] = '\0';
-	diag_printf("[%s][%d] hash_str = %s\n", __FUNCTION__, __LINE__, hash_str);
+	//diag_printf("[%s][%d] hash_str = %s\n", __FUNCTION__, __LINE__, hash_str);
 
 	for(i=0; i<32; i++)
 	{
@@ -1166,7 +1166,7 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 #endif
 	//printf("[%s][%d] file_buf = %.*s\n", __FUNCTION__, __LINE__, conf_file_len, file_buf);
 #if 1
-	print_packet(file_buf, conf_file_len);
+	//print_packet(file_buf, conf_file_len);
 	if(md5_check((unsigned char *)(conf_ack->md5), file_buf, conf_file_len) != 0)
 	{
 		diag_printf("[%s]md5_check failed\n", __FUNCTION__);
@@ -1175,7 +1175,7 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 	}
 #endif
 
-	conf_content_len = (conf_file_len/16+1)*16;
+	conf_content_len = (conf_file_len/16+1)*16+1;
 	conf_content = (unsigned char *)malloc(conf_content_len);
 	if(NULL == conf_content )
 	{
@@ -1211,7 +1211,7 @@ int keep_get_conf(struct lm_conf_ack *conf_ack, unsigned char **conf_content_sav
 	if(char_p)
 		*char_p = '\0';
 #endif
-	printf("[%s][%d] conf_content = %.*s\n", __FUNCTION__, __LINE__, total_len, conf_content);
+	//printf("[%s][%d] conf_content = \n%.*s\n", __FUNCTION__, __LINE__, total_len, conf_content);
 	*conf_content_save = conf_content;
 	free(file_buf);
 
@@ -1286,8 +1286,22 @@ int keep_conf_ack(char *conf_ack_buf)
 
 	free(conf_ack.url);
 	free(conf_ack.md5);
-	diag_printf("[%s][%d] <%d> conf_content = %s\n", __FUNCTION__, __LINE__, conf_ack.flag, conf_content);
-
+	diag_printf("[%s][%d] <%u> conf_content = %s\n", __FUNCTION__, __LINE__, conf_ack.flag, conf_content);
+#if 0
+	if(conf_ack.flag == KEEP_CONF_URL_CONF)
+	{
+		diag_printf("[%s][%d] KEEP_CONF_URL_CONF\n", __FUNCTION__, __LINE__);
+		parse_url_rules(conf_content, " \n\r");
+	}
+	else if(conf_ack.flag == KEEP_CONF_URL_WHITE)
+	{
+		diag_printf("[%s][%d] KEEP_CONF_URL_WHITE\n", __FUNCTION__, __LINE__);
+		parse_white_rules(conf_content, " \n\r");
+	}
+	diag_printf("[%s][%d] print_url_rules : \n", __FUNCTION__, __LINE__);
+	print_url_rules();
+#endif
+#if 1
 	switch(conf_ack.flag)
 	{
 		case KEEP_CONF_URL_CONF:
@@ -1342,9 +1356,10 @@ int keep_conf_ack(char *conf_ack_buf)
 			}
 			break;
 		default:
+			diag_printf("[%s][%d] unknow conf_ack.flag : %u\n", __FUNCTION__, __LINE__, conf_ack.flag);
 			break;
 	}
-
+#endif
 	free(conf_content);
 	return 0;
 }
@@ -1752,6 +1767,7 @@ void lm_login_keep_main()
 	uint32 red_ip = 0;
 	uint16 red_port = 0;
 
+	init_url_rules();
 	init_aes_para();
 
 	cyg_mutex_init(&keep_conf_mutex);
@@ -1764,6 +1780,7 @@ void lm_login_keep_main()
 
 	while(1)
 	{
+		//diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 		switch(login_keep_status)
 		{
 			case LM_INIT:
@@ -2111,9 +2128,11 @@ void lm_login_keep_main()
 								}
 								break;
 							case LM_CMD_KEEP_CONF_ACK:
+							#if 0
 								diag_printf("[%s][%d] LM_CMD_KEEP_CONF_ACK\n", __FUNCTION__, __LINE__);
 								diag_printf("[%s][%d] keep_conf hdr.length = %d\n", __FUNCTION__, __LINE__, hdr.length);
 								print_packet(buff, hdr.length-sizeof(struct lm_login_keep_hdr));
+							#endif
 								ret = keep_conf_ack(buff);
 							#if 0 //luminais mark
 								ret = send_conf_reqs(sock_fd);

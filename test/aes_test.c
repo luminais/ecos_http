@@ -10,8 +10,8 @@
 
 #define diag_printf printf
 
-#define R_FILE "r_20180712152800"
-#define W_FILE "w_20180712152800"
+#define R_FILE "r_20180726161519"
+#define W_FILE "w_20180726161519"
 
 unsigned char lm_aes_key[16]={0xcf, 0xdc, 0x96, 0x86, 0x35, 0x32, 0x91, 0x3c, 0x92, 0x85};
 aes_context my_aes_ctx;
@@ -78,12 +78,12 @@ fail_exit:
 int main()
 {
 	unsigned char *file_buf = NULL, *conf_content;
-	int conf_file_len = 272, conf_content_len, total_len, ret;
+	int conf_file_len = 528, conf_content_len, total_len, ret;
 
 	memset(&my_aes_ctx, 0x0, sizeof(my_aes_ctx));
 	aes_setkey_dec(&my_aes_ctx, lm_aes_key, 128);
 
-	if(0 != file_to_buf(&file_buf, R_FILE, conf_file_len))
+	if(0 != file_to_buf(&file_buf, W_FILE, conf_file_len))
 	{
 		printf("file_to_buf failed\n");
 		return -1;

@@ -1,6 +1,7 @@
 #ifndef __URL_RULE_MATCH_H__
 #define __URL_RULE_MATCH_H__
 
+#define diag_printf printf
 //#define URL_REDIRECT_MATCH_DEBUG 1
 typedef unsigned char	uint8;
 typedef unsigned int	uint32;
@@ -33,7 +34,7 @@ typedef unsigned int	uint32;
 	{ \
 		if(!p) \
 		{ \
-			diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__); \
+			printf("[%s][%d]\n", __FUNCTION__, __LINE__); \
 			return (ret); \
 		} \
 	}while(0)
@@ -47,7 +48,7 @@ typedef enum white_rule_type
 
 typedef enum url_redirect_match_rst
 {
-	URL_REDIRECT_MATCH_WHITE = 0,
+	URL_REDIRECT_MATCH_WHITE,
 	URL_REDIRECT_MATCH_REDIRECT,
 	URL_REDIRECT_MATCH_NULL,
 	URL_REDIRECT_MATCH_MAX
@@ -117,8 +118,8 @@ int parse_url_rules(char *url_rules, const char *delim);
 int parse_white_rules(char *white_rules, const char *delim);
 int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *http_hdr_params_p);
 url_redirect_match_rst_e url_redirect_match(http_hdr_params_t *http_hdr_params_p, url_match_rule_t **url_match_rule_p);
-int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m);
-int nis_init_lanip(void);
+// int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m);
+// int nis_init_lanip(void);
 
 #ifdef URL_REDIRECT_MATCH_DEBUG
 void print_url_rules(void);
