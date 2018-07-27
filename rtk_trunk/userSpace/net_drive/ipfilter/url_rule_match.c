@@ -1533,14 +1533,12 @@ void free_referer_match_record(referer_match_record_t *referer_match_record_p)
 	if(!referer_match_record_p)
 		return;
 
-	if(referer_match_record_p->is_all != 1)
+	for(i=0; i<3; i++)
 	{
-		for(i=0; i<3; i++)
-		{
-			if(referer_match_record_p->arr[i])
-				free(referer_match_record_p->arr[i]);
-		}
+		if(referer_match_record_p->arr[i])
+			free(referer_match_record_p->arr[i]);
 	}
+
 	free(referer_match_record_p);
 
 	return;
