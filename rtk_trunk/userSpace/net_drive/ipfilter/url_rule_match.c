@@ -1003,6 +1003,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 
 	// host
 	len_string_p = &(http_hdr_params_p->host);
+	LEN_STRING_INIT(len_string_p);
 	len_string_p->str = http_hdr_find_field(http_hdr, http_hdr_len, HOST_STR, HOST_LEN);
 	CHECK_NULL_RETURN(len_string_p->str, -1);
 	len_string_p->str += HOST_LEN;
@@ -1012,6 +1013,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 
 	// uri
 	len_string_p = &(http_hdr_params_p->uri);
+	LEN_STRING_INIT(len_string_p);
 	len_string_p->str = http_hdr + 4; // "GET "
 	char_p = strchr(len_string_p->str, '\r');
 	CHECK_NULL_RETURN(char_p, -1);
@@ -1022,6 +1024,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 
 	// query
 	char_q = strchr_len(len_string_p->str, len_string_p->len, '?');
+	LEN_STRING_INIT(&(http_hdr_params_p->query));
 	if(char_q)
 	{
 		query_off = (int)(char_p - char_q);
@@ -1031,6 +1034,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 	}
 
 	// suffix
+	LEN_STRING_INIT(&(http_hdr_params_p->suffix));
 	len_string_p = &(http_hdr_params_p->uri);
 	char_q = strchr_len(len_string_p->str, len_string_p->len - query_off, '.');
 	if(char_q)
@@ -1043,6 +1047,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 
 	// referer
 	len_string_p = &(http_hdr_params_p->referer);
+	LEN_STRING_INIT(len_string_p);
 	len_string_p->str = http_hdr_find_field(http_hdr, http_hdr_len, REFERER_STR, REFERER_LEN);
 	if(len_string_p->str)
 	{
@@ -1655,6 +1660,10 @@ url_match_record_t *url_match_record_new(unsigned int ipaddr, url_match_rule_t *
 void url_match_record_insert(url_match_record_t **head, url_match_record_t *new_p)
 {
 	url_match_record_t *p, *q;
+
+	if(!new_p)
+		return;
+
 	if(*head == NULL)
 	{
 		*head = new_p;

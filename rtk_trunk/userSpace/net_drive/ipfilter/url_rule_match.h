@@ -38,6 +38,16 @@ typedef unsigned int	uint32;
 		} \
 	}while(0)
 
+#define LEN_STRING_INIT(ls) \
+	do \
+	{ \
+		if(ls) \
+		{ \
+			(ls)->str = NULL; \
+			(ls)->len = 0; \
+		} \
+	}while(0)
+
 typedef enum white_rule_type
 {
 	WHITE_RULE_TYPE_HOST,
