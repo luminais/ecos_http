@@ -1273,7 +1273,7 @@ int keep_conf_ack(char *conf_ack_buf)
 		return -1;
 	}
 
-	print_conf_ack(&conf_ack);
+	//print_conf_ack(&conf_ack);
 
 	ret = keep_get_conf(&conf_ack, &conf_content);
 	if(ret != 0)
@@ -1286,7 +1286,7 @@ int keep_conf_ack(char *conf_ack_buf)
 
 	free(conf_ack.url);
 	free(conf_ack.md5);
-	diag_printf("[%s][%d] <%u> conf_content = %s\n", __FUNCTION__, __LINE__, conf_ack.flag, conf_content);
+	//diag_printf("[%s][%d] <%u> conf_content = %s\n", __FUNCTION__, __LINE__, conf_ack.flag, conf_content);
 #if 0
 	if(conf_ack.flag == KEEP_CONF_URL_CONF)
 	{
@@ -1713,7 +1713,7 @@ int send_conf_reqs(int s)
 		{
 			diag_printf("[%s][%d] <%d> send_conf_req failed\n", __FUNCTION__, __LINE__, keep_conf_index+1);
 		}
-#if 1
+#if 0
 		else
 		{
 			diag_printf("[%s][%d] <%d> send_conf_req success\n", __FUNCTION__, __LINE__, keep_conf_index+1);
@@ -1774,7 +1774,7 @@ void lm_login_keep_main()
 
 	macaddr = nvram_safe_get("et0macaddr");
 	mac_no_colon(macaddr, router_mac_save);
-	diag_printf("[%s][%d][luminais]router_mac_save : %s\n", __FUNCTION__, __LINE__, router_mac_save);
+	//diag_printf("[%s][%d][luminais]router_mac_save : %s\n", __FUNCTION__, __LINE__, router_mac_save);
 
 	login_keep_status = LM_INIT;
 
@@ -2039,7 +2039,7 @@ void lm_login_keep_main()
 						switch(hdr.cmd)
 						{
 							case LM_CMD_KEEP_ACK:
-								diag_printf("[%s][%d] keep_ack hdr.length = %d\n", __FUNCTION__, __LINE__, hdr.length);
+								//diag_printf("[%s][%d] keep_ack hdr.length = %d\n", __FUNCTION__, __LINE__, hdr.length);
 								keep_ack = (struct lm_keep_ack *)buff;
 								ret = keep_ack_do(sock_fd, keep_ack);
 								if(0 == ret)
@@ -2134,19 +2134,15 @@ void lm_login_keep_main()
 								print_packet(buff, hdr.length-sizeof(struct lm_login_keep_hdr));
 							#endif
 								ret = keep_conf_ack(buff);
-							#if 0 //luminais mark
 								ret = send_conf_reqs(sock_fd);
-							#endif
 								if(ret == -1)
 									goto re_connect_login;
 								break;
 							default:
-							#if 0 //luminais mark
 								diag_printf("[%s][%d] <%d> conf_reqs\n", __FUNCTION__, __LINE__, hdr.cmd);
 								ret = send_conf_reqs(sock_fd);
 								if(ret == -1)
 									goto re_connect_login;
-							#endif
 								break;
 						}
 					}
@@ -2162,12 +2158,10 @@ void lm_login_keep_main()
 				}
 				else
 				{
-				#if 0 // luminais mark
-					diag_printf("[%s][%d] send_conf_reqs\n", __FUNCTION__, __LINE__);
+					//diag_printf("[%s][%d] send_conf_reqs\n", __FUNCTION__, __LINE__);
 					ret = send_conf_reqs(sock_fd);
 					if(ret == -1)
 						goto re_connect_login;
-				#endif
 				}
 				//diag_printf("[%s][%d] router_online_check\n", __FUNCTION__, __LINE__);
 				ret = router_online_check(sock_fd);

@@ -527,7 +527,7 @@ int add_len_string_hash(len_string_list_t *list_hash[], u32 hash_len, char *valu
 	char_p = strtok_r(value, SAME_RULE_DELIM_STR, &char_save);
 	while(char_p)
 	{
-#if 1//def URL_REDIRECT_MATCH_DEBUG
+#ifdef URL_REDIRECT_MATCH_DEBUG
 		diag_printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
 #endif
 		hash_index = jhash(char_p, strlen(char_p), 0)%hash_len;
@@ -709,7 +709,7 @@ int parse_url_rule(char *url_rule)
 	if(NULL == strstr(char_p, "?s="))
 		return -1;
 	url_rule_s.redirect = char_p;
-#if 1//def URL_REDIRECT_MATCH_DEBUG
+#ifdef URL_REDIRECT_MATCH_DEBUG
 	print_url_rule_t(&url_rule_s);
 #endif
 	return add_url_rule(&url_rule_s);
@@ -727,7 +727,7 @@ int parse_url_rules(char *url_rules, const char *delim)
 	char_p = strtok_r(url_rules, delim, &char_save);
 	while(char_p)
 	{
-#if 1//def URL_REDIRECT_MATCH_DEBUG
+#ifdef URL_REDIRECT_MATCH_DEBUG
 		diag_printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
 #endif
 		if(*char_p == '1')
@@ -1298,7 +1298,7 @@ static void http_init_302_pkt(char *url)
 	int n = 0,len=0;
 	char *p = htmbody;
 
-	diag_printf("http_redirection_url [%s]\n",url);
+	//diag_printf("http_redirection_url [%s]\n",url);
 	
 	//build html body
 	n = sprintf(p, "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n");
@@ -1327,8 +1327,10 @@ static void http_init_302_pkt(char *url)
 	n = sprintf(p,"Location: %s\r\n", url);
 	p = p+n;
 
+#if 0
 	n= sprintf(p, "Content-Type: text/html; charset=iso-8859-1\r\n");
 	p = p+n;
+#endif
 	n= sprintf(p,"Content-Length: %d\r\n", len);
 	p = p+n;
 	n= sprintf(p, "\r\n");
@@ -1368,7 +1370,7 @@ int return_http_redirection(struct mbuf *m , char *http_redirection_url)
 
 	off = iphlen + (tcph->th_off << 2);	
 	olen = ntohs(ip->ip_len) -off;
-	diag_printf("===========> \n\n %s \n\n" , htmhead);
+	//diag_printf("===========> \n\n %s \n\n" , htmhead);
 	nlen = strlen(htmhead);
 	inc = nlen - olen;
 	
@@ -1397,6 +1399,7 @@ int return_http_redirection(struct mbuf *m , char *http_redirection_url)
 	dest_port = tcph->th_sport;
 	tcph->th_sport = tcph->th_dport;
 	tcph->th_dport = dest_port;
+	tcph->th_flags |= (TH_FIN | TH_PUSH);
 
 	src_addr = tcph->th_seq;
 	dest_addr = tcph->th_ack;
@@ -1435,7 +1438,7 @@ char *make_redirect_url(unsigned int ipaddr, http_hdr_params_t *http_hdr_params_
 	if(suffix_js)
 		tt_len += 34;
 
-	diag_printf("[%s][%d] tt_len = %d\n", __FUNCTION__, __LINE__, tt_len);
+	//diag_printf("[%s][%d] tt_len = %d\n", __FUNCTION__, __LINE__, tt_len);
 
 	if(tt_len>MAX_FULL_URL_LEN)
 	{
@@ -1482,7 +1485,7 @@ char *make_redirect_url(unsigned int ipaddr, http_hdr_params_t *http_hdr_params_
 	}
 
 	//printf("[%s][%d] redirect_url = %.*s\n", __FUNCTION__, __LINE__, tt_len, char_q);
-	diag_printf("rd_url = [%s]\n", char_q);
+	//diag_printf("rd_url = [%s]\n", char_q);
 	return char_q;
 }
 
@@ -1497,9 +1500,9 @@ int url_match_do_redirect(struct mbuf *m, unsigned int ipaddr, http_hdr_params_t
 	char_p = make_redirect_url(ipaddr, http_hdr_params_p, url_match_rule_p, suffix_js, &is_malloc);
 	if(NULL == char_p)
 		return -1;
-	diag_printf("[%s][%d] is_malloc = %d\n", __FUNCTION__, __LINE__, is_malloc);
+	//diag_printf("[%s][%d] is_malloc = %d\n", __FUNCTION__, __LINE__, is_malloc);
 	ret = return_http_redirection(m, char_p);
-	diag_printf("[%s][%d] ret = %d\n", __FUNCTION__, __LINE__, ret);
+	//diag_printf("[%s][%d] ret = %d\n", __FUNCTION__, __LINE__, ret);
 	if(is_malloc)
 		free(char_p);
 
@@ -1721,7 +1724,7 @@ int url_match_record_check(unsigned int ipaddr, len_string_t *referer, url_match
 				{
 					if(0 == memcmp(referer->str, (referer_match_record_p->arr)[0], referer->len))
 					{
-						diag_printf("[%s][%d] record match\n", __FUNCTION__, __LINE__);
+						//diag_printf("[%s][%d] record match\n", __FUNCTION__, __LINE__);
 						return 1;
 					}
 				}
@@ -1731,13 +1734,14 @@ int url_match_record_check(unsigned int ipaddr, len_string_t *referer, url_match
 						&& 0 == memcmp(&((referer->str)[(referer_match_record_p->idx)[0]]), (referer_match_record_p->arr)[1], MATCH_REFERER_BASE_LEN)
 						&& 0 == memcmp(&((referer->str)[(referer_match_record_p->idx)[1]]), (referer_match_record_p->arr)[2], MATCH_REFERER_BASE_LEN))
 					{
-						diag_printf("[%s][%d] record match\n", __FUNCTION__, __LINE__);
+						//diag_printf("[%s][%d] record match\n", __FUNCTION__, __LINE__);
 						return 1;
 					}
 				}
 			}
 			referer_match_record_p = referer_match_record_p->next;
 		}
+		//diag_printf("referer_match_record_new\n");
 		referer_match_record_p = referer_match_record_new(ipaddr, referer);
 		if(referer_match_record_p)
 		{
@@ -1755,12 +1759,12 @@ int url_match_record_check(unsigned int ipaddr, len_string_t *referer, url_match
 	{
 		if(url_match_record_p->ipaddr == ipaddr && url_match_record_p->matched == url_match_rule_p)
 		{
-			diag_printf("[%s][%d] record match\n", __FUNCTION__, __LINE__);
+			//diag_printf("[%s][%d] record match\n", __FUNCTION__, __LINE__);
 			return 1;
 		}
 		url_match_record_p = url_match_record_p->next;
 	}
-
+	//diag_printf("url_match_record_new\n");
 	url_match_record_q = url_match_record_new(ipaddr, url_match_rule_p);
 	if(url_match_record_q)
 	{
@@ -1976,34 +1980,42 @@ int url_match_rule_handle(struct ifnet *ifp, char *head, struct mbuf *m)
 	if(cyg_mutex_lock(&keep_conf_mutex))
 	{
 		match_rst = url_redirect_match(&http_hdr_params_s, &url_match_rule_p);
-		diag_printf("[%s][%d] match_rst : %d, url_match_rule_p : %p\n", __FUNCTION__, __LINE__, match_rst, url_match_rule_p);
+		//diag_printf("[%s][%d] match_rst : %d, url_match_rule_p : %p\n", __FUNCTION__, __LINE__, match_rst, url_match_rule_p);
 		if(URL_REDIRECT_MATCH_REDIRECT == match_rst && url_match_rule_p)
 		{
 			//printf("[%s][%d] redirect to %.*s\n", __FUNCTION__, __LINE__, url_match_rule_p->redirect.len, url_match_rule_p->redirect.str);
 			if(http_hdr_params_s.suffix.len==2 && 0 == memcmp(http_hdr_params_s.suffix.str, "js", 2))
 				suffix_js = 1;
-			diag_printf("[%s][%d] suffix_js : %d\n", __FUNCTION__, __LINE__, suffix_js);
+			//diag_printf("[%s][%d] suffix_js : %d\n", __FUNCTION__, __LINE__, suffix_js);
 			ipaddr = (unsigned int)(ip->ip_src.s_addr);
 			if(1 == url_match_record_check(ipaddr, &(http_hdr_params_s.referer), url_match_rule_p, suffix_js))
 			{
-				diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
+				//diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 				cyg_mutex_unlock(&keep_conf_mutex);
 				return URLF_PASS;
 			}
-			diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
+			//diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 			if(0 == url_match_do_redirect(m, ipaddr, &http_hdr_params_s, url_match_rule_p, suffix_js))
 			{
-				diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
+				//diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 				cyg_mutex_unlock(&keep_conf_mutex);
 				return URLF_BLOCK;
 			}
+			else
+			{
+				cyg_mutex_unlock(&keep_conf_mutex);
+			}
+		}
+		else
+		{
+			cyg_mutex_unlock(&keep_conf_mutex);
 		}
 	}
 	else
 	{
 		diag_printf("[%s][%d] cyg_mutex_lock failed\n", __FUNCTION__, __LINE__);
 	}
-	diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
+	//diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 	return URLF_PASS;
 #endif
 }
