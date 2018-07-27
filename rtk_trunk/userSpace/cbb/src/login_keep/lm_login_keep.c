@@ -664,9 +664,9 @@ int parse_conf_ack(struct lm_conf_ack *conf_ack, char *conf_ack_buf)
 	return 0;
 }
 
-/* ¹¦ÄÜ£º»ñÈ¡Ä³×Ö·ûc£¬ÔÚ×Ö·û´®srcÖĞµÄÎ»ÖÃ 
-* ²ÎÊı£ºsrc,Ô´×Ö·û´®;c,×Ö·û;flag,Ñ¡Ôñ²éÕÒË³ĞòµÄ±êÖ¾£¬0±íÊ¾´ÓÍ·²¿¿ªÊ¼ÕÒ£¬1±íÊ¾´ÓÎ²²¿¿ªÊ¼ÕÒ 
-* ·µ»ØÖµ£º³É¹¦Îª×Ö·ûcÔÚ×Ö·û´®srcÖĞµÄÊµ¼ÊÎ»ÖÃ,·¶Î§:[1,strlen]£»Ê§°ÜÎª-1¡£ 
+/* åŠŸèƒ½ï¼šè·å–æŸå­—ç¬¦cï¼Œåœ¨å­—ç¬¦ä¸²srcä¸­çš„ä½ç½® 
+* å‚æ•°ï¼šsrc,æºå­—ç¬¦ä¸²;c,å­—ç¬¦;flag,é€‰æ‹©æŸ¥æ‰¾é¡ºåºçš„æ ‡å¿—ï¼Œ0è¡¨ç¤ºä»å¤´éƒ¨å¼€å§‹æ‰¾ï¼Œ1è¡¨ç¤ºä»å°¾éƒ¨å¼€å§‹æ‰¾ 
+* è¿”å›å€¼ï¼šæˆåŠŸä¸ºå­—ç¬¦cåœ¨å­—ç¬¦ä¸²srcä¸­çš„å®é™…ä½ç½®,èŒƒå›´:[1,strlen]ï¼›å¤±è´¥ä¸º-1ã€‚ 
 */  
 int strpos(const char *src, char c, int flag)  
 {  
@@ -683,26 +683,26 @@ int strpos(const char *src, char c, int flag)
 
 	pos = 1; 
       
-    if (flag == 0) {            //flag == 0±íÊ¾´ÓÍ·²¿¿ªÊ¼ÕÒ    
+    if (flag == 0) {            //flag == 0è¡¨ç¤ºä»å¤´éƒ¨å¼€å§‹æ‰¾    
         while (c != *p && *p) {  
             pos++;  
             p++;  
         }  
-        if(*p == '\0')  //Ã»ÓĞ´Ë×Ö·û   
+        if(*p == '\0')  //æ²¡æœ‰æ­¤å­—ç¬¦   
             pos = -1;  
     }  
-    else if(flag == 1) {        //flag == 1±íÊ¾´ÓÎ²²¿¿ªÊ¼ÕÒ   
-        p += len -1;    //Ö¸Ïò×Ö·û´®µÄ×îºóÒ»¸ö×Ö·û   
+    else if(flag == 1) {        //flag == 1è¡¨ç¤ºä»å°¾éƒ¨å¼€å§‹æ‰¾   
+        p += len -1;    //æŒ‡å‘å­—ç¬¦ä¸²çš„æœ€åä¸€ä¸ªå­—ç¬¦   
         pos = len;  
         while (c != *p && pos > 0) {  
             pos--;  
             p--;  
         }  
-        if(pos == 0)    //Ã»ÓĞ´Ë×Ö·û   
+        if(pos == 0)    //æ²¡æœ‰æ­¤å­—ç¬¦   
             pos = -1;             
     }  
   
-    return pos;   //·µ»Ø×Ö·ûcÔÚ×Ö·û´®srcÖĞµÄÊµ¼ÊÎ»ÖÃ,·¶Î§:[1,strlen]£»Ê§°ÜÎª-1.   
+    return pos;   //è¿”å›å­—ç¬¦cåœ¨å­—ç¬¦ä¸²srcä¸­çš„å®é™…ä½ç½®,èŒƒå›´:[1,strlen]ï¼›å¤±è´¥ä¸º-1.   
 }  
 
 int is_dir_exist(char *full_pathname)
@@ -729,9 +729,9 @@ int is_dir_exist(char *full_pathname)
 		
 		dir_path[len] = '\0';
 	
-		if (access(dir_path,0) != 0)	//Ä¿Â¼²»´æÔÚ£¬Ğè´´½¨
+		if (access(dir_path,0) != 0)	//ç›®å½•ä¸å­˜åœ¨ï¼Œéœ€åˆ›å»º
 		{
-			if (mkdir(dir_path, 0777) != 0)//´´½¨Ê§°Ü
+			if (mkdir(dir_path, 0777) != 0)//åˆ›å»ºå¤±è´¥
 			{
 				diag_printf("mkdir error,return!\n");
 				return -1;
@@ -793,7 +793,7 @@ int http_get_file(char *server_host, char *server_path, int port, char *server_i
 	int http_total_len = 0;
 	int ret = DOWNLOAD_FAIL;
 
-	 /*¹¹Ôì·şÎñÆ÷ÇëÇó±¨ÎÄ*/	
+	 /*æ„é€ æœåŠ¡å™¨è¯·æ±‚æŠ¥æ–‡*/	
 	sprintf(request_str, "GET %s HTTP/1.1\r\n"
 		"Accept: */*\r\n"
 		"User-Agent: Mozilla/5.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\n"
@@ -807,13 +807,13 @@ int http_get_file(char *server_host, char *server_path, int port, char *server_i
 		return DOWNLOAD_FAIL;
 	}
 
-	/* ÌîĞ´sockaddr_in½á¹¹*/
+	/* å¡«å†™sockaddr_inç»“æ„*/
 	memset(&dest_addr, 0, sizeof(dest_addr));
 	dest_addr.sin_family = AF_INET;
 	dest_addr.sin_port = htons(port);
 	dest_addr.sin_addr.s_addr = inet_addr(server_ip);
 
-	/* ¿Í»§³ÌĞò·¢ÆğÁ¬½ÓÇëÇó */
+	/* å®¢æˆ·ç¨‹åºå‘èµ·è¿æ¥è¯·æ±‚ */
 	if (-1 == connect(sockfd, (struct sockaddr *)&dest_addr, sizeof(struct sockaddr)))
 	{
 		diag_printf("sockfd connect fail\n");
@@ -822,7 +822,7 @@ int http_get_file(char *server_host, char *server_path, int port, char *server_i
 		goto  free_resource;
 	}
 	
-	/*·¢ËÍhttpÇëÇórequest*/
+	/*å‘é€httpè¯·æ±‚request*/
 	if (-1 == send(sockfd, request_str, strlen(request_str), 0))
 	{
 		diag_printf("sockfd send fail\n");
@@ -847,13 +847,13 @@ int http_get_file(char *server_host, char *server_path, int port, char *server_i
 		clear_file(save_into_router);
 		fd = open(save_into_router, O_WRONLY|O_APPEND|O_CREAT);
 	}
-	/* Á¬½Ó³É¹¦ÁË£¬½ÓÊÕhttpÏìÓ¦£¬response */
+	/* è¿æ¥æˆåŠŸäº†ï¼Œæ¥æ”¶httpå“åº”ï¼Œresponse */
 	memset(response_str, 0, sizeof(response_str));
 	while (1)
 	{
 		FD_ZERO(&readfds);
 		FD_SET(sockfd, &readfds);
-		selectfd = select(sockfd+1, &readfds, NULL, NULL, &tv);  //³¬Ê±Ê±¼äÎª3s
+		selectfd = select(sockfd+1, &readfds, NULL, NULL, &tv);  //è¶…æ—¶æ—¶é—´ä¸º3s
 		if(selectfd == 0)
 		{
 			diag_printf("___download timeout___\n");
@@ -871,7 +871,7 @@ int http_get_file(char *server_host, char *server_path, int port, char *server_i
 			memset(response_str, 0, sizeof(response_str));
 			if(FD_ISSET(sockfd, &readfds))
 			{
-				/*½ÓÊÕ³ö´í*/
+				/*æ¥æ”¶å‡ºé”™*/
 				if ((len = recv(sockfd, response_str, sizeof(response_str), 0)) < 0)
 				{
 					diag_printf("recv failed\n");
@@ -879,12 +879,12 @@ int http_get_file(char *server_host, char *server_path, int port, char *server_i
 					goto  free_resource;
 				}
 				//diag_printf("len = %d\n", len);
-				//½ÓÊÕÍê³É
+				//æ¥æ”¶å®Œæˆ
 				if(0 == len)
 				{
 					break;
 				}
-				//Ìø¹ı±¨Í·
+				//è·³è¿‡æŠ¥å¤´
 				response_str_tmp = response_str;
 				len_head = 0;
 				//html_head = NULL;
@@ -912,7 +912,7 @@ int http_get_file(char *server_host, char *server_path, int port, char *server_i
 					http_total_len = atoi(p_len + sizeof("Content-Length:") - 1);
 
 					html_head += sizeof("\r\n\r\n") - 1;
-					//¼ÆËã±¨Í·³¤¶È
+					//è®¡ç®—æŠ¥å¤´é•¿åº¦
 					while(response_str_tmp != html_head && len_head < sizeof(response_str))
 					{
 						response_str_tmp++;
@@ -1344,7 +1344,7 @@ int keep_conf_ack(char *conf_ack_buf)
 				else
 				{
 					keep_conf_status[KEEP_CONF_URL_WHITE-1] = 0;
-					url_match_rules_free();
+					url_white_rules_free();
 					if(url_match_rule_enabled())
 						nis_url_match_mode(0);
 				}
@@ -1367,10 +1367,10 @@ int keep_conf_ack(char *conf_ack_buf)
 #if 0
 void set_tcp_keepalive(int s)
 {
-	int keepAlive = 1; // ¿ªÆôkeepaliveÊôĞÔ
-	int keepIdle = 60; // Èç¸ÃÁ¬½ÓÔÚ60ÃëÄÚÃ»ÓĞÈÎºÎÊı¾İÍùÀ´,Ôò½øĞĞÌ½²â 
-	int keepInterval = 5; // Ì½²âÊ±·¢°üµÄÊ±¼ä¼ä¸ôÎª5 Ãë
-	int keepCount = 3; // Ì½²â³¢ÊÔµÄ´ÎÊı.Èç¹ûµÚ1´ÎÌ½²â°ü¾ÍÊÕµ½ÏìÓ¦ÁË,Ôòºó2´ÎµÄ²»ÔÙ·¢.
+	int keepAlive = 1; // å¼€å¯keepaliveå±æ€§
+	int keepIdle = 60; // å¦‚è¯¥è¿æ¥åœ¨60ç§’å†…æ²¡æœ‰ä»»ä½•æ•°æ®å¾€æ¥,åˆ™è¿›è¡Œæ¢æµ‹ 
+	int keepInterval = 5; // æ¢æµ‹æ—¶å‘åŒ…çš„æ—¶é—´é—´éš”ä¸º5 ç§’
+	int keepCount = 3; // æ¢æµ‹å°è¯•çš„æ¬¡æ•°.å¦‚æœç¬¬1æ¬¡æ¢æµ‹åŒ…å°±æ”¶åˆ°å“åº”äº†,åˆ™å2æ¬¡çš„ä¸å†å‘.
 
 	setsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (void *)&keepAlive, sizeof(keepAlive));
 	setsockopt(s, SOL_TCP, TCP_KEEPIDLE, (void*)&keepIdle, sizeof(keepIdle));
@@ -2200,7 +2200,7 @@ void login_keep_start()
     int pid;
     
     pid = oslib_getpidbyname("lm_login_keep");
-    if (pid != 0)//Ïß³ÌÒÑ´æÔÚ£¬Ö±½Ó·µ»Ø
+    if (pid != 0)//çº¿ç¨‹å·²å­˜åœ¨ï¼Œç›´æ¥è¿”å›
         return;
     cyg_thread_create(
         5,
