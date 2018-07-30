@@ -1,3 +1,7 @@
+chmod 777 -R *
+make tsfile=AC6V4 prepare
+make
+
 这些约定值还是用原来的
 发送在线信息是在连接keep成功后开始计时，间隔半小时或一小时发送一次
 拉取版本更新是在连接keep成功后拉取一次
