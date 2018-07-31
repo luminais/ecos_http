@@ -74,7 +74,7 @@ int main()
 {
 #if 1
 	unsigned char *file_buf = NULL, *conf_content;
-	int conf_file_len = 137, conf_content_len, total_len, ret;
+	int conf_file_len = 143, conf_content_len, total_len, ret;
 
 	init_url_rules();
 
@@ -87,7 +87,7 @@ int main()
 	ret = parse_url_rules(file_buf, " \n\r");
 	//printf("[%s][%d] ret = %d\n", __FUNCTION__, __LINE__, ret);
 	free(file_buf);
-
+#if 0
 	conf_file_len = 530;
 	if(0 != file_to_buf(&file_buf, W_FILE, conf_file_len))
 	{
@@ -99,10 +99,10 @@ int main()
 	ret = parse_white_rules(file_buf, " \n\r");
 	// printf("[%s][%d] ret = %d\n", __FUNCTION__, __LINE__, ret);
 	free(file_buf);
-
+#endif
 	printf("[%s][%d] print_url_rules : \n", __FUNCTION__, __LINE__);
 	print_url_rules();
-
+#if 0
 	char http_hdr[1024] = "GET /otn/resources/js/rich/windows/dhtmlxwindows.js HTTP/1.1\r\nHost: dynamic.12306.cn\r\nConnection: keep-alive\r\nCache-Control: max-age=0\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\nUser-Agent: Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36\r\nAccept-Encoding: gzip,deflate,sdch\r\nAccept-Language: zh-CN,zh;q=0.8\r\nCookie: JSESSIONID=5A82296296BD85917E4CC4FDD6A871B8; route=6f50b51faa11b987e576cdb301e545c4; BIGipServerotn=367526154.24610.0000; BIGipServerportal=3151233290.17695.0000\r\nIf-Modified-Since: Wed, 27 Dec 2017 16:38:29 GMT\r\n\r\n";
 	http_hdr_params_t http_hdr_params_s;
 	memset(&http_hdr_params_s, 0x0, sizeof(http_hdr_params_s));
@@ -124,6 +124,7 @@ int main()
 			suffix_js = 1;
 		diag_printf("[%s][%d] suffix_js : %d\n", __FUNCTION__, __LINE__, suffix_js);
 	}
+#endif
 #else
 	char *aa, *bb;
 	int len;

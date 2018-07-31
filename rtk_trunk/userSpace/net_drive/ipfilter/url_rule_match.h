@@ -82,6 +82,7 @@ typedef struct url_rule
 {
 	uint8 type;
 	uint32 time;
+	uint32 max_times;
 	char *host;
 	char *suffix;
 	char *uri;
@@ -104,6 +105,7 @@ typedef struct len_string_list
 typedef struct url_match_rule
 {
 	uint32 time;
+	uint32 max_times;
 	len_string_list_t *host[URL_HOST_HASH_LEN];
 	len_string_t suffix;
 	len_string_t uri;
@@ -151,6 +153,7 @@ typedef struct url_match_record
 	unsigned int ipaddr;
 	url_match_rule_t *matched;
 	uint32 time;
+	uint32 rd_times;
 }url_match_record_t;
 
 typedef struct referer_match_record

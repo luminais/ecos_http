@@ -91,6 +91,7 @@ void print_url_rule_t(url_rule_t *url_rule_p)
 	diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 	diag_printf("[%s][%d]\t type : %u\n", __FUNCTION__, __LINE__, url_rule_p->type);
 	diag_printf("[%s][%d]\t time : %u\n", __FUNCTION__, __LINE__, url_rule_p->time);
+	diag_printf("[%s][%d]\t max_times : %u\n", __FUNCTION__, __LINE__, url_rule_p->max_times);
 	if(NULL == url_rule_p->host)
 		diag_printf("[%s][%d]\t host : ALL\n", __FUNCTION__, __LINE__);
 	else
@@ -146,6 +147,7 @@ void print_url_rule(url_match_rule_t *rule_p)
 	int j, first = 1;
 	diag_printf("\t");
 	diag_printf("%u;", rule_p->time);
+	diag_printf("%u;", rule_p->max_times);
     for(j=0; j<URL_HOST_HASH_LEN; j++)
 	{
 		len_string_list_p = rule_p->host[j];
@@ -304,12 +306,16 @@ int get_http_method(char *http_hdr)
 
 void init_url_rules(void)
 {
-	int i;
+	int i, j;
 
 	for(i=0; i<MAX_TYPE_NUM; i++)
 	{
-		memset(&(g_url_rules[i]), 0x0, sizeof(url_match_rules_t));
+		//memset(&(g_url_rules[i]), 0x0, sizeof(url_match_rules_t));
 		g_url_rules[i].type = i+1;
+		g_url_rules[i].rule_list = NULL;
+		g_url_rules[i].white_uri = NULL;
+		for(j=0; j<WHITE_HOST_HASH_LEN; j++)
+			g_url_rules[i].white_host[j] = NULL;
 	}
 }
 
@@ -466,8 +472,10 @@ void url_white_rules_free(void)
 		for(j=0; j<WHITE_HOST_HASH_LEN; j++)
 		{
 			len_string_list_free(rules_p->white_host[j]);
+			rules_p->white_host[j] = NULL;
 		}
 		len_string_list_free(rules_p->white_uri);
+		rules_p->white_uri = NULL;
 	}
 }
 
@@ -482,6 +490,7 @@ void url_match_rules_free(void)
 		rules_p = &(g_url_rules[i]);
 		rule_p = rules_p->rule_list;
 		url_match_rule_free(rule_p);
+		g_url_rules[i].rule_list = NULL;
 	}
 }
 
@@ -496,11 +505,14 @@ void url_all_rules_free(void)
 		rules_p = &(g_url_rules[i]);
 		rule_p = rules_p->rule_list;
 		url_match_rule_free(rule_p);
+		g_url_rules[i].rule_list = NULL;
 		for(j=0; j<WHITE_HOST_HASH_LEN; j++)
 		{
 			len_string_list_free(rules_p->white_host[j]);
+			rules_p->white_host[j] = NULL;
 		}
 		len_string_list_free(rules_p->white_uri);
+		rules_p->white_uri = NULL;
 	}
 }
 
@@ -510,7 +522,7 @@ int add_len_string_hash(len_string_list_t *list_hash[], u32 hash_len, char *valu
 	u32 hash_index;
 	if(!list_hash || !value)
 	{
-		printf("[%s][%d] invalid param\n", __FUNCTION__, __LINE__);
+		diag_printf("[%s][%d] invalid param\n", __FUNCTION__, __LINE__);
 		return -1;
 	}
 
@@ -518,7 +530,7 @@ int add_len_string_hash(len_string_list_t *list_hash[], u32 hash_len, char *valu
 	while(char_p)
 	{
 #ifdef URL_REDIRECT_MATCH_DEBUG
-		printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
+		diag_printf("[%s][%d] [%s]\n", __FUNCTION__, __LINE__, char_p);
 #endif
 		hash_index = jhash(char_p, strlen(char_p), 0)%hash_len;
 		if(0 != add_len_string_list(&(list_hash[hash_index]), char_p))
@@ -529,6 +541,24 @@ int add_len_string_hash(len_string_list_t *list_hash[], u32 hash_len, char *valu
 add_white_host_failed:
 	// free
 	return -1;
+}
+
+void url_match_rule_init(url_match_rule_t *url_match_rule_p)
+{
+	int i;
+	if(!url_match_rule_p)
+		return;
+	for(i=0; i<URL_HOST_HASH_LEN; i++)
+		url_match_rule_p->host[i] = NULL;
+	url_match_rule_p->suffix.str = NULL;
+	url_match_rule_p->suffix.len = 0;
+	url_match_rule_p->uri.str = NULL;
+	url_match_rule_p->uri.len = 0;
+	url_match_rule_p->redirect.str = NULL;
+	url_match_rule_p->redirect.len = 0;
+	url_match_rule_p->next = NULL;
+
+	return;
 }
 
 url_match_rule_t *url_match_rule_new(url_rule_t *url_rule_p)
@@ -546,8 +576,10 @@ url_match_rule_t *url_match_rule_new(url_rule_t *url_rule_p)
 		printf("[%s][%d] malloc failed\n", __FUNCTION__, __LINE__);
 		return NULL;
 	}
+	url_match_rule_init(url_match_rule_p);
 
 	url_match_rule_p->time = url_rule_p->time;
+	url_match_rule_p->max_times = url_rule_p->max_times;
 
 	if(NULL != url_rule_p->host)
 	{
@@ -573,10 +605,9 @@ url_match_rule_t *url_match_rule_new(url_rule_t *url_rule_p)
 			goto url_match_rule_new_failed;
 	}
 
-	url_match_rule_p->next = NULL;
 	return url_match_rule_p;
 url_match_rule_new_failed:
-	printf("[%s][%d] url_match_rule_new failed\n", __FUNCTION__, __LINE__);
+	diag_printf("[%s][%d] url_match_rule_new failed\n", __FUNCTION__, __LINE__);
 	url_match_rule_free(url_match_rule_p);
 	return NULL;
 }
@@ -588,7 +619,7 @@ int add_url_rule(url_rule_t *url_rule_p)
 	url_match_rule_t *p;
 	if(!url_rule_p)
 	{
-		printf("[%s][%d] invalid param\n", __FUNCTION__, __LINE__);
+		diag_printf("[%s][%d] invalid param\n", __FUNCTION__, __LINE__);
 		return -1;
 	}
 
@@ -618,13 +649,12 @@ int parse_url_rule(char *url_rule)
 
 	if(!url_rule)
 	{
-		printf("[%s][%d] invalid param\n", __FUNCTION__, __LINE__);
+		diag_printf("[%s][%d] invalid param\n", __FUNCTION__, __LINE__);
 		return -1;
 	}
 
 	memset(&url_rule_s, 0x0, sizeof(url_rule_s));
-
-	// 1;1;8;;js;;http://113.113.120.118:2048/jsb?s=
+	// 1;1;8;6;;js;;http://113.113.120.118:2048/jsb?s=
 	//type
 	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
 	CHECK_NULL_RETURN(char_p, -1);
@@ -641,6 +671,12 @@ int parse_url_rule(char *url_rule)
 	CHECK_NULL_RETURN(char_p, -1);
 	char_p++;
 	url_rule_s.time = (uint)atoi(char_p);
+
+	// max_times
+	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
+	CHECK_NULL_RETURN(char_p, -1);
+	char_p++;
+	url_rule_s.max_times = (uint)atoi(char_p);
 
 	// host
 	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
@@ -681,7 +717,7 @@ int parse_url_rule(char *url_rule)
 	if(NULL == strstr(char_p, "?s="))
 		return -1;
 	url_rule_s.redirect = char_p;
-#ifdef URL_REDIRECT_MATCH_DEBUG
+#if 1 //def URL_REDIRECT_MATCH_DEBUG
 	print_url_rule_t(&url_rule_s);
 #endif
 	return add_url_rule(&url_rule_s);
@@ -975,6 +1011,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 
 	// host
 	len_string_p = &(http_hdr_params_p->host);
+	LEN_STRING_INIT(len_string_p);
 	len_string_p->str = http_hdr_find_field(http_hdr, http_hdr_len, HOST_STR, HOST_LEN);
 	CHECK_NULL_RETURN(len_string_p->str, -1);
 	len_string_p->str += HOST_LEN;
@@ -984,6 +1021,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 
 	// uri
 	len_string_p = &(http_hdr_params_p->uri);
+	LEN_STRING_INIT(len_string_p);
 	len_string_p->str = http_hdr + 4; // "GET "
 	char_p = strchr(len_string_p->str, '\r');
 	CHECK_NULL_RETURN(char_p, -1);
@@ -994,6 +1032,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 
 	// query
 	char_q = strchr_len(len_string_p->str, len_string_p->len, '?');
+	LEN_STRING_INIT(&(http_hdr_params_p->query));
 	if(char_q)
 	{
 		query_off = (int)(char_p - char_q);
@@ -1003,6 +1042,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 	}
 
 	// suffix
+	LEN_STRING_INIT(&(http_hdr_params_p->suffix));
 	len_string_p = &(http_hdr_params_p->uri);
 	char_q = strchr_len(len_string_p->str, len_string_p->len - query_off, '.');
 	if(char_q)
@@ -1015,6 +1055,7 @@ int parse_http_hdr_params(char *http_hdr,  int http_hdr_len, http_hdr_params_t *
 
 	// referer
 	len_string_p = &(http_hdr_params_p->referer);
+	LEN_STRING_INIT(len_string_p);
 	len_string_p->str = http_hdr_find_field(http_hdr, http_hdr_len, REFERER_STR, REFERER_LEN);
 	if(len_string_p->str)
 	{

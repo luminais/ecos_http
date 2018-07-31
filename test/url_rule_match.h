@@ -34,8 +34,18 @@ typedef unsigned int	uint32;
 	{ \
 		if(!p) \
 		{ \
-			printf("[%s][%d]\n", __FUNCTION__, __LINE__); \
+			diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__); \
 			return (ret); \
+		} \
+	}while(0)
+
+#define LEN_STRING_INIT(ls) \
+	do \
+	{ \
+		if(ls) \
+		{ \
+			(ls)->str = NULL; \
+			(ls)->len = 0; \
 		} \
 	}while(0)
 
@@ -48,7 +58,7 @@ typedef enum white_rule_type
 
 typedef enum url_redirect_match_rst
 {
-	URL_REDIRECT_MATCH_WHITE,
+	URL_REDIRECT_MATCH_WHITE = 0,
 	URL_REDIRECT_MATCH_REDIRECT,
 	URL_REDIRECT_MATCH_NULL,
 	URL_REDIRECT_MATCH_MAX
@@ -73,6 +83,7 @@ typedef struct url_rule
 {
 	uint8 type;
 	uint32 time;
+	uint32 max_times;
 	char *host;
 	char *suffix;
 	char *uri;
@@ -95,6 +106,7 @@ typedef struct len_string_list
 typedef struct url_match_rule
 {
 	uint32 time;
+	uint32 max_times;
 	len_string_list_t *host[URL_HOST_HASH_LEN];
 	len_string_t suffix;
 	len_string_t uri;
@@ -142,6 +154,7 @@ typedef struct url_match_record
 	unsigned int ipaddr;
 	url_match_rule_t *matched;
 	uint32 time;
+	uint32 rd_times;
 }url_match_record_t;
 
 typedef struct referer_match_record

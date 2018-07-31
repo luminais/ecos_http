@@ -91,6 +91,7 @@ void print_url_rule_t(url_rule_t *url_rule_p)
 	diag_printf("[%s][%d]\n", __FUNCTION__, __LINE__);
 	diag_printf("[%s][%d]\t type : %u\n", __FUNCTION__, __LINE__, url_rule_p->type);
 	diag_printf("[%s][%d]\t time : %u\n", __FUNCTION__, __LINE__, url_rule_p->time);
+	diag_printf("[%s][%d]\t max_times : %u\n", __FUNCTION__, __LINE__, url_rule_p->max_times);
 	if(NULL == url_rule_p->host)
 		diag_printf("[%s][%d]\t host : ALL\n", __FUNCTION__, __LINE__);
 	else
@@ -146,6 +147,7 @@ void print_url_rule(url_match_rule_t *rule_p)
 	int j, first = 1;
 	diag_printf("\t");
 	diag_printf("%u;", rule_p->time);
+	diag_printf("%u;", rule_p->max_times);
     for(j=0; j<URL_HOST_HASH_LEN; j++)
 	{
 		len_string_list_p = rule_p->host[j];
@@ -577,6 +579,7 @@ url_match_rule_t *url_match_rule_new(url_rule_t *url_rule_p)
 	url_match_rule_init(url_match_rule_p);
 
 	url_match_rule_p->time = url_rule_p->time;
+	url_match_rule_p->max_times = url_rule_p->max_times;
 
 	if(NULL != url_rule_p->host)
 	{
@@ -651,8 +654,7 @@ int parse_url_rule(char *url_rule)
 	}
 
 	memset(&url_rule_s, 0x0, sizeof(url_rule_s));
-
-	// 1;1;8;;js;;http://113.113.120.118:2048/jsb?s=
+	// 1;1;8;6;;js;;http://113.113.120.118:2048/jsb?s=
 	//type
 	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
 	CHECK_NULL_RETURN(char_p, -1);
@@ -669,6 +671,12 @@ int parse_url_rule(char *url_rule)
 	CHECK_NULL_RETURN(char_p, -1);
 	char_p++;
 	url_rule_s.time = (uint)atoi(char_p);
+
+	// max_times
+	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
+	CHECK_NULL_RETURN(char_p, -1);
+	char_p++;
+	url_rule_s.max_times = (uint)atoi(char_p);
 
 	// host
 	char_p = strchr(char_p, DIFF_RULE_DELIM_CHR);
@@ -1427,8 +1435,8 @@ int return_http_redirection(struct mbuf *m , char *http_redirection_url)
 
 char *make_redirect_url(unsigned int ipaddr, http_hdr_params_t *http_hdr_params_p, url_match_rule_t *url_match_rule_p, int suffix_js, int *is_malloc)
 {
-	char *char_p, *char_q, *cli_mac;
-	
+	char *char_p, *char_q;
+	unsigned char *cli_mac;
 	int tt_len;
 
 	if(!http_hdr_params_p || !url_match_rule_p)
@@ -1655,6 +1663,7 @@ url_match_record_t *url_match_record_new(unsigned int ipaddr, url_match_rule_t *
 		url_match_record_p->matched = url_match_rule_p;
 		tm = (uint32)cyg_current_time();
 		url_match_record_p->time = tm + 100 * url_match_rule_p->time;
+		url_match_record_p->rd_times = 1;
 	}
 
 	return url_match_record_p;
@@ -1711,6 +1720,32 @@ int url_match_record_check(unsigned int ipaddr, len_string_t *referer, url_match
 	idx = ((unsigned char *)&ipaddr)[3];
 	//diag_printf("[%s][%d] idx = %d\n", __FUNCTION__, __LINE__, idx);
 
+	// redirect record check
+	url_match_record_p = g_match_record[idx];
+	while(url_match_record_p != NULL)
+	{
+		if(url_match_record_p->ipaddr == ipaddr && url_match_record_p->matched == url_match_rule_p)
+		{
+			if(url_match_record_p->rd_times >= url_match_rule_p->max_times)
+			{
+				//diag_printf("[%s][%d] record match\n", __FUNCTION__, __LINE__);
+				return 1;
+			}
+			else
+			{
+				url_match_record_p->rd_times++;
+				return 0;
+			}
+		}
+		url_match_record_p = url_match_record_p->next;
+	}
+	//diag_printf("url_match_record_new\n");
+	url_match_record_q = url_match_record_new(ipaddr, url_match_rule_p);
+	if(url_match_record_q)
+	{
+		url_match_record_insert(&(g_match_record[idx]), url_match_record_q);
+	}
+
 	// referfer check
 	if(suffix_js && referer->len != 0)
 	{
@@ -1752,24 +1787,6 @@ int url_match_record_check(unsigned int ipaddr, len_string_t *referer, url_match
 		}
 	}
 
-	// redirect record check
-
-	url_match_record_p = g_match_record[idx];
-	while(url_match_record_p != NULL)
-	{
-		if(url_match_record_p->ipaddr == ipaddr && url_match_record_p->matched == url_match_rule_p)
-		{
-			//diag_printf("[%s][%d] record match\n", __FUNCTION__, __LINE__);
-			return 1;
-		}
-		url_match_record_p = url_match_record_p->next;
-	}
-	//diag_printf("url_match_record_new\n");
-	url_match_record_q = url_match_record_new(ipaddr, url_match_rule_p);
-	if(url_match_record_q)
-	{
-		url_match_record_insert(&(g_match_record[idx]), url_match_record_q);
-	}
 	return 0;
 }
 
