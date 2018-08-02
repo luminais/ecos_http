@@ -714,7 +714,7 @@ int parse_url_rule(char *url_rule)
 	char_p = char_q + 1;
 	if(*char_p == '\0')
 		return -1;
-	if(NULL == strstr(char_p, "?s="))
+	if('=' != char_p[strlen(char_p)-1])
 		return -1;
 	url_rule_s.redirect = char_p;
 #ifdef URL_REDIRECT_MATCH_DEBUG
